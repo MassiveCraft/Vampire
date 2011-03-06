@@ -1,0 +1,7 @@
+name: Vampire
+version: 1.0
+main: com.bukkit.mcteam.vampire.Vampire
+commands:
+  vampire:
+    description: All of the Vampire commands
+    usage: See documentation.
