@@ -32,6 +32,6 @@ public class Infect extends CommandBase {
 		}
 		VPlayer vplayer = VPlayer.get(player);
 		vplayer.infectionSet(amount);
-		this.sendMessage(player.getDisplayName() + " now has infection "+amount);
+		this.sendMessage(player.getDisplayName() + " now has infection "+vplayer.infectionGet());
 	}
 }

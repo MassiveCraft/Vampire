@@ -90,14 +90,15 @@ public class VPlayer {
 	
 	public void turn() {
 		this.isVampire = true;
+		this.infectionSet(0);
 		this.sendMessage(Conf.turnMessages);
-		Vampire.log(this.playername + " turnted into a vampire.");
+		Vampire.log(this.playername + " turned into a vampire.");
 		VPlayer.save();
 	}
 	
 	public void cure() {
-		this.infectionSet(0);
 		this.isVampire = false;
+		this.infectionSet(0);
 		this.sendMessage(Conf.cureMessages);
 		Vampire.log(this.playername + " was cured and is no longer a vampire.");
 		VPlayer.save();
@@ -452,17 +453,22 @@ public class VPlayer {
 	// Infection 
 	// -------------------------------------------- //
 	public boolean isInfected() {
-		return this.infection > 0 && this.isVampire == false;
+		return this.infection > 0D && this.isVampire == false;
 	}
 	
 	public double infectionGet() {
 		return this.infection;
 	}
 	public void infectionSet(double infection) {
-		if (this.infectionGet() <= 0 && infection > 0) {
+		double previousinfection = this.infectionGet();
+		this.infection = this.limitDouble(infection, 0D, 100D);
+		
+		// Wan't to save if someone was uninfected:
+		// We want to save if someone was infected.
+		if ((previousinfection != 0 && this.infection == 0) || (previousinfection == 0 && this.infection != 0))
+		{
 			VPlayer.save();
 		}
-		this.infection = this.limitDouble(infection, 0, 100);
 	}
 	public void infectionAlter(double infection) {
 		this.infectionSet(this.infectionGet() + infection);
@@ -475,15 +481,15 @@ public class VPlayer {
 		
 		double current = this.infectionGet();
 		
-		if (current == 0 ) {
+		if (current == 0D ) {
 			// The player is already completely healthy
 			return;
 		}
 		
 		current -= amount; 
 		
-		if (current <= 0) {
-			this.infectionSet(0);
+		if (current <= 0D) {
+			this.infectionSet(0D);
 			this.sendMessage(Conf.infectionMessageCured);
 			return;
 		}
@@ -609,6 +615,8 @@ public class VPlayer {
 	}
 	
 	public static Collection<VPlayer> findAll() {
+		// Make sure all players get VPlayer entries.
+		findAllOnline();
 		return VPlayer.VPlayers.values();
 	}
 	
