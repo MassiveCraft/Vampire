@@ -26,6 +26,7 @@ import com.bukkit.mcteam.vampire.commands.Load;
 import com.bukkit.mcteam.vampire.commands.Save;
 import com.bukkit.mcteam.vampire.commands.Settime;
 import com.bukkit.mcteam.vampire.commands.Turn;
+import com.bukkit.mcteam.vampire.commands.Version;
 import com.bukkit.mcteam.vampire.listeners.VampireEntityListener;
 import com.bukkit.mcteam.vampire.listeners.VampirePlayerListener;
 
@@ -61,6 +62,7 @@ public class Vampire extends JavaPlugin {
 		commands.add(new Turn());
 		commands.add(new Cure());
 		commands.add(new Listing());
+		commands.add(new Version());
 	}
 	
 	// -------------------------------------------- //

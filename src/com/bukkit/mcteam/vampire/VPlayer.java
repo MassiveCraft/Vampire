@@ -32,8 +32,8 @@ public class VPlayer {
 	private boolean isVampire = false;
 	private double blood = 100;
 	private double infection = 0; // 0 means no infection. If infection reaches 100 the player will turn to vampire.
-	private int timeAsVampire = 0;
-	private long truceBreakTimeLeft = 0;
+	private long timeAsVampire = 0; // The total amount of milliseconds this player has been vampire.
+	private long truceBreakTimeLeft = 0; // How many milliseconds more will the monsters be hostile?
 	private transient double healthAccumulator = 0;
 	public transient long regenDelayLeftMilliseconds = 0;
 
@@ -46,7 +46,7 @@ public class VPlayer {
 	}
 	
 	// GSON need this noarg constructor.
-	public VPlayer() {		
+	public VPlayer() {
 	}
 	
 	public Player getPlayer() {
@@ -395,7 +395,8 @@ public class VPlayer {
 			return false;
 		}
 		
-		// No need to set on fire if the water will put the fire out at once. 
+		// No need to set on fire if the water will put the fire out at once.
+		// TODO flowing water? Should that be here to? Probably... test that.
 		if (player.getLocation().getBlock().getType() == Material.STATIONARY_WATER) {
 			return false;
 		}
@@ -458,6 +459,9 @@ public class VPlayer {
 		return this.infection;
 	}
 	public void infectionSet(double infection) {
+		if (this.infectionGet() <= 0 && infection > 0) {
+			VPlayer.save();
+		}
 		this.infection = this.limitDouble(infection, 0, 100);
 	}
 	public void infectionAlter(double infection) {
@@ -522,9 +526,6 @@ public class VPlayer {
 		//Vampire.log(this.playername + " risked infection.");
 		if (Vampire.random.nextDouble() <= Conf.infectionCloseCombatRisk) {
 			Vampire.log(this.playername + " contracted vampirism infection.");
-			if (this.infectionGet() <= 0) {
-				VPlayer.save();
-			}
 			this.infectionAdvance(Conf.infectionCloseCombatAmount);
 		}
 	}

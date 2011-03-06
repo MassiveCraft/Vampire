@@ -18,8 +18,8 @@ public class Conf {
 	
 	public static double infectionCloseCombatRisk = 1d / 30d;
 	public static double infectionCloseCombatAmount = 3D;
-	//public static double infectionProgressPerSecond = 100D / (1*60*60D) ; // It will take you 1h to turn
-	public static double infectionProgressPerSecond = 100D / (5*60D) ; // It will take you 1min to turn
+	public static double infectionProgressPerSecond = 100D / (1*60*60D) ; // It will take you 1h to turn
+	//public static double infectionProgressPerSecond = 100D / (5*60D) ; // It will take you 1min to turn DEBUG SETTING
 	
 	public static double infectionBreadHealAmount = 20D;
 	public static String infectionMessageHeal = "You feel a little better. Bread helps you fight the sickness.";

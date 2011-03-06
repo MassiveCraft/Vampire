@@ -36,6 +36,7 @@ There are also the following subcomands for server operators (OP).
 * `/vampire load [config|players|all]`<br> Load data from disk. 
 * `/vampire save [config|players|all]`<br> Save data to disk.
 * `/vampire settime [ticks from 0 to 23999]`<br> Set the time. 0 means sunrise. 1 ingame hour is 1000 ticks.
+* `/vampire version`<br> Find out which version you are running.
 
 
 Installing
