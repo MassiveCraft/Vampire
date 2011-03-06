@@ -16,11 +16,11 @@ Vampires...
  * Can dash at high speed using a feather. (costs blood)
  * Deal more damage in close combat.
  * Take less damage in close combat exept for attacks from wooden weapons wich hurt them a lot.
- * Occatinally infects others in close combat.
+ * Occasionally infects others in close combat.
 
 Usage
 ---------
-<b>Read the full userguide here: [http://mcteam.org/vampire](http://mcteam.org/vampire)</b>
+<b>Read the full userguide here: [http://mcteam.org/plugins/vampire](http://mcteam.org/plugins/vampire)</b>
 
 The base chat console command is:
 
