@@ -81,19 +81,28 @@ public class Conf {
 	public static List<String> cureMessages = new ArrayList<String>();
 	
 	static {
+		// Thank you derbycar379
+		// Thank you karibu6
+		
 		// TODO ADD MORE!
 		thirstMessages.add("You are a bit thirsty...");
 		thirstMessages.add("Some blood would taste good...");
 		thirstMessages.add("You daydream about whose blood you shall drink today...");
 		thirstMessages.add("Your teeth are restless...");
 		thirstMessages.add("Maybe I should stab someone and lick my hands clean...");
+		thirstMessages.add("You miss the smell of blood...");
 		
 		// TODO ADD MORE!
 		thirstStrongMessages.add("You crave for blood!");
 		thirstStrongMessages.add("You need to taste blood now!");
 		thirstStrongMessages.add("The thirst is unbearable!");
 		thirstStrongMessages.add("Your skin is turning grey!");
-		thirstStrongMessages.add("You stumble forward through red fog!");
+		thirstStrongMessages.add("You feel what's left of your half-life faint away!");
+		thirstStrongMessages.add("You feel weak!");
+		thirstStrongMessages.add("You start to keel over!");
+		thirstStrongMessages.add("No one can help you now!");
+		thirstStrongMessages.add("Your vison turns read and blurry!");
+		thirstStrongMessages.add("You fear for your half-life!");
 		
 		dashMaterials.add(Material.FEATHER);
 		
@@ -183,9 +192,11 @@ public class Conf {
 		
 		// TODO ADD MORE
 		// About 10-20 messages would be awesome.
-		infectionBreadHintMessages.add("Bread might cure your.");
 		infectionBreadHintMessages.add("Eating some bread might do you good.");
-		infectionBreadHintMessages.add("Freshly baked bread might cure you.");
+		infectionBreadHintMessages.add("You see a faint image... its a loaf of bread...");
+		infectionBreadHintMessages.add("Bread would taste very good right now...");
+		infectionBreadHintMessages.add("You think of mother's fresh homeade bread...");
+		infectionBreadHintMessages.add("The thought of bread makes you feel warm inside...or is that the blood?");
 		
 		turnMessages.add("Your heart stops. You don't breathe anymore.");
 		turnMessages.add("You are now a vampire.");
