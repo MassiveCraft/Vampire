@@ -99,7 +99,7 @@ public class Vampire extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		//pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_ITEM, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.entityListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.entityListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
 		

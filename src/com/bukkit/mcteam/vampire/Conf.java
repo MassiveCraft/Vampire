@@ -84,7 +84,7 @@ public class Conf {
 		// TODO ADD MORE!
 		thirstMessages.add("You are a bit thirsty...");
 		thirstMessages.add("Some blood would taste good...");
-		thirstMessages.add("You daydream about whose blood shall drink today...");
+		thirstMessages.add("You daydream about whose blood you shall drink today...");
 		thirstMessages.add("Your teeth are restless...");
 		thirstMessages.add("Maybe I should stab someone and lick my hands clean...");
 		
@@ -168,8 +168,8 @@ public class Conf {
 		infectionMessagesProgress.add("You find yourself thinking about blood.");
 		infectionMessagesProgress.add("You wonder what blood would taste like...");
 		infectionMessagesProgress.add("You wonder whats wrong. Why are you obsessed with blood?");
-		infectionMessagesProgress.add("You teeth really hurt. It feels like they are growing.");
-		infectionMessagesProgress.add("You teeth starts to bleed and you keep swallowing the blood.");
+		infectionMessagesProgress.add("Your teeth really hurt. It feels like they are growing.");
+		infectionMessagesProgress.add("Your teeth starts to bleed and you keep swallowing the blood.");
 		infectionMessagesProgress.add("You vomit and feel awful... but stronger than before.");
 		infectionMessagesProgress.add("When people walk by you really feel like biting them...");
 		infectionMessagesProgress.add("You get this impulse to kill one of your friends.");
