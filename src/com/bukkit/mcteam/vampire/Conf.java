@@ -81,8 +81,13 @@ public class Conf {
 	public static List<String> cureMessages = new ArrayList<String>();
 	
 	static {
-		// Thank you derbycar379
-		// Thank you karibu6
+		// Thank you for helping me with the messages:
+		// * derbycar379
+		// * karibu6
+		// * cooldude8909
+		
+		// TODO Maybe cake could cure vampirism...
+		// "You forget about blood this is way better :)"
 		
 		// TODO ADD MORE!
 		thirstMessages.add("You are a bit thirsty...");
@@ -197,6 +202,7 @@ public class Conf {
 		infectionBreadHintMessages.add("Bread would taste very good right now...");
 		infectionBreadHintMessages.add("You think of mother's fresh homeade bread...");
 		infectionBreadHintMessages.add("The thought of bread makes you feel warm inside...");
+		infectionBreadHintMessages.add("Maybe you should see the local farmer...");
 		
 		turnMessages.add("Your heart stops. You don't breathe anymore.");
 		turnMessages.add("You are now a vampire.");
