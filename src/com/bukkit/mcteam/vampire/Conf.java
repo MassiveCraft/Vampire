@@ -101,7 +101,7 @@ public class Conf {
 		thirstStrongMessages.add("You feel weak!");
 		thirstStrongMessages.add("You start to keel over!");
 		thirstStrongMessages.add("No one can help you now!");
-		thirstStrongMessages.add("Your vison turns read and blurry!");
+		thirstStrongMessages.add("Your vison turns red and blurry!");
 		thirstStrongMessages.add("You fear for your half-life!");
 		
 		dashMaterials.add(Material.FEATHER);
@@ -196,7 +196,7 @@ public class Conf {
 		infectionBreadHintMessages.add("You see a faint image... its a loaf of bread...");
 		infectionBreadHintMessages.add("Bread would taste very good right now...");
 		infectionBreadHintMessages.add("You think of mother's fresh homeade bread...");
-		infectionBreadHintMessages.add("The thought of bread makes you feel warm inside...or is that the blood?");
+		infectionBreadHintMessages.add("The thought of bread makes you feel warm inside...");
 		
 		turnMessages.add("Your heart stops. You don't breathe anymore.");
 		turnMessages.add("You are now a vampire.");
