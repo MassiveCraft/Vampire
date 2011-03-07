@@ -397,8 +397,8 @@ public class VPlayer {
 		}
 		
 		// No need to set on fire if the water will put the fire out at once.
-		// TODO flowing water? Should that be here to? Probably... test that.
-		if (player.getLocation().getBlock().getType() == Material.STATIONARY_WATER) {
+		Material material = player.getLocation().getBlock().getType();
+		if (material == Material.STATIONARY_WATER || material == Material.WATER) {
 			return false;
 		}
 		
@@ -658,39 +658,23 @@ public class VPlayer {
 	// Persistance
 	// -------------------------------------------- //
 	
-	public static void removeVPlayersWithDefaultValues() {
-		Iterator<Entry<String, VPlayer>> iter = VPlayer.VPlayers.entrySet().iterator();
-		while (iter.hasNext()) {
-			Entry<String, VPlayer> entry = iter.next();
-			VPlayer vplayer = entry.getValue();
-			
-			if (vplayer.isInfected()) {
-				continue;
-			}
-			
-			if (vplayer.isVampire()) {
-				continue;
-			}
-			
-			if (vplayer.timeAsVampire > 0) {
-				continue;
-			}
-			
-			iter.remove();
-		}
-	}
-	
-	public static void fillPlayernames() {
-		for(Entry<String, VPlayer> entry : VPlayers.entrySet()) {
-			entry.getValue().playername = entry.getKey();
-		}
+	public boolean shouldBeSaved() {
+		return this.isVampire() || this.isInfected() || this.isExvampire();
 	}
 	
 	public static boolean save() {
 		Vampire.log("Saving players to disk");
+		
+		// We only wan't to save the vplayers with non default values
+		Map<String, VPlayer> vplayersToSave = new HashMap<String, VPlayer>();
+		for (Entry<String, VPlayer> entry : VPlayers.entrySet()) {
+			if (entry.getValue().shouldBeSaved()) {
+				vplayersToSave.put(entry.getKey(), entry.getValue());
+			}
+		}
+		
 		try {
-			removeVPlayersWithDefaultValues();
-			DiscUtil.write(file, Vampire.gson.toJson(VPlayers));
+			DiscUtil.write(file, Vampire.gson.toJson(vplayersToSave));
 		} catch (IOException e) {
 			Vampire.log("Failed to save the players to disk.");
 			e.printStackTrace();
@@ -717,5 +701,11 @@ public class VPlayer {
 		fillPlayernames();
 			
 		return true;
+	}
+	
+	public static void fillPlayernames() {
+		for(Entry<String, VPlayer> entry : VPlayers.entrySet()) {
+			entry.getValue().playername = entry.getKey();
+		}
 	}
 }
