@@ -19,6 +19,8 @@ public class Conf {
 	public static transient File file = new File(Vampire.instance.getDataFolder(), "conf.json");
 	
 	public static ChatColor colorSystem = ChatColor.RED;
+	public static boolean allowNoSlashCommand = true;
+	
 	
 	public static int timerInterval = 1000; // Defines the precision of the vampire timer. one second should be good. 
 	
@@ -86,7 +88,7 @@ public class Conf {
 	public static List<String> turnMessages = new ArrayList<String>();
 	public static List<String> cureMessages = new ArrayList<String>();
 	
-	public static String altarUseIngredientsSuccess = "You place these items on the altar:";
+	public static String altarUseIngredientsSuccess = "You use these items on the altar:";
 	public static String altarUseIngredientsFail = "To use it you need to collect these ingredients:";
 	
 	public static String altarInfectExamineMsg = "This altar looks really evil.";
@@ -96,8 +98,8 @@ public class Conf {
 	public static Material altarInfectMaterialSurround = Material.OBSIDIAN;
 	public static int altarInfectMaterialSurroundCount = 20;
 	public static double altarInfectMaterialSurroundRadious = 7D;
-	public static String altarInfectToSmall = "Something happens... The gold draws power from the obsidian... But there don't seem to be enough obsidian nearby.";
-	public static String altarInfectUse = "Something happens... The gold draws power from the obsidian... Then the energy rushes through you and you feel a bit cold...";
+	public static String altarInfectToSmall = "Something happens... The gold draws energy from the obsidian... But there don't seem to be enough obsidian nearby.";
+	public static String altarInfectUse = "Something happens... The gold draws energy from the obsidian... Then the energy rushes through you and you feel a bit cold...";
 	public static Recipe altarInfectRecipe = new Recipe();
 	
 	public static String altarCureExamineMsg = "This altar looks bright and nice.";
@@ -107,8 +109,8 @@ public class Conf {
 	public static Material altarCureMaterialSurround = Material.GLOWSTONE;
 	public static int altarCureMaterialSurroundCount = 20;
 	public static double altarCureMaterialSurroundRadious = 7D;
-	public static String altarCureToSmall = "The lapiz draws power from the glowstone... But there don't seem to be enough glowstone nearby.";
-	public static String altarCureUse = "The lapiz draws power from the glowstone... Then the energy rushes through you and you feel all warm inside.";
+	public static String altarCureToSmall = "Something happens... The lapiz draws energy from the glowstone... But there don't seem to be enough glowstone nearby.";
+	public static String altarCureUse = "Something happens... The lapiz draws energy from the glowstone... Then the energy rushes through you and you feel warm inside.";
 	public static Recipe altarCureRecipe = new Recipe();
 	
 	
@@ -238,8 +240,8 @@ public class Conf {
 		infectionBreadHintMessages.add("Bread...Bread...Bread...");
 		
 		turnMessages.add("Your heart stops. You don't breathe anymore.");
-		turnMessages.add("You are now a vampire.");
-		turnMessages.add("Type /vampire help for more info.");
+		turnMessages.add("You are now a vampire. To see your blood supply:");
+		turnMessages.add("Type \"/v\" or simply \"v\" in the chat.");
 		
 		cureMessages.add("You have been cured from the vampirism.");
 		cureMessages.add("You are once again healthy and alive.");

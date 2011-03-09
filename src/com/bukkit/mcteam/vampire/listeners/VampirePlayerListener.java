@@ -1,11 +1,17 @@
 package com.bukkit.mcteam.vampire.listeners;
 
+import java.util.List;
+
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerItemEvent;
 import org.bukkit.event.player.PlayerListener;
 
+import com.bukkit.mcteam.util.TextUtil;
 import com.bukkit.mcteam.vampire.Conf;
 import com.bukkit.mcteam.vampire.VPlayer;
+import com.bukkit.mcteam.vampire.Vampire;
 
 public class VampirePlayerListener extends PlayerListener {
 	
@@ -26,6 +32,24 @@ public class VampirePlayerListener extends PlayerListener {
 		if (Conf.dashMaterials.contains(event.getMaterial()) && vplayer.isVampire()) {
 			vplayer.dash();
 		}
+	}
+	
+	// Used to allow usage of only "v" instead of "/v"
+	@Override
+	public void onPlayerChat(PlayerChatEvent event) {
+		if ( ! Conf.allowNoSlashCommand) {
+			return;
+		}
+		
+		if ( ! (event.getMessage().startsWith("v ") || event.getMessage().equals("v"))) {
+			return;
+		}
+		
+		List<String> parameters = TextUtil.split(event.getMessage().trim());
+		parameters.remove(0);
+		CommandSender sender = event.getPlayer();			
+		Vampire.instance.handleCommand(sender, parameters);
+		event.setCancelled(true);
 	}
 	
 }

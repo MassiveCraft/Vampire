@@ -101,6 +101,7 @@ public class Vampire extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		//pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_ITEM, this.playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.entityListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
@@ -111,10 +112,14 @@ public class Vampire extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		List<String> parameters = new ArrayList<String>(Arrays.asList(args));
-
+		this.handleCommand(sender, parameters);
+		return true;
+	}
+	
+	public void handleCommand(CommandSender sender, List<String> parameters) {
 		if (parameters.size() == 0) {
 			this.commands.get(0).execute(sender, parameters);
-			return true;
+			return;
 		}
 		
 		String command = parameters.get(0).toLowerCase();
@@ -123,11 +128,11 @@ public class Vampire extends JavaPlugin {
 		for (VCommand vampcommand : this.commands) {
 			if (command.equals(vampcommand.getName())) {
 				vampcommand.execute(sender, parameters);
-				return true;
+				return;
 			}
 		}
 		
-		return false;
+		sender.sendMessage(Conf.colorSystem+"Unknown vampire command \""+command+"\".");
 	}
 	
 	// -------------------------------------------- //

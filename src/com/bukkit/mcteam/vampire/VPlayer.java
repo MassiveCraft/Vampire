@@ -557,7 +557,11 @@ public class VPlayer {
 		int count = GeometryUtil.countNearby(centerBlock, Conf.altarInfectMaterialSurround, Conf.altarInfectMaterialSurroundRadious);
 		if (count == 0) {
 			return;
-		} else if (count < Conf.altarInfectMaterialSurroundCount) {
+		}
+		
+		this.sendMessage(" ");
+		
+		if (count < Conf.altarInfectMaterialSurroundCount) {
 			this.sendMessage(Conf.altarInfectToSmall);
 			return;
 		}
@@ -595,7 +599,11 @@ public class VPlayer {
 		int count = GeometryUtil.countNearby(centerBlock, Conf.altarCureMaterialSurround, Conf.altarCureMaterialSurroundRadious);
 		if (count == 0) {
 			return;
-		} else if (count < Conf.altarCureMaterialSurroundCount) {
+		}
+		
+		this.sendMessage(" ");
+		
+		if (count < Conf.altarCureMaterialSurroundCount) {
 			this.sendMessage(Conf.altarCureToSmall);
 			return;
 		}
