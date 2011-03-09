@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.bukkit.mcteam.vampire.*;
 
-public class Version extends CommandBase {
-	public Version() {
+public class VCommandVersion extends VCommand {
+	public VCommandVersion() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		senderMustBeOp = true;

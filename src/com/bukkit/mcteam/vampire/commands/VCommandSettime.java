@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
-public class Settime extends CommandBase {
+public class VCommandSettime extends VCommand {
 
-	public Settime() {
+	public VCommandSettime() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		senderMustBeOp = true;

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.vampire.Conf;
 
-public class CommandBase {
+public class VCommand {
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
 	public boolean senderMustBeOp;
@@ -15,7 +15,7 @@ public class CommandBase {
 	public CommandSender sender;
 	public List<String> parameters;
 	
-	public CommandBase() {
+	public VCommand() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		senderMustBeOp = true;
@@ -27,7 +27,7 @@ public class CommandBase {
 		if (name.lastIndexOf('.') > 0) {
 		    name = name.substring(name.lastIndexOf('.')+1);
 		}
-		return name;
+		return name.substring(8);
 	}
 	
 	public void execute(CommandSender sender, List<String> parameters) {

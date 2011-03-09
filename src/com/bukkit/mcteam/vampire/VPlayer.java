@@ -3,8 +3,13 @@ package com.bukkit.mcteam.vampire;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.server.Packet8UpdateHealth;
 
@@ -14,11 +19,14 @@ import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.DiscUtil;
 import com.bukkit.mcteam.util.EntityUtil;
+import com.bukkit.mcteam.util.GeometryUtil;
 
 /**
  * The VPlayer is a "skin" for a normal player.
@@ -51,6 +59,10 @@ public class VPlayer {
 	
 	public Player getPlayer() {
 		return Vampire.instance.getServer().getPlayer(playername);
+	}
+	
+	public String getPlayerName() {
+		return this.playername;
 	}
 	
 	// -------------------------------------------- //
@@ -533,6 +545,88 @@ public class VPlayer {
 		if (Vampire.random.nextDouble() <= Conf.infectionCloseCombatRisk) {
 			Vampire.log(this.playername + " contracted vampirism infection.");
 			this.infectionAdvance(Conf.infectionCloseCombatAmount);
+		}
+	}
+	
+	// -------------------------------------------- //
+	// Altar Usage
+	// -------------------------------------------- //
+	
+	public void useAltarInfect(Block centerBlock) {
+		// The altar must be big enough
+		int count = GeometryUtil.countNearby(centerBlock, Conf.altarInfectMaterialSurround, Conf.altarInfectMaterialSurroundRadious);
+		if (count == 0) {
+			return;
+		} else if (count < Conf.altarInfectMaterialSurroundCount) {
+			this.sendMessage(Conf.altarInfectToSmall);
+			return;
+		}
+		
+		// Always examine first
+		this.sendMessage(Conf.altarInfectExamineMsg);
+		
+		// Is Vampire
+		if (this.isVampire()) {
+			this.sendMessage(Conf.altarInfectExamineMsgNoUse);
+			return;
+		}
+		
+		// Is Infected
+		if (this.isInfected()) {
+			this.sendMessage(Conf.altarInfectExamineWhileInfected);
+			return;
+		}
+		
+		// Is healthy and thus can be infected...
+		if (Conf.altarInfectRecipe.inventoryContainsEnough(this.getPlayer().getInventory())) {
+			this.sendMessage(Conf.altarUseIngredientsSuccess);
+			this.sendMessage(Conf.altarInfectRecipe.getRecipeLine());
+			this.sendMessage(Conf.altarInfectUse);
+			Conf.altarInfectRecipe.removeFromInventory(this.getPlayer().getInventory());
+			this.infectionAlter(3D);
+		} else {
+			this.sendMessage(Conf.altarUseIngredientsFail);
+			this.sendMessage(Conf.altarInfectRecipe.getRecipeLine());
+		}
+	}
+	
+	public void useAltarCure(Block centerBlock) {
+		// The altar must be big enough;
+		int count = GeometryUtil.countNearby(centerBlock, Conf.altarCureMaterialSurround, Conf.altarCureMaterialSurroundRadious);
+		if (count == 0) {
+			return;
+		} else if (count < Conf.altarCureMaterialSurroundCount) {
+			this.sendMessage(Conf.altarCureToSmall);
+			return;
+		}
+		
+		// Always examine first
+		this.sendMessage(Conf.altarCureExamineMsg);
+		
+		// If healthy
+		if ( ! this.isInfected() && ! this.isVampire()) {
+			this.sendMessage(Conf.altarCureExamineMsgNoUse);
+			return;
+		}
+		
+		// If Infected
+		if (this.isInfected()) {
+			this.sendMessage(Conf.altarCureExamineWhileInfected);
+			this.infectionSet(0);
+			this.sendMessage(Conf.infectionMessageCured);
+			return;
+		}
+		
+		// Is vampire and thus can be cured...
+		if (Conf.altarCureRecipe.inventoryContainsEnough(this.getPlayer().getInventory())) {
+			this.sendMessage(Conf.altarUseIngredientsSuccess);
+			this.sendMessage(Conf.altarCureRecipe.getRecipeLine());
+			this.sendMessage(Conf.altarCureUse);
+			Conf.altarCureRecipe.removeFromInventory(this.getPlayer().getInventory());
+			this.cure();
+		} else {
+			this.sendMessage(Conf.altarUseIngredientsFail);
+			this.sendMessage(Conf.altarCureRecipe.getRecipeLine());
 		}
 	}
 	

@@ -2,9 +2,15 @@ package com.bukkit.mcteam.vampire;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
 
 import com.bukkit.mcteam.util.DiscUtil;
@@ -79,6 +85,32 @@ public class Conf {
 	public static List<String> infectionBreadHintMessages = new ArrayList<String>();
 	public static List<String> turnMessages = new ArrayList<String>();
 	public static List<String> cureMessages = new ArrayList<String>();
+	
+	public static String altarUseIngredientsSuccess = "You place these items on the altar:";
+	public static String altarUseIngredientsFail = "To use it you need to collect these ingredients:";
+	
+	public static String altarInfectExamineMsg = "This altar looks really evil.";
+	public static String altarInfectExamineWhileInfected = "You feel some of it's energy inside you...";
+	public static String altarInfectExamineMsgNoUse = "You understand this altar can turn people into vampires. But it's of no use to you as you already is one.";
+	public static Material altarInfectMaterial = Material.GOLD_BLOCK;
+	public static Material altarInfectMaterialSurround = Material.OBSIDIAN;
+	public static int altarInfectMaterialSurroundCount = 20;
+	public static double altarInfectMaterialSurroundRadious = 7D;
+	public static String altarInfectToSmall = "Something happens... The gold draws power from the obsidian... But there don't seem to be enough obsidian nearby.";
+	public static String altarInfectUse = "Something happens... The gold draws power from the obsidian... Then the energy rushes through you and you feel a bit cold...";
+	public static Recipe altarInfectRecipe = new Recipe();
+	
+	public static String altarCureExamineMsg = "This altar looks bright and nice.";
+	public static String altarCureExamineWhileInfected = "You touch it and warm energy flows through you.";
+	public static String altarCureExamineMsgNoUse = "It can probably cure curses, but you feel well right now.";
+	public static Material altarCureMaterial = Material.LAPIS_BLOCK;
+	public static Material altarCureMaterialSurround = Material.GLOWSTONE;
+	public static int altarCureMaterialSurroundCount = 20;
+	public static double altarCureMaterialSurroundRadious = 7D;
+	public static String altarCureToSmall = "The lapiz draws power from the glowstone... But there don't seem to be enough glowstone nearby.";
+	public static String altarCureUse = "The lapiz draws power from the glowstone... Then the energy rushes through you and you feel all warm inside.";
+	public static Recipe altarCureRecipe = new Recipe();
+	
 	
 	static {
 		// Thank you for helping me with the messages:
@@ -203,6 +235,7 @@ public class Conf {
 		infectionBreadHintMessages.add("You think of mother's fresh homeade bread...");
 		infectionBreadHintMessages.add("The thought of bread makes you feel warm inside...");
 		infectionBreadHintMessages.add("Maybe you should see the local farmer...");
+		infectionBreadHintMessages.add("Bread...Bread...Bread...");
 		
 		turnMessages.add("Your heart stops. You don't breathe anymore.");
 		turnMessages.add("You are now a vampire.");
@@ -210,6 +243,16 @@ public class Conf {
 		
 		cureMessages.add("You have been cured from the vampirism.");
 		cureMessages.add("You are once again healthy and alive.");
+		
+		altarInfectRecipe.materialQuantities.put(Material.MUSHROOM_SOUP, 1);
+		altarInfectRecipe.materialQuantities.put(Material.BONE, 10);
+		altarInfectRecipe.materialQuantities.put(Material.SULPHUR, 10);
+		altarInfectRecipe.materialQuantities.put(Material.REDSTONE, 10);
+		
+		altarCureRecipe.materialQuantities.put(Material.WATER_BUCKET, 1);
+		altarCureRecipe.materialQuantities.put(Material.DIAMOND, 1);
+		altarCureRecipe.materialQuantities.put(Material.SUGAR, 20);
+		altarCureRecipe.materialQuantities.put(Material.WHEAT, 20);
 	}
 	
 	// -------------------------------------------- //

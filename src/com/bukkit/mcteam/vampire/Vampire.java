@@ -17,16 +17,17 @@ import org.bukkit.event.Event;
 
 import com.bukkit.mcteam.gson.Gson;
 import com.bukkit.mcteam.gson.GsonBuilder;
-import com.bukkit.mcteam.vampire.commands.CommandBase;
-import com.bukkit.mcteam.vampire.commands.Cure;
-import com.bukkit.mcteam.vampire.commands.Default;
-import com.bukkit.mcteam.vampire.commands.Infect;
-import com.bukkit.mcteam.vampire.commands.Listing;
-import com.bukkit.mcteam.vampire.commands.Load;
-import com.bukkit.mcteam.vampire.commands.Save;
-import com.bukkit.mcteam.vampire.commands.Settime;
-import com.bukkit.mcteam.vampire.commands.Turn;
-import com.bukkit.mcteam.vampire.commands.Version;
+import com.bukkit.mcteam.vampire.commands.VCommand;
+import com.bukkit.mcteam.vampire.commands.VCommandCure;
+import com.bukkit.mcteam.vampire.commands.VCommandDefault;
+import com.bukkit.mcteam.vampire.commands.VCommandInfect;
+import com.bukkit.mcteam.vampire.commands.VCommandList;
+import com.bukkit.mcteam.vampire.commands.VCommandLoad;
+import com.bukkit.mcteam.vampire.commands.VCommandSave;
+import com.bukkit.mcteam.vampire.commands.VCommandSettime;
+import com.bukkit.mcteam.vampire.commands.VCommandTurn;
+import com.bukkit.mcteam.vampire.commands.VCommandVersion;
+import com.bukkit.mcteam.vampire.listeners.VampireBlockListener;
 import com.bukkit.mcteam.vampire.listeners.VampireEntityListener;
 import com.bukkit.mcteam.vampire.listeners.VampirePlayerListener;
 
@@ -44,25 +45,26 @@ public class Vampire extends JavaPlugin {
 	.create();
 	
 	// Commands
-	public List<CommandBase> commands = new ArrayList<CommandBase>();
+	public List<VCommand> commands = new ArrayList<VCommand>();
 	
 	// Listeners
 	private final VampirePlayerListener playerListener = new VampirePlayerListener();
 	private final VampireEntityListener entityListener = new VampireEntityListener();
+	private final VampireBlockListener blockListener = new VampireBlockListener();
 	
 	public Vampire() {
 		Vampire.instance = this;
 		
 		// Add the commands
-		commands.add(new Default());
-		commands.add(new Infect());
-		commands.add(new Load());
-		commands.add(new Save());
-		commands.add(new Settime());
-		commands.add(new Turn());
-		commands.add(new Cure());
-		commands.add(new Listing());
-		commands.add(new Version());
+		commands.add(new VCommandDefault());
+		commands.add(new VCommandInfect());
+		commands.add(new VCommandLoad());
+		commands.add(new VCommandSave());
+		commands.add(new VCommandSettime());
+		commands.add(new VCommandTurn());
+		commands.add(new VCommandCure());
+		commands.add(new VCommandList());
+		commands.add(new VCommandVersion());
 	}
 	
 	// -------------------------------------------- //
@@ -102,7 +104,7 @@ public class Vampire extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_DAMAGED, this.entityListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
-		
+		pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, this.blockListener, Event.Priority.Normal, this);
 		log("Enabled");
 	}
 	
@@ -118,7 +120,7 @@ public class Vampire extends JavaPlugin {
 		String command = parameters.get(0).toLowerCase();
 		parameters.remove(0);
 		
-		for (CommandBase vampcommand : this.commands) {
+		for (VCommand vampcommand : this.commands) {
 			if (command.equals(vampcommand.getName())) {
 				vampcommand.execute(sender, parameters);
 				return true;

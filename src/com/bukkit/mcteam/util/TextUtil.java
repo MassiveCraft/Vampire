@@ -1,5 +1,8 @@
 package com.bukkit.mcteam.util;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Material;
 
@@ -31,7 +34,11 @@ public class TextUtil {
 		String ret = material.toString();
 		ret = ret.replace('_', ' ');
 		ret = ret.toLowerCase();
-		return ret.substring(0, 1).toUpperCase()+ret.substring(1);
+		return ret;
+	}
+	
+	public static String upperCaseFirst(String string) {
+		return string.substring(0, 1).toUpperCase()+string.substring(1);
 	}
 }
 

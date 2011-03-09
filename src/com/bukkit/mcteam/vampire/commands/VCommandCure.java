@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.vampire.*;
 
-public class Cure extends CommandBase {
-	public Cure() {
+public class VCommandCure extends VCommand {
+	public VCommandCure() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		senderMustBeOp = true;

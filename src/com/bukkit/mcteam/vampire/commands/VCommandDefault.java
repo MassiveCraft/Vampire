@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.vampire.*;
 
-public class Default extends CommandBase {
+public class VCommandDefault extends VCommand {
 	
-	public Default() {
+	public VCommandDefault() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		senderMustBeOp = false;

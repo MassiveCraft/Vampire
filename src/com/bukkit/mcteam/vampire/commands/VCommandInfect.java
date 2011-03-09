@@ -6,27 +6,32 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.vampire.*;
 
-public class Turn extends CommandBase {
-
-	public Turn() {	
+public class VCommandInfect extends VCommand {
+	
+	public VCommandInfect() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		senderMustBeOp = true;
 		senderMustBePlayer = false;
 		
 		requiredParameters.add("playername");
+		optionalParameters.add("amount");
 	}
 	
 	@Override
 	public void perform() {
 		String playername = parameters.get(0);
+		double amount = 1.0;
+		if (parameters.size() == 2) {
+			amount = Double.parseDouble(parameters.get(1));
+		}
 		Player player = Vampire.instance.getServer().getPlayer(playername);
 		if (player == null) {
 			this.sendMessage("Player not found");
 			return;
 		}
-		this.sendMessage(player.getDisplayName() + " was turned into a vampire.");
 		VPlayer vplayer = VPlayer.get(player);
-		vplayer.turn();
+		vplayer.infectionSet(amount);
+		this.sendMessage(player.getDisplayName() + " now has infection "+vplayer.infectionGet());
 	}
 }

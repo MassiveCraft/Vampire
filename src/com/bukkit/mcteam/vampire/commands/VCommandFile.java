@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import com.bukkit.mcteam.vampire.*;
 
-public class CommandFile extends CommandBase {
+public class VCommandFile extends VCommand {
 	public String msgLoadSuccess = "Loaded %s.";
 	public String msgLoadFail = "FAILED to load %s.";
 	public String msgSaveSuccess = "Saved %s.";
 	public String msgSaveFail = "FAILED to save %s.";
 	
-	public CommandFile() {
+	public VCommandFile() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
 		senderMustBeOp = true;
