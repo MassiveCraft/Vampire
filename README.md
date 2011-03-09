@@ -7,12 +7,12 @@ Vampires...
 
 * Burn in sunlight.
 * Take no fall damage.
-* Can breath underwater… or rather does not need to breathe at all.
+* Can breath underwater... or rather does not need to breathe at all.
 * Has a reservoir of blood between 0 and 100.
 * Must drink blood from humans or animals to not die from starvation.
 * Can not eat normal food.
 * Regenerates health automatically. (costs blood)
-* Won’t be attacked by monsters unless the vampire attacks first.
+* Won't be attacked by monsters unless the vampire attacks first.
 * Can dash at high speed using a feather. (costs blood)
 * Deal more damage in close combat.
 * Take less damage in close combat except for attacks from wooden weapons which hurt them a lot.
@@ -23,7 +23,7 @@ Usage
 <b>Read the full userguide here: [http://mcteam.org/plugins/vampire](http://mcteam.org/plugins/vampire)</b><br/>
 <b>Please do it :) It is very informative.</b>
 
-The base chat console command is `/v` or simply `v`. This means you don’t need to write the forward slash if you don’t feel like it. :)
+The base chat console command is `/v` or simply `v`. This means you don't need to write the forward slash if you don't feel like it. :)
 The base command `v` can be used by vampires to display their current blood reservoir. There are also the following subcommands for server operators (OP):
 
 * `v infect [playername] *[amount from 0 to 100]`<br>The player turns into vampire at infection 100. 0 means no infection.
