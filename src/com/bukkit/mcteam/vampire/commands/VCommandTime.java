@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
-public class VCommandSettime extends VCommand {
+public class VCommandTime extends VCommand {
 
-	public VCommandSettime() {
+	public VCommandTime() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		senderMustBeOp = true;
 		senderMustBePlayer = true;
-		
 		requiredParameters.add("ticks");
+		permissions = "vampire.admin.command.time";
+		helpNameAndParams = "time [ticks]";
+		helpDescription = "Set world time. 0 to 23999.";
 	}
 	
 	@Override

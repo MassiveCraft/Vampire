@@ -8,12 +8,14 @@ import com.bukkit.mcteam.vampire.*;
 
 public class VCommandCure extends VCommand {
 	public VCommandCure() {
+		super();
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		senderMustBeOp = true;
 		senderMustBePlayer = false;
-		
 		requiredParameters.add("playername");
+		permissions = "vampire.admin.command.cure";
+		helpNameAndParams = "cure [playername]";
+		helpDescription = "Instantly cure from vampirism";
 	}
 	
 	@Override

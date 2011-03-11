@@ -13,7 +13,6 @@ public class VCommandFile extends VCommand {
 	public VCommandFile() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		senderMustBeOp = true;
 		senderMustBePlayer = false;
 		
 		requiredParameters.add("what");

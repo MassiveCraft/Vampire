@@ -11,10 +11,11 @@ public class VCommandTurn extends VCommand {
 	public VCommandTurn() {	
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		senderMustBeOp = true;
 		senderMustBePlayer = false;
-		
 		requiredParameters.add("playername");
+		permissions = "vampire.admin.command.turn";
+		helpNameAndParams = "turn [playername]";
+		helpDescription = "Instantly turn a player into a vampire.";
 	}
 	
 	@Override

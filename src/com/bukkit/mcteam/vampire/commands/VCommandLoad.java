@@ -2,6 +2,12 @@ package com.bukkit.mcteam.vampire.commands;
 
 public class VCommandLoad extends VCommandFile {
 	
+	public VCommandLoad() {
+		permissions = "vampire.admin.command.load";
+		helpNameAndParams = "load [config | players | all]";
+		helpDescription = "Load data from disk.";
+	}
+	
 	@Override
 	public void perform() {
 		String what = parameters.get(0);

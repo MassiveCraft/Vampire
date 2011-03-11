@@ -33,7 +33,6 @@ public class Conf {
 	public static String infectionMessageHeal = "You feel a little better. Bread helps you fight the sickness.";
 	public static String infectionMessageCured = "You are now completely cured from the sickness you had.";
 	public static String vampiresCantEatFoodMessage = "Vampires can't eat food. You must drink blood instead.";
-	public static String messageCommandBaseNoVampire = "You don't know that much about vampires.";
 	public static String messageTruceBroken = "You temporarily broke your truce with the monsters.";
 	public static String messageTruceRestored = "Your truce with the monsters has been restored.";
 	public static String messageBloodMeter = "%1$.1f blood";

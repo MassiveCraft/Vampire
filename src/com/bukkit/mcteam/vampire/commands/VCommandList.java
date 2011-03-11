@@ -12,8 +12,10 @@ public class VCommandList extends VCommand {
 	public VCommandList() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		senderMustBeOp = true;
 		senderMustBePlayer = false;
+		permissions = "vampire.admin.command.list";
+		helpNameAndParams = "list";
+		helpDescription = "List vampires on the server.";
 	}
 	
 	@Override
@@ -49,12 +51,13 @@ public class VCommandList extends VCommand {
 		
 		// Create Messages
 		List<String> messages = new ArrayList<String>();
-		messages.add("== Vampires Online: "+ChatColor.WHITE + TextUtil.implode(vampiresOnline, ", "));
-		messages.add("== Vampires Offline: "+ChatColor.WHITE + TextUtil.implode(vampiresOffline, ", "));
-		messages.add("== Infected Online: "+ChatColor.WHITE + TextUtil.implode(infectedOnline, ", "));
-		messages.add("== Infected Offline: "+ChatColor.WHITE + TextUtil.implode(infectedOffline, ", "));
-		messages.add("== Exvampires Online: "+ChatColor.WHITE + TextUtil.implode(exvampiresOnline, ", "));
-		messages.add("== Exvampires Offline: "+ChatColor.WHITE + TextUtil.implode(exvampiresOffline, ", "));
+		messages.add(" ");
+		messages.add("= Vampires Online: "+ChatColor.WHITE + TextUtil.implode(vampiresOnline, ", "));
+		messages.add("= Vampires Offline: "+ChatColor.WHITE + TextUtil.implode(vampiresOffline, ", "));
+		messages.add("= Infected Online: "+ChatColor.WHITE + TextUtil.implode(infectedOnline, ", "));
+		messages.add("= Infected Offline: "+ChatColor.WHITE + TextUtil.implode(infectedOffline, ", "));
+		messages.add("= Exvampires Online: "+ChatColor.WHITE + TextUtil.implode(exvampiresOnline, ", "));
+		messages.add("= Exvampires Offline: "+ChatColor.WHITE + TextUtil.implode(exvampiresOffline, ", "));
 		
 		// Send them
 		this.sendMessage(messages);

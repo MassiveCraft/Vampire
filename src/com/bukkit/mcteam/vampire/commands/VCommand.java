@@ -6,20 +6,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.bukkit.mcteam.vampire.Conf;
+import com.bukkit.mcteam.vampire.VPlayer;
+import com.bukkit.mcteam.vampire.Vampire;
 
 public class VCommand {
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
-	public boolean senderMustBeOp;
+	public String permissions;
+	public String helpNameAndParams;
+	public String helpDescription;
 	public boolean senderMustBePlayer;
+	public boolean senderMustBeVampire;
 	public CommandSender sender;
 	public List<String> parameters;
 	
 	public VCommand() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		senderMustBeOp = true;
+		permissions = "";
 		senderMustBePlayer = false;
+		senderMustBeVampire = false;
+		helpNameAndParams = "fail!";
+		helpDescription = "no description";
 	}
 	
 	public String getName() {
@@ -30,11 +38,17 @@ public class VCommand {
 		return name.substring(8);
 	}
 	
+	public String getBaseName() {
+		//Vampire.log(""+Vampire.instance.getDescription().getCommands());
+		return "v";
+	}
+	
 	public void execute(CommandSender sender, List<String> parameters) {
 		this.sender = sender;
 		this.parameters = parameters;
 		
 		if ( ! validateCall()) {
+			sendMessage("try /help vampire");
 			return;
 		}
 		
@@ -43,6 +57,10 @@ public class VCommand {
 	
 	public void perform() {
 		
+	}
+	
+	public void helpRegister() {
+		Vampire.helpPlugin.registerCommand(this.getBaseName()+ " " +this.helpNameAndParams, this.helpDescription, Vampire.instance, false, permissions);
 	}
 	
 	public void sendMessage(String message) {
@@ -57,17 +75,20 @@ public class VCommand {
 	
 	// Test if the number of params is correct.
 	public boolean validateCall() { // Kolla upp help pluginen!
-		//plugin.log("validate parameters:" + parameters);
-		//plugin.log("this.getRequiredParameters():" + requiredParameters);
-		
-		if (senderMustBeOp) {
-			if( ! assertOp(sender)) {
-				return false;
-			}
+		if( ! testPermission(sender)) {
+			sendMessage("You do not have sufficient permissions to use this command.");
+			return false;
 		}
 		
 		if ( this.senderMustBePlayer && ! (sender instanceof Player)) {
 			sendMessage("This command can only be used by ingame players.");
+			return false;
+		}
+		
+		Player player = (Player)sender;
+		
+		if ( this.senderMustBeVampire && ! VPlayer.get(player).isVampire()) {
+			this.sendMessage("Only vampires can use this command.");
 			return false;
 		}
 		
@@ -85,11 +106,24 @@ public class VCommand {
 		return true;
 	}
 	
-	public boolean assertOp(CommandSender sender) {
-		if ( ! sender.isOp()) {
-			sendMessage("You do not have sufficient permissions to use this command.");
+	public boolean testPermission(CommandSender sender) {
+		if (sender.isOp()) {
+			return true;
+		}
+		
+		if (this.permissions.length() == 0) {
+			return true;
+		}
+		
+		if ( ! (sender instanceof Player)) {
 			return false;
 		}
-		return true;
+		
+		if (Vampire.Permissions == null) {
+			return false;
+		}
+		
+		Player player = (Player)sender;
+		return Vampire.Permissions.has(player, this.permissions);		
 	}
 }

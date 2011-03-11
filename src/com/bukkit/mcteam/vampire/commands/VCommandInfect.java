@@ -11,11 +11,12 @@ public class VCommandInfect extends VCommand {
 	public VCommandInfect() {
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		senderMustBeOp = true;
 		senderMustBePlayer = false;
-		
 		requiredParameters.add("playername");
 		optionalParameters.add("amount");
+		permissions = "vampire.admin.command.infect";
+		helpNameAndParams = "infect [playername] *[amount]";
+		helpDescription = "Set infection level. 0 to 100.";
 	}
 	
 	@Override

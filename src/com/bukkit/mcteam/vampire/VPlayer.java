@@ -22,6 +22,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.bukkit.mcteam.gson.reflect.TypeToken;
 import com.bukkit.mcteam.util.DiscUtil;
@@ -255,6 +256,16 @@ public class VPlayer {
 		player.teleportTo(targetLocation);
 		this.bloodAlter(-bloodRequired);
 		this.sendMessage(String.format(Conf.messageBloodMeterWithDiffAndReason, this.bloodGet(), -bloodRequired, "Dash!"));
+	}
+	
+	// -------------------------------------------- //
+	// Jump ability
+	// -------------------------------------------- //
+	public void jump(double deltaSpeed) {
+		Player player = this.getPlayer();
+		Vector vjadd = player.getLocation().getDirection().normalize().multiply(deltaSpeed);
+		vjadd.setY(vjadd.getY() / 2.5D);
+		player.setVelocity(player.getVelocity().add(vjadd));
 	}
 	
 	// -------------------------------------------- //
