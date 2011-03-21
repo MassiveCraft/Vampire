@@ -47,13 +47,10 @@ public class Conf {
 	public static List<String> thirstMessages = new ArrayList<String>();
 	public static List<String> thirstStrongMessages = new ArrayList<String>();
 	
-	
-	public static Set<Material> dashMaterials = new HashSet<Material>();
-	public static int dashMaxLength = 15;
-	public static double dashBloodPerBlock = 1.7;
-	public static String dashMessageToLong = "To long to dash.";
-	public static String dashMessageTargetToSmall = "That space is to small to dash into.";
-	public static String dashMessageNotEnoughBlood = "Not enough blood to dash.";
+	public static Set<Material> jumpMaterials = new HashSet<Material>();
+	public static double jumpDeltaSpeed = 3;
+	public static double jumpBloodCost = 3;
+	public static String jumpMessageNotEnoughBlood = "Not enough blood to jump.";
 	
 	public static long regenStartDelayMilliseconds = 8000;
 	public static double regenHealthPerSecond = 0.25;
@@ -142,7 +139,7 @@ public class Conf {
 		thirstStrongMessages.add("Your vison turns red and blurry!");
 		thirstStrongMessages.add("You fear for your half-life!");
 		
-		dashMaterials.add(Material.FEATHER);
+		jumpMaterials.add(Material.RED_ROSE);
 		
 		foodMaterials.add(Material.APPLE);
 		foodMaterials.add(Material.BREAD);

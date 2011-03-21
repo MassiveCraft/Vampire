@@ -31,8 +31,8 @@ public class VampirePlayerListener extends PlayerListener {
 			vplayer.infectionHeal(Conf.infectionBreadHealAmount);
 		}
 		
-		if (Conf.dashMaterials.contains(event.getMaterial()) && vplayer.isVampire()) {
-			vplayer.dash();
+		if (Conf.jumpMaterials.contains(event.getMaterial()) && vplayer.isVampire()) {
+			vplayer.jump(5, false);
 		}
 	}
 	
@@ -56,8 +56,13 @@ public class VampirePlayerListener extends PlayerListener {
 	
 	@Override
 	public void onPlayerAnimation(PlayerAnimationEvent event) {
-		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && Conf.dashMaterials.contains(event.getPlayer().getItemInHand().getType())) {
-			//VPlayer.get(event.getPlayer()).jump(5);
+		VPlayer vplayer = VPlayer.get(event.getPlayer());
+		if ( ! vplayer.isVampire()) {
+			return;
+		}
+			
+		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && Conf.jumpMaterials.contains(event.getPlayer().getItemInHand().getType())) {
+			vplayer.jump(5, true);
 		}
 	}
 	

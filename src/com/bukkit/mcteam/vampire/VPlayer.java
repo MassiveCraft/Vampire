@@ -13,7 +13,6 @@ import java.util.Set;
 
 import net.minecraft.server.Packet8UpdateHealth;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
@@ -220,51 +219,28 @@ public class VPlayer {
 	}
 	
 	// -------------------------------------------- //
-	// Dash Ability
-	// -------------------------------------------- //
-	
-	// TODO Create array of blocks you can stand in.
-	public void dash() {
-		Player player = this.getPlayer();
-		List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(null, Conf.dashMaxLength);
-		
-		if (lastTwoTargetBlocks.get(1).getType() == Material.AIR) {
-			this.sendMessage(Conf.dashMessageToLong);
-			return;
-		}
-		
-		Block targetBlock = lastTwoTargetBlocks.get(0);
-		
-		if (targetBlock.getFace(BlockFace.UP).getType() != Material.AIR) {
-			this.sendMessage(Conf.dashMessageTargetToSmall);
-			return;
-		}
-		
-		Location playerLocation = player.getLocation();
-		Location targetLocation = new Location(targetBlock.getWorld(), targetBlock.getX(), targetBlock.getY(), targetBlock.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
-		double x = playerLocation.getX() - targetLocation.getX();
-		double y = playerLocation.getY() - targetLocation.getY();
-		double z = playerLocation.getZ() - targetLocation.getZ();
-		double length = Math.sqrt(x*x + y*y + z*z);
-		double bloodRequired = Conf.dashBloodPerBlock * length;
-		
-		if (this.bloodGet() < bloodRequired) {
-			this.sendMessage(Conf.dashMessageNotEnoughBlood);
-			return;
-		}
-		
-		player.teleportTo(targetLocation);
-		this.bloodAlter(-bloodRequired);
-		this.sendMessage(String.format(Conf.messageBloodMeterWithDiffAndReason, this.bloodGet(), -bloodRequired, "Dash!"));
-	}
-	
-	// -------------------------------------------- //
 	// Jump ability
 	// -------------------------------------------- //
-	public void jump(double deltaSpeed) {
+	public void jump(double deltaSpeed, boolean upOnly) {
 		Player player = this.getPlayer();
-		Vector vjadd = player.getLocation().getDirection().normalize().multiply(deltaSpeed);
-		vjadd.setY(vjadd.getY() / 2.5D);
+		
+		if (this.bloodGet() - Conf.jumpBloodCost <= Conf.thirstUnderBlood) {
+			this.sendMessage(Conf.jumpMessageNotEnoughBlood);
+			return;
+		}
+		
+		this.bloodAlter(-Conf.jumpBloodCost, "Jump!");
+		
+		Vector vjadd;
+		if (upOnly) {
+			vjadd = new Vector(0, 1, 0);
+		} else {
+			vjadd = player.getLocation().getDirection();
+			vjadd.normalize();
+		}
+		vjadd.multiply(deltaSpeed);
+		vjadd.setY(vjadd.getY() / 2.5D); // Compensates for the "in air friction" that not applies to y-axis.
+		
 		player.setVelocity(player.getVelocity().add(vjadd));
 	}
 	

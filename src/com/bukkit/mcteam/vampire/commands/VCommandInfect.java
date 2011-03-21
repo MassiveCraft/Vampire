@@ -16,7 +16,7 @@ public class VCommandInfect extends VCommand {
 		optionalParameters.add("amount");
 		permissions = "vampire.admin.command.infect";
 		helpNameAndParams = "infect [playername] *[amount]";
-		helpDescription = "Set infection level. 0 to 100.";
+		helpDescription = "Set infection. 0 to 100.";
 	}
 	
 	@Override
