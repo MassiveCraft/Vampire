@@ -95,8 +95,6 @@ public class Vampire extends JavaPlugin {
 		setupPermissions();
 		setupHelp();
 		
-		
-		
 		timer = new Timer();
 		
 		// Ensure basefolder exists!

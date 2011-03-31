@@ -569,11 +569,11 @@ public class VPlayer {
 		}
 		
 		// Is healthy and thus can be infected...
-		if (Conf.altarInfectRecipe.inventoryContainsEnough(this.getPlayer().getInventory())) {
+		if (Conf.altarInfectRecipe.playerHasEnough(this.getPlayer())) {
 			this.sendMessage(Conf.altarUseIngredientsSuccess);
 			this.sendMessage(Conf.altarInfectRecipe.getRecipeLine());
 			this.sendMessage(Conf.altarInfectUse);
-			Conf.altarInfectRecipe.removeFromInventory(this.getPlayer().getInventory());
+			Conf.altarInfectRecipe.removeFromPlayer(this.getPlayer());
 			this.infectionAlter(3D);
 		} else {
 			this.sendMessage(Conf.altarUseIngredientsFail);
@@ -613,11 +613,11 @@ public class VPlayer {
 		}
 		
 		// Is vampire and thus can be cured...
-		if (Conf.altarCureRecipe.inventoryContainsEnough(this.getPlayer().getInventory())) {
+		if (Conf.altarCureRecipe.playerHasEnough(this.getPlayer())) {
 			this.sendMessage(Conf.altarUseIngredientsSuccess);
 			this.sendMessage(Conf.altarCureRecipe.getRecipeLine());
 			this.sendMessage(Conf.altarCureUse);
-			Conf.altarCureRecipe.removeFromInventory(this.getPlayer().getInventory());
+			Conf.altarCureRecipe.removeFromPlayer(this.getPlayer());
 			this.cure();
 		} else {
 			this.sendMessage(Conf.altarUseIngredientsFail);

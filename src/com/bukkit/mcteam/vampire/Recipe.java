@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,13 +21,16 @@ public class Recipe {
 		materialQuantities = new HashMap<Material, Integer>();
 	}
 	
-	public void removeFromInventory(Inventory inventory) {
+	public void removeFromPlayer(Player player) {
+		Inventory inventory = player.getInventory();
 		for (Material material: this.materialQuantities.keySet()) {
 			inventory.removeItem(new ItemStack(material.getId(), this.materialQuantities.get(material)));
 		}
+		player.updateInventory(); // Well so what! Have you fixed the bigger issue yet? :)
 	}
 	
-	public boolean inventoryContainsEnough(Inventory inventory) {
+	public boolean playerHasEnough(Player player) {
+		Inventory inventory = player.getInventory();
 		for (Material material: this.materialQuantities.keySet()) {
 			if (getMaterialCountFromInventory(material, inventory) < this.materialQuantities.get(material)) {
 				return false;
