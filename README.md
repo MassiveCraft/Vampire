@@ -37,7 +37,7 @@ The base command `v` can be used by vampires to display their current blood rese
 
 Installing
 ----------
-1. Download the latest release: [https://github.com/oloflarsson/Vampire/tree/master/releases](https://github.com/oloflarsson/Vampire/tree/master/releases)<br>
+1. Download the latest release: [https://github.com/oloflarsson/Vampire/downloads](https://github.com/oloflarsson/Vampire/downloads)<br>
 1. Put Vampire.jar in the plugins folder.
 
 License
