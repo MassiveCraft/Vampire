@@ -1,6 +1,6 @@
 name: Vampire
-version: 1.4
-main: com.bukkit.mcteam.vampire.Vampire
+version: 1.4.1
+main: org.mcteam.vampire.Vampire
 commands:
   v:
     description: All of the Vampire commands
