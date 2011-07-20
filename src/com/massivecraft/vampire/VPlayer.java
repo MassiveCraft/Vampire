@@ -3,16 +3,8 @@ package com.massivecraft.vampire;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -295,7 +287,7 @@ public class VPlayer {
 			}
 			catch (Exception e)
 			{
-				log("[Vampire error] :" + e.getMessage());
+				P.log("[Vampire error] :" + e.getMessage());
 				break;
 			}				
 		}
@@ -444,8 +436,8 @@ public class VPlayer {
 	public boolean combustAdvanceTime(long milliseconds) {
 		if (!this.standsInSunlight())	return false;
 		
-		if(this.isTrueBlood && !TrueBloodConf.burnAtSunlight) return false;
-		else if(!CommonConf.burnAtSunlight) return false;
+		if(this.isTrueBlood && !TrueBloodConf.burnInSunlight) return false;
+		else if(!CommonConf.burnInSunlight) return false;
 		
 		// We assume the next tick will be in milliseconds milliseconds.
 		
@@ -884,9 +876,5 @@ public class VPlayer {
 		for(Entry<String, VPlayer> entry : VPlayers.entrySet()) {
 			entry.getValue().playername = entry.getKey();
 		}
-	}
-	
-	public static void log(String msg) {
-		Logger.getLogger("Minecraft").log(Level.INFO, msg);
 	}
 }

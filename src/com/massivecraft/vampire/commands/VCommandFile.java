@@ -1,7 +1,5 @@
 package com.massivecraft.vampire.commands;
 
-import java.util.ArrayList;
-
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Conf;
 
@@ -13,9 +11,8 @@ public class VCommandFile extends VCommand {
 	public String msgSaveFail = "FAILED to save %s.";
 	
 	public VCommandFile() {
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
 		senderMustBePlayer = false;
+		senderMustBeVampire = false;
 		
 		requiredParameters.add("what");
 	}

@@ -5,42 +5,45 @@ import java.util.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.config.Conf;
+import com.massivecraft.vampire.util.TextUtil;
 
 
 public class VCommand {
+	public List<String> aliases;
 	public List<String> requiredParameters;
 	public List<String> optionalParameters;
-	public String permissions;
+	
 	public String helpNameAndParams;
 	public String helpDescription;
+	
+	public CommandSender sender;
+	public Player player;
+	public VPlayer me;
+	
+	public String permission;
 	public boolean senderMustBePlayer;
 	public boolean senderMustBeVampire;
-	public CommandSender sender;
+	
 	public List<String> parameters;
 	
 	public VCommand() {
+		aliases = new ArrayList<String>();
 		requiredParameters = new ArrayList<String>();
 		optionalParameters = new ArrayList<String>();
-		permissions = "";
-		senderMustBePlayer = false;
-		senderMustBeVampire = false;
+		
 		helpNameAndParams = "fail!";
 		helpDescription = "no description";
+		
+		permission = null; // No permission required
+		senderMustBePlayer = true;
+		senderMustBeVampire = false;
 	}
 	
-	public String getName() {
-		String name = this.getClass().getName().toLowerCase();
-		if (name.lastIndexOf('.') > 0) {
-		    name = name.substring(name.lastIndexOf('.')+1);
-		}
-		return name.substring(8);
-	}
-	
-	public String getBaseName() {
-		//Vampire.log(""+Vampire.instance.getDescription().getCommands());
-		return "v";
+	public List<String> getAliases() {
+		return aliases;
 	}
 	
 	public void execute(CommandSender sender, List<String> parameters) {
@@ -48,8 +51,12 @@ public class VCommand {
 		this.parameters = parameters;
 		
 		if ( ! validateCall()) {
-			sendMessage("try /v help");
 			return;
+		}
+		
+		if (sender instanceof Player) {
+			this.player = (Player)sender;
+			this.me = VPlayer.get(this.player);
 		}
 		
 		perform();
@@ -84,17 +91,53 @@ public class VCommand {
 			return false;
 		}
 		
-		if (parameters.size() < requiredParameters.size()) {
-			int missing = requiredParameters.size() - parameters.size();
-			sendMessage("Missing parameters. You must enter "+missing+" more.");
+		if( permission != null && ! sender.hasPermission(permission)) {
+			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
 			return false;
 		}
 		
-		if (parameters.size() > requiredParameters.size() + optionalParameters.size()) {
-			sendMessage("To many parameters.");
+		if (parameters.size() < requiredParameters.size()) {
+			sendMessage("Usage: "+this.getUseageTemplate(false));
 			return false;
 		}
 		
 		return true;
 	}
+	
+	// -------------------------------------------- //
+	// Help and usage description
+	// -------------------------------------------- //
+	
+	public String getUseageTemplate(boolean withDescription) {
+		String ret = "";
+		
+		ret += Conf.colorCommand;
+		
+		ret += P.instance.getBaseCommand()+ " " +TextUtil.implode(this.getAliases(), ",")+" ";
+		
+		List<String> parts = new ArrayList<String>();
+		
+		for (String requiredParameter : this.requiredParameters) {
+			parts.add("["+requiredParameter+"]");
+		}
+		
+		for (String optionalParameter : this.optionalParameters) {
+			parts.add("*["+optionalParameter+"]");
+		}
+		
+		ret += Conf.colorParameter;
+		
+		ret += TextUtil.implode(parts, " ");
+		
+		if (withDescription) {
+			ret += "  "+Conf.colorSystem + this.helpDescription;
+		}
+		return ret;
+	}
+	
+	public String getUseageTemplate() {
+		return getUseageTemplate(true);
+	}
+	
+	
 }

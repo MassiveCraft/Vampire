@@ -1,18 +1,17 @@
 package com.massivecraft.vampire.commands;
 
-import java.util.ArrayList;
-
 import com.massivecraft.vampire.P;
 
-
 public class VCommandVersion extends VCommand {
+	
 	public VCommandVersion() {
-		requiredParameters = new ArrayList<String>();
-		optionalParameters = new ArrayList<String>();
+		aliases.add("version");
+		
+		helpDescription = "display current version";
+		
+		permission = "vampire.command.version";
 		senderMustBePlayer = false;
-		permissions = "vampire.default.command.version";
-		helpNameAndParams = "version";
-		helpDescription = "Would display "+P.instance.getDescription().getFullName();
+		senderMustBeVampire = false;
 	}
 	
 	@Override

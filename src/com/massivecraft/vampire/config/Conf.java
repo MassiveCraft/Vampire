@@ -20,10 +20,11 @@ public class Conf {
 	public static transient File file = new File(P.instance.getDataFolder(), "conf.json");
 	
 	public static ChatColor colorSystem = ChatColor.RED;
-	public static boolean allowNoSlashCommand = true;
-	public static boolean allowOPToUseAdminCommand = true;
+	public static ChatColor colorChrome = ChatColor.GOLD;
+	public static ChatColor colorCommand = ChatColor.AQUA;
+	public static ChatColor colorParameter = ChatColor.DARK_AQUA;
 	
-	public static boolean becomeVampireWhenDead = true;
+	public static boolean allowNoSlashCommand = true;
 	
 	public static int timerInterval = 1000; // Defines the precision of the vampire timer. one second should be good. 
 	

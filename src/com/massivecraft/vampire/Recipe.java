@@ -28,7 +28,7 @@ public class Recipe {
 		for (Material material: this.materialQuantities.keySet()) {
 			inventory.removeItem(new ItemStack(material.getId(), this.materialQuantities.get(material)));
 		}
-		player.updateInventory(); // Well so what! Have you fixed the bigger issue yet? :)
+		player.updateInventory(); // It is ok to use this method though it is deprecated.
 	}
 	
 	public boolean playerHasEnough(Player player) {

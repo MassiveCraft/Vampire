@@ -1,30 +1,21 @@
 package com.massivecraft.vampire;
 
-
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Timer;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.entity.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
-import org.bukkit.event.player.PlayerChatEvent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.massivecraft.vampire.commands.*;
 import com.massivecraft.vampire.config.*;
-import com.massivecraft.vampire.listeners.VampireEntityListener;
-import com.massivecraft.vampire.listeners.VampireEntityListenerMonitor;
-import com.massivecraft.vampire.listeners.VampirePlayerListener;
+import com.massivecraft.vampire.listeners.*;
 
 
 public class P extends JavaPlugin {
@@ -42,14 +33,14 @@ public class P extends JavaPlugin {
 	
 	// Commands
 	public List<VCommand> commands = new ArrayList<VCommand>();
+	private String baseCommand;
 	
 	// Listeners
 	private final VampirePlayerListener playerListener = new VampirePlayerListener();
 	private final VampireEntityListener entityListener = new VampireEntityListener();
 	private final VampireEntityListenerMonitor entityListenerMonitor = new VampireEntityListenerMonitor();
 	
-	public P()
-	{
+	public P() {
 		P.instance = this;
 	}
 	
@@ -67,18 +58,16 @@ public class P extends JavaPlugin {
 	public void onEnable() {
 		// Add the commands
 		commands.add(new VCommandBlood());
+		commands.add(new VCommandHelp());
+		commands.add(new VCommandList());
 		commands.add(new VCommandInfect());
-		commands.add(new VCommandLoad());
-		commands.add(new VCommandSave());
-		commands.add(new VCommandTime());
 		commands.add(new VCommandTurn());
 		commands.add(new VCommandCure());
-		commands.add(new VCommandList());
-		commands.add(new VCommandVersion());
-		commands.add(new VCommandHelp());
-		commands.add(new VCommandBurnTime());
-		commands.add(new VCommandChatColor());
 		commands.add(new VCommandFeed());
+		commands.add(new VCommandTime());
+		commands.add(new VCommandLoad());
+		commands.add(new VCommandSave());
+		commands.add(new VCommandVersion());
 		
 		timer = new Timer();
 		
@@ -116,26 +105,26 @@ public class P extends JavaPlugin {
 		log("Enabled");
 	}
 	
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
-	{
-		if(sender instanceof Player)
-		{
-			List<String> parameters = new ArrayList<String>(Arrays.asList(args));
-			this.handleCommand(sender, parameters);
-			return true;
+	// -------------------------------------------- //
+	// Commands
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	public String getBaseCommand() {
+		if (this.baseCommand != null) {
+			return this.baseCommand;
 		}
-		return false;
+		
+		Map<String, Object> Commands = (Map<String, Object>)this.getDescription().getCommands();
+		this.baseCommand = Commands.keySet().iterator().next();
+		return this.baseCommand;
 	}
 	
-	public void handleChat(PlayerChatEvent event)
-	{
-		//Color the player name if he is a vampire
-		if(VPlayer.get(event.getPlayer()).isVampire() && Conf.enableVampireNameColorInChat)
-		{ 
-			event.getPlayer().getServer().broadcastMessage(Conf.vampireChatNameColor + "<" + event.getPlayer().getName() + ">" + Conf.vampireChatMessageColor + event.getMessage());
-			event.setCancelled(true);
-		}
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		List<String> parameters = new ArrayList<String>(Arrays.asList(args));
+		this.handleCommand(sender, parameters);
+		return true;
 	}
 	
 	public void handleCommand(CommandSender sender, List<String> parameters) {
@@ -144,18 +133,19 @@ public class P extends JavaPlugin {
 			return;
 		}
 		
-		String command = parameters.get(0).toLowerCase();
+		String commandName = parameters.get(0).toLowerCase();
 		parameters.remove(0);
 		
 		for (VCommand vampcommand : this.commands) {
-			if (command.equals(vampcommand.getName())) {
+			if (vampcommand.getAliases().contains(commandName)) {
 				vampcommand.execute(sender, parameters);
 				return;
 			}
 		}
 		
-		sender.sendMessage(Conf.colorSystem+"Unknown vampire command \""+command+"\". Try /help vampire"); // TODO test help messages exists....
+		sender.sendMessage(Conf.colorSystem+"Unknown vampire command \""+commandName+"\". Try "+Conf.colorCommand+"/"+this.getBaseCommand()+" help");
 	}
+	
 	
 	// -------------------------------------------- //
 	// Logging

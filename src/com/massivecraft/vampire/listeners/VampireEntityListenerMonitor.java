@@ -120,14 +120,6 @@ public class VampireEntityListenerMonitor extends EntityListener {
 		}
 		
 		VPlayer vplayer = VPlayer.get((Player)entity);
-		/*
-		//A player become vampire when he died
-		if(Conf.becomeVampireWhenDead && !vplayer.isVampire() && !vplayer.isInfected())
-		{
-			vplayer.sendMessage(Lang.messageDeadBecomeVampire);
-			vplayer.infectionAlter(3D);
-		}
-		*/
 		
 		vplayer.bloodSet(100); // No fun to be reborn thirsty... so we reset it.
 	}

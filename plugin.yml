@@ -5,3 +5,49 @@ commands:
   v:
     description: All of the Vampire commands
     usage: See documentation.
+permissions:
+  vampire.admin:
+    description: Give this permission to the admins on the server.
+    children:
+      vampire.command.list: true
+      vampire.command.infect: true
+      vampire.command.turn: true
+      vampire.command.cure: true
+      vampire.command.feed: true
+      vampire.command.time: true
+      vampire.command.load: true
+      vampire.command.save: true
+      vampire.command.version: true
+  vampire.command.help:
+    description: Display a help page
+    default: true
+  vampire.command.blood:
+    description: See you current blood supply
+    default: true
+  vampire.command.list:
+    description: List vampires on the server
+    default: op
+  vampire.command.infect:
+    description: set infection (0 to 100)
+    default: op
+  vampire.command.turn:
+    description: instantly turn player
+    default: op
+  vampire.command.cure:
+    description: cure a vampire
+    default: op
+  vampire.command.feed:
+    description: feed a vampire
+    default: op
+  vampire.command.time:
+    description: set world time
+    default: op
+  vampire.command.load:
+    description: load [config | players | all] from disk
+    default: op
+  vampire.command.save:
+    description: save [config | players | all] to disk
+    default: op
+  vampire.command.version:
+    description: display current version
+    default: op

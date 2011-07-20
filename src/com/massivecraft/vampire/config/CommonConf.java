@@ -15,7 +15,7 @@ public class CommonConf
 	public static boolean allowBloodLoss = true;
 	public static boolean allowSpreadingNecrosis = true;
 	public static int radiusSpreadingNecrosis = 2;
-	public static boolean burnAtSunlight = true;
+	public static boolean burnInSunlight = true;
 	public static Recipe altarCureRecipe = new Recipe();
 	
 	static

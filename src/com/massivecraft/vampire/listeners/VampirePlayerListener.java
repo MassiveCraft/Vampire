@@ -80,7 +80,12 @@ public class VampirePlayerListener extends PlayerListener {
 		if ( ! (event.getMessage().startsWith("v ") || event.getMessage().equals("v")))
 		{
 			//Handle the chat message
-			P.instance.handleChat(event);
+			//Color the player name if he is a vampire
+			if(VPlayer.get(event.getPlayer()).isVampire() && Conf.enableVampireNameColorInChat)
+			{ 
+				event.getPlayer().getServer().broadcastMessage(Conf.vampireChatNameColor + "<" + event.getPlayer().getName() + ">" + Conf.vampireChatMessageColor + event.getMessage());
+				event.setCancelled(true);
+			}
 		}
 		else
 		{
