@@ -10,7 +10,7 @@ public class VCommandFeed extends VCommand
 		aliases.add("feed");
 
 		requiredParameters.add("playername");
-		requiredParameters.add("blood");
+		optionalParameters.add("blood");
 		
 		helpDescription = "feed a vampire";
 		
@@ -27,20 +27,31 @@ public class VCommandFeed extends VCommand
 		String playername = parameters.get(0);
 		Player player = P.instance.getServer().getPlayer(playername);
 		if (player == null) {
-			this.sendMessage("Player not found");
+			sendMessage("Player not found");
 			return;
 		}
-		double bloodQuantity = Double.parseDouble(parameters.get(1));
 		
-		if(bloodQuantity <= 100D)
-		{
-			this.sendMessage(player.getDisplayName() + " has been fed.");
-			VPlayer vplayer = VPlayer.get(player);
-			vplayer.bloodAlter(bloodQuantity);
+		VPlayer vplayer = VPlayer.get(player);
+		
+		if ( ! vplayer.isVampire()) {
+			sendMessage(player.getDisplayName() + " is not a vampire.");
+			return;
 		}
-		else
-		{
-			bloodQuantity = 100D;
+		
+		double blood = 100D;
+		
+		if (parameters.size() == 2) {
+			try {
+				blood = Double.parseDouble(parameters.get(1)); 
+			} catch (Exception e) {
+				
+			}
 		}
+		
+		String msg = player.getDisplayName() + " was fed from " + String.format("%1$.1f", vplayer.bloodGet());
+		vplayer.bloodAlter(blood);
+		msg += " to " + String.format("%1$.1f", vplayer.bloodGet()) + " blood.";
+		
+		sendMessage(msg);
 	}
 }

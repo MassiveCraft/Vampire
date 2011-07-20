@@ -57,6 +57,9 @@ public class VCommandHelp extends VCommand
 		pageLines.add( new VCommandTurn().getUseageTemplate() );
 		pageLines.add( new VCommandCure().getUseageTemplate() );
 		pageLines.add( new VCommandFeed().getUseageTemplate() );
+		helpPages.add(pageLines);
+		
+		pageLines = new ArrayList<String>();
 		pageLines.add( new VCommandTime().getUseageTemplate() );
 		pageLines.add( new VCommandLoad().getUseageTemplate() );
 		pageLines.add( new VCommandSave().getUseageTemplate() );

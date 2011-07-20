@@ -86,22 +86,6 @@ public class Lang
 		thirstStrongMessages.add("Your vison turns red and blurry!");
 		thirstStrongMessages.add("You fear for your half-life!");
 		
-		//Help messages :
-		
-		helpMessages.add("*** Vampire Help***");
-		helpMessages.add("/v        Show blood.");
-		helpMessages.add("/v cure [PlayerName]       Cure a player.");
-		helpMessages.add("/v infect [PlayerName]        Infect a player.");
-		helpMessages.add("/v turn [PlayerName]        Turn a player into vampire.");
-		helpMessages.add("/v time [ticks]        Set world time. 0 to 23999.");
-		helpMessages.add("/v save [config | players | all]        Save data to disk.");
-		helpMessages.add("/v load [config | players | all]        Load data from disk.");
-		helpMessages.add("/v list        List vampires on the server.");
-		helpMessages.add("/v burntime [From] [To]        Set time in which vampires will burn.");
-		helpMessages.add("/v chatcolor [enable/disable]        Enable/Disable vampire player name color.");
-		helpMessages.add("/v version        Show vampire plugin version.");
-		helpMessages.add("/v feed [Playername][blood]        Give blood to a player.");
-		
 		// As it take 1h to turn...
 		// About 20-30 messages would be awesome. 
 		infectionMessagesProgress.add("You feel a bit tired.");

@@ -12,7 +12,6 @@ public class CommonConf
 {
 	public static transient File file = new File(P.instance.getDataFolder(), "Common.json");
 	
-	public static boolean allowBloodLoss = true;
 	public static boolean allowSpreadingNecrosis = true;
 	public static int radiusSpreadingNecrosis = 2;
 	public static boolean burnInSunlight = true;

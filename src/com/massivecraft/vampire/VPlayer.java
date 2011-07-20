@@ -38,7 +38,6 @@ public class VPlayer {
 	private long timeAsVampire = 0; // The total amount of milliseconds this player has been vampire.
 	private long truceBreakTimeLeft = 0; // How many milliseconds more will the monsters be hostile?
 	private transient double healthAccumulator = 0;
-	private long lastVampireDeath = 0;
 	public transient long regenDelayLeftMilliseconds = 0;
 
 	public VPlayer(Player player) {
@@ -299,17 +298,14 @@ public class VPlayer {
 	
 	public void thirstAdvanceTime(long milliseconds)
 	{
-		if(this.isTrueBlood && !TrueBloodConf.allowBloodLoss) return;
-		else if(!CommonConf.allowBloodLoss) return;
-		
 		// There is a small blood loss over time.
 		this.bloodAlter(-Conf.bloodDecreasePerSecond);
 		
 		// If thirsty we loose health.
-		//boolean strong = false;
+		boolean strong = false;
 		if (this.bloodGet() <= Conf.thirstStrongUnderBlood) 
 		{
-			//strong = true;
+			strong = true;
 			this.healthAccumulator -= Conf.thirstStrongDamagePerSecond * milliseconds / 1000D;
 		}
 		else if (this.bloodGet() <= Conf.thirstUnderBlood) 
@@ -318,24 +314,20 @@ public class VPlayer {
 		}
 		
 		// Use as much of the accumulator as possible
-		this.applyHealthAccumulator();
+		Integer delta = this.applyHealthAccumulator();
+		
+		if (delta == null) {
+			this.sendMessage(Lang.thirstDeathMessage);
+		} else if (delta < 0) {
+			// We took damage
+			if (strong) {
+				this.sendMessage(Lang.thirstStrongMessages.get(P.random.nextInt(Lang.thirstStrongMessages.size())));
+			} else {
+				this.sendMessage(Lang.thirstMessages.get(P.random.nextInt(Lang.thirstMessages.size())));
+			}
+		}
 		
 		return;
-		
-			/*String msg = "AccBefore: "+this.healthAccumulator+" ";
-			Integer delta = this.applyHealthAccumulator();
-			msg += "delta: "+delta+" AccAfter: "+this.healthAccumulator;
-			Vampire.log(msg);
-			if (delta == null) {
-				this.sendMessage(Conf.thirstDeathMessage);
-			} else if (delta < 0) {
-				// We took damage
-				if (strong) {
-					this.sendMessage(Conf.thirstStrongMessages.get(Vampire.random.nextInt(Conf.thirstStrongMessages.size())));
-				} else {
-					this.sendMessage(Conf.thirstMessages.get(Vampire.random.nextInt(Conf.thirstMessages.size())));
-				}
-			}*/
 	}
 	
 	// -------------------------------------------- //
@@ -401,30 +393,16 @@ public class VPlayer {
 		
 		Player player = this.getPlayer();
 		int targetHealth = player.getHealth() + deltaHealth;
-		
-		// If targetHealth < 0 let's set it at 0
-		//if ( targetHealth <= 0 )
-			//targetHealth = 0;
-		
 		int playerHealth = player.getHealth();
-		//Vampire.log("getHealth: " + player.getHealth() + " deltaHealth: " + deltaHealth + " = targetHealth: " + targetHealth);
 		
 		// If user's health is already <= 0, we dont need to set it again
 		if (playerHealth > 0)
 		{
-			//Vampire.log("Killing user (by setting targetHealth: " + targetHealth + ")");
 			this.setHealth(targetHealth);
 		}
 		
 		if (targetHealth <=0) {
-			// We need to make note of the last time this user died from vampire regeneration. Used to help avoid the double-death (aka title bug)
-			this.lastVampireDeath = System.currentTimeMillis();
-			
 			return null; // Death signal.
-		}
-		
-		if (deltaHealth < 0 ) {
-			
 		}
 		
 		return deltaHealth;
