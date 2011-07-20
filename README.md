@@ -20,7 +20,7 @@ Vampires...
 
 Usage
 ---------
-<b>Read the full userguide here: [http://mcteam.org/plugins/vampire](http://mcteam.org/plugins/vampire)</b><br/>
+<b>Read the full userguide here: [http://massivecraft.com/plugins/vampire](http://massivecraft.com/plugins/vampire)</b><br/>
 <b>Please do it :) It is very informative.</b>
 
 The base chat console command is `/v` or simply `v`. This means you don't need to write the forward slash if you don't feel like it. :)
@@ -37,8 +37,10 @@ The base command `v` can be used by vampires to display their current blood rese
 
 Installing
 ----------
-1. Download the latest release: [https://github.com/oloflarsson/Vampire/downloads](https://github.com/oloflarsson/Vampire/downloads)<br>
+1. Download the latest release: [https://github.com/MassiveCraft/Vampire/downloads](https://github.com/MassiveCraft/Vampire/downloads)<br>
 1. Put Vampire.jar in the plugins folder.
+1. [Download GSON](http://massivecraft.com/plugins/libraries)
+1. Put gson.jar in your lib folder.
 
 License
 ----------
