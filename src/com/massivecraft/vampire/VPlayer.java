@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.massivecraft.vampire.config.*;
-import com.google.gson.reflect.TypeToken;
+import com.massivecraft.vampire.gson.reflect.TypeToken;
 import com.massivecraft.vampire.util.DiscUtil;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.GeometryUtil;

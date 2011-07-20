@@ -4,8 +4,6 @@ public class VCommandBlood extends VCommand {
 	
 	public VCommandBlood() {
 		aliases.add("blood");
-
-		optionalParameters.add("on|off");
 		
 		helpDescription = "See you current blood supply";
 		

@@ -23,24 +23,10 @@ Usage
 <b>Read the full userguide here: [http://massivecraft.com/plugins/vampire](http://massivecraft.com/plugins/vampire)</b><br/>
 <b>Please do it :) It is very informative.</b>
 
-The base chat console command is `/v` or simply `v`. This means you don't need to write the forward slash if you don't feel like it. :)
-The base command `v` can be used by vampires to display their current blood reservoir. There are also the following subcommands for server operators (OP):
-
-* `v infect [playername] *[amount from 0 to 100]`<br>The player turns into vampire at infection 100. 0 means no infection.
-* `v turn [playername]`<br> Instantly turn a player into a vampire
-* `v cure [playername]`<br> Instantly cure a player from vampirism.
-* `v list`<br> List all vampires on the server.
-* `v load [config|players|all]`<br> Load data from disk. 
-* `v save [config|players|all]`<br> Save data to disk.
-* `v settime [ticks from 0 to 23999]`<br> Set the time. 0 means sunrise. 1 ingame hour is 1000 ticks.
-* `v version`<br> Find out which version you are running.
-
 Installing
 ----------
 1. Download the latest release: [https://github.com/MassiveCraft/Vampire/downloads](https://github.com/MassiveCraft/Vampire/downloads)<br>
 1. Put Vampire.jar in the plugins folder.
-1. [Download GSON](http://massivecraft.com/plugins/libraries)
-1. Put gson.jar in your lib folder.
 
 License
 ----------

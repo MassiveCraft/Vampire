@@ -8,6 +8,7 @@ commands:
 permissions:
   vampire.admin:
     description: Give this permission to the admins on the server.
+    default: op
     children:
       vampire.command.list: true
       vampire.command.infect: true

@@ -11,10 +11,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.massivecraft.vampire.commands.*;
 import com.massivecraft.vampire.config.*;
+import com.massivecraft.vampire.gson.Gson;
+import com.massivecraft.vampire.gson.GsonBuilder;
 import com.massivecraft.vampire.listeners.*;
 
 
