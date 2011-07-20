@@ -15,7 +15,6 @@ public class TrueBloodConf
 	
 	public static boolean allowSpreadingNecrosis = true;
 	public static int radiusSpreadingNecrosis = 2;
-	public static boolean burnInSunlight = true;
 	public static Recipe altarCureRecipe = new Recipe();
 	
 	static
