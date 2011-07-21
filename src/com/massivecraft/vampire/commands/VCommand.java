@@ -86,7 +86,7 @@ public class VCommand {
 		
 		Player player = (Player)sender;
 		
-		if (( this.senderMustBeVampire && !VPlayer.get(player).isVampire())) {
+		if (( this.senderMustBeVampire && ! VPlayer.get(player).isVampire())) {
 			this.sendMessage("Only vampires can use this command.");
 			return false;
 		}

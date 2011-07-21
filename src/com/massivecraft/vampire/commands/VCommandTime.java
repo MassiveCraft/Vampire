@@ -15,7 +15,7 @@ public class VCommandTime extends VCommand {
 		
 		helpDescription = "get or set the time";
 		
-		permission = "vampire.command.time";
+		permission = null;
 		senderMustBePlayer = true;
 		senderMustBeVampire = false;
 	}
@@ -24,9 +24,18 @@ public class VCommandTime extends VCommand {
 	public void perform() {
 		// Read the time
 		if (parameters.size() == 0) {
+			if ( ! this.sender.hasPermission("vampire.command.time.get")) {
+				sendMessage("You lack the permissions to get the time.");
+				return;
+			}
 			long ticks = player.getWorld().getTime() % 24000;
 			sendMessage("The time is " + Conf.colorHighlight + ticks + Conf.colorSystem + " ticks.");
 			sendTimeLeftToMessage(ticks);
+			return;
+		}
+		
+		if ( ! this.sender.hasPermission("vampire.command.time.set")) {
+			sendMessage("You lack the permissions to set the time.");
 			return;
 		}
 		

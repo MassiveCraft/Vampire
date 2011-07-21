@@ -1,5 +1,5 @@
 name: Vampire
-version: 3.5.1
+version: 3.5.2
 main: com.massivecraft.vampire.P
 commands:
   v:
@@ -15,7 +15,7 @@ permissions:
       vampire.command.turn: true
       vampire.command.cure: true
       vampire.command.feed: true
-      vampire.command.time: true
+      vampire.command.time.*: true
       vampire.command.load: true
       vampire.command.save: true
       vampire.command.version: true
@@ -25,6 +25,18 @@ permissions:
   vampire.command.blood:
     description: See you current blood supply
     default: true
+  vampire.command.time.get:
+    description: get the time
+    default: true
+  vampire.command.time.set:
+    description: set the time
+    default: op
+  vampire.command.time.*:
+    description: get and set the time
+    default: op
+    children:
+      vampire.command.time.get: true
+      vampire.command.time.set: true
   vampire.command.list:
     description: List vampires on the server
     default: op
@@ -39,9 +51,6 @@ permissions:
     default: op
   vampire.command.feed:
     description: feed a vampire
-    default: op
-  vampire.command.time:
-    description: set world time
     default: op
   vampire.command.load:
     description: load [config | players | all] from disk
