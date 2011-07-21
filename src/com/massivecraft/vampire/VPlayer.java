@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -286,7 +287,7 @@ public class VPlayer {
 			}
 			catch (Exception e)
 			{
-				P.log("[Vampire error] :" + e.getMessage());
+				P.log(Level.WARNING, e.getMessage());
 				break;
 			}				
 		}
@@ -299,7 +300,12 @@ public class VPlayer {
 	public void thirstAdvanceTime(long milliseconds)
 	{
 		// There is a small blood loss over time.
-		this.bloodAlter(-Conf.bloodDecreasePerSecond);
+		if (isTrueBlood()) {
+			this.bloodAlter(-TrueBloodConf.bloodDecreasePerSecond);
+		} else {
+			this.bloodAlter(-CommonConf.bloodDecreasePerSecond);
+		}
+		
 		
 		// If thirsty we loose health.
 		boolean strong = false;

@@ -13,6 +13,7 @@ public class TrueBloodConf
 {
 	public static transient File file = new File(P.instance.getDataFolder(), "TrueBlood.json");
 	
+	public static double bloodDecreasePerSecond = 0.01; //You loose all your blood over the elapse of 2 real-life hours
 	public static boolean allowSpreadingNecrosis = true;
 	public static int radiusSpreadingNecrosis = 2;
 	public static boolean burnInSunlight = true;

@@ -23,6 +23,7 @@ public class Conf {
 	public static ChatColor colorChrome = ChatColor.DARK_RED;
 	public static ChatColor colorCommand = ChatColor.GOLD;
 	public static ChatColor colorParameter = ChatColor.GRAY;
+	public static ChatColor colorHighlight = ChatColor.WHITE;
 	
 	public static boolean allowNoSlashCommand = true;
 	
@@ -64,7 +65,7 @@ public class Conf {
 	
 	public static Set<Material> foodMaterials = new HashSet<Material>();
 	
-	public static int combustFireExtinguishTicks = 0; // After how many minecraft game ticks of no sunlight should the fire stop? 0 means right away.
+	public static int combustFireExtinguishTicks = 5; // After how many minecraft game ticks of no sunlight should the fire stop? 0 means right away.
 	
 	public static Map<Material,Double> materialOpacity = new HashMap<Material,Double>(); //We assume opacity 1 for all materials not in this map 
 	
@@ -72,7 +73,6 @@ public class Conf {
 	public static Map<CreatureType, Double> creatureTypeBloodQuality = new HashMap<CreatureType, Double>();
 	public static long truceBreakTime = 60 * 1000L; // One minute
 	public static Set<CreatureType> creatureTypeTruceMonsters = new HashSet<CreatureType>();
-	public static double bloodDecreasePerSecond = 0.01; //You loose all your blood over the elapse of 2 real-life hours
 	
 	public static Material altarInfectMaterial = Material.GOLD_BLOCK;
 	public static Material altarInfectMaterialSurround = Material.OBSIDIAN;
