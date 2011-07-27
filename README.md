@@ -27,6 +27,7 @@ Installing
 ----------
 1. Download the latest release: [https://github.com/MassiveCraft/Vampire/downloads](https://github.com/MassiveCraft/Vampire/downloads)<br>
 1. Put Vampire.jar in the plugins folder.
+1. [Download gson.jar to your lib folder](http://massivecraft.com/plugins/libraries)
 
 License
 ----------
