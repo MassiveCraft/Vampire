@@ -15,7 +15,7 @@ public class VCommandInfect extends VCommand {
 		
 		helpDescription = "set infection (0 to 100)";
 		
-		permission = "vampire.command.infect";
+		permission = Permission.COMMAND_INFECT;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}

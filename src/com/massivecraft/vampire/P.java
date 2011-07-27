@@ -1,21 +1,26 @@
 package com.massivecraft.vampire;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.massivecraft.vampire.commands.*;
 import com.massivecraft.vampire.config.*;
-import com.massivecraft.vampire.gson.Gson;
-import com.massivecraft.vampire.gson.GsonBuilder;
 import com.massivecraft.vampire.listeners.*;
+import com.massivecraft.vampire.util.JarLoader;
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 
 
 public class P extends JavaPlugin {
@@ -23,13 +28,11 @@ public class P extends JavaPlugin {
 	// Fields
 	// -------------------------------------------- //
 	public static P instance;
+	public static PermissionHandler permissionHandler;
 	
 	public static Timer timer;
 	public static Random random = new Random();
-	public static final Gson gson = new GsonBuilder()
-	.setPrettyPrinting()
-	.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-	.create();
+	public Gson gson;
 	
 	// Commands
 	public List<VCommand> commands = new ArrayList<VCommand>();
@@ -56,6 +59,23 @@ public class P extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		log("=== ENABLE START ===");
+		long timeInitStart = System.currentTimeMillis();
+		
+		// Load the gson library we require
+		File gsonfile = new File("./lib/gson.jar");
+		if ( ! JarLoader.load(gsonfile)) {
+			log(Level.SEVERE, "Disabling myself as "+gsonfile+" is missing.");
+			this.getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		
+		// Create our gson
+		gson = new GsonBuilder()
+		.setPrettyPrinting()
+		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+		.create();
+		
 		// Add the commands
 		commands.add(new VCommandBlood());
 		commands.add(new VCommandHelp());
@@ -73,6 +93,9 @@ public class P extends JavaPlugin {
 		
 		// Ensure basefolder exists!
 		this.getDataFolder().mkdirs();
+		
+		// Hook into external permissions system;
+		setupPermissions();
 		
 		// Load Conf from disk
 		Conf.load();
@@ -102,7 +125,27 @@ public class P extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListenerMonitor, Event.Priority.Monitor, this);
-		log("Enabled");
+		log("=== ENABLE DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
+	}
+	
+	// -------------------------------------------- //
+	// External Plugin Integration
+	// -------------------------------------------- //
+	
+	private void setupPermissions() {
+	    if (permissionHandler != null) {
+	        return;
+	    }
+	    
+	    Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
+	    
+	    if (permissionsPlugin == null) {
+	        log("Permission system not detected, defaulting to native bukkit permissions.");
+	        return;
+	    }
+	    
+	    permissionHandler = ((Permissions) permissionsPlugin).getHandler();
+	    log("Found and will use plugin "+((Permissions)permissionsPlugin).getDescription().getFullName());
 	}
 	
 	// -------------------------------------------- //

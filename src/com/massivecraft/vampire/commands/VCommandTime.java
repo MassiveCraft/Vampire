@@ -3,6 +3,7 @@ package com.massivecraft.vampire.commands;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.util.TextUtil;
 
@@ -24,8 +25,7 @@ public class VCommandTime extends VCommand {
 	public void perform() {
 		// Read the time
 		if (parameters.size() == 0) {
-			if ( ! this.sender.hasPermission("vampire.command.time.get")) {
-				sendMessage("You lack the permissions to get the time.");
+			if ( ! Permission.COMMAND_TIME_GET.test(sender)) {
 				return;
 			}
 			long ticks = player.getWorld().getTime() % 24000;
@@ -34,8 +34,7 @@ public class VCommandTime extends VCommand {
 			return;
 		}
 		
-		if ( ! this.sender.hasPermission("vampire.command.time.set")) {
-			sendMessage("You lack the permissions to set the time.");
+		if ( ! Permission.COMMAND_TIME_SET.test(sender)) {
 			return;
 		}
 		

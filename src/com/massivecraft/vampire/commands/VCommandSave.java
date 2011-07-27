@@ -1,5 +1,7 @@
 package com.massivecraft.vampire.commands;
 
+import com.massivecraft.vampire.Permission;
+
 public class VCommandSave extends VCommandFile {
 	
 	public VCommandSave() {
@@ -7,7 +9,7 @@ public class VCommandSave extends VCommandFile {
 		
 		helpDescription = "save [config | players | all] to disk";
 		
-		permission = "vampire.command.save";
+		permission = Permission.COMMAND_SAVE;
 	}
 	
 	@Override

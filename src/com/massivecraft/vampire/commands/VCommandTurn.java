@@ -13,7 +13,7 @@ public class VCommandTurn extends VCommand {
 		
 		helpDescription = "instantly turn player";
 		
-		permission = "vampire.command.turn";
+		permission = Permission.COMMAND_TURN;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}
@@ -34,21 +34,20 @@ public class VCommandTurn extends VCommand {
 		if(vplayer.isVampire())
 		{
 			this.sendMessage(player.getDisplayName() + " is already a vampire.");
+			return;
 		}
-		else
+		
+		vplayer.bloodSet(100);
+		
+		//If there is an optional paramater that is "trueblood", then turn the human into TrueBlood vampire
+		if(parameters.size() > 1)
 		{
-			vplayer.bloodSet(100);
-			
-			//If there is an optional paramater that is "trueblood", then turn the human into TrueBlood vampire
-			if(parameters.size() > 1)
-			{
-				vplayer.setIsTrueBlood(true);
-				this.sendMessage(player.getDisplayName() + " was turned into a True Blood vampire.");
-			} else {
-				this.sendMessage(player.getDisplayName() + " was turned into a vampire.");
-			}
-			
-			vplayer.turn();
+			vplayer.setIsTrueBlood(true);
+			this.sendMessage(player.getDisplayName() + " was turned into a True Blood vampire.");
+		} else {
+			this.sendMessage(player.getDisplayName() + " was turned into a vampire.");
 		}
+		
+		vplayer.turn();
 	}
 }

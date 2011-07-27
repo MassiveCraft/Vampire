@@ -34,7 +34,7 @@ public class TrueBloodConf
 	public static boolean save() {
 		P.log("Saving config to disk.");
 		try {
-			DiscUtil.write(file, P.gson.toJson(new TrueBloodConf()));
+			DiscUtil.write(file, P.instance.gson.toJson(new TrueBloodConf()));
 		} catch (IOException e) {
 			e.printStackTrace();
 			P.log("Failed to save the config to disk.");
@@ -51,7 +51,7 @@ public class TrueBloodConf
 		}
 		
 		try {
-			P.gson.fromJson(DiscUtil.read(file), TrueBloodConf.class);
+			P.instance.gson.fromJson(DiscUtil.read(file), TrueBloodConf.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 			P.log("Failed to load the config from disk.");

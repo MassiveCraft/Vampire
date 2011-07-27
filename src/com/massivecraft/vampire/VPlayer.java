@@ -17,8 +17,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.vampire.config.*;
-import com.massivecraft.vampire.gson.reflect.TypeToken;
 import com.massivecraft.vampire.util.DiscUtil;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.GeometryUtil;
@@ -827,7 +827,7 @@ public class VPlayer {
 		}
 		
 		try {
-			DiscUtil.write(file, P.gson.toJson(vplayersToSave));
+			DiscUtil.write(file, P.instance.gson.toJson(vplayersToSave));
 		} catch (IOException e) {
 			P.log("Failed to save the players to disk.");
 			e.printStackTrace();
@@ -845,7 +845,7 @@ public class VPlayer {
 		
 		try {
 			Type type = new TypeToken<Map<String, VPlayer>>(){}.getType();
-			VPlayers = P.gson.fromJson(DiscUtil.read(file), type);
+			VPlayers = P.instance.gson.fromJson(DiscUtil.read(file), type);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

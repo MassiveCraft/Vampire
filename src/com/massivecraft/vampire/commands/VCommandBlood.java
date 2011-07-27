@@ -7,7 +7,6 @@ public class VCommandBlood extends VCommand {
 		
 		helpDescription = "See you current blood supply";
 		
-		permission = "vampire.command.blood";
 		senderMustBePlayer = true;
 		senderMustBeVampire = true;
 	}

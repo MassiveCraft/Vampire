@@ -9,7 +9,6 @@ public class VCommandVersion extends VCommand {
 		
 		helpDescription = "display current version";
 		
-		permission = "vampire.command.version";
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}

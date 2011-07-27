@@ -1,5 +1,5 @@
 name: Vampire
-version: 3.5.2
+version: 3.5.4
 main: com.massivecraft.vampire.P
 commands:
   v:
@@ -18,12 +18,8 @@ permissions:
       vampire.command.time.*: true
       vampire.command.load: true
       vampire.command.save: true
-      vampire.command.version: true
   vampire.command.help:
     description: Display a help page
-    default: true
-  vampire.command.blood:
-    description: See you current blood supply
     default: true
   vampire.command.time.get:
     description: get the time
@@ -57,7 +53,4 @@ permissions:
     default: op
   vampire.command.save:
     description: save [config | players | all] to disk
-    default: op
-  vampire.command.version:
-    description: display current version
     default: op

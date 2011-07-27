@@ -13,7 +13,7 @@ public class VCommandCure extends VCommand {
 		
 		helpDescription = "cure a vampire";
 		
-		permission = "vampire.command.cure";
+		permission = Permission.COMMAND_CURE;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}

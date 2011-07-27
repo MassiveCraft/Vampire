@@ -1,5 +1,7 @@
 package com.massivecraft.vampire.commands;
 
+import com.massivecraft.vampire.Permission;
+
 public class VCommandLoad extends VCommandFile {
 	
 	public VCommandLoad() {
@@ -7,7 +9,7 @@ public class VCommandLoad extends VCommandFile {
 		
 		helpDescription = "load [config | players | all] from disk";
 		
-		permission = "vampire.command.load";
+		permission = Permission.COMMAND_LOAD;
 	}
 	
 	@Override

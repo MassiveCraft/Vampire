@@ -15,7 +15,7 @@ public class VCommandList extends VCommand {
 		
 		helpDescription = "List vampires on the server";
 		
-		permission = "vampire.command.list";
+		permission = Permission.COMMAND_LIST;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}

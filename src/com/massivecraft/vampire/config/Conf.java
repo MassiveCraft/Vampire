@@ -161,7 +161,7 @@ public class Conf {
 	public static boolean save() {
 		P.log("Saving config to disk.");
 		try {
-			DiscUtil.write(file, P.gson.toJson(new Conf()));
+			DiscUtil.write(file, P.instance.gson.toJson(new Conf()));
 		} catch (IOException e) {
 			e.printStackTrace();
 			P.log("Failed to save the config to disk.");
@@ -178,7 +178,7 @@ public class Conf {
 		}
 		
 		try {
-			P.gson.fromJson(DiscUtil.read(file), Conf.class);
+			P.instance.gson.fromJson(DiscUtil.read(file), Conf.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 			P.log("Failed to load the config from disk.");

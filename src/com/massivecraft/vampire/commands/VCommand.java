@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.vampire.P;
+import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.util.TextUtil;
@@ -23,7 +24,7 @@ public class VCommand {
 	public Player player;
 	public VPlayer me;
 	
-	public String permission;
+	public Permission permission;
 	public boolean senderMustBePlayer;
 	public boolean senderMustBeVampire;
 	
@@ -79,20 +80,17 @@ public class VCommand {
 	// Test if the number of params is correct.
 	public boolean validateCall() { // Kolla upp help pluginen!
 		
-		if ( this.senderMustBePlayer && ! (sender instanceof Player)) {
+		if( permission != null && ! permission.test(sender)) {
+			return false;
+		}
+		
+		if ( (this.senderMustBePlayer || this.senderMustBeVampire) && ! (sender instanceof Player)) {
 			sendMessage("This command can only be used by ingame players.");
 			return false;
 		}
 		
-		Player player = (Player)sender;
-		
-		if (( this.senderMustBeVampire && ! VPlayer.get(player).isVampire())) {
+		if (this.senderMustBeVampire && ! VPlayer.get((Player)sender).isVampire()) {
 			this.sendMessage("Only vampires can use this command.");
-			return false;
-		}
-		
-		if( permission != null && ! sender.hasPermission(permission)) {
-			sendMessage("You lack the permissions to "+this.helpDescription.toLowerCase()+".");
 			return false;
 		}
 		

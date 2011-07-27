@@ -14,12 +14,10 @@ public class VCommandFeed extends VCommand
 		
 		helpDescription = "feed a vampire";
 		
-		permission = "vampire.command.feed";
+		permission = Permission.COMMAND_FEED;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}
-	
-	// TODO fix this logic...
 	
 	@Override
 	public void perform()
