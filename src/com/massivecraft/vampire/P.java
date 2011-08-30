@@ -102,6 +102,13 @@ public class P extends JavaPlugin {
 		Lang.load();
 		CommonConf.load();
 		TrueBloodConf.load();
+		SpoutConf.load();
+		
+		//Check If Spout Is Loaded... If Not Disable Spout Features (softdepend Ensures Load After Spout)
+		if(SpoutConf.EnableSpout && !this.getServer().getPluginManager().isPluginEnabled("Spout")){
+			log("Spout Not Found, Disabling All Spoutiness.");
+			SpoutConf.EnableSpout = false;
+		}
 		
 		// Do an interesting test
 		if (Conf.regenBloodPerHealth < Conf.playerBloodQuality) {
@@ -117,7 +124,8 @@ public class P extends JavaPlugin {
 		
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
-		//pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
+		//Using PLAYER_JOIN For Spout.
+		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_ANIMATION, this.playerListener, Event.Priority.Normal, this);
@@ -199,5 +207,9 @@ public class P extends JavaPlugin {
 	
 	public static void log(Level level, String msg) {
 		Logger.getLogger("Minecraft").log(level, "["+instance.getDescription().getFullName()+"] "+msg);
+	}
+	
+	public static void callSpout(Event spoutEnable){
+		P.instance.getServer().getPluginManager().callEvent(spoutEnable);
 	}
 }

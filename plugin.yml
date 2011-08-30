@@ -1,6 +1,7 @@
 name: Vampire
 version: 3.5.4
 main: com.massivecraft.vampire.P
+softdepend: [Spout]
 commands:
   v:
     description: All of the Vampire commands

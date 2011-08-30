@@ -3,8 +3,14 @@ package com.massivecraft.vampire;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -18,7 +24,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.vampire.config.*;
+import com.massivecraft.vampire.config.CommonConf;
+import com.massivecraft.vampire.config.Conf;
+import com.massivecraft.vampire.config.Lang;
+import com.massivecraft.vampire.config.TrueBloodConf;
 import com.massivecraft.vampire.util.DiscUtil;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.GeometryUtil;
@@ -31,6 +40,7 @@ public class VPlayer {
 	public static transient Map<String, VPlayer> VPlayers = new HashMap<String, VPlayer>();
 	public static transient File file = new File(P.instance.getDataFolder(), "players.json");
 	
+	
 	private transient String playername;
 	private boolean isVampire = false;
 	private boolean isTrueBlood = false;
@@ -40,6 +50,7 @@ public class VPlayer {
 	private long truceBreakTimeLeft = 0; // How many milliseconds more will the monsters be hostile?
 	private transient double healthAccumulator = 0;
 	public transient long regenDelayLeftMilliseconds = 0;
+	
 
 	public VPlayer(Player player) {
 		this.playername = player.getName();
@@ -105,7 +116,7 @@ public class VPlayer {
 		this.isTrueBlood = val;
 	}
 	
-	public void turn() {
+	public void turn(Player player) {
 		this.isVampire = true;
 		this.infectionSet(0);
 		
@@ -119,15 +130,17 @@ public class VPlayer {
 			this.sendMessage(Lang.turnMessages);
 			P.log(this.playername + " turned into a common vampire.");
 		}
+		VSpout.makeVampire(player);
 		VPlayer.save();
 	}
 	
-	public void cure() {
+	public void cure(Player player) {
 		this.isVampire = false;
 		this.isTrueBlood = false;
 		this.infectionSet(0);
 		this.sendMessage(Lang.cureMessages);
 		//Vampire.log(this.playername + " was cured and is no longer a vampire.");
+		VSpout.unMakeVampire(player);
 		VPlayer.save();
 	}
 	
@@ -569,7 +582,7 @@ public class VPlayer {
 		int newMessageIndex = this.infectionGetMessageIndex();
 		
 		if (this.infectionGet() == 100) {
-			this.turn();
+			this.turn(this.getPlayer());
 			return;
 		}
 		
@@ -640,7 +653,7 @@ public class VPlayer {
 		}
 	}
 	
-	public void useAltarCure(Block centerBlock) {
+	public void useAltarCure(Block centerBlock, Player player) {
 		// The altar must be big enough;
 		int count = GeometryUtil.countNearby(centerBlock, Conf.altarCureMaterialSurround, Conf.altarCureMaterialSurroundRadious);
 		if (count == 0) {
@@ -679,7 +692,7 @@ public class VPlayer {
 			this.sendMessage(Lang.altarCureUse);
 			TrueBloodConf.altarCureRecipe.removeFromPlayer(this.getPlayer());
 			P.log(this.playername + " was cured from being a TrueBlood vampire by a healing altar.");
-			this.cure();
+			this.cure(player);
 		} 
 		else if(CommonConf.altarCureRecipe.playerHasEnough(this.getPlayer()))
 		{
@@ -688,7 +701,7 @@ public class VPlayer {
 			this.sendMessage(Lang.altarCureUse);
 			CommonConf.altarCureRecipe.removeFromPlayer(this.getPlayer());
 			P.log(this.playername + " was cured from being a Common vampire by a healing altar.");
-			this.cure();
+			this.cure(player);
 		}
 		else
 		{
