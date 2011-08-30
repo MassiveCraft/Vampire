@@ -5,15 +5,18 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 
-import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.P;
+import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VSpout;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.TextUtil;
@@ -28,7 +31,7 @@ public class VampirePlayerListener extends PlayerListener {
 		if ( ! (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) ) {
 			return;
 		}
-		
+		Player player = event.getPlayer();
 		VPlayer vplayer = VPlayer.get(event.getPlayer());
 		Material itemMaterial = event.getMaterial();
 		
@@ -65,7 +68,7 @@ public class VampirePlayerListener extends PlayerListener {
 		if (blockMaterial == Conf.altarInfectMaterial) {
 			vplayer.useAltarInfect(event.getClickedBlock());
 		} else if (blockMaterial == Conf.altarCureMaterial) {
-			vplayer.useAltarCure(event.getClickedBlock());
+			vplayer.useAltarCure(event.getClickedBlock(), player);
 		}
 	}
 	
@@ -108,6 +111,12 @@ public class VampirePlayerListener extends PlayerListener {
 			vplayer.jump(Conf.jumpDeltaSpeed, true);
 		}
 	}
-	
-	
+	public void onPlayerJoin(PlayerJoinEvent event){
+		Player player = event.getPlayer();
+		VPlayer vPlayer = VPlayer.get(player);
+		if(vPlayer.isVampire()){
+			VSpout.makeVampire(player);
+		}
+	}
 }
+

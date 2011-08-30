@@ -16,6 +16,7 @@ import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
 
 
+@SuppressWarnings("deprecation")
 public class VampireEntityListenerMonitor extends EntityListener {
 	
 	/**

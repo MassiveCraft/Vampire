@@ -48,6 +48,6 @@ public class VCommandTurn extends VCommand {
 			this.sendMessage(player.getDisplayName() + " was turned into a vampire.");
 		}
 		
-		vplayer.turn();
+		vplayer.turn(player);
 	}
 }

@@ -16,6 +16,7 @@ import com.massivecraft.vampire.util.EntityUtil;
 
 //import com.bukkit.mcteam.vampire.Vampire;
 
+@SuppressWarnings("deprecation")
 public class VampireEntityListener extends EntityListener {
 	
 	/**

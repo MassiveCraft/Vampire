@@ -29,6 +29,6 @@ public class VCommandCure extends VCommand {
 		}
 		this.sendMessage(player.getDisplayName() + " was cured from vampirism.");
 		VPlayer vplayer = VPlayer.get(player);
-		vplayer.cure();
+		vplayer.cure(player);
 	}
 }
