@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
 import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VPlayers;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
 
@@ -58,13 +59,13 @@ public class VampireEntityListenerMonitor extends EntityListener {
 		}
 		
 		pDamager = (Player)damager;
-		vpDamager = VPlayer.get(pDamager);
+		vpDamager = VPlayers.i.get(pDamager);
 		
 		if (vpDamager.isVampire()) {
 			if (damagee instanceof Player) {
 				// A True Blood vampire attacked a normal player. There is risk for infection.
 				pDamagee = (Player)damagee;
-				vpDamagee = VPlayer.get(pDamagee);
+				vpDamagee = VPlayers.i.get(pDamagee);
 				
 				//If the damager is a True Blood vampire, he is able to infect the player. Else if it's not a true blood a basic vampire) he won't be able to infect.
 				if(vpDamager.isTrueBlood()) vpDamagee.infectionRisk();
@@ -98,7 +99,7 @@ public class VampireEntityListenerMonitor extends EntityListener {
 			}
 		} else if (damagee instanceof Player) {
 			pDamagee = (Player)damagee;
-			vpDamagee = VPlayer.get(pDamagee);
+			vpDamagee = VPlayers.i.get(pDamagee);
 			
 			if (vpDamagee.isVampire()) {
 				
@@ -119,7 +120,7 @@ public class VampireEntityListenerMonitor extends EntityListener {
 			return;
 		}
 		
-		VPlayer vplayer = VPlayer.get((Player)entity);
+		VPlayer vplayer = VPlayers.i.get((Player)entity);
 		
 		vplayer.bloodSet(100); // No fun to be reborn thirsty... so we reset it.
 	}

@@ -1,16 +1,15 @@
 package com.massivecraft.vampire.config;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.massivecraft.vampire.P;
-import com.massivecraft.vampire.util.DiscUtil;
 
 public class Lang
 {
-	public static transient File file = new File(P.instance.getDataFolder(), "lang.json");
+	
+	public static transient File file = new File(P.p.getDataFolder(), "lang.json");
 	
 	public static String infectionMessageHeal = "You feel a little better. Bread helps you fight the sickness.";
 	public static String infectionMessageCured = "You are now completely cured from the sickness you had.";
@@ -136,37 +135,13 @@ public class Lang
 		cureMessages.add("You are once again healthy and alive.");
 	}
 	
-	// -------------------------------------------- //
-	// Persistance
-	// -------------------------------------------- //
-	
-	public static boolean save() {
-		P.log("Saving config to disk.");
-		try {
-			DiscUtil.write(file, P.instance.gson.toJson(new Lang()));
-		} catch (IOException e) {
-			e.printStackTrace();
-			P.log("Failed to save the config to disk.");
-			return false;
-		}
-		return true;
+	private static transient Lang i = new Lang();
+	public static void load()
+	{
+		P.p.persist.loadOrSaveDefault(i, Lang.class);
 	}
-	
-	public static boolean load() {
-		if ( ! file.exists()) {
-			P.log("No conf to load from disk. Creating new file.");
-			save();
-			return true;
-		}
-		
-		try {
-			P.instance.gson.fromJson(DiscUtil.read(file), Lang.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-			P.log("Failed to load the config from disk.");
-			return false;
-		}
-		
-		return true;
+	public static void save()
+	{
+		P.p.persist.save(i);
 	}
 }

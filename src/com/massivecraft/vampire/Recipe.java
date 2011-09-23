@@ -11,19 +11,22 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.vampire.util.SortUtil;
-import com.massivecraft.vampire.util.TextUtil;
+import com.massivecraft.vampire.zcore.util.TextUtil;
 
 
-public class Recipe {
+public class Recipe
+{
 	public Map<Material, Integer> materialQuantities;
 	
 	// GSON needs this noarg constructor;
-	public Recipe() {
+	public Recipe()
+	{
 		materialQuantities = new HashMap<Material, Integer>();
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void removeFromPlayer(Player player) {
+	public void removeFromPlayer(Player player)
+	{
 		Inventory inventory = player.getInventory();
 		for (Material material: this.materialQuantities.keySet()) {
 			inventory.removeItem(new ItemStack(material.getId(), this.materialQuantities.get(material)));
@@ -31,27 +34,33 @@ public class Recipe {
 		player.updateInventory(); // It is ok to use this method though it is deprecated.
 	}
 	
-	public boolean playerHasEnough(Player player) {
+	public boolean playerHasEnough(Player player)
+	{
 		Inventory inventory = player.getInventory();
 		for (Material material: this.materialQuantities.keySet()) {
-			if (getMaterialCountFromInventory(material, inventory) < this.materialQuantities.get(material)) {
+			if (getMaterialCountFromInventory(material, inventory) < this.materialQuantities.get(material))
+			{
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	public static int getMaterialCountFromInventory(Material material, Inventory inventory) {
+	public static int getMaterialCountFromInventory(Material material, Inventory inventory)
+	{
 		int count = 0;
-		for(ItemStack stack : inventory.all(material).values()) {
+		for(ItemStack stack : inventory.all(material).values())
+		{
 			count += stack.getAmount();
 		}
 		return count;
 	}
 	
-	public String getRecipeLine() {
+	public String getRecipeLine()
+	{
 		ArrayList<String> lines = new ArrayList<String>();
-		for (Entry<Material, Integer> item : SortUtil.entriesSortedByValues(this.materialQuantities)) {
+		for (Entry<Material, Integer> item : SortUtil.entriesSortedByValues(this.materialQuantities))
+		{
 			lines.add(""+item.getValue()+" "+TextUtil.getMaterialName(item.getKey()));
 		}
 		return TextUtil.implode(lines, ", ");

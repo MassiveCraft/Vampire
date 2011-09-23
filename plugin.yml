@@ -1,10 +1,6 @@
 name: Vampire
-version: 3.5.4
+version: 3.6.0
 main: com.massivecraft.vampire.P
-commands:
-  v:
-    description: All of the Vampire commands
-    usage: See documentation.
 permissions:
   vampire.admin:
     description: Give this permission to the admins on the server.
@@ -15,24 +11,9 @@ permissions:
       vampire.command.turn: true
       vampire.command.cure: true
       vampire.command.feed: true
-      vampire.command.time.*: true
-      vampire.command.load: true
-      vampire.command.save: true
   vampire.command.help:
-    description: Display a help page
+    description: Display help pages
     default: true
-  vampire.command.time.get:
-    description: get the time
-    default: true
-  vampire.command.time.set:
-    description: set the time
-    default: op
-  vampire.command.time.*:
-    description: get and set the time
-    default: op
-    children:
-      vampire.command.time.get: true
-      vampire.command.time.set: true
   vampire.command.list:
     description: List vampires on the server
     default: op
@@ -47,10 +28,4 @@ permissions:
     default: op
   vampire.command.feed:
     description: feed a vampire
-    default: op
-  vampire.command.load:
-    description: load [config | players | all] from disk
-    default: op
-  vampire.command.save:
-    description: save [config | players | all] to disk
     default: op

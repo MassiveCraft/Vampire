@@ -1,42 +1,41 @@
 package com.massivecraft.vampire.listeners;
 
-import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.P;
+import com.massivecraft.vampire.VPlayers;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.util.TextUtil;
 
 
-public class VampirePlayerListener extends PlayerListener {
+public class VampirePlayerListener extends PlayerListener
+{
 	
 	@Override
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public void onPlayerInteract(PlayerInteractEvent event)
+	{
 		Action action = event.getAction();
 		
-		if ( ! (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) ) {
+		if ( ! (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) )
+		{
 			return;
 		}
 		
-		VPlayer vplayer = VPlayer.get(event.getPlayer());
+		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
 		Material itemMaterial = event.getMaterial();
 		
 		if(vplayer.isVampire())
 		{
 			if (Conf.foodMaterials.contains(itemMaterial))
 			{
-				vplayer.sendMessage(Lang.vampiresCantEatFoodMessage);
+				vplayer.msg(Lang.vampiresCantEatFoodMessage);
 				event.setCancelled(true);
 			}
 			else if(itemMaterial == Material.PORK) //Vampire can eat fresh pork blood
@@ -52,28 +51,35 @@ public class VampirePlayerListener extends PlayerListener {
 			}
 		}
 		
-		if (vplayer.isInfected() && itemMaterial == Material.BREAD) {
+		if (vplayer.isInfected() && itemMaterial == Material.BREAD)
+		{
 			vplayer.infectionHeal(Conf.infectionBreadHealAmount);
 		}		
 		
-		if ( action != Action.RIGHT_CLICK_BLOCK) {
+		if ( action != Action.RIGHT_CLICK_BLOCK)
+		{
 			return;
 		}
 		
 		Material blockMaterial = event.getClickedBlock().getType();
 		
-		if (blockMaterial == Conf.altarInfectMaterial) {
+		if (blockMaterial == Conf.altarInfectMaterial)
+		{
 			vplayer.useAltarInfect(event.getClickedBlock());
-		} else if (blockMaterial == Conf.altarCureMaterial) {
+		} 
+		else if (blockMaterial == Conf.altarCureMaterial)
+		{
 			vplayer.useAltarCure(event.getClickedBlock());
 		}
 	}
 	
+	// TODO: Add core support for this.
 	// Used to allow usage of only "v" instead of "/v"
-	@Override
+	/*@Override
 	public void onPlayerChat(PlayerChatEvent event)
 	{		
-		if ( ! Conf.allowNoSlashCommand) {
+		if ( ! Conf.allowNoSlashCommand)
+		{
 			return;
 		}
 		
@@ -81,7 +87,7 @@ public class VampirePlayerListener extends PlayerListener {
 		{
 			//Handle the chat message
 			//Color the player name if he is a vampire
-			if(VPlayer.get(event.getPlayer()).isVampire() && Conf.enableVampireNameColorInChat)
+			if(VPlayers.i.get(event.getPlayer()).isVampire() && Conf.enableVampireNameColorInChat)
 			{ 
 				event.getPlayer().getServer().broadcastMessage(Conf.vampireChatNameColor + "<" + event.getPlayer().getName() + ">" + Conf.vampireChatMessageColor + event.getMessage());
 				event.setCancelled(true);
@@ -92,19 +98,19 @@ public class VampirePlayerListener extends PlayerListener {
 			List<String> parameters = TextUtil.split(event.getMessage().trim());
 			parameters.remove(0);
 			CommandSender sender = event.getPlayer();
-			P.instance.handleCommand(sender, parameters);
+			P.p.handleCommand(sender, parameters);
 			event.setCancelled(true);
 		}
-	}
+	}*/
 	
 	@Override
-	public void onPlayerAnimation(PlayerAnimationEvent event) {
-		VPlayer vplayer = VPlayer.get(event.getPlayer());
-		if ( ! vplayer.isVampire()) {
-			return;
-		}
+	public void onPlayerAnimation(PlayerAnimationEvent event)
+	{
+		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
+		if ( ! vplayer.isVampire()) return;
 			
-		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && Conf.jumpMaterials.contains(event.getPlayer().getItemInHand().getType())) {
+		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && Conf.jumpMaterials.contains(event.getPlayer().getItemInHand().getType()))
+		{
 			vplayer.jump(Conf.jumpDeltaSpeed, true);
 		}
 	}

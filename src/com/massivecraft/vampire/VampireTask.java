@@ -1,19 +1,17 @@
 package com.massivecraft.vampire;
 
-import java.util.TimerTask;
+import com.massivecraft.vampire.config.Conf;
 
-public class VampireTask extends TimerTask {
-	private long lastRunTime = System.currentTimeMillis();
+public class VampireTask implements Runnable
+{
 	
 	@Override
-	public void run() {
-		long now = System.currentTimeMillis();
-		long delta = (now+(long)0.01) - lastRunTime;
-		this.lastRunTime = now;
-		
+	public void run()
+	{
 		// Tick each online player
-		for(VPlayer vplayer : VPlayer.findAllOnline()) {
-			vplayer.advanceTime(delta);
+		for (VPlayer vplayer : VPlayers.i.getOnline())
+		{
+			vplayer.advanceTime(Conf.taskInterval);
 		}
 	}
 }

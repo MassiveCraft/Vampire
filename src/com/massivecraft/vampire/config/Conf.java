@@ -1,7 +1,5 @@
 package com.massivecraft.vampire.config;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,21 +11,20 @@ import org.bukkit.entity.CreatureType;
 
 import com.massivecraft.vampire.Recipe;
 import com.massivecraft.vampire.P;
-import com.massivecraft.vampire.util.DiscUtil;
 
 
-public class Conf {
-	public static transient File file = new File(P.instance.getDataFolder(), "conf.json");
+public class Conf
+{
 	
-	public static ChatColor colorSystem = ChatColor.RED;
+	/*public static ChatColor colorSystem = ChatColor.RED;
 	public static ChatColor colorChrome = ChatColor.DARK_RED;
 	public static ChatColor colorCommand = ChatColor.GOLD;
 	public static ChatColor colorParameter = ChatColor.GRAY;
-	public static ChatColor colorHighlight = ChatColor.WHITE;
+	public static ChatColor colorHighlight = ChatColor.WHITE;*/
 	
-	public static boolean allowNoSlashCommand = true;
+	// public static boolean allowNoSlashCommand = true;
 	
-	public static int timerInterval = 1000; // Defines the precision of the vampire timer. one second should be good. 
+	public final static transient int taskInterval = 40; // Defines often the task runs. 
 	
 	public static double infectionCloseCombatRisk = 1d / 30d;
 	public static double infectionCloseCombatAmount = 3D;
@@ -154,37 +151,17 @@ public class Conf {
 		altarInfectRecipe.materialQuantities.put(Material.REDSTONE, 10);
 	}
 	
+	
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
-	
-	public static boolean save() {
-		P.log("Saving config to disk.");
-		try {
-			DiscUtil.write(file, P.instance.gson.toJson(new Conf()));
-		} catch (IOException e) {
-			e.printStackTrace();
-			P.log("Failed to save the config to disk.");
-			return false;
-		}
-		return true;
+	private static transient Conf i = new Conf();
+	public static void load()
+	{
+		P.p.persist.loadOrSaveDefault(i, Conf.class);
 	}
-	
-	public static boolean load() {
-		if ( ! file.exists()) {
-			P.log("No conf to load from disk. Creating new file.");
-			save();
-			return true;
-		}
-		
-		try {
-			P.instance.gson.fromJson(DiscUtil.read(file), Conf.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-			P.log("Failed to load the config from disk.");
-			return false;
-		}
-		
-		return true;
+	public static void save()
+	{
+		P.p.persist.save(i);
 	}
 }

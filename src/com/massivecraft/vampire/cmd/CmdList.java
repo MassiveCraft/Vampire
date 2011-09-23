@@ -1,21 +1,21 @@
-package com.massivecraft.vampire.commands;
+package com.massivecraft.vampire.cmd;
 
 import java.util.*;
 
 import org.bukkit.ChatColor;
 
 import com.massivecraft.vampire.*;
-import com.massivecraft.vampire.util.TextUtil;
+import com.massivecraft.vampire.zcore.util.TextUtil;
 
 
-public class VCommandList extends VCommand {
+public class CmdList extends VCommand {
 	
-	public VCommandList() {
+	public CmdList() {
 		aliases.add("list");
 		
-		helpDescription = "List vampires on the server";
+		helpShort = "List vampires on the server";
 		
-		permission = Permission.COMMAND_LIST;
+		permission = Permission.COMMAND_LIST.node;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}
@@ -30,24 +30,39 @@ public class VCommandList extends VCommand {
 		List<String> exvampiresOnline = new ArrayList<String>();
 		List<String> exvampiresOffline = new ArrayList<String>();
 		
-		for (VPlayer vplayer : VPlayer.findAll()) {
-			if (vplayer.isVampire()) {
-				if (vplayer.isOnline()) {
+		for (VPlayer vplayer : VPlayers.i.get())
+		{
+			if (vplayer.isVampire())
+			{
+				if (vplayer.isOnline())
+				{
 					vampiresOnline.add(vplayer.getPlayer().getDisplayName());
-				} else {
-					vampiresOffline.add(vplayer.getPlayerName());
 				}
-			} else if (vplayer.isInfected()) {
-				if (vplayer.isOnline()) {
+				else
+				{
+					vampiresOffline.add(vplayer.getId());
+				}
+			}
+			else if (vplayer.isInfected())
+			{
+				if (vplayer.isOnline())
+				{
 					infectedOnline.add(vplayer.getPlayer().getDisplayName());
-				} else {
-					infectedOffline.add(vplayer.getPlayerName());
 				}
-			} else if (vplayer.isExvampire()) {
-				if (vplayer.isOnline()) {
+				else
+				{
+					infectedOffline.add(vplayer.getId());
+				}
+			}
+			else if (vplayer.isExvampire())
+			{
+				if (vplayer.isOnline())
+				{
 					exvampiresOnline.add(vplayer.getPlayer().getDisplayName());
-				} else {
-					exvampiresOffline.add(vplayer.getPlayerName());
+				}
+				else
+				{
+					exvampiresOffline.add(vplayer.getId());
 				}
 			}
 		}
@@ -63,6 +78,6 @@ public class VCommandList extends VCommand {
 		messages.add("= Exvampires Offline: "+ChatColor.WHITE + TextUtil.implode(exvampiresOffline, ", "));
 		
 		// Send them
-		this.sendMessage(messages);	
+		this.msg(messages);	
 	}
 }

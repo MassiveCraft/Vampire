@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
 import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VPlayers;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.EntityUtil;
@@ -45,7 +46,7 @@ public class VampireEntityListener extends EntityListener {
 		// If the damagee is a player
 		if (damagee instanceof Player) {
 			pDamagee = (Player)damagee;
-			vpDamagee = VPlayer.get(pDamagee);
+			vpDamagee = VPlayers.i.get(pDamagee);
 			
 			// Vampires can not drown or take fall damage.
 			if (vpDamagee.isVampire() && (event.getCause() == DamageCause.DROWNING || event.getCause() == DamageCause.FALL)) {
@@ -60,13 +61,16 @@ public class VampireEntityListener extends EntityListener {
 		}
 		
 		// For further interest this must be a close combat attack by another entity
-		if (event.getCause() != DamageCause.ENTITY_ATTACK) {
+		if (event.getCause() != DamageCause.ENTITY_ATTACK)
+		{
 			return;
 		}
-		if ( ! (event instanceof EntityDamageByEntityEvent)) {
+		if ( ! (event instanceof EntityDamageByEntityEvent))
+		{
 			return;
 		}
-		if (event instanceof EntityDamageByProjectileEvent) {
+		if (event instanceof EntityDamageByProjectileEvent)
+		{
 			return;
 		}
 		
@@ -78,7 +82,7 @@ public class VampireEntityListener extends EntityListener {
 			return;
 		}
 		pDamager = (Player)damager;
-		vpDamager = VPlayer.get(pDamager);
+		vpDamager = VPlayers.i.get(pDamager);
 		
 		// The damage will be modified under certain circumstances.
 		float damage = event.getDamage();
@@ -91,11 +95,11 @@ public class VampireEntityListener extends EntityListener {
 		// Modify damage if damagee is a vampire
 		if (damagee instanceof Player) {
 			pDamagee = (Player)damagee;
-			vpDamagee = VPlayer.get(pDamagee);
+			vpDamagee = VPlayers.i.get(pDamagee);
 			if (vpDamagee.isVampire()) {
 				if (Conf.woodMaterials.contains(pDamager.getItemInHand().getType())) {
 					damage *= Conf.combatDamageReceivedWoodFactor;
-					vpDamagee.sendMessage(Lang.messageWoodCombatWarning);
+					vpDamagee.msg(Lang.messageWoodCombatWarning);
 				} else {
 					damage *= Conf.combatDamageReceivedFactor;
 				}
@@ -121,7 +125,7 @@ public class VampireEntityListener extends EntityListener {
 			return;
 		}
 		
-		VPlayer vplayer = VPlayer.get((Player)event.getTarget());
+		VPlayer vplayer = VPlayers.i.get((Player)event.getTarget());
 		
 		// ... and that player is a vampire ...
 		if ( ! vplayer.isVampire()) {

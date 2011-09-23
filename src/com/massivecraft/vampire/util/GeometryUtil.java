@@ -40,7 +40,8 @@ public class GeometryUtil {
 		
 		for(int y=yFrom; y<=yTo; y++){
 			for(int z=zFrom; z<=zTo; z++){
-				for(int x=xFrom; x<=xTo; x++) {
+				for(int x=xFrom; x<=xTo; x++)
+				{
 					if( ! ball || x*x+y*y+z*z <= radius*radius) {
 						blocks.add(centerBlock.getRelative(x, -y, z));
 					}
@@ -51,18 +52,22 @@ public class GeometryUtil {
 	}
 	
 	// How long between two locations?
-	public static double distanceBetweenLocations(Location location1, Location location2) {
+	public static double distanceBetweenLocations(Location location1, Location location2)
+	{
 		double X = location1.getX() - location2.getX();
 		double Y = location1.getY() - location2.getY();
 		double Z = location1.getZ() - location2.getZ();
 		return Math.sqrt(X*X+Y*Y+Z*Z);
 	}
 	
-	public static int countNearby(Block centerBlock, Material material, double radius) {
+	public static int countNearby(Block centerBlock, Material material, double radius)
+	{
 		ArrayList<Block> ballBlocks = GeometryUtil.getBallBlocks(centerBlock, radius);
 		int count = 0;
-		for (Block block : ballBlocks) {
-			if (block.getType() == material) {
+		for (Block block : ballBlocks)
+		{
+			if (block.getType() == material)
+			{
 				count += 1;
 			}
 		}

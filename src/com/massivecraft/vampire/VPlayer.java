@@ -1,12 +1,9 @@
 package com.massivecraft.vampire;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -17,21 +14,19 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.google.gson.reflect.TypeToken;
 import com.massivecraft.vampire.config.*;
-import com.massivecraft.vampire.util.DiscUtil;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.GeometryUtil;
+import com.massivecraft.vampire.zcore.persist.PlayerEntity;
 
 /**
  * The VPlayer is a "skin" for a normal player.
  * Through this skin we can reach the player plus extra plugin specific data and functionality.
  */
-public class VPlayer {
-	public static transient Map<String, VPlayer> VPlayers = new HashMap<String, VPlayer>();
-	public static transient File file = new File(P.instance.getDataFolder(), "players.json");
+public class VPlayer extends PlayerEntity
+{
+	public static transient P p = P.p;
 	
-	private transient String playername;
 	private boolean isVampire = false;
 	private boolean isTrueBlood = false;
 	private double blood = 100;
@@ -40,51 +35,50 @@ public class VPlayer {
 	private long truceBreakTimeLeft = 0; // How many milliseconds more will the monsters be hostile?
 	private transient double healthAccumulator = 0;
 	public transient long regenDelayLeftMilliseconds = 0;
-
-	public VPlayer(Player player) {
-		this.playername = player.getName();
-	}
-	
-	public VPlayer(String playername) {
-		this.playername = playername;
-	}
 	
 	// GSON need this noarg constructor.
-	public VPlayer() {
+	public VPlayer()
+	{
+		
 	}
 	
-	public Player getPlayer() {
-		return P.instance.getServer().getPlayer(playername);
-	}
-	
-	public String getPlayerName() {
-		return this.playername;
+	public Player getPlayer()
+	{
+		return Bukkit.getPlayer(this.getId());
 	}
 	
 	// -------------------------------------------- //
 	// Online / Offline State Checking
 	// -------------------------------------------- //
 	
-	public boolean isOnline() {
-		return P.instance.getServer().getPlayer(playername) != null;
+	public boolean isOnline()
+	{
+		return this.getPlayer() != null;
 	}
 	
-	public boolean isOffline() {
+	public boolean isOffline()
+	{
 		return ! isOnline();
 	}
 	
 	// -------------------------------------------- //
 	// The Each Second Tick
 	// -------------------------------------------- //
-	public void advanceTime(long milliseconds) {
-		if (this.isVampire()) {
+	public void advanceTime(long ticks)
+	{
+		long milliseconds = ticks * 1000 / 20;
+		
+		if (this.isVampire())
+		{
 			this.timeAsVampire += milliseconds;
 			this.combustAdvanceTime(milliseconds);
 			this.regenAdvanceTime(milliseconds);
 			this.thirstAdvanceTime(milliseconds);
 			this.truceBreakAdvanceTime(milliseconds);
 			this.spreadNecrosisAdvanceTime(milliseconds);
-		} else if (this.isInfected()) {
+		}
+		else if (this.isInfected())
+		{
 			this.infectionAdvanceTime(milliseconds);
 		}
 	}
@@ -93,45 +87,49 @@ public class VPlayer {
 	// Vampire
 	// -------------------------------------------- //
 	
-	public boolean isVampire() {
+	public boolean isVampire()
+	{
 		return this.isVampire;
 	}	
 	
-	public boolean isTrueBlood() {
+	public boolean isTrueBlood()
+	{
 		return this.isTrueBlood;
 	}
 	
-	public void setIsTrueBlood(boolean val) {
+	public void setIsTrueBlood(boolean val)
+	{
 		this.isTrueBlood = val;
 	}
 	
-	public void turn() {
+	public void turn()
+	{
 		this.isVampire = true;
 		this.infectionSet(0);
 		
 		if(this.isTrueBlood)
 		{
-			this.sendMessage(Lang.turnTrueBloodMessages);
-			P.log(this.playername + " turned into a TrueBlood vampire.");
+			this.msg(Lang.turnTrueBloodMessages);
+			p.log(this.getId() + " turned into a TrueBlood vampire.");
 		}
 		else
 		{
-			this.sendMessage(Lang.turnMessages);
-			P.log(this.playername + " turned into a common vampire.");
+			this.msg(Lang.turnMessages);
+			p.log(this.getId() + " turned into a common vampire.");
 		}
-		VPlayer.save();
 	}
 	
-	public void cure() {
+	public void cure()
+	{
 		this.isVampire = false;
 		this.isTrueBlood = false;
 		this.infectionSet(0);
-		this.sendMessage(Lang.cureMessages);
+		this.msg(Lang.cureMessages);
 		//Vampire.log(this.playername + " was cured and is no longer a vampire.");
-		VPlayer.save();
 	}
 	
-	public boolean isExvampire() {
+	public boolean isExvampire()
+	{
 		return ( ! this.isVampire() && this.timeAsVampire > 0);
 	}
 	
@@ -139,67 +137,90 @@ public class VPlayer {
 	// Blood :P
 	// -------------------------------------------- //
 	
-	public double bloodGet() {
+	public double bloodGet()
+	{
 		return this.blood;
 	}
-	public void bloodSet(double amount) {
+	public void bloodSet(double amount)
+	{
 		this.blood = this.limitDouble(amount);
 	}
-	public void bloodAlter(double delta) {
+	
+	public void bloodAlter(double delta)
+	{
 		this.bloodSet(this.bloodGet() + delta);
 	}
 	
-	public void bloodAlter(double delta, String reason) {
+	public void bloodAlter(double delta, String reason)
+	{
 		bloodAlter(delta);
-		this.sendMessage(String.format(Lang.messageBloodMeterWithDiffAndReason, this.bloodGet(), delta, reason));
+		this.msg(String.format(Lang.messageBloodMeterWithDiffAndReason, this.bloodGet(), delta, reason));
 	}
 	
-	public void bloodDrink(double amount, String source) {
-		if (this.bloodGet() == 100D) {
+	public void bloodDrink(double amount, String source)
+	{
+		if (this.bloodGet() == 100D)
+		{
 			return;
 		}
 		this.bloodAlter(amount, String.format(Lang.messageBloodDrinkReason, source));
 	}
 	
-	public void bloodSendMeterMessage() {
-		if(this.isTrueBlood) this.sendMessage(Lang.messageTrueBloodVampire);
-		else  this.sendMessage(Lang.messageBasicVampire);
-		this.sendMessage(String.format(Lang.messageBloodMeter, this.bloodGet()));
+	public void bloodSendMeterMessage()
+	{
+		if(this.isTrueBlood)
+		{
+			this.msg(Lang.messageTrueBloodVampire);
+		}
+		else
+		{
+			this.msg(Lang.messageBasicVampire);
+		}
+		
+		this.msg(String.format(Lang.messageBloodMeter, this.bloodGet()));
 	}
 	
 	// -------------------------------------------- //
 	// Monster Truce Feature (Passive)
 	// -------------------------------------------- //
-	public boolean truceIsBroken() {
+	public boolean truceIsBroken()
+	{
 		return this.truceBreakTimeLeft != 0;
 	}
 	
-	public void truceBreak() {
-		if ( ! this.truceIsBroken()) {
-			this.sendMessage(Lang.messageTruceBroken);
+	public void truceBreak()
+	{
+		if ( ! this.truceIsBroken())
+		{
+			this.msg(Lang.messageTruceBroken);
 		}
 		this.truceBreakTimeLeftSet(Conf.truceBreakTime);
 	}
 	
-	public void truceRestore() {
-		this.sendMessage(Lang.messageTruceRestored);
+	public void truceRestore()
+	{
+		this.msg(Lang.messageTruceRestored);
 		this.truceBreakTimeLeftSet(0);
 		
 		Player me = this.getPlayer();
 		
 		// Untarget the player.
-		for (LivingEntity entity : this.getPlayer().getWorld().getLivingEntities()) {
-			if ( ! (entity instanceof Creature)) {
+		for (LivingEntity entity : this.getPlayer().getWorld().getLivingEntities())
+		{
+			if ( ! (entity instanceof Creature))
+			{
 				continue;
 			}
 			
-			if ( ! Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(entity))) {
+			if ( ! Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(entity)))
+			{
 				continue;
 			}
 			
 			Creature creature = (Creature)entity;
 			LivingEntity target = creature.getTarget();
-			if ( ! (target != null && creature.getTarget().equals(me))) {
+			if ( ! (target != null && creature.getTarget().equals(me)))
+			{
 				continue;
 			}
 			
@@ -207,51 +228,64 @@ public class VPlayer {
 		}
 	}
 	
-	public void truceBreakAdvanceTime(long milliseconds) {
-		if ( ! this.truceIsBroken()) {
+	public void truceBreakAdvanceTime(long milliseconds)
+	{
+		if ( ! this.truceIsBroken())
+		{
 			return;
 		}
 		
 		this.truceBreakTimeLeftAlter(-milliseconds);
 		
-		if ( ! this.truceIsBroken()) {
+		if ( ! this.truceIsBroken())
+		{
 			this.truceRestore();
 		}
 	}
 	
-	public long truceBreakTimeLeftGet() {
+	public long truceBreakTimeLeftGet()
+	{
 		return this.truceBreakTimeLeft;
 	}
 	
-	private void truceBreakTimeLeftSet(long milliseconds) {
-		if (milliseconds < 0) {
+	private void truceBreakTimeLeftSet(long milliseconds)
+	{
+		if (milliseconds < 0)
+		{
 			this.truceBreakTimeLeft = 0;
-		} else {
+		}
+		else
+		{
 			this.truceBreakTimeLeft = milliseconds;
 		}
 	}
 	
-	private void truceBreakTimeLeftAlter(long delta) {
+	private void truceBreakTimeLeftAlter(long delta)
+	{
 		this.truceBreakTimeLeftSet(this.truceBreakTimeLeftGet() + delta);
 	}
 	
 	// -------------------------------------------- //
 	// Jump ability
 	// -------------------------------------------- //
-	public void jump(double deltaSpeed, boolean upOnly) {
+	public void jump(double deltaSpeed, boolean upOnly)
+	{
 		Player player = this.getPlayer();
 		
 		if (this.bloodGet() - Conf.jumpBloodCost <= Conf.thirstUnderBlood) {
-			this.sendMessage(Lang.jumpMessageNotEnoughBlood);
+			this.msg(Lang.jumpMessageNotEnoughBlood);
 			return;
 		}
 		
 		this.bloodAlter(-Conf.jumpBloodCost, "Jump!");
 		
 		Vector vjadd;
-		if (upOnly) {
+		if (upOnly)
+		{
 			vjadd = new Vector(0, 1, 0);
-		} else {
+		}
+		else
+		{
 			vjadd = player.getLocation().getDirection();
 			vjadd.normalize();
 		}
@@ -287,7 +321,7 @@ public class VPlayer {
 			}
 			catch (Exception e)
 			{
-				P.log(Level.WARNING, e.getMessage());
+				p.log(Level.WARNING, e.getMessage());
 				break;
 			}				
 		}
@@ -300,9 +334,12 @@ public class VPlayer {
 	public void thirstAdvanceTime(long milliseconds)
 	{
 		// There is a small blood loss over time.
-		if (isTrueBlood()) {
+		if (isTrueBlood())
+		{
 			this.bloodAlter(-TrueBloodConf.bloodDecreasePerSecond);
-		} else {
+		}
+		else
+		{
 			this.bloodAlter(-CommonConf.bloodDecreasePerSecond);
 		}
 		
@@ -322,14 +359,20 @@ public class VPlayer {
 		// Use as much of the accumulator as possible
 		Integer delta = this.applyHealthAccumulator();
 		
-		if (delta == null) {
-			this.sendMessage(Lang.thirstDeathMessage);
-		} else if (delta < 0) {
+		if (delta == null)
+		{
+			this.msg(Lang.thirstDeathMessage);
+		}
+		else if (delta < 0)
+		{
 			// We took damage
-			if (strong) {
-				this.sendMessage(Lang.thirstStrongMessages.get(P.random.nextInt(Lang.thirstStrongMessages.size())));
-			} else {
-				this.sendMessage(Lang.thirstMessages.get(P.random.nextInt(Lang.thirstMessages.size())));
+			if (strong)
+			{
+				this.msg(Lang.thirstStrongMessages.get(P.random.nextInt(Lang.thirstStrongMessages.size())));
+			}
+			else
+			{
+				this.msg(Lang.thirstMessages.get(P.random.nextInt(Lang.thirstMessages.size())));
 			}
 		}
 		
@@ -339,13 +382,15 @@ public class VPlayer {
 	// -------------------------------------------- //
 	// Regenerate Feature (Passive)
 	// -------------------------------------------- //
-	public void regenAdvanceTime(long milliseconds) {
+	public void regenAdvanceTime(long milliseconds)
+	{
 		
 		Player player = this.getPlayer();
 		int currentHealth = player.getHealth();
 		
 		// Only regenerate if hurt and we're > blood
-		if ( (currentHealth == 20) && (this.bloodGet() > Conf.thirstUnderBlood) ) {
+		if ( (currentHealth == 20) && (this.bloodGet() > Conf.thirstUnderBlood) )
+		{
 			return;
 		}
 		
@@ -356,18 +401,21 @@ public class VPlayer {
 		}
 		
 		// Check the delay
-		if (this.regenDelayLeftMilliseconds > 0) {
+		if (this.regenDelayLeftMilliseconds > 0)
+		{
 			this.regenDelayLeftMilliseconds -= milliseconds;
 			
-			if (this.regenDelayLeftMilliseconds < 0) {
+			if (this.regenDelayLeftMilliseconds < 0)
+			{
 				this.regenDelayLeftMilliseconds = 0;
 			}
 			
-			if (this.regenDelayLeftMilliseconds > 0) {
+			if (this.regenDelayLeftMilliseconds > 0)
+			{
 				return;
 			}
 			
-			this.sendMessage(Lang.regenStartMessage);
+			this.msg(Lang.regenStartMessage);
 		}
 		
 		// Calculate blood and health deltas
@@ -376,7 +424,8 @@ public class VPlayer {
 		double deltaBlood = - deltaHeal * Conf.regenBloodPerHealth;
 		
 		// But we can't regenerate into a state of thirstiness
-		if (this.bloodGet() + deltaBlood < Conf.thirstUnderBlood) {
+		if (this.bloodGet() + deltaBlood < Conf.thirstUnderBlood)
+		{
 			deltaBlood = Conf.thirstUnderBlood - this.bloodGet();
 			deltaHeal = -deltaBlood / Conf.regenBloodPerHealth;
 		}
@@ -389,8 +438,10 @@ public class VPlayer {
 	// Common for Thirst and Regen: The Health Accumulator applier
 	// -------------------------------------------- //
 	
-	public Integer applyHealthAccumulator() {
-		if (this.healthAccumulator > 0 && this.healthAccumulator < 1) {
+	public Integer applyHealthAccumulator()
+	{
+		if (this.healthAccumulator > 0 && this.healthAccumulator < 1)
+		{
 			return 0;
 		}
 		
@@ -407,7 +458,8 @@ public class VPlayer {
 			this.setHealth(targetHealth);
 		}
 		
-		if (targetHealth <=0) {
+		if (targetHealth <=0)
+		{
 			return null; // Death signal.
 		}
 		
@@ -417,8 +469,9 @@ public class VPlayer {
 	// -------------------------------------------- //
 	// Combustion
 	// -------------------------------------------- //
-	public boolean combustAdvanceTime(long milliseconds) {
-		if (!this.standsInSunlight())	return false;
+	public boolean combustAdvanceTime(long milliseconds)
+	{
+		if (!this.standsInSunlight()) return false;
 		
 		if(this.isTrueBlood && !TrueBloodConf.burnInSunlight) return false;
 		else if(!CommonConf.burnInSunlight) return false;
@@ -429,8 +482,9 @@ public class VPlayer {
 		ticksTillNext += 5; // just to be on the safe side.
 		
 		Player player = this.getPlayer();
-		if (player.getFireTicks() <= 0) {
-			this.sendMessage(Lang.combustMessage);
+		if (player.getFireTicks() <= 0)
+		{
+			this.msg(Lang.combustMessage);
 		}
 		
 		player.setFireTicks(ticksTillNext + Conf.combustFireExtinguishTicks);
@@ -438,16 +492,30 @@ public class VPlayer {
 		return true;
 	}
 	
-	public boolean standsInSunlight() {
+	public boolean standsInSunlight()
+	{
 		Player player = this.getPlayer();
 		
 		// No need to set on fire if the water will put the fire out at once.
 		Material material = player.getLocation().getBlock().getType();
 		World playerWorld = player.getWorld();
 		
-		if ((player.getWorld().getEnvironment() == Environment.NETHER) 
-				|| this.worldTimeIsNight() || this.isUnderRoof() || material == Material.STATIONARY_WATER
-				|| material == Material.WATER || playerWorld.hasStorm() || playerWorld.isThundering())
+		if
+		(
+				player.getWorld().getEnvironment() == Environment.NETHER
+				||
+				this.worldTimeIsNight()
+				||
+				this.isUnderRoof()
+				||
+				material == Material.STATIONARY_WATER
+				||
+				material == Material.WATER
+				||
+				playerWorld.hasStorm()
+				||
+				playerWorld.isThundering()
+		)
 		{
 			return false;
 		}
@@ -455,7 +523,8 @@ public class VPlayer {
 		return true;
 	}
 	
-	public boolean isUnderRoof() {
+	public boolean isUnderRoof()
+	{
 		/*
 		We start checking opacity 2 blocks up.
 		As Max Y is 127 there CAN be a roof over the player if he is standing in block 125:
@@ -498,7 +567,8 @@ public class VPlayer {
 		return retVal;
 	}
 	
-	public boolean worldTimeIsNight() {
+	public boolean worldTimeIsNight()
+	{
 		long time = this.getPlayer().getWorld().getTime() % 24000;
 		
 		if (time < Conf.combustFromTime || time > Conf.combustToTime) return true;
@@ -509,58 +579,63 @@ public class VPlayer {
 	// -------------------------------------------- //
 	// Infection 
 	// -------------------------------------------- //
-	public boolean isInfected() {
+	public boolean isInfected()
+	{
 		return this.infection > 0D && this.isVampire == false;
 	}
 	
-	public double infectionGet() {
+	public double infectionGet()
+	{
 		return this.infection;
 	}
-	public void infectionSet(double infection) {
-		double previousinfection = this.infectionGet();
+	
+	public void infectionSet(double infection)
+	{
 		this.infection = this.limitDouble(infection, 0D, 100D);
-		
-		// Wan't to save if someone was uninfected:
-		// We want to save if someone was infected.
-		if ((previousinfection != 0 && this.infection == 0) || (previousinfection == 0 && this.infection != 0))
-		{
-			VPlayer.save();
-		}
 	}
-	public void infectionAlter(double infection) {
+	
+	public void infectionAlter(double infection)
+	{
 		this.infectionSet(this.infectionGet() + infection);
 	}
 	
-	public void infectionHeal(double amount) {
-		if (this.isVampire()) {
+	public void infectionHeal(double amount)
+	{
+		if (this.isVampire())
+		{
 			return;
 		}
 		
 		double current = this.infectionGet();
 		
-		if (current == 0D ) {
+		if (current == 0D )
+		{
 			// The player is already completely healthy
 			return;
 		}
 		
 		current -= amount; 
 		
-		if (current <= 0D) {
+		if (current <= 0D)
+		{
 			this.infectionSet(0D);
-			this.sendMessage(Lang.infectionMessageCured);
+			this.msg(Lang.infectionMessageCured);
 			return;
 		}
 		
 		this.infectionSet(current);
-		this.sendMessage(Lang.infectionMessageHeal);
+		this.msg(Lang.infectionMessageHeal);
 	}
 	
-	public void infectionAdvanceTime(long milliseconds) {
+	public void infectionAdvanceTime(long milliseconds)
+	{
 		this.infectionAdvance(Conf.infectionProgressPerSecond * milliseconds / 1000D );
 	}
 	
-	public void infectionAdvance(double amount) {
-		if (this.isVampire()) {
+	public void infectionAdvance(double amount)
+	{
+		if (this.isVampire())
+		{
 			return;
 		}
 		
@@ -568,26 +643,30 @@ public class VPlayer {
 		this.infectionAlter(amount);
 		int newMessageIndex = this.infectionGetMessageIndex();
 		
-		if (this.infectionGet() == 100) {
+		if (this.infectionGet() == 100)
+		{
 			this.turn();
 			return;
 		}
 		
-		if (oldMessageIndex != newMessageIndex) {
+		if (oldMessageIndex != newMessageIndex)
+		{
 			this.damageTake(1);
-			this.sendMessage(Lang.infectionMessagesProgress.get(newMessageIndex));
-			this.sendMessage(Lang.infectionBreadHintMessages.get(P.random.nextInt(Lang.infectionBreadHintMessages.size())));
+			this.msg(Lang.infectionMessagesProgress.get(newMessageIndex));
+			this.msg(Lang.infectionBreadHintMessages.get(P.random.nextInt(Lang.infectionBreadHintMessages.size())));
 		}
 	}
 	
-	public int infectionGetMessageIndex() {
+	public int infectionGetMessageIndex()
+	{
 		return (int)((Lang.infectionMessagesProgress.size()+1) * this.infectionGet() / 100D) - 1;
 	}
 	
-	public void infectionRisk() {
+	public void infectionRisk()
+	{
 		//Vampire.log(this.playername + " risked infection.");
 		if (P.random.nextDouble() <= Conf.infectionCloseCombatRisk) {
-			P.log(this.playername + " contracted vampirism infection.");
+			p.log(this.getId() + " contracted vampirism infection.");
 			this.infectionAdvance(Conf.infectionCloseCombatAmount);
 		}
 	}
@@ -596,105 +675,118 @@ public class VPlayer {
 	// Altar Usage
 	// -------------------------------------------- //
 	
-	public void useAltarInfect(Block centerBlock) {
+	public void useAltarInfect(Block centerBlock)
+	{
 		// The altar must be big enough
 		int count = GeometryUtil.countNearby(centerBlock, Conf.altarInfectMaterialSurround, Conf.altarInfectMaterialSurroundRadious);
-		if (count == 0) {
+		if (count == 0)
+		{
 			return;
 		}
 		
-		this.sendMessage(" ");
+		this.msg(" ");
 		
-		if (count < Conf.altarInfectMaterialSurroundCount) {
-			this.sendMessage(Lang.altarInfectToSmall);
+		if (count < Conf.altarInfectMaterialSurroundCount)
+		{
+			this.msg(Lang.altarInfectToSmall);
 			return;
 		}
 		
 		// Always examine first
-		this.sendMessage(Lang.altarInfectExamineMsg);
+		this.msg(Lang.altarInfectExamineMsg);
 		
 		// Is Vampire
-		if (this.isVampire()) {
-			this.sendMessage(Lang.altarInfectExamineMsgNoUse);
+		if (this.isVampire())
+		{
+			this.msg(Lang.altarInfectExamineMsgNoUse);
 			return;
 		}
 		
 		// Is Infected
-		if (this.isInfected()) {
-			this.sendMessage(Lang.altarInfectExamineWhileInfected);
+		if (this.isInfected())
+		{
+			this.msg(Lang.altarInfectExamineWhileInfected);
 			return;
 		}
 		
 		// Is healthy and thus can be infected...
-		if (Conf.altarInfectRecipe.playerHasEnough(this.getPlayer())) {
-			this.sendMessage(Lang.altarUseIngredientsSuccess);
-			this.sendMessage(Conf.altarInfectRecipe.getRecipeLine());
-			this.sendMessage(Lang.altarInfectUse);
-			P.log(this.playername + " was infected by an evil altar.");
+		if (Conf.altarInfectRecipe.playerHasEnough(this.getPlayer()))
+		{
+			this.msg(Lang.altarUseIngredientsSuccess);
+			this.msg(Conf.altarInfectRecipe.getRecipeLine());
+			this.msg(Lang.altarInfectUse);
+			p.log(this.getId() + " was infected by an evil altar.");
 			Conf.altarInfectRecipe.removeFromPlayer(this.getPlayer());
 			this.infectionAlter(3D);
 			this.isTrueBlood = true;
-		} else {
-			this.sendMessage(Lang.altarUseIngredientsFail);
-			this.sendMessage(Conf.altarInfectRecipe.getRecipeLine());
+		}
+		else
+		{
+			this.msg(Lang.altarUseIngredientsFail);
+			this.msg(Conf.altarInfectRecipe.getRecipeLine());
 		}
 	}
 	
-	public void useAltarCure(Block centerBlock) {
+	public void useAltarCure(Block centerBlock)
+	{
 		// The altar must be big enough;
 		int count = GeometryUtil.countNearby(centerBlock, Conf.altarCureMaterialSurround, Conf.altarCureMaterialSurroundRadious);
-		if (count == 0) {
+		if (count == 0)
+		{
 			return;
 		}
 		
-		this.sendMessage(" ");
+		this.msg(" ");
 		
-		if (count < Conf.altarCureMaterialSurroundCount) {
-			this.sendMessage(Lang.altarCureToSmall);
+		if (count < Conf.altarCureMaterialSurroundCount)
+		{
+			this.msg(Lang.altarCureToSmall);
 			return;
 		}
 		
 		// Always examine first
-		this.sendMessage(Lang.altarCureExamineMsg);
+		this.msg(Lang.altarCureExamineMsg);
 		
 		// If healthy
-		if ( ! this.isInfected() && ! this.isVampire()) {
-			this.sendMessage(Lang.altarCureExamineMsgNoUse);
+		if ( ! this.isInfected() && ! this.isVampire())
+		{
+			this.msg(Lang.altarCureExamineMsgNoUse);
 			return;
 		}
 		
 		// If Infected
-		if (this.isInfected()) {
-			this.sendMessage(Lang.altarCureExamineWhileInfected);
+		if (this.isInfected())
+		{
+			this.msg(Lang.altarCureExamineWhileInfected);
 			this.infectionSet(0);
-			this.sendMessage(Lang.infectionMessageCured);
+			this.msg(Lang.infectionMessageCured);
 			return;
 		}
 		
 		// Is vampire and thus can be cured...
 		if(this.isTrueBlood && TrueBloodConf.altarCureRecipe.playerHasEnough(this.getPlayer()))
 		{
-			this.sendMessage(Lang.altarUseIngredientsSuccess);
-			this.sendMessage(TrueBloodConf.altarCureRecipe.getRecipeLine());
-			this.sendMessage(Lang.altarCureUse);
+			this.msg(Lang.altarUseIngredientsSuccess);
+			this.msg(TrueBloodConf.altarCureRecipe.getRecipeLine());
+			this.msg(Lang.altarCureUse);
 			TrueBloodConf.altarCureRecipe.removeFromPlayer(this.getPlayer());
-			P.log(this.playername + " was cured from being a TrueBlood vampire by a healing altar.");
+			p.log(this.getId() + " was cured from being a TrueBlood vampire by a healing altar.");
 			this.cure();
 		} 
 		else if(CommonConf.altarCureRecipe.playerHasEnough(this.getPlayer()))
 		{
-			this.sendMessage(Lang.altarUseIngredientsSuccess);
-			this.sendMessage(CommonConf.altarCureRecipe.getRecipeLine());
-			this.sendMessage(Lang.altarCureUse);
+			this.msg(Lang.altarUseIngredientsSuccess);
+			this.msg(CommonConf.altarCureRecipe.getRecipeLine());
+			this.msg(Lang.altarCureUse);
 			CommonConf.altarCureRecipe.removeFromPlayer(this.getPlayer());
-			P.log(this.playername + " was cured from being a Common vampire by a healing altar.");
+			p.log(this.getId() + " was cured from being a Common vampire by a healing altar.");
 			this.cure();
 		}
 		else
 		{
-			this.sendMessage(Lang.altarUseIngredientsFail);
-			if(this.isTrueBlood) this.sendMessage(TrueBloodConf.altarCureRecipe.getRecipeLine());
-			else this.sendMessage(CommonConf.altarCureRecipe.getRecipeLine());
+			this.msg(Lang.altarUseIngredientsFail);
+			if(this.isTrueBlood) this.msg(TrueBloodConf.altarCureRecipe.getRecipeLine());
+			else this.msg(CommonConf.altarCureRecipe.getRecipeLine());
 		}
 	}
 	
@@ -702,15 +794,20 @@ public class VPlayer {
 	// Damage methods (Yes I use CraftBukkit here :P)
 	// -------------------------------------------- //
 	
-	public void damageTake(int damage) {
+	public void damageTake(int damage)
+	{
 		Player player = this.getPlayer();
 		this.setHealth(player.getHealth() - damage);
 	}
 	
-	public void setHealth(int health) {
-		if (health < 0 ) {
+	public void setHealth(int health)
+	{
+		if (health < 0 )
+		{
 			health = 0;
-		} else if (health > 20) {
+		}
+		else if (health > 20)
+		{
 			health = 20;
 		}
 		this.getPlayer().setHealth(health);
@@ -719,146 +816,33 @@ public class VPlayer {
 	// -------------------------------------------- //
 	// Commonly used limiter of double
 	// -------------------------------------------- //
-	public double limitDouble(double d, double min, double max) {
-		if (d < min) {
+	public double limitDouble(double d, double min, double max)
+	{
+		if (d < min)
+		{
 			return min;
 		}
 		
-		if (d > max) {
+		if (d > max)
+		{
 			return max;
 		}
 		
 		return d;
 	}
 	
-	public double limitDouble(double d) {
+	public double limitDouble(double d)
+	{
 		return this.limitDouble(d, 0, 100);
-	}
-	
-	// -------------------------------------------- //
-	// VPlayer search queries
-	// -------------------------------------------- //
-	
-	public static Set<VPlayer> findAllOnlineInfected() {
-		Set<VPlayer> vplayers = new HashSet<VPlayer>();
-		for (VPlayer vplayer : VPlayer.VPlayers.values()) {
-			if (vplayer.isOnline() && vplayer.isInfected()) {
-				vplayers.add(vplayer);
-			}
-		}
-		return vplayers;
-	}
-	
-	public static Set<VPlayer> findAllOnlineVampires() {
-		Set<VPlayer> vplayers = new HashSet<VPlayer>();
-		for (VPlayer vplayer : VPlayer.VPlayers.values()) {
-			if (vplayer.isOnline() && vplayer.isVampire()) {
-				vplayers.add(vplayer);
-			}
-		}
-		return vplayers;
-	}
-	
-	public static Set<VPlayer> findAllOnline() {
-		Set<VPlayer> vplayers = new HashSet<VPlayer>();
-		for (Player player : P.instance.getServer().getOnlinePlayers()) {
-			vplayers.add(VPlayer.get(player));
-		}
-		return vplayers;
-	}
-	
-	public static Collection<VPlayer> findAll() {
-		// Make sure all players get VPlayer entries.
-		findAllOnline();
-		return VPlayer.VPlayers.values();
-	}
-	
-	// -------------------------------------------- //
-	// Get VPlayer
-	// You can only get a VPlayer "skin" for online players.
-	// The same VPlayer object is always return for the same player.
-	// This means you can use the == operator. No .equals method necessary.
-	// -------------------------------------------- //
-	public static VPlayer get(String playername) {
-		if (VPlayers.containsKey(playername)) {
-			return VPlayers.get(playername);
-		}
-		
-		VPlayer vplayer = new VPlayer(playername);
-		VPlayers.put(playername, vplayer);
-		return vplayer;
-	}
-	
-	// You should use this one to be sure you do not spell the player name wrong.
-	public static VPlayer get(Player player) {
-		return get(player.getName());
-	}
-	
-	// -------------------------------------------- //
-	// Messages
-	// -------------------------------------------- //
-	public void sendMessage(String message) {
-		this.getPlayer().sendMessage(Conf.colorSystem + message);
-	}
-	
-	public void sendMessage(List<String> messages) {
-		for(String message : messages) {
-			this.sendMessage(message);
-		}
 	}
 	
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
 	
-	public boolean shouldBeSaved() {
+	@Override
+	public boolean shouldBeSaved()
+	{
 		return this.isVampire() || this.isInfected() || this.isExvampire();
-	}
-	
-	public static boolean save() {
-		P.log("Saving players to disk");
-		
-		// We only wan't to save the vplayers with non default values
-		Map<String, VPlayer> vplayersToSave = new HashMap<String, VPlayer>();
-		for (Entry<String, VPlayer> entry : VPlayers.entrySet()) {
-			if (entry.getValue().shouldBeSaved()) {
-				vplayersToSave.put(entry.getKey(), entry.getValue());
-			}
-		}
-		
-		try {
-			DiscUtil.write(file, P.instance.gson.toJson(vplayersToSave));
-		} catch (IOException e) {
-			P.log("Failed to save the players to disk.");
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-	
-	public static boolean load() {
-		if ( ! file.exists()) {
-			P.log("No players to load from disk. Creating new file.");
-			save();
-			return true;
-		}
-		
-		try {
-			Type type = new TypeToken<Map<String, VPlayer>>(){}.getType();
-			VPlayers = P.instance.gson.fromJson(DiscUtil.read(file), type);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		fillPlayernames();
-			
-		return true;
-	}
-	
-	public static void fillPlayernames() {
-		for(Entry<String, VPlayer> entry : VPlayers.entrySet()) {
-			entry.getValue().playername = entry.getKey();
-		}
 	}
 }

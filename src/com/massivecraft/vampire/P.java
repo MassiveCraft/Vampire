@@ -1,83 +1,65 @@
 package com.massivecraft.vampire;
 
-import java.io.File;
-import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.massivecraft.vampire.commands.*;
+import com.massivecraft.vampire.cmd.*;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.listeners.*;
-import com.massivecraft.vampire.util.JarLoader;
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
+import com.massivecraft.vampire.zcore.MPlugin;
 
 
-public class P extends JavaPlugin {
-	// -------------------------------------------- //
-	// Fields
-	// -------------------------------------------- //
-	public static P instance;
-	public static PermissionHandler permissionHandler;
-	
-	public static Timer timer;
-	public static Random random = new Random();
-	public Gson gson;
-	
-	// Commands
-	public List<VCommand> commands = new ArrayList<VCommand>();
-	private String baseCommand;
+public class P extends MPlugin
+{
+	// Our single plugin instance
+	public static P p;
 	
 	// Listeners
-	private final VampirePlayerListener playerListener = new VampirePlayerListener();
-	private final VampireEntityListener entityListener = new VampireEntityListener();
-	private final VampireEntityListenerMonitor entityListenerMonitor = new VampireEntityListenerMonitor();
+	public VampirePlayerListener playerListener;
+	public VampireEntityListener entityListener;
+	public VampireEntityListenerMonitor entityListenerMonitor;
 	
-	public P() {
-		P.instance = this;
-	}
+	public CmdHelp cmdHelp;
 	
-	// -------------------------------------------- //
-	// Important interface implementations and overrides
-	// -------------------------------------------- //
-	@Override
-	public void onDisable() {
-		timer.cancel();
-		VPlayer.save();
-		log("Disabled");
+	public static Random random = new Random();
+	
+	public P()
+	{
+		P.p = this;
+		
+		playerListener = new VampirePlayerListener();
+		entityListener = new VampireEntityListener();
+		entityListenerMonitor = new VampireEntityListenerMonitor();
 	}
 
 	@Override
-	public void onEnable() {
-		log("=== ENABLE START ===");
-		long timeInitStart = System.currentTimeMillis();
+	public void onEnable()
+	{
+		if ( ! preEnable()) return;
 		
-		// Load the gson library we require
-		File gsonfile = new File("./lib/gson.jar");
-		if ( ! JarLoader.load(gsonfile)) {
-			log(Level.SEVERE, "Disabling myself as "+gsonfile+" is missing.");
-			this.getServer().getPluginManager().disablePlugin(this);
-			return;
+		// Load Conf from disk
+		Conf.load();
+		Lang.load();
+		CommonConf.load();
+		TrueBloodConf.load();
+		
+		// Do an interesting test
+		if (Conf.regenBloodPerHealth < Conf.playerBloodQuality)
+		{
+			log("WARNING!! regenBloodPerHealth < playerBloodQuality. This means that vampires can feed on eachother back and forth to survive.");
 		}
 		
-		// Create our gson
-		gson = new GsonBuilder()
-		.setPrettyPrinting()
-		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-		.create();
+		VPlayers.i.loadFromDisc();
+		
+		// Add Base Commands
+		this.cmdHelp = new CmdHelp();
+		this.getBaseCommands().add(new CmdBase());
 		
 		// Add the commands
-		commands.add(new VCommandBlood());
+		/*commands.add(new VCommandBlood());
 		commands.add(new VCommandHelp());
 		commands.add(new VCommandList());
 		commands.add(new VCommandInfect());
@@ -87,34 +69,12 @@ public class P extends JavaPlugin {
 		commands.add(new VCommandTime());
 		commands.add(new VCommandLoad());
 		commands.add(new VCommandSave());
-		commands.add(new VCommandVersion());
+		commands.add(new VCommandVersion());*/
 		
-		timer = new Timer();
-		
-		// Ensure basefolder exists!
-		this.getDataFolder().mkdirs();
-		
-		// Hook into external permissions system;
-		setupPermissions();
-		
-		// Load Conf from disk
-		Conf.load();
-		Lang.load();
-		CommonConf.load();
-		TrueBloodConf.load();
-		
-		// Do an interesting test
-		if (Conf.regenBloodPerHealth < Conf.playerBloodQuality) {
-			log("WARNING!! regenBloodPerHealth < playerBloodQuality. This means that vampires can feed on eachother back and forth to survive.");
-		}
-		
-		// Load VPlayers from disk
-		VPlayer.load();
 		
 		// Start timer
-		timer.schedule(new VampireTask(), 0, //initial delay
-		        Conf.timerInterval); //subsequent rate
-		
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, Conf.taskInterval);
+	
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
 		//pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Normal, this);
@@ -125,79 +85,26 @@ public class P extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListenerMonitor, Event.Priority.Monitor, this);
-		log("=== ENABLE DONE (Took "+(System.currentTimeMillis()-timeInitStart)+"ms) ===");
-	}
-	
-	// -------------------------------------------- //
-	// External Plugin Integration
-	// -------------------------------------------- //
-	
-	private void setupPermissions() {
-	    if (permissionHandler != null) {
-	        return;
-	    }
-	    
-	    Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
-	    
-	    if (permissionsPlugin == null) {
-	        log("Permission system not detected, defaulting to native bukkit permissions.");
-	        return;
-	    }
-	    
-	    permissionHandler = ((Permissions) permissionsPlugin).getHandler();
-	    log("Found and will use plugin "+((Permissions)permissionsPlugin).getDescription().getFullName());
-	}
-	
-	// -------------------------------------------- //
-	// Commands
-	// -------------------------------------------- //
-	
-	@SuppressWarnings("unchecked")
-	public String getBaseCommand() {
-		if (this.baseCommand != null) {
-			return this.baseCommand;
-		}
 		
-		Map<String, Object> Commands = (Map<String, Object>)this.getDescription().getCommands();
-		this.baseCommand = Commands.keySet().iterator().next();
-		return this.baseCommand;
+		postEnable();
+	}
+	
+	// -------------------------------------------- //
+	// LANG AND TAGS
+	// -------------------------------------------- //
+	
+	@Override
+	public void addLang()
+	{
+		super.addLang();
+		this.lang.put("command.sender_must_me_vampire", "<b>Only vampires can use this command.");
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		List<String> parameters = new ArrayList<String>(Arrays.asList(args));
-		this.handleCommand(sender, parameters);
-		return true;
-	}
-	
-	public void handleCommand(CommandSender sender, List<String> parameters) {
-		if (parameters.size() == 0) {
-			this.commands.get(0).execute(sender, parameters);
-			return;
-		}
-		
-		String commandName = parameters.get(0).toLowerCase();
-		parameters.remove(0);
-		
-		for (VCommand vampcommand : this.commands) {
-			if (vampcommand.getAliases().contains(commandName)) {
-				vampcommand.execute(sender, parameters);
-				return;
-			}
-		}
-		
-		sender.sendMessage(Conf.colorSystem+"Unknown vampire command \""+commandName+"\". Try "+Conf.colorCommand+"/"+this.getBaseCommand()+" help");
-	}
-	
-	
-	// -------------------------------------------- //
-	// Logging
-	// -------------------------------------------- //
-	public static void log(String msg) {
-		log(Level.INFO, msg);
-	}
-	
-	public static void log(Level level, String msg) {
-		Logger.getLogger("Minecraft").log(level, "["+instance.getDescription().getFullName()+"] "+msg);
+	public void addTags()
+	{
+		super.addTags();
+		/*this.tags.put("i", "§b");
+		this.tags.put("h", "§a");*/
 	}
 }
