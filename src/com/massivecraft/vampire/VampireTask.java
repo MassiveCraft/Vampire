@@ -1,6 +1,6 @@
 package com.massivecraft.vampire;
 
-import com.massivecraft.vampire.config.Conf;
+import com.massivecraft.vampire.config.GeneralConf;
 
 public class VampireTask implements Runnable
 {
@@ -11,7 +11,7 @@ public class VampireTask implements Runnable
 		// Tick each online player
 		for (VPlayer vplayer : VPlayers.i.getOnline())
 		{
-			vplayer.advanceTime(Conf.taskInterval);
+			vplayer.advanceTime(GeneralConf.taskInterval);
 		}
 	}
 }

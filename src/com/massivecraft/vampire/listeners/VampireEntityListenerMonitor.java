@@ -5,9 +5,7 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
@@ -17,7 +15,8 @@ import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
 
 
-public class VampireEntityListenerMonitor extends EntityListener {
+public class VampireEntityListenerMonitor extends EntityListener
+{
 	
 	/**
 	 * In this entity-damage-listener we will obtain blood,
@@ -26,18 +25,15 @@ public class VampireEntityListenerMonitor extends EntityListener {
 	 */
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
+		if (event.isCancelled()) return;
 		
 		// For further interest this must be a close combat attack by another entity
-		if (event.getCause() != DamageCause.ENTITY_ATTACK) {
+		if (event.getCause() != DamageCause.ENTITY_ATTACK)
+		{
 			return;
 		}
-		if ( ! (event instanceof EntityDamageByEntityEvent)) {
-			return;
-		}
-		if (event instanceof EntityDamageByProjectileEvent) {
+		if ( ! (event instanceof EntityDamageByEntityEvent))
+		{
 			return;
 		}
 		
@@ -54,15 +50,18 @@ public class VampireEntityListenerMonitor extends EntityListener {
 		VPlayer vpDamager;
 		
 		// For further interest that attacker must be a player.
-		if ( ! (damager instanceof Player)) {
+		if ( ! (damager instanceof Player))
+		{
 			return;
 		}
 		
 		pDamager = (Player)damager;
 		vpDamager = VPlayers.i.get(pDamager);
 		
-		if (vpDamager.isVampire()) {
-			if (damagee instanceof Player) {
+		if (vpDamager.isVampire())
+		{
+			if (damagee instanceof Player)
+			{
 				// A True Blood vampire attacked a normal player. There is risk for infection.
 				pDamagee = (Player)damagee;
 				vpDamagee = VPlayers.i.get(pDamagee);
@@ -71,38 +70,47 @@ public class VampireEntityListenerMonitor extends EntityListener {
 				if(vpDamager.isTrueBlood()) vpDamagee.infectionRisk();
 				
 				// There will also be blood!
-				if (pDamagee.getHealth() > 0) {
-					int damageForBlood = event.getDamage();
-					if (pDamagee.getHealth() < damageForBlood) {
-						damageForBlood = pDamagee.getHealth();
+				if (pDamagee.getHealth() > 0)
+				{
+					int damage = event.getDamage();
+					if (pDamagee.getHealth() < damage)
+					{
+						damage = pDamagee.getHealth();
 					}
-					vpDamager.bloodDrink(damageForBlood * Conf.playerBloodQuality, pDamagee.getDisplayName());
+					vpDamager.foodAdd(damage * GeneralConf.foodPerDamageFromPlayer);
 				}
-			} else if (damagee instanceof Creature) {
+			}
+			else if (damagee instanceof Creature)
+			{
 				//A vampire attacked a creature
 				cDamagee = (Creature)damagee;
 				CreatureType creatureType = EntityUtil.creatureTypeFromEntity(damagee);
 				
 				// Obtain blood?
-				if (Conf.creatureTypeBloodQuality.containsKey(creatureType) && cDamagee.getHealth() > 0) {
-					int damageForBlood = event.getDamage();
-					if (cDamagee.getHealth() < damageForBlood) {
-						damageForBlood = cDamagee.getHealth();
+				if (GeneralConf.foodPerDamageFromCreature.containsKey(creatureType) && cDamagee.getHealth() > 0)
+				{
+					int damage = event.getDamage();
+					if (cDamagee.getHealth() < damage)
+					{
+						damage = cDamagee.getHealth();
 					}
-					vpDamager.bloodDrink(damageForBlood * Conf.creatureTypeBloodQuality.get(creatureType), "the "+creatureType.getName().toLowerCase());
+					vpDamager.foodAdd(damage * GeneralConf.foodPerDamageFromCreature.get(creatureType));
 				}
 				
 				// Break truce
-				if (Conf.creatureTypeTruceMonsters.contains(creatureType)) {
+				if (GeneralConf.creatureTypeTruceMonsters.contains(creatureType))
+				{
 					vpDamager.truceBreak();
 				}
 			}
-		} else if (damagee instanceof Player) {
+		}
+		else if (damagee instanceof Player)
+		{
 			pDamagee = (Player)damagee;
 			vpDamagee = VPlayers.i.get(pDamagee);
 			
-			if (vpDamagee.isVampire()) {
-				
+			if (vpDamagee.isVampire())
+			{
 				//If the damager is a True Blood vampire, he is able to infect the player. Else if it's not a true blood a basic vampire) he won't be able to infect.
 				if(vpDamagee.isTrueBlood()) vpDamager.infectionRisk();
 				
@@ -110,19 +118,6 @@ public class VampireEntityListenerMonitor extends EntityListener {
 				//vpDamager.infectionRisk();
 			}
 		}
-	}
-	
-	@Override
-	public void onEntityDeath(EntityDeathEvent event) {
-		// Set the blood for vampires to 100
-		Entity entity = event.getEntity();
-		if ( ! (entity instanceof Player)) {
-			return;
-		}
-		
-		VPlayer vplayer = VPlayers.i.get((Player)entity);
-		
-		vplayer.bloodSet(100); // No fun to be reborn thirsty... so we reset it.
 	}
 }
 

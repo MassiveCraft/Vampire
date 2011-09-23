@@ -10,9 +10,9 @@ public class CmdFeed extends VCommand
 		aliases.add("feed");
 
 		requiredArgs.add("playername");
-		optionalArgs.put("blood", "100");
+		optionalArgs.put("food", "20");
 		
-		helpShort = "feed a vampire";
+		helpShort = "feed someone";
 		
 		permission = Permission.COMMAND_FEED.node;
 		senderMustBePlayer = false;
@@ -25,18 +25,11 @@ public class CmdFeed extends VCommand
 		Player you = this.argAsBestPlayerMatch(0);
 		if (you == null) return;
 		
-		VPlayer vyou = VPlayers.i.get(you);
-		
-		if ( ! vyou.isVampire()) {
-			this.msg(you.getDisplayName() + " is not a vampire.");
-			return;
-		}
-		
-		double blood = this.argAsDouble(1, 100D);
+		int foodToAdd = this.argAsInt(1, 20);
 
-		String msg = you.getDisplayName() + " was fed from " + String.format("%1$.1f", vyou.bloodGet());
-		vyou.bloodAlter(blood);
-		msg += " to " + String.format("%1$.1f", vyou.bloodGet()) + " blood.";
+		String msg = you.getDisplayName() + " was fed from " + you.getFoodLevel();
+		you.setFoodLevel(you.getFoodLevel() + foodToAdd);
+		msg += " to " + you.getFoodLevel() + ".";
 		
 		this.msg(msg);
 	}

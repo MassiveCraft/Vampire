@@ -1,23 +1,27 @@
 package com.massivecraft.vampire.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
+import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
-import com.massivecraft.vampire.config.Conf;
+import com.massivecraft.vampire.config.GeneralConf;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.EntityUtil;
+import com.massivecraft.vampire.zcore.util.TextUtil;
 
 //import com.bukkit.mcteam.vampire.Vampire;
 
-public class VampireEntityListener extends EntityListener {
+public class VampireEntityListener extends EntityListener
+{
+	public static P p = P.p;
 	
 	/**
 	 * In this entity-damage-listener we will cancel fall damage
@@ -25,10 +29,9 @@ public class VampireEntityListener extends EntityListener {
 	 * damage dealt.
 	 */
 	@Override
-	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
+	public void onEntityDamage(EntityDamageEvent event)
+	{
+		if (event.isCancelled()) return;
 		
 		// Define local fields
 		Entity damagee;
@@ -44,20 +47,23 @@ public class VampireEntityListener extends EntityListener {
 		damagee = event.getEntity();
 		
 		// If the damagee is a player
-		if (damagee instanceof Player) {
+		if (damagee instanceof Player)
+		{
 			pDamagee = (Player)damagee;
 			vpDamagee = VPlayers.i.get(pDamagee);
 			
 			// Vampires can not drown or take fall damage.
-			if (vpDamagee.isVampire() && (event.getCause() == DamageCause.DROWNING || event.getCause() == DamageCause.FALL)) {
+			if (vpDamagee.isVampire() && (event.getCause() == DamageCause.DROWNING || event.getCause() == DamageCause.FALL))
+			{
 				event.setCancelled(true);
 				return;
 			}
 			
 			// Add delay to regeneration ability
-			if (vpDamagee.isVampire()) {
+			/*if (vpDamagee.isVampire())
+			{
 				vpDamagee.regenDelayLeftMilliseconds = Conf.regenStartDelayMilliseconds;
-			}
+			}*/
 		}
 		
 		// For further interest this must be a close combat attack by another entity
@@ -66,10 +72,6 @@ public class VampireEntityListener extends EntityListener {
 			return;
 		}
 		if ( ! (event instanceof EntityDamageByEntityEvent))
-		{
-			return;
-		}
-		if (event instanceof EntityDamageByProjectileEvent)
 		{
 			return;
 		}
@@ -88,20 +90,27 @@ public class VampireEntityListener extends EntityListener {
 		float damage = event.getDamage();
 		
 		// Modify damage if damager is a vampire
-		if (vpDamager.isVampire()) {
-			damage *= Conf.combatDamageDealtFactor;
+		if (vpDamager.isVampire())
+		{
+			damage *= GeneralConf.combatDamageDealtFactor;
 		}
 		
 		// Modify damage if damagee is a vampire
-		if (damagee instanceof Player) {
+		if (damagee instanceof Player)
+		{
 			pDamagee = (Player)damagee;
 			vpDamagee = VPlayers.i.get(pDamagee);
-			if (vpDamagee.isVampire()) {
-				if (Conf.woodMaterials.contains(pDamager.getItemInHand().getType())) {
-					damage *= Conf.combatDamageReceivedWoodFactor;
-					vpDamagee.msg(Lang.messageWoodCombatWarning);
-				} else {
-					damage *= Conf.combatDamageReceivedFactor;
+			if (vpDamagee.isVampire())
+			{
+				Material itemMaterial = pDamager.getItemInHand().getType();
+				if (GeneralConf.woodMaterials.contains(itemMaterial))
+				{
+					damage *= GeneralConf.combatDamageReceivedWoodFactor;
+					vpDamagee.msg(p.txt.parse(Lang.messageWoodCombatWarning, TextUtil.getMaterialName(itemMaterial)));
+				}
+				else
+				{
+					damage *= GeneralConf.combatDamageReceivedFactor;
 				}
 			}
 		}
@@ -121,7 +130,7 @@ public class VampireEntityListener extends EntityListener {
 		}
 		
 		// ... by creature that cares about the truce with vampires ...
-		if ( ! (Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(event.getEntity())))) {
+		if ( ! (GeneralConf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(event.getEntity())))) {
 			return;
 		}
 		

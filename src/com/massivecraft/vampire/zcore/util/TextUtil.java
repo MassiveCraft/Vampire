@@ -25,18 +25,33 @@ public class TextUtil
 		}
 	}
 	
+	// Get is supposed to be the way we reach registered lang
+	// TODO: Is the parse
 	public String get(String name)
 	{
 		String str = lang.get(name);
-		if (str == null) return name;
-		return this.tags(str);
+		if (str == null) str = name;
+		
+		return this.parse(str);
 	}
 	
 	public String get(String name, Object... args)
 	{
 		String str = lang.get(name);
-		if (str == null) return name;
+		if (str == null) str = name;
+		
+		return this.parse(str, args);
+	}
+	
+	// Parse is used to handle non registered text
+	public String parse(String str, Object... args)
+	{
 		return String.format(this.tags(str), args);
+	}
+	
+	public String parse(String str)
+	{
+		return this.tags(str);
 	}
 	
 	public Map<String, String> getTags()

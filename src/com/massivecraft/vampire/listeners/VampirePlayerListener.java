@@ -1,22 +1,28 @@
 package com.massivecraft.vampire.listeners;
 
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
+import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
-import com.massivecraft.vampire.config.Conf;
+import com.massivecraft.vampire.config.GeneralConf;
 import com.massivecraft.vampire.config.Lang;
+import com.massivecraft.vampire.config.VampireTypeConf;
+import com.massivecraft.vampire.zcore.util.TextUtil;
 
 
 public class VampirePlayerListener extends PlayerListener
 {
+	public static P p = P.p; 
 	
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event)
@@ -29,31 +35,29 @@ public class VampirePlayerListener extends PlayerListener
 		}
 		
 		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
+		VampireTypeConf vconf = vplayer.getConf();
 		Material itemMaterial = event.getMaterial();
 		
 		if(vplayer.isVampire())
 		{
-			if (Conf.foodMaterials.contains(itemMaterial))
+			if (vconf.canEat.containsKey(itemMaterial))
 			{
-				vplayer.msg(Lang.vampiresCantEatFoodMessage);
-				event.setCancelled(true);
+				if ( ! vconf.canEat.get(itemMaterial))
+				{
+					vplayer.msg(p.txt.parse(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial)));
+					event.setCancelled(true);
+				}
 			}
-			else if(itemMaterial == Material.PORK) //Vampire can eat fresh pork blood
+				
+			if (vplayer.getConf().jumpMaterials.contains(event.getMaterial())) 
 			{
-				vplayer.bloodDrink(5 * Conf.creatureTypeBloodQuality.get(CreatureType.PIG), "the "+CreatureType.PIG.getName().toLowerCase());
-				event.setCancelled(true);
-				event.getPlayer().setItemInHand(null);
-			}
-			
-			if (Conf.jumpMaterials.contains(event.getMaterial())) 
-			{
-				vplayer.jump(Conf.jumpDeltaSpeed, false);
+				vplayer.jump(vplayer.getConf().jumpDeltaSpeed, false);
 			}
 		}
 		
 		if (vplayer.isInfected() && itemMaterial == Material.BREAD)
 		{
-			vplayer.infectionHeal(Conf.infectionBreadHealAmount);
+			vplayer.infectionHeal(GeneralConf.infectionBreadHealAmount);
 		}		
 		
 		if ( action != Action.RIGHT_CLICK_BLOCK)
@@ -63,45 +67,39 @@ public class VampirePlayerListener extends PlayerListener
 		
 		Material blockMaterial = event.getClickedBlock().getType();
 		
-		if (blockMaterial == Conf.altarInfectMaterial)
+		if (blockMaterial == GeneralConf.altarInfectMaterial)
 		{
 			vplayer.useAltarInfect(event.getClickedBlock());
 		} 
-		else if (blockMaterial == Conf.altarCureMaterial)
+		else if (blockMaterial == vplayer.getConf().altarCureMaterial)
 		{
 			vplayer.useAltarCure(event.getClickedBlock());
 		}
 	}
 	
-	// TODO: Add core support for this.
-	// Used to allow usage of only "v" instead of "/v"
-	/*@Override
+	@Override
 	public void onPlayerChat(PlayerChatEvent event)
 	{		
-		if ( ! Conf.allowNoSlashCommand)
-		{
-			return;
-		}
+		if (event.isCancelled()) return;
 		
-		if ( ! (event.getMessage().startsWith("v ") || event.getMessage().equals("v")))
-		{
-			//Handle the chat message
-			//Color the player name if he is a vampire
-			if(VPlayers.i.get(event.getPlayer()).isVampire() && Conf.enableVampireNameColorInChat)
-			{ 
-				event.getPlayer().getServer().broadcastMessage(Conf.vampireChatNameColor + "<" + event.getPlayer().getName() + ">" + Conf.vampireChatMessageColor + event.getMessage());
-				event.setCancelled(true);
-			}
-		}
-		else
+		Player me = event.getPlayer();
+		VPlayer vme = VPlayers.i.get(me);
+		
+		if (vme.getConf().nameColorize == false) return;
+		
+		me.setDisplayName(""+vme.getConf().nameColor+ChatColor.stripColor(me.getDisplayName()));
+		
+		
+		/*
+		if (event.getMessage().startsWith("v ") || event.getMessage().equals("v"))
 		{
 			List<String> parameters = TextUtil.split(event.getMessage().trim());
 			parameters.remove(0);
 			CommandSender sender = event.getPlayer();
 			P.p.handleCommand(sender, parameters);
 			event.setCancelled(true);
-		}
-	}*/
+		}*/
+	}
 	
 	@Override
 	public void onPlayerAnimation(PlayerAnimationEvent event)
@@ -109,9 +107,9 @@ public class VampirePlayerListener extends PlayerListener
 		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
 		if ( ! vplayer.isVampire()) return;
 			
-		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && Conf.jumpMaterials.contains(event.getPlayer().getItemInHand().getType()))
+		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && vplayer.getConf().jumpMaterials.contains(event.getPlayer().getItemInHand().getType()))
 		{
-			vplayer.jump(Conf.jumpDeltaSpeed, true);
+			vplayer.jump(vplayer.getConf().jumpDeltaSpeed, true);
 		}
 	}
 	

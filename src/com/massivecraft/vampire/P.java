@@ -22,6 +22,10 @@ public class P extends MPlugin
 	public VampireEntityListener entityListener;
 	public VampireEntityListenerMonitor entityListenerMonitor;
 	
+	// Vampire Type Configurations
+	public VampireTypeConf confVampTypeOriginal;
+	public VampireTypeConf confVampTypeCommon;
+	
 	public CmdHelp cmdHelp;
 	
 	public static Random random = new Random();
@@ -41,39 +45,18 @@ public class P extends MPlugin
 		if ( ! preEnable()) return;
 		
 		// Load Conf from disk
-		Conf.load();
+		GeneralConf.load();
 		Lang.load();
-		CommonConf.load();
-		TrueBloodConf.load();
-		
-		// Do an interesting test
-		if (Conf.regenBloodPerHealth < Conf.playerBloodQuality)
-		{
-			log("WARNING!! regenBloodPerHealth < playerBloodQuality. This means that vampires can feed on eachother back and forth to survive.");
-		}
+		this.setupVampireTypeConf();
 		
 		VPlayers.i.loadFromDisc();
 		
 		// Add Base Commands
 		this.cmdHelp = new CmdHelp();
 		this.getBaseCommands().add(new CmdBase());
-		
-		// Add the commands
-		/*commands.add(new VCommandBlood());
-		commands.add(new VCommandHelp());
-		commands.add(new VCommandList());
-		commands.add(new VCommandInfect());
-		commands.add(new VCommandTurn());
-		commands.add(new VCommandCure());
-		commands.add(new VCommandFeed());
-		commands.add(new VCommandTime());
-		commands.add(new VCommandLoad());
-		commands.add(new VCommandSave());
-		commands.add(new VCommandVersion());*/
-		
-		
+	
 		// Start timer
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, Conf.taskInterval);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, GeneralConf.taskInterval);
 	
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
@@ -84,9 +67,23 @@ public class P extends MPlugin
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High, this);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListenerMonitor, Event.Priority.Monitor, this);
 		
 		postEnable();
+	}
+	
+	// -------------------------------------------- //
+	// VAMPIRE TYPE CONFIGURATIONS
+	// -------------------------------------------- //
+	
+	public void setupVampireTypeConf()
+	{
+		VampireTypeConf c;
+		
+		c = new VampireTypeConf();
+		this.confVampTypeOriginal = this.persist.loadOrSaveDefault(c, VampireTypeConf.class, "conf_vampire_original");
+		
+		c = new VampireTypeConf();
+		this.confVampTypeCommon = this.persist.loadOrSaveDefault(c, VampireTypeConf.class, "conf_vampire_common");
 	}
 	
 	// -------------------------------------------- //

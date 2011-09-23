@@ -336,7 +336,7 @@ public abstract class MCommand<T extends MPlugin>
 		return this.argAsDouble(idx, -1d);
 	}
 	
-	// INT
+	// Boolean
 	public boolean argAsBool(int idx, boolean def)
 	{
 		String str = this.argAsString(idx);
@@ -355,18 +355,38 @@ public abstract class MCommand<T extends MPlugin>
 	}
 	
 	// PLAYER
+	public Player argAsPlayer(int idx, Player def, boolean msg)
+	{
+		Player ret = def;
+		
+		String name = this.argAsString(idx);
+		if (name != null)
+		{
+			Player player = Bukkit.getServer().getPlayer(name);
+			if (player != null)
+			{
+				ret = player;
+			}
+		}
+		
+		if (msg && ret == null)
+		{
+			// TODO: Fix this injection risk!
+			this.msg(p.txt.tags("<b>The player \"<p>"+name+"<b>\" could not be found."));
+		}
+		
+		return ret;
+	}
 	public Player argAsPlayer(int idx, Player def)
 	{
-		String name = this.argAsString(idx);
-		if (name == null) return def;
-		return Bukkit.getServer().getPlayer(name);
+		return this.argAsPlayer(idx, def, true);
 	}
 	public Player argAsPlayer(int idx)
 	{
 		return this.argAsPlayer(idx, null);
 	}
 	
-	// BestPlayerMatch
+	// BEST PLAYER MATCH
 	public Player argAsBestPlayerMatch(int idx, Player def, boolean msg)
 	{
 		Player ret = def;
@@ -384,7 +404,7 @@ public abstract class MCommand<T extends MPlugin>
 		if (msg && ret == null)
 		{
 			// TODO: Fix this injection risk!
-			this.msg(p.txt.tags("<b>No player match found for \"<p>"+null+"<b>\"."));
+			this.msg(p.txt.tags("<b>No player match found for \"<p>"+name+"<b>\"."));
 		}
 		
 		return ret;

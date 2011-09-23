@@ -32,7 +32,7 @@ public class CmdTurn extends VCommand
 			return;
 		}
 		
-		vyou.bloodSet(100);
+		you.setFoodLevel(20);
 		
 		//If there is an optional paramater that is "trueblood", then turn the human into TrueBlood vampire
 		if(this.argAsBool(1, false))

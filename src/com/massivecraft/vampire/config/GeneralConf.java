@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
 
@@ -13,15 +12,8 @@ import com.massivecraft.vampire.Recipe;
 import com.massivecraft.vampire.P;
 
 
-public class Conf
+public class GeneralConf
 {
-	
-	/*public static ChatColor colorSystem = ChatColor.RED;
-	public static ChatColor colorChrome = ChatColor.DARK_RED;
-	public static ChatColor colorCommand = ChatColor.GOLD;
-	public static ChatColor colorParameter = ChatColor.GRAY;
-	public static ChatColor colorHighlight = ChatColor.WHITE;*/
-	
 	// public static boolean allowNoSlashCommand = true;
 	
 	public final static transient int taskInterval = 40; // Defines often the task runs. 
@@ -31,28 +23,11 @@ public class Conf
 	public static double infectionProgressPerSecond = 100D / (1*60*60D) ; // It will take you 1h to turn
 	//public static double infectionProgressPerSecond = 100D / (5*60D) ; // It will take you 1min to turn DEBUG SETTING
 	
-	public static boolean enableVampireNameColorInChat = false;
-	public static ChatColor vampireChatNameColor = ChatColor.RED;
-	public static ChatColor vampireChatMessageColor = ChatColor.WHITE;
-	
 	public static double infectionBreadHealAmount = 20D;
-	
-	public static double thirstUnderBlood = 50D;
-	public static double thirstStrongUnderBlood = 20D;
-	public static double thirstDamagePerSecond = 0.025; // Once every 40seconds
-	public static double thirstStrongDamagePerSecond = 0.1; // Once every 10seconds
-	
-	public static Set<Material> jumpMaterials = new HashSet<Material>();
-	public static double jumpDeltaSpeed = 3;
-	public static double jumpBloodCost = 3;
 	
 	// Time is "hours passed since the beginning of the day" * 1000
 	public static int combustFromTime = 0;
 	public static int combustToTime = 12400;
-	
-	public static long regenStartDelayMilliseconds = 8000;
-	public static double regenHealthPerSecond = 0.25;
-	public static double regenBloodPerHealth = 2.5D;
 	
 	public static double combatDamageDealtFactor = 1.5;
 	public static double combatDamageReceivedFactor = 0.7;
@@ -60,14 +35,13 @@ public class Conf
 	
 	public static Set<Material> woodMaterials = new HashSet<Material>();
 	
-	public static Set<Material> foodMaterials = new HashSet<Material>();
-	
 	public static int combustFireExtinguishTicks = 5; // After how many minecraft game ticks of no sunlight should the fire stop? 0 means right away.
 	
 	public static Map<Material,Double> materialOpacity = new HashMap<Material,Double>(); //We assume opacity 1 for all materials not in this map 
 	
-	public static double playerBloodQuality = 2D;
-	public static Map<CreatureType, Double> creatureTypeBloodQuality = new HashMap<CreatureType, Double>();
+	public static double foodPerDamageFromPlayer = 0.4d;
+	public static Map<CreatureType, Double> foodPerDamageFromCreature = new HashMap<CreatureType, Double>();
+	
 	public static long truceBreakTime = 60 * 1000L; // One minute
 	public static Set<CreatureType> creatureTypeTruceMonsters = new HashSet<CreatureType>();
 	
@@ -77,25 +51,10 @@ public class Conf
 	public static double altarInfectMaterialSurroundRadious = 7D;
 	public static Recipe altarInfectRecipe = new Recipe();
 	
-	public static Material altarCureMaterial = Material.LAPIS_BLOCK;
-	public static Material altarCureMaterialSurround = Material.GLOWSTONE;
-	public static int altarCureMaterialSurroundCount = 20;
-	public static double altarCureMaterialSurroundRadious = 7D;	
-	
 	static
 	{		
 		// TODO Maybe cake could cure vampirism...
 		// "You forget about blood this is way better :)"
-		
-		jumpMaterials.add(Material.RED_ROSE);
-		
-		foodMaterials.add(Material.APPLE);
-		foodMaterials.add(Material.BREAD);
-		foodMaterials.add(Material.COOKED_FISH);
-		foodMaterials.add(Material.GRILLED_PORK);
-		foodMaterials.add(Material.GOLDEN_APPLE);
-		foodMaterials.add(Material.MUSHROOM_SOUP);
-		foodMaterials.add(Material.RAW_FISH);
 		
 		woodMaterials.add(Material.STICK);
 		woodMaterials.add(Material.WOOD_AXE);
@@ -131,19 +90,23 @@ public class Conf
 		materialOpacity.put(Material.DIODE_BLOCK_ON, 0D);
 		
 		// For each damage to the creature; how much blood will the vampire obtain
-		creatureTypeBloodQuality.put(CreatureType.CHICKEN, playerBloodQuality / 5D);
-		creatureTypeBloodQuality.put(CreatureType.COW, playerBloodQuality / 5D);
-		creatureTypeBloodQuality.put(CreatureType.PIG, playerBloodQuality / 5D);
-		creatureTypeBloodQuality.put(CreatureType.SHEEP, playerBloodQuality / 5D);
-		creatureTypeBloodQuality.put(CreatureType.SPIDER, playerBloodQuality / 10D);
-		creatureTypeBloodQuality.put(CreatureType.SQUID, playerBloodQuality / 10D);
+		foodPerDamageFromCreature.put(CreatureType.CHICKEN, foodPerDamageFromPlayer / 5D);
+		foodPerDamageFromCreature.put(CreatureType.COW, foodPerDamageFromPlayer / 5D);
+		foodPerDamageFromCreature.put(CreatureType.PIG, foodPerDamageFromPlayer / 5D);
+		foodPerDamageFromCreature.put(CreatureType.SHEEP, foodPerDamageFromPlayer / 5D);
+		foodPerDamageFromCreature.put(CreatureType.SPIDER, foodPerDamageFromPlayer / 10D);
+		foodPerDamageFromCreature.put(CreatureType.CAVE_SPIDER, foodPerDamageFromPlayer / 10D);
+		foodPerDamageFromCreature.put(CreatureType.SQUID, foodPerDamageFromPlayer / 10D);
 		
 		// These are the creature types that won't target vampires
 		creatureTypeTruceMonsters.add(CreatureType.CREEPER);
 		creatureTypeTruceMonsters.add(CreatureType.GHAST);
 		creatureTypeTruceMonsters.add(CreatureType.SKELETON);
 		creatureTypeTruceMonsters.add(CreatureType.SPIDER);
+		creatureTypeTruceMonsters.add(CreatureType.CAVE_SPIDER);
 		creatureTypeTruceMonsters.add(CreatureType.ZOMBIE);
+		creatureTypeTruceMonsters.add(CreatureType.ENDERMAN);
+		creatureTypeTruceMonsters.add(CreatureType.GIANT);
 		
 		altarInfectRecipe.materialQuantities.put(Material.MUSHROOM_SOUP, 1);
 		altarInfectRecipe.materialQuantities.put(Material.BONE, 10);
@@ -155,10 +118,10 @@ public class Conf
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
-	private static transient Conf i = new Conf();
+	private static transient GeneralConf i = new GeneralConf();
 	public static void load()
 	{
-		P.p.persist.loadOrSaveDefault(i, Conf.class);
+		P.p.persist.loadOrSaveDefault(i, GeneralConf.class, "conf_general");
 	}
 	public static void save()
 	{
