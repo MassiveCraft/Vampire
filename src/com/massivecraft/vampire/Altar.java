@@ -99,12 +99,13 @@ public abstract class Altar
 		if ( ! this.recipe.playerHasEnough(player))
 		{
 			player.sendMessage(P.p.txt.parse(Lang.altarUseIngredientsFail));
-			player.sendMessage(recipe.getRecipeLine());
+			player.sendMessage(this.recipe.getRecipeLine());
 			return false;
 		}
 
 		player.sendMessage(P.p.txt.parse(Lang.altarUseIngredientsSuccess));
-		player.sendMessage(recipe.getRecipeLine());
+		player.sendMessage(this.recipe.getRecipeLine());
+		this.recipe.removeFromPlayer(player);
 		return true;
 	}
 	

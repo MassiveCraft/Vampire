@@ -1,31 +1,22 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.vampire.config.Conf;
+
 public class CmdBase extends VCommand
 {
-	public CmdIntent cmdIntent = new CmdIntent();
-	public CmdList cmdList = new CmdList();
-	public CmdAdminFeed cmdFeed = new CmdAdminFeed();
-	public CmdAdminInfect cmdInfect = new CmdAdminInfect();
-	public CmdAdminTurn cmdTurn = new CmdAdminTurn();
-	public CmdAdminCure cmdCure = new CmdAdminCure();
-	public CmdVersion cmdVersion = new CmdVersion();
-	
-	
 	public CmdBase()
 	{
 		super();
-		this.aliases.add("v");
+		this.aliases.addAll(Conf.baseCommandAliases);
 		
 		this.subCommands.add(p.cmdHelp);
-		this.subCommands.add(this.cmdIntent);
-		this.subCommands.add(this.cmdList);
-		this.subCommands.add(this.cmdInfect);
-		this.subCommands.add(this.cmdTurn);
-		this.subCommands.add(this.cmdCure);
-		this.subCommands.add(this.cmdFeed);
-		this.subCommands.add(this.cmdVersion);
-		
-		
+		this.subCommands.add(new CmdIntend());
+		this.subCommands.add(new CmdList());
+		this.subCommands.add(new CmdAdminInfect());
+		this.subCommands.add(new CmdAdminTurn());
+		this.subCommands.add(new CmdAdminCure());
+		this.subCommands.add(new CmdAdminFeed());
+		this.subCommands.add(new CmdVersion());
 		
 		this.helpShort = "The vampire base command";
 		this.helpLong.add(p.txt.tags("<i>This command contains all vampire stuff."));

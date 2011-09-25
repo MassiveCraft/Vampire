@@ -20,9 +20,7 @@ public class AltarGood extends Altar
 		this.materialCounts.put(Material.GLOWSTONE, 30);
 		this.materialCounts.put(Material.YELLOW_FLOWER, 5);
 		this.materialCounts.put(Material.RED_ROSE, 5);
-		this.materialCounts.put(Material.GOLD_BLOCK, 3);
-		this.materialCounts.put(Material.IRON_BLOCK, 3);
-		this.materialCounts.put(Material.DIAMOND_BLOCK, 1);
+		this.materialCounts.put(Material.DIAMOND_BLOCK, 2);
 		
 		this.recipe = new Recipe();
 		this.recipe.materialQuantities.put(Material.WATER_BUCKET, 1);

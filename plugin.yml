@@ -1,5 +1,5 @@
 name: Vampire
-version: 3.6.0
+version: 4.0.0
 main: com.massivecraft.vampire.P
 permissions:
   vampire.admin:
@@ -13,6 +13,9 @@ permissions:
       vampire.command.feed: true
   vampire.command.help:
     description: Display help pages
+    default: true
+  vampire.command.intend:
+    description: intend to infect others
     default: true
   vampire.command.list:
     description: List vampires on the server

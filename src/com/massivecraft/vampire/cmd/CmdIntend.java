@@ -4,9 +4,9 @@ import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
 
-public class CmdIntent extends VCommand {
+public class CmdIntend extends VCommand {
 	
-	public CmdIntent() {
+	public CmdIntend() {
 		aliases.add("intend");
 		aliases.add("intent");
 

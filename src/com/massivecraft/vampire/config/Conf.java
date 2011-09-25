@@ -1,7 +1,9 @@
 package com.massivecraft.vampire.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +19,8 @@ import com.massivecraft.vampire.P;
 public class Conf
 {
 	public final static transient int taskInterval = 40; // Defines often the task runs.
+	
+	public static List<String> baseCommandAliases = new ArrayList<String>();
 	
 	public static Boolean nameColorize = false;
 	public static ChatColor nameColor = ChatColor.RED;
@@ -65,6 +69,8 @@ public class Conf
 	
 	static
 	{
+		baseCommandAliases.add("v");
+		
 		dropSelfOverrideMaterials.add(Material.WEB);
 		dropSelfOverrideMaterials.add(Material.GLOWSTONE);
 		dropSelfOverrideMaterials.add(Material.BOOKSHELF);

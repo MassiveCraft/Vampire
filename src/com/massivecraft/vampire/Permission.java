@@ -9,7 +9,7 @@ public enum Permission
 	COMMAND_INFECT("vampire.command.infect"),
 	COMMAND_LIST("vampire.command.list"),
 	COMMAND_TURN("vampire.command.turn"),
-	COMMAND_INTEND("vampire.intend"),
+	COMMAND_INTEND("vampire.command.intend"),
 	;
 	
 	public final String node;

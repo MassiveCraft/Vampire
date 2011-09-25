@@ -15,15 +15,13 @@ public class AltarEvil extends Altar
 		this.name = "evil altar";
 		this.desc = "<i>The very sight of this altar makes you feel cold and corrupted down to your bones.";
 		
-		this.coreMaterial = Material.NETHERRACK;
+		this.coreMaterial = Material.GOLD_BLOCK;
 		
 		this.materialCounts = new HashMap<Material, Integer>();
 		this.materialCounts.put(Material.OBSIDIAN, 30);
 		this.materialCounts.put(Material.WEB, 5);
 		this.materialCounts.put(Material.DEAD_BUSH, 5);
-		this.materialCounts.put(Material.GOLD_BLOCK, 3);
-		this.materialCounts.put(Material.IRON_BLOCK, 3);
-		this.materialCounts.put(Material.DIAMOND_BLOCK, 1);
+		this.materialCounts.put(Material.DIAMOND_BLOCK, 2);
 		
 		this.recipe = new Recipe();
 		this.recipe.materialQuantities.put(Material.MUSHROOM_SOUP, 1);
