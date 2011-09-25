@@ -13,6 +13,9 @@ public class Lang
 	public static String messageTruceBroken = "<b>You temporarily broke your truce with the monsters.";
 	public static String messageTruceRestored = "<g>Your truce with the monsters has been restored.";
 	
+	public static String intentOnMessage  = "<i>Intent to to infect is now <h>ON<i>. Infect probability is %.1f%% per attack. You will now bite and fight agressivley in order to infect others in close combat.";
+	public static String intentOffMessage = "<i>Intent to to infect is now <h>OFF<i>. Infect probability is %.1f%% per attack. You will now fight carefully in order to avoid infecting others in close combat.";
+	
 	//public static String messageTrueBloodVampire = "You are a True Blood vampire.";
 	//public static String messageBasicVampire = "You are a common vampire.";
 	
@@ -22,15 +25,22 @@ public class Lang
 
 	//public static String regenStartMessage = "Your wounds start to close. This drains blood over time.";
 	
-	public static String messageWoodCombatWarning = "<b>Ouch!!! <h>%s <b>is made of <h>wood <b>and vampires a lot!";
+	public static String messageWoodCombatWarning = "<b>Ouch!!! <h>%s <b>is made of <h>wood <b>and hurt vampires a lot!";
 	
 	public static String combustMessage = "<b>Vampires burn in sunlight! Take cover!";
 	
+	public static String youWasTurned = "<b>You just <h>TURNED <b>into a VAMPIRE!";
+	public static String xWasTurned = "<h>%s <i>is now a vampire.";
+	
+	public static String youWasCured = "<g>You have been cured and is once again healthy and alive.<b> But will you miss the taste of blood on your lips? When you sleep, will you taste the salt and copper flowing over your tongue? Go, mortal. Bask in your precious sunlight.";
+	public static String xWasCured = "<h>%s <i>was cured and is no longer a vampire.";
+	
 	public static List<String> infectionMessagesProgress = new ArrayList<String>();
 	public static List<String> infectionBreadHintMessages = new ArrayList<String>();
-	public static List<String> turnMessages = new ArrayList<String>(); // TODO
+	/*public static List<String> turnMessages = new ArrayList<String>(); // TODO
 	public static List<String> turnTrueBloodMessages = new ArrayList<String>();
-	public static List<String> cureMessages = new ArrayList<String>();
+	public static List<String> cureMessages = new ArrayList<String>();*/
+	
 	public static List<String> helpMessages = new ArrayList<String>();
 	//public static List<String> thirstMessages = new ArrayList<String>();
 	//public static List<String> thirstStrongMessages = new ArrayList<String>();
@@ -115,17 +125,7 @@ public class Lang
 		infectionBreadHintMessages.add("<i>Maybe you should see the local farmer...");
 		infectionBreadHintMessages.add("<i>Bread...Bread...Bread...");
 		
-		turnMessages.add("Your heart stops. You don't breathe anymore.");
-		turnMessages.add("You are now a vampire. To see your blood supply:");
-		turnMessages.add("Type \"/v\" or simply \"v\" in the chat.");
 		
-		turnTrueBloodMessages.add("Your heart stops. You don't breathe anymore.");
-		turnTrueBloodMessages.add("You are now a True Blood vampire, able to infect.");
-		turnTrueBloodMessages.add("To see your blood supply:");
-		turnTrueBloodMessages.add("Type \"/v\" or simply \"v\" in the chat.");
-		
-		cureMessages.add("You have been cured from the vampirism.");
-		cureMessages.add("You are once again healthy and alive.");
 	}
 	
 	private static transient Lang i = new Lang();

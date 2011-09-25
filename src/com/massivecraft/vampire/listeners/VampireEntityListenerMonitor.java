@@ -66,8 +66,7 @@ public class VampireEntityListenerMonitor extends EntityListener
 				pDamagee = (Player)damagee;
 				vpDamagee = VPlayers.i.get(pDamagee);
 				
-				//If the damager is a True Blood vampire, he is able to infect the player. Else if it's not a true blood a basic vampire) he won't be able to infect.
-				if(vpDamager.isTrueBlood()) vpDamagee.infectionRisk();
+				vpDamagee.infectionContractRisk(vpDamager);
 				
 				// There will also be blood!
 				if (pDamagee.getHealth() > 0)
@@ -77,7 +76,7 @@ public class VampireEntityListenerMonitor extends EntityListener
 					{
 						damage = pDamagee.getHealth();
 					}
-					vpDamager.foodAdd(damage * GeneralConf.foodPerDamageFromPlayer);
+					vpDamager.foodAdd(damage * Conf.foodPerDamageFromPlayer);
 				}
 			}
 			else if (damagee instanceof Creature)
@@ -87,18 +86,18 @@ public class VampireEntityListenerMonitor extends EntityListener
 				CreatureType creatureType = EntityUtil.creatureTypeFromEntity(damagee);
 				
 				// Obtain blood?
-				if (GeneralConf.foodPerDamageFromCreature.containsKey(creatureType) && cDamagee.getHealth() > 0)
+				if (Conf.foodPerDamageFromCreature.containsKey(creatureType) && cDamagee.getHealth() > 0)
 				{
 					int damage = event.getDamage();
 					if (cDamagee.getHealth() < damage)
 					{
 						damage = cDamagee.getHealth();
 					}
-					vpDamager.foodAdd(damage * GeneralConf.foodPerDamageFromCreature.get(creatureType));
+					vpDamager.foodAdd(damage * Conf.foodPerDamageFromCreature.get(creatureType));
 				}
 				
 				// Break truce
-				if (GeneralConf.creatureTypeTruceMonsters.contains(creatureType))
+				if (Conf.creatureTypeTruceMonsters.contains(creatureType))
 				{
 					vpDamager.truceBreak();
 				}
@@ -111,11 +110,7 @@ public class VampireEntityListenerMonitor extends EntityListener
 			
 			if (vpDamagee.isVampire())
 			{
-				//If the damager is a True Blood vampire, he is able to infect the player. Else if it's not a true blood a basic vampire) he won't be able to infect.
-				if(vpDamagee.isTrueBlood()) vpDamager.infectionRisk();
-				
-				// A non vampire attacked a vampire. There is risk for infection.
-				//vpDamager.infectionRisk();
+				vpDamager.infectionContractRisk(vpDamager);
 			}
 		}
 	}

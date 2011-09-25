@@ -1,11 +1,13 @@
 package com.massivecraft.vampire;
 
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.event.Event;
 
+import com.google.gson.GsonBuilder;
 import com.massivecraft.vampire.cmd.*;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.listeners.*;
@@ -21,10 +23,6 @@ public class P extends MPlugin
 	public VampirePlayerListener playerListener;
 	public VampireEntityListener entityListener;
 	public VampireEntityListenerMonitor entityListenerMonitor;
-	
-	// Vampire Type Configurations
-	public VampireTypeConf confVampTypeOriginal;
-	public VampireTypeConf confVampTypeCommon;
 	
 	public CmdHelp cmdHelp;
 	
@@ -45,9 +43,8 @@ public class P extends MPlugin
 		if ( ! preEnable()) return;
 		
 		// Load Conf from disk
-		GeneralConf.load();
+		Conf.load();
 		Lang.load();
-		this.setupVampireTypeConf();
 		
 		VPlayers.i.loadFromDisc();
 		
@@ -56,7 +53,7 @@ public class P extends MPlugin
 		this.getBaseCommands().add(new CmdBase());
 	
 		// Start timer
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, GeneralConf.taskInterval);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, Conf.taskInterval);
 	
 		// Register events
 		PluginManager pm = this.getServer().getPluginManager();
@@ -69,21 +66,6 @@ public class P extends MPlugin
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High, this);
 		
 		postEnable();
-	}
-	
-	// -------------------------------------------- //
-	// VAMPIRE TYPE CONFIGURATIONS
-	// -------------------------------------------- //
-	
-	public void setupVampireTypeConf()
-	{
-		VampireTypeConf c;
-		
-		c = new VampireTypeConf();
-		this.confVampTypeOriginal = this.persist.loadOrSaveDefault(c, VampireTypeConf.class, "conf_vampire_original");
-		
-		c = new VampireTypeConf();
-		this.confVampTypeCommon = this.persist.loadOrSaveDefault(c, VampireTypeConf.class, "conf_vampire_common");
 	}
 	
 	// -------------------------------------------- //
@@ -103,5 +85,14 @@ public class P extends MPlugin
 		super.addTags();
 		/*this.tags.put("i", "§b");
 		this.tags.put("h", "§a");*/
+	}
+	
+	@Override
+	public GsonBuilder getGsonBuilder()
+	{
+		return new GsonBuilder()
+		.setPrettyPrinting()
+		.disableHtmlEscaping()
+		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
 	}
 }

@@ -23,11 +23,11 @@ public class VPlayers extends PlayerEntityCollection<VPlayer>
 	{
 		super
 		(
-				VPlayer.class,
-				new CopyOnWriteArrayList<VPlayer>(),
-				new ConcurrentSkipListMap<String, VPlayer>(String.CASE_INSENSITIVE_ORDER),
-				new File(P.p.getDataFolder(), "player.json"),
-				P.p.gson
+			VPlayer.class,
+			new CopyOnWriteArrayList<VPlayer>(),
+			new ConcurrentSkipListMap<String, VPlayer>(String.CASE_INSENSITIVE_ORDER),
+			new File(P.p.getDataFolder(), "player.json"),
+			P.p.gson
 		);
 		
 		this.setCreative(true);

@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityListener;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
-import com.massivecraft.vampire.config.GeneralConf;
+import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.zcore.util.TextUtil;
@@ -92,7 +92,7 @@ public class VampireEntityListener extends EntityListener
 		// Modify damage if damager is a vampire
 		if (vpDamager.isVampire())
 		{
-			damage *= GeneralConf.combatDamageDealtFactor;
+			damage *= Conf.combatDamageDealtFactor;
 		}
 		
 		// Modify damage if damagee is a vampire
@@ -103,14 +103,14 @@ public class VampireEntityListener extends EntityListener
 			if (vpDamagee.isVampire())
 			{
 				Material itemMaterial = pDamager.getItemInHand().getType();
-				if (GeneralConf.woodMaterials.contains(itemMaterial))
+				if (Conf.woodMaterials.contains(itemMaterial))
 				{
-					damage *= GeneralConf.combatDamageReceivedWoodFactor;
+					damage *= Conf.combatDamageReceivedWoodFactor;
 					vpDamagee.msg(p.txt.parse(Lang.messageWoodCombatWarning, TextUtil.getMaterialName(itemMaterial)));
 				}
 				else
 				{
-					damage *= GeneralConf.combatDamageReceivedFactor;
+					damage *= Conf.combatDamageReceivedFactor;
 				}
 			}
 		}
@@ -130,7 +130,7 @@ public class VampireEntityListener extends EntityListener
 		}
 		
 		// ... by creature that cares about the truce with vampires ...
-		if ( ! (GeneralConf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(event.getEntity())))) {
+		if ( ! (Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(event.getEntity())))) {
 			return;
 		}
 		

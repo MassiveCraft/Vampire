@@ -24,12 +24,29 @@ public class VPlayer extends PlayerEntity
 {
 	public static transient P p = P.p;
 	
+	// Is the player a vampire?
 	private boolean isVampire = false;
-	private boolean isTrueBlood = false;
-	//private double blood = 100;
-	private double infection = 0; // 0 means no infection. If infection reaches 100 the player will turn to vampire.
+	public boolean isVampire() { return this.isVampire; }
+	public void setIsVampire(boolean isVampire) { this.isVampire = isVampire; }
+	public boolean isExvampire() { return this.isVampire() == false && this.timeAsVampire > 0; }
+		
+	// 0 means no infection. If infection reaches 100 the player will turn to vampire.
+	private double infection = 0; 
+	public double getInfection() { return this.infection; }
+	public void setInfection(double infection) { this.infection = limitNumber(infection, 0D, 100D); }	
+	public void alterInfection(double infection) { this.setInfection(this.getInfection() + infection); }
+	public boolean isInfected() { return this.infection > 0D; }
+	
+	// Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
+	private boolean intendingToInfect = false;
+	public boolean isIntendingToInfect() { return intendingToInfect; }
+	public void setIntendingToInfect(boolean intendingToInfect) { this.intendingToInfect = intendingToInfect; }
+
+	private String makerId;
+	// TODO: Extend the maker and turn reason concept!!
+	
 	private long timeAsVampire = 0; // The total amount of milliseconds this player has been vampire.
-	private long truceBreakTimeLeft = 0; // How many milliseconds more will the monsters be hostile?
+	private long truceBreakTicksLeft = 0; // How many milliseconds more will the monsters be hostile?
 	private transient double foodAccumulator = 0;
 	//public transient long regenDelayLeftMilliseconds = 0;
 	
@@ -42,18 +59,6 @@ public class VPlayer extends PlayerEntity
 	public Player getPlayer()
 	{
 		return Bukkit.getPlayer(this.getId());
-	}
-	
-	// -------------------------------------------- //
-	// Get Conf
-	// -------------------------------------------- //
-	public VampireTypeConf getConf()
-	{
-		if (this.isTrueBlood)
-		{
-			return p.confVampTypeOriginal;
-		}
-		return p.confVampTypeCommon;
 	}
 	
 	// -------------------------------------------- //
@@ -75,68 +80,35 @@ public class VPlayer extends PlayerEntity
 	// -------------------------------------------- //
 	public void advanceTime(long ticks)
 	{
-		long milliseconds = ticks * 1000 / 20;
-		
 		if (this.isVampire())
 		{
-			this.timeAsVampire += milliseconds;
-			this.combustAdvanceTime(milliseconds);
-			this.truceBreakAdvanceTime(milliseconds);
+			this.timeAsVampire += ticks;
+			this.combustAdvanceTime(ticks);
+			this.truceBreakAdvanceTime(ticks);
 		}
 		else if (this.isInfected())
 		{
-			this.infectionAdvanceTime(milliseconds);
+			this.infectionAdvanceTime(ticks);
 		}
 	}
 	
 	// -------------------------------------------- //
 	// Vampire
 	// -------------------------------------------- //
-	
-	public boolean isVampire()
-	{
-		return this.isVampire;
-	}	
-	
-	public boolean isTrueBlood()
-	{
-		return this.isTrueBlood;
-	}
-	
-	public void setIsTrueBlood(boolean val)
-	{
-		this.isTrueBlood = val;
-	}
-	
 	public void turn()
 	{
-		this.isVampire = true;
-		this.infectionSet(0);
+		if (this.isVampire()) return;
 		
-		if(this.isTrueBlood)
-		{
-			this.msg(Lang.turnTrueBloodMessages);
-			p.log(this.getId() + " turned into a TrueBlood vampire.");
-		}
-		else
-		{
-			this.msg(Lang.turnMessages);
-			p.log(this.getId() + " turned into a common vampire.");
-		}
+		this.setInfection(0);
+		this.setIsVampire(true);
+		this.msg(p.txt.parse(Lang.youWasTurned));
 	}
 	
-	public void cure()
+	public void cureVampirism()
 	{
-		this.isVampire = false;
-		this.isTrueBlood = false;
-		this.infectionSet(0);
-		this.msg(Lang.cureMessages);
-		//Vampire.log(this.playername + " was cured and is no longer a vampire.");
-	}
-	
-	public boolean isExvampire()
-	{
-		return ( ! this.isVampire() && this.timeAsVampire > 0);
+		this.setInfection(0);
+		this.setIsVampire(false);
+		this.msg(p.txt.parse(Lang.youWasCured));
 	}
 	
 	// -------------------------------------------- //
@@ -146,7 +118,7 @@ public class VPlayer extends PlayerEntity
 	
 	public void foodSet(double food)
 	{
-		food = this.limitDouble(food, 0, 20);
+		food = limitNumber(food, 0d, 20d);
 		int targetFood = (int)Math.floor(food);
 		this.foodAccumulator = food - targetFood;
 		this.getPlayer().setFoodLevel(targetFood);
@@ -174,7 +146,7 @@ public class VPlayer extends PlayerEntity
 	// -------------------------------------------- //
 	public boolean truceIsBroken()
 	{
-		return this.truceBreakTimeLeft != 0;
+		return this.truceBreakTicksLeft != 0;
 	}
 	
 	public void truceBreak()
@@ -183,7 +155,7 @@ public class VPlayer extends PlayerEntity
 		{
 			this.msg(p.txt.parse(Lang.messageTruceBroken));
 		}
-		this.truceBreakTimeLeftSet(GeneralConf.truceBreakTime);
+		this.truceBreakTimeLeftSet(Conf.truceBreakTicks);
 	}
 	
 	public void truceRestore()
@@ -201,7 +173,7 @@ public class VPlayer extends PlayerEntity
 				continue;
 			}
 			
-			if ( ! GeneralConf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(entity)))
+			if ( ! Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(entity)))
 			{
 				continue;
 			}
@@ -217,14 +189,11 @@ public class VPlayer extends PlayerEntity
 		}
 	}
 	
-	public void truceBreakAdvanceTime(long milliseconds)
+	public void truceBreakAdvanceTime(long ticks)
 	{
-		if ( ! this.truceIsBroken())
-		{
-			return;
-		}
+		if ( ! this.truceIsBroken()) return;
 		
-		this.truceBreakTimeLeftAlter(-milliseconds);
+		this.truceBreakTimeLeftAlter(-ticks);
 		
 		if ( ! this.truceIsBroken())
 		{
@@ -234,18 +203,18 @@ public class VPlayer extends PlayerEntity
 	
 	public long truceBreakTimeLeftGet()
 	{
-		return this.truceBreakTimeLeft;
+		return this.truceBreakTicksLeft;
 	}
 	
 	private void truceBreakTimeLeftSet(long milliseconds)
 	{
 		if (milliseconds < 0)
 		{
-			this.truceBreakTimeLeft = 0;
+			this.truceBreakTicksLeft = 0;
 		}
 		else
 		{
-			this.truceBreakTimeLeft = milliseconds;
+			this.truceBreakTicksLeft = milliseconds;
 		}
 	}
 	
@@ -261,7 +230,7 @@ public class VPlayer extends PlayerEntity
 	{
 		Player player = this.getPlayer();
 		
-		int targetFood = player.getFoodLevel() - this.getConf().jumpFoodCost;
+		int targetFood = player.getFoodLevel() - Conf.jumpFoodCost;
 		
 		if (targetFood < 0) return;
 		
@@ -286,16 +255,9 @@ public class VPlayer extends PlayerEntity
 	// -------------------------------------------- //
 	// Combustion
 	// -------------------------------------------- //
-	public boolean combustAdvanceTime(long milliseconds)
+	public boolean combustAdvanceTime(long ticks)
 	{
 		if ( ! this.standsInSunlight()) return false;
-		if ( ! this.getConf().burnInSunlight) return false;
-		
-		
-		// We assume the next tick will be in milliseconds milliseconds.
-		
-		int ticksTillNext = (int) (milliseconds / 1000D * 20D); // 20 minecraft ticks is a second.
-		ticksTillNext += 5; // just to be on the safe side.
 		
 		Player player = this.getPlayer();
 		if (player.getFireTicks() <= 0)
@@ -303,7 +265,7 @@ public class VPlayer extends PlayerEntity
 			this.msg(p.txt.parse(Lang.combustMessage));
 		}
 		
-		player.setFireTicks(ticksTillNext + GeneralConf.combustFireExtinguishTicks);
+		player.setFireTicks((int) (ticks + Conf.combustFireExtinguishTicks));
 		
 		return true;
 	}
@@ -367,14 +329,16 @@ public class VPlayer extends PlayerEntity
 			{
 				blockCurrent = blockCurrent.getRelative(BlockFace.UP);
 			
-				opacity = GeneralConf.materialOpacity.get(blockCurrent.getType());
-				if (opacity == null) {
+				opacity = Conf.materialOpacity.get(blockCurrent.getType());
+				if (opacity == null)
+				{
 					retVal = true; // Blocks not in that map have opacity 1;
 					break;
 				}
 			
 				opacityAccumulator += opacity;
-				if (opacityAccumulator >= 1.0D) {
+				if (opacityAccumulator >= 1.0D)
+				{
 					retVal = true;
 					break;
 				}
@@ -387,7 +351,7 @@ public class VPlayer extends PlayerEntity
 	{
 		long time = this.getPlayer().getWorld().getTime() % 24000;
 		
-		if (time < GeneralConf.combustFromTime || time > GeneralConf.combustToTime) return true;
+		if (time < Conf.combustFromTime || time > Conf.combustToTime) return true;
 		
 		return false; 
 	}
@@ -395,25 +359,8 @@ public class VPlayer extends PlayerEntity
 	// -------------------------------------------- //
 	// Infection 
 	// -------------------------------------------- //
-	public boolean isInfected()
-	{
-		return this.infection > 0D && this.isVampire == false;
-	}
 	
-	public double infectionGet()
-	{
-		return this.infection;
-	}
 	
-	public void infectionSet(double infection)
-	{
-		this.infection = this.limitDouble(infection, 0D, 100D);
-	}
-	
-	public void infectionAlter(double infection)
-	{
-		this.infectionSet(this.infectionGet() + infection);
-	}
 	
 	public void infectionHeal(double amount)
 	{
@@ -422,7 +369,7 @@ public class VPlayer extends PlayerEntity
 			return;
 		}
 		
-		double current = this.infectionGet();
+		double current = this.getInfection();
 		
 		if (current == 0D )
 		{
@@ -434,32 +381,33 @@ public class VPlayer extends PlayerEntity
 		
 		if (current <= 0D)
 		{
-			this.infectionSet(0D);
+			this.setInfection(0D);
 			this.msg(p.txt.parse(Lang.infectionMessageCured));
 			return;
 		}
 		
-		this.infectionSet(current);
+		this.setInfection(current);
 		this.msg(p.txt.parse(Lang.infectionMessageHeal));
 	}
 	
-	public void infectionAdvanceTime(long milliseconds)
+	// -------------------------------------------- //
+	// Infection Natural Advancement
+	// -------------------------------------------- //
+	
+	public void infectionAdvanceTime(long ticks)
 	{
-		this.infectionAdvance(GeneralConf.infectionProgressPerSecond * milliseconds / 1000D );
+		this.infectionAdvance(ticks * Conf.infectionProgressPerTick);
 	}
 	
 	public void infectionAdvance(double amount)
 	{
-		if (this.isVampire())
-		{
-			return;
-		}
+		if (this.isVampire()) return; 
 		
 		int oldMessageIndex = this.infectionGetMessageIndex();
-		this.infectionAlter(amount);
+		this.alterInfection(amount);
 		int newMessageIndex = this.infectionGetMessageIndex();
 		
-		if (this.infectionGet() == 100)
+		if (this.getInfection() >= 100)
 		{
 			this.turn();
 			return;
@@ -475,27 +423,50 @@ public class VPlayer extends PlayerEntity
 	
 	public int infectionGetMessageIndex()
 	{
-		return (int)((Lang.infectionMessagesProgress.size()+1) * this.infectionGet() / 100D) - 1;
-	}
-	
-	public void infectionRisk()
-	{
-		//Vampire.log(this.playername + " risked infection.");
-		if (P.random.nextDouble() <= GeneralConf.infectionCloseCombatRisk)
-		{
-			p.log(this.getId() + " contracted vampirism infection.");
-			this.infectionAdvance(GeneralConf.infectionCloseCombatAmount);
-		}
+		return (int)((Lang.infectionMessagesProgress.size()+1) * this.getInfection() / 100D) - 1;
 	}
 	
 	// -------------------------------------------- //
-	// Altar Usage
+	// Infection Close Combat Contract Risk
+	// -------------------------------------------- //
+	
+	public double infectionGetRiskToInfectOther()
+	{
+		if (this.intendingToInfect)
+		{
+			return Conf.infectionRiskAtCloseCombatWithIntent;
+		}
+		return Conf.infectionRiskAtCloseCombatWithoutIntent;
+	}
+	
+	public void infectionContract(VPlayer fromvplayer)
+	{
+		if (this.isVampire()) return;
+		
+		if (fromvplayer != null && this.makerId == null)
+		{
+			this.makerId = fromvplayer.getId();
+		}
+		
+		p.log(this.getId() + " contracted vampirism infection."); // TODO: Better messages and
+		
+		this.infectionAdvance(1);
+	}
+	
+	public void infectionContractRisk(VPlayer fromvplayer)
+	{
+		if (P.random.nextDouble() > fromvplayer.infectionGetRiskToInfectOther()) return;
+		this.infectionContract(fromvplayer);
+	}
+	
+	// -------------------------------------------- //
+	// Altar Usage TODO: Abstract into the Altar Class
 	// -------------------------------------------- //
 	
 	public void useAltarInfect(Block centerBlock)
 	{
 		// The altar must be big enough
-		int count = GeometryUtil.countNearby(centerBlock, GeneralConf.altarInfectMaterialSurround, GeneralConf.altarInfectMaterialSurroundRadious);
+		int count = GeometryUtil.countNearby(centerBlock, Conf.altarInfect.materialSurround, Conf.altarInfect.surroundRadius);
 		if (count == 0)
 		{
 			return;
@@ -503,7 +474,7 @@ public class VPlayer extends PlayerEntity
 		
 		this.msg(" ");
 		
-		if (count < GeneralConf.altarInfectMaterialSurroundCount)
+		if (count < Conf.altarInfect.surroundCount)
 		{
 			this.msg(Lang.altarInfectToSmall);
 			return;
@@ -527,27 +498,26 @@ public class VPlayer extends PlayerEntity
 		}
 		
 		// Is healthy and thus can be infected...
-		if (GeneralConf.altarInfectRecipe.playerHasEnough(this.getPlayer()))
+		if (Conf.altarInfect.recipe.playerHasEnough(this.getPlayer()))
 		{
 			this.msg(Lang.altarUseIngredientsSuccess);
-			this.msg(GeneralConf.altarInfectRecipe.getRecipeLine());
+			this.msg(Conf.altarInfect.recipe.getRecipeLine());
 			this.msg(Lang.altarInfectUse);
 			p.log(this.getId() + " was infected by an evil altar.");
-			GeneralConf.altarInfectRecipe.removeFromPlayer(this.getPlayer());
-			this.infectionAlter(3D);
-			this.isTrueBlood = true;
+			Conf.altarInfect.recipe.removeFromPlayer(this.getPlayer());
+			this.alterInfection(3D);
 		}
 		else
 		{
 			this.msg(Lang.altarUseIngredientsFail);
-			this.msg(GeneralConf.altarInfectRecipe.getRecipeLine());
+			this.msg(Conf.altarInfect.recipe.getRecipeLine());
 		}
 	}
 	
 	public void useAltarCure(Block centerBlock)
 	{
 		// The altar must be big enough;
-		int count = GeometryUtil.countNearby(centerBlock, this.getConf().altarCureMaterialSurround, this.getConf().altarCureMaterialSurroundRadious);
+		int count = GeometryUtil.countNearby(centerBlock, Conf.altarCure.materialSurround, Conf.altarCure.surroundRadius);
 		if (count == 0)
 		{
 			return;
@@ -555,7 +525,7 @@ public class VPlayer extends PlayerEntity
 		
 		this.msg(" ");
 		
-		if (count < this.getConf().altarCureMaterialSurroundCount)
+		if (count < Conf.altarCure.surroundCount)
 		{
 			this.msg(Lang.altarCureToSmall);
 			return;
@@ -575,39 +545,39 @@ public class VPlayer extends PlayerEntity
 		if (this.isInfected())
 		{
 			this.msg(Lang.altarCureExamineWhileInfected);
-			this.infectionSet(0);
+			this.setInfection(0);
 			this.msg(p.txt.parse(Lang.infectionMessageCured));
 			return;
 		}
 		
 		// Is vampire and thus can be cured...
-		if(this.getConf().altarCureRecipe.playerHasEnough(this.getPlayer()))
+		if(Conf.altarCure.recipe.playerHasEnough(this.getPlayer()))
 		{
 			this.msg(Lang.altarUseIngredientsSuccess);
-			this.msg(this.getConf().altarCureRecipe.getRecipeLine());
+			this.msg(Conf.altarCure.recipe.getRecipeLine());
 			this.msg(Lang.altarCureUse);
-			this.getConf().altarCureRecipe.removeFromPlayer(this.getPlayer());
+			Conf.altarCure.recipe.removeFromPlayer(this.getPlayer());
 			p.log(this.getId() + " was cured from being a vampire by a healing altar.");
-			this.cure();
+			this.cureVampirism();
 		} 
 		else
 		{
 			this.msg(Lang.altarUseIngredientsFail);
-			this.msg(this.getConf().altarCureRecipe.getRecipeLine());
+			this.msg(Conf.altarCure.recipe.getRecipeLine());
 		}
 	}
 
 	// -------------------------------------------- //
 	// Commonly used limiter of double
 	// -------------------------------------------- //
-	public double limitDouble(double d, double min, double max)
+	public static <T extends Number> T limitNumber(T d, T min, T max)
 	{
-		if (d < min)
+		if (d.doubleValue() < min.doubleValue())
 		{
 			return min;
 		}
 		
-		if (d > max)
+		if (d.doubleValue() > max.doubleValue())
 		{
 			return max;
 		}
@@ -615,13 +585,4 @@ public class VPlayer extends PlayerEntity
 		return d;
 	}
 	
-	// -------------------------------------------- //
-	// Persistance
-	// -------------------------------------------- //
-	
-	@Override
-	public boolean shouldBeSaved()
-	{
-		return this.isVampire() || this.isInfected() || this.isExvampire();
-	}
 }

@@ -38,11 +38,14 @@ public class GeometryUtil {
 		int zFrom = (int)(- zFromRadiusFactor * radius);
 		int zTo = (int)(zToRadiusFactor * radius);
 		
-		for(int y=yFrom; y<=yTo; y++){
-			for(int z=zFrom; z<=zTo; z++){
+		for(int y=yFrom; y<=yTo; y++)
+		{
+			for(int z=zFrom; z<=zTo; z++)
+			{
 				for(int x=xFrom; x<=xTo; x++)
 				{
-					if( ! ball || x*x+y*y+z*z <= radius*radius) {
+					if( ! ball || x*x+y*y+z*z <= radius*radius)
+					{
 						blocks.add(centerBlock.getRelative(x, -y, z));
 					}
 				}

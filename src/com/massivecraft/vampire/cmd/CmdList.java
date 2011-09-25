@@ -2,15 +2,14 @@ package com.massivecraft.vampire.cmd;
 
 import java.util.*;
 
-import org.bukkit.ChatColor;
-
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.zcore.util.TextUtil;
 
 
 public class CmdList extends VCommand {
 	
-	public CmdList() {
+	public CmdList()
+	{
 		aliases.add("list");
 		
 		helpShort = "List vampires on the server";
@@ -67,15 +66,17 @@ public class CmdList extends VCommand {
 			}
 		}
 		
+		String sep = p.txt.parse("<i>, ");
+		
 		// Create Messages
 		List<String> messages = new ArrayList<String>();
-		messages.add(" ");
-		messages.add("= Vampires Online: "+ChatColor.WHITE + TextUtil.implode(vampiresOnline, ", "));
-		messages.add("= Vampires Offline: "+ChatColor.WHITE + TextUtil.implode(vampiresOffline, ", "));
-		messages.add("= Infected Online: "+ChatColor.WHITE + TextUtil.implode(infectedOnline, ", "));
-		messages.add("= Infected Offline: "+ChatColor.WHITE + TextUtil.implode(infectedOffline, ", "));
-		messages.add("= Exvampires Online: "+ChatColor.WHITE + TextUtil.implode(exvampiresOnline, ", "));
-		messages.add("= Exvampires Offline: "+ChatColor.WHITE + TextUtil.implode(exvampiresOffline, ", "));
+		messages.add(p.txt.titleize("Vampire Player List"));
+		messages.add(p.txt.parse("<h>= Vampires Online: <i>") + TextUtil.implode(vampiresOnline, sep));
+		messages.add(p.txt.parse("<h>= Vampires Offline: <i>") + TextUtil.implode(vampiresOffline, sep));
+		messages.add(p.txt.parse("<h>= Infected Online: <i>") + TextUtil.implode(infectedOnline, sep));
+		messages.add(p.txt.parse("<h>= Infected Offline: <i>") + TextUtil.implode(infectedOffline, sep));
+		messages.add(p.txt.parse("<h>= Exvampires Online: <i>") + TextUtil.implode(exvampiresOnline, sep));
+		messages.add(p.txt.parse("<h>= Exvampires Offline: <i>") + TextUtil.implode(exvampiresOffline, sep));
 		
 		// Send them
 		this.msg(messages);	

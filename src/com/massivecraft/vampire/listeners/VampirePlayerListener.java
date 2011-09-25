@@ -14,9 +14,8 @@ import org.bukkit.event.player.PlayerListener;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
-import com.massivecraft.vampire.config.GeneralConf;
+import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.config.VampireTypeConf;
 import com.massivecraft.vampire.zcore.util.TextUtil;
 
 
@@ -35,29 +34,28 @@ public class VampirePlayerListener extends PlayerListener
 		}
 		
 		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
-		VampireTypeConf vconf = vplayer.getConf();
 		Material itemMaterial = event.getMaterial();
 		
 		if(vplayer.isVampire())
 		{
-			if (vconf.canEat.containsKey(itemMaterial))
+			if (Conf.canEat.containsKey(itemMaterial))
 			{
-				if ( ! vconf.canEat.get(itemMaterial))
+				if ( ! Conf.canEat.get(itemMaterial))
 				{
 					vplayer.msg(p.txt.parse(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial)));
 					event.setCancelled(true);
 				}
 			}
 				
-			if (vplayer.getConf().jumpMaterials.contains(event.getMaterial())) 
+			if (Conf.jumpMaterials.contains(event.getMaterial())) 
 			{
-				vplayer.jump(vplayer.getConf().jumpDeltaSpeed, false);
+				vplayer.jump(Conf.jumpDeltaSpeed, false);
 			}
 		}
 		
 		if (vplayer.isInfected() && itemMaterial == Material.BREAD)
 		{
-			vplayer.infectionHeal(GeneralConf.infectionBreadHealAmount);
+			vplayer.infectionHeal(Conf.infectionBreadHealAmount);
 		}		
 		
 		if ( action != Action.RIGHT_CLICK_BLOCK)
@@ -67,11 +65,11 @@ public class VampirePlayerListener extends PlayerListener
 		
 		Material blockMaterial = event.getClickedBlock().getType();
 		
-		if (blockMaterial == GeneralConf.altarInfectMaterial)
+		if (blockMaterial == Conf.altarInfect.material)
 		{
 			vplayer.useAltarInfect(event.getClickedBlock());
 		} 
-		else if (blockMaterial == vplayer.getConf().altarCureMaterial)
+		else if (blockMaterial == Conf.altarCure.material)
 		{
 			vplayer.useAltarCure(event.getClickedBlock());
 		}
@@ -85,9 +83,10 @@ public class VampirePlayerListener extends PlayerListener
 		Player me = event.getPlayer();
 		VPlayer vme = VPlayers.i.get(me);
 		
-		if (vme.getConf().nameColorize == false) return;
+		if (Conf.nameColorize == false) return;
+		if ( ! vme.isVampire()) return;
 		
-		me.setDisplayName(""+vme.getConf().nameColor+ChatColor.stripColor(me.getDisplayName()));
+		me.setDisplayName(""+Conf.nameColor+ChatColor.stripColor(me.getDisplayName()));
 		
 		
 		/*
@@ -98,7 +97,8 @@ public class VampirePlayerListener extends PlayerListener
 			CommandSender sender = event.getPlayer();
 			P.p.handleCommand(sender, parameters);
 			event.setCancelled(true);
-		}*/
+		}
+		*/
 	}
 	
 	@Override
@@ -107,9 +107,9 @@ public class VampirePlayerListener extends PlayerListener
 		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
 		if ( ! vplayer.isVampire()) return;
 			
-		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && vplayer.getConf().jumpMaterials.contains(event.getPlayer().getItemInHand().getType()))
+		if (event.getAnimationType() == PlayerAnimationType.ARM_SWING && Conf.jumpMaterials.contains(event.getPlayer().getItemInHand().getType()))
 		{
-			vplayer.jump(vplayer.getConf().jumpDeltaSpeed, true);
+			vplayer.jump(Conf.jumpDeltaSpeed, true);
 		}
 	}
 	

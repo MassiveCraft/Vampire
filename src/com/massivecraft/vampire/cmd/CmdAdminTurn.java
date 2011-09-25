@@ -1,21 +1,20 @@
 package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
-
 import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.config.Lang;
 
-
-public class CmdCure extends VCommand
+public class CmdAdminTurn extends VCommand
 {
-	public CmdCure()
-	{
-		aliases.add("cure");
+
+	public CmdAdminTurn() {	
+		aliases.add("aturn");
 
 		requiredArgs.add("playername");
 		
-		helpShort = "cure a vampire";
+		helpShort = "instantly turn player";
 		
-		permission = Permission.COMMAND_CURE.node;
+		permission = Permission.COMMAND_TURN.node;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}
@@ -25,9 +24,11 @@ public class CmdCure extends VCommand
 	{
 		Player you = this.argAsBestPlayerMatch(0);
 		if (you == null) return;
-		
-		this.msg(you.getDisplayName() + " was cured from vampirism.");
 		VPlayer vyou = VPlayers.i.get(you);
-		vyou.cure();
+		
+		you.setFoodLevel(20);
+		vyou.turn();
+		
+		this.msg(p.txt.parse(Lang.xWasTurned, you.getDisplayName()));
 	}
 }

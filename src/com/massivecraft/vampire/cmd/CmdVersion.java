@@ -16,6 +16,6 @@ public class CmdVersion extends VCommand {
 	@Override
 	public void perform()
 	{
-		this.msg("You are running "+P.p.getDescription().getFullName());
+		this.msg(p.txt.parse("<i>You are running "+P.p.getDescription().getFullName()));
 	}
 }

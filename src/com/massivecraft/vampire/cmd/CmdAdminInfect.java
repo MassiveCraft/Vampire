@@ -5,10 +5,10 @@ import org.bukkit.entity.Player;
 import com.massivecraft.vampire.*;
 
 
-public class CmdInfect extends VCommand {
+public class CmdAdminInfect extends VCommand {
 	
-	public CmdInfect() {
-		aliases.add("infect");
+	public CmdAdminInfect() {
+		aliases.add("ainfect");
 
 		requiredArgs.add("playername");
 		optionalArgs.put("amount", "1.0");
@@ -28,7 +28,9 @@ public class CmdInfect extends VCommand {
 		double amount = this.argAsDouble(1, 1.0);
 		
 		VPlayer vyou = VPlayers.i.get(you);
-		vyou.infectionSet(amount);
-		this.msg(you.getDisplayName() + " now has infection " + vyou.infectionGet());
+		vyou.setInfection(amount);
+		
+		// TODO: Improve Look and feel of this message
+		this.msg(you.getDisplayName() + " now has infection " + vyou.getInfection());
 	}
 }
