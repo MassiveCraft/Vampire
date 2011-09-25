@@ -13,23 +13,14 @@ public class Lang
 	public static String messageTruceBroken = "<b>You temporarily broke your truce with the monsters.";
 	public static String messageTruceRestored = "<g>Your truce with the monsters has been restored.";
 	
-	public static String intentOnMessage  = "<i>Intent to to infect is now <h>ON<i>. Infect probability is %.1f%% per attack. You will now bite and fight agressivley in order to infect others in close combat.";
-	public static String intentOffMessage = "<i>Intent to to infect is now <h>OFF<i>. Infect probability is %.1f%% per attack. You will now fight carefully in order to avoid infecting others in close combat.";
-	
-	//public static String messageTrueBloodVampire = "You are a True Blood vampire.";
-	//public static String messageBasicVampire = "You are a common vampire.";
-	
-	//public static String thirstDeathMessage = "You thirsted to death. Drink more blood to avoid this.";
-
-	//public static String jumpMessageNotEnoughBlood = "Not enough blood to jump.";
-
-	//public static String regenStartMessage = "Your wounds start to close. This drains blood over time.";
+	public static String intentOnMessage  = "<i>You now <h>do intend <i>to infect others in combat.";
+	public static String intentOffMessage = "<i>You now <h>don't intend <i>to infect others in combat.";
 	
 	public static String messageWoodCombatWarning = "<b>Ouch!!! <h>%s <b>is made of <h>wood <b>and hurt vampires a lot!";
 	
 	public static String combustMessage = "<b>Vampires burn in sunlight! Take cover!";
 	
-	public static String youWasTurned = "<b>You just <h>TURNED <b>into a VAMPIRE!";
+	public static String youWasTurned = "<b>Your heart stops. You don't breathe anymore. You are now a VAMPIRE!";
 	public static String xWasTurned = "<h>%s <i>is now a vampire.";
 	
 	public static String youWasCured = "<g>You have been cured and is once again healthy and alive.<b> But will you miss the taste of blood on your lips? When you sleep, will you taste the salt and copper flowing over your tongue? Go, mortal. Bask in your precious sunlight.";
@@ -45,21 +36,18 @@ public class Lang
 	//public static List<String> thirstMessages = new ArrayList<String>();
 	//public static List<String> thirstStrongMessages = new ArrayList<String>();
 	
-	public static String altarUseIngredientsSuccess = "You use these items on the altar:";
-	public static String altarUseIngredientsFail = "To use it you need to collect these ingredients:";
 	
-	public static String altarInfectExamineMsg = "This altar looks really evil.";
-	public static String altarInfectExamineWhileInfected = "You feel some of it's energy inside you...";
-	public static String altarInfectExamineMsgNoUse = "You understand this altar can turn people into vampires. But it's of no use to you as you already is one.";
-	public static String altarInfectToSmall = "Something happens... The gold draws energy from the obsidian... But there don't seem to be enough obsidian nearby.";
-	public static String altarInfectUse = "Something happens... The gold draws energy from the obsidian... Then the energy rushes through you and you feel a bit cold...";
+	public static String altarIncomplete = "<i>This is an incomplete %s. This is missing:";
+	public static String altarUseIngredientsSuccess = "<i>You use these items on the altar:";
+	public static String altarUseIngredientsFail = "<i>To use it you need to collect these ingredients:";
+	
+	public static String altarEvilAlreadyInfected = "<i>You feel some of it's energy inside you...";
+	public static String altarEvilAlreadyVampire = "<i>You understand this altar can turn people into vampires. But it's of no use to you as your'e already one.";
+	public static String altarEvilUse = "<i>Tendrils of power reach into your very soul and forever change you, for better or worse?";
 
-	public static String altarCureExamineMsg = "This altar looks bright and nice.";
-	public static String altarCureExamineWhileInfected = "You touch it and warm energy flows through you.";
-	public static String altarCureExamineMsgNoUse = "It can probably cure curses, but you feel well right now.";
-
-	public static String altarCureToSmall = "Something happens... The lapiz draws energy from the glowstone... But there don't seem to be enough glowstone nearby.";
-	public static String altarCureUse = "Something happens... The lapiz draws energy from the glowstone... Then the energy rushes through you and you feel warm inside.";
+	public static String altarGoodInfected = "<i>You touch it and warm energy flows through you.";
+	public static String altarGoodHealthy = "<i>It can probably cure curses, but you feel well right now.";
+	public static String altarGoodUse = "<i>Energy rushes through you and you feel warm inside.";
 
 	static
 	{

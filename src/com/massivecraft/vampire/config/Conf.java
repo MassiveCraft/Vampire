@@ -9,8 +9,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
 
-import com.massivecraft.vampire.AltarDefinition;
-import com.massivecraft.vampire.Recipe;
+import com.massivecraft.vampire.AltarEvil;
+import com.massivecraft.vampire.AltarGood;
 import com.massivecraft.vampire.P;
 
 
@@ -20,6 +20,7 @@ public class Conf
 	
 	public static Boolean nameColorize = false;
 	public static ChatColor nameColor = ChatColor.RED;
+	public static Set<Material> dropSelfOverrideMaterials = new HashSet<Material>();
 	
 	// TODO REMOVE!! Abstract...
 	// Time is "hours passed since the beginning of the day" * 1000
@@ -30,27 +31,29 @@ public class Conf
 	
 	public static Double jumpDeltaSpeed = 3d;
 	public static Integer jumpFoodCost = 2;
-	public static Set<Material> jumpMaterials = new HashSet<Material>();;
-	
-	public static Double infectionRiskAtCloseCombatWithoutIntent = 1 / 400D;
-	public static Double infectionRiskAtCloseCombatWithIntent = 1 / 50D;
+	public static Set<Material> jumpMaterials = new HashSet<Material>();
 	
 	public static double infectionProgressPerTick = 100D / (20*60*60D) ; // It will take you 1h to turn
 	public static double infectionBreadHealAmount = 20D;
 	
-	public static AltarDefinition altarInfect = new AltarDefinition();
-	public static AltarDefinition altarCure = new AltarDefinition();
+	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.001;
+	public static Double infectionRiskAtCloseCombatWithIntent = 0.05;
+	
+	// TODO: Rework to have different values for the intent modes!
+	public static double damageDealtFactorWithoutIntent = 1.5;
+	public static double damageDealtFactorWithIntent = 0.65;
+	public static double damageReceivedFactorWithoutIntent = 0.65;
+	public static double damageReceivedFactorWithIntent = 1.0;
+	
+	public static double damageReceivedWoodFactor = 3.5;
+	public static Set<Material> woodMaterials = new HashSet<Material>();
+	
+	public static AltarEvil altarEvil = new AltarEvil();
+	public static AltarGood altarGood = new AltarGood();
 	public static Map<Material, Boolean> canEat = new HashMap<Material, Boolean>();
 	
 	
-	// TODO: Rework to have different values for the intent modes!
-	public static double combatDamageDealtFactor = 1.5;
-	public static double combatDamageReceivedFactor = 0.7;
-	public static double combatDamageReceivedWoodFactor = 3.5;
 	
-	public static Set<Material> woodMaterials = new HashSet<Material>();
-	
-	public static Map<Material,Double> materialOpacity = new HashMap<Material,Double>(); //We assume opacity 1 for all materials not in this map 
 	
 	public static double foodPerDamageFromPlayer = 0.4d;
 	public static Map<CreatureType, Double> foodPerDamageFromCreature = new HashMap<CreatureType, Double>();
@@ -58,27 +61,14 @@ public class Conf
 	public static long truceBreakTicks = 60 * 20; // One minute
 	public static Set<CreatureType> creatureTypeTruceMonsters = new HashSet<CreatureType>();
 	
+	public static Map<Material,Double> materialOpacity = new HashMap<Material,Double>(); //We assume opacity 1 for all materials not in this map
+	
 	static
 	{
-		altarCure.material = Material.LAPIS_BLOCK;
-		altarCure.materialSurround = Material.GLOWSTONE;
-		altarCure.surroundCount = 20;
-		altarCure.surroundRadius = 7D;
-		altarCure.recipe = new Recipe();
-		altarCure.recipe.materialQuantities.put(Material.WATER_BUCKET, 1);
-		altarCure.recipe.materialQuantities.put(Material.DIAMOND, 1);
-		altarCure.recipe.materialQuantities.put(Material.SUGAR, 20);
-		altarCure.recipe.materialQuantities.put(Material.WHEAT, 20);
-		
-		altarInfect.material = Material.GOLD_BLOCK;
-		altarInfect.materialSurround = Material.OBSIDIAN;
-		altarInfect.surroundCount = 20;
-		altarInfect.surroundRadius = 7D;
-		altarInfect.recipe = new Recipe();
-		altarInfect.recipe.materialQuantities.put(Material.MUSHROOM_SOUP, 1);
-		altarInfect.recipe.materialQuantities.put(Material.BONE, 10);
-		altarInfect.recipe.materialQuantities.put(Material.SULPHUR, 10);
-		altarInfect.recipe.materialQuantities.put(Material.REDSTONE, 10);
+		dropSelfOverrideMaterials.add(Material.WEB);
+		dropSelfOverrideMaterials.add(Material.GLOWSTONE);
+		dropSelfOverrideMaterials.add(Material.BOOKSHELF);
+		dropSelfOverrideMaterials.add(Material.DEAD_BUSH);
 		
 		jumpMaterials.add(Material.ENDER_PEARL);
 		
@@ -102,12 +92,16 @@ public class Conf
 		
 		// TODO Maybe cake could cure vampirism...
 		// "You forget about blood this is way better :)"
-		woodMaterials.add(Material.STICK);
 		woodMaterials.add(Material.WOOD_AXE);
 		woodMaterials.add(Material.WOOD_HOE);
 		woodMaterials.add(Material.WOOD_PICKAXE);
 		woodMaterials.add(Material.WOOD_SPADE);
 		woodMaterials.add(Material.WOOD_SWORD);
+		woodMaterials.add(Material.STICK);
+		woodMaterials.add(Material.SIGN);
+		woodMaterials.add(Material.SIGN_POST);
+		woodMaterials.add(Material.FENCE);
+		woodMaterials.add(Material.FENCE_GATE);
 		
 		materialOpacity.put(Material.AIR, 0D);
 		materialOpacity.put(Material.SAPLING, 0.3D);

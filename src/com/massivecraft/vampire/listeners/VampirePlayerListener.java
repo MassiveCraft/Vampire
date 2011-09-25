@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
@@ -21,19 +22,22 @@ import com.massivecraft.vampire.zcore.util.TextUtil;
 
 public class VampirePlayerListener extends PlayerListener
 {
-	public static P p = P.p; 
+	public P p;
 	
+	public VampirePlayerListener(P p)
+	{
+		this.p = p;
+	}
+	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		Action action = event.getAction();
+		if ( ! (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) )  return;
 		
-		if ( ! (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) )
-		{
-			return;
-		}
-		
-		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
+		Player player = event.getPlayer();
+		VPlayer vplayer = VPlayers.i.get(player);
 		Material itemMaterial = event.getMaterial();
 		
 		if(vplayer.isVampire())
@@ -56,23 +60,14 @@ public class VampirePlayerListener extends PlayerListener
 		if (vplayer.isInfected() && itemMaterial == Material.BREAD)
 		{
 			vplayer.infectionHeal(Conf.infectionBreadHealAmount);
+			player.getInventory().removeItem(new ItemStack(Material.BREAD, 1));
+			player.updateInventory();
+			event.setCancelled(true);
 		}		
 		
-		if ( action != Action.RIGHT_CLICK_BLOCK)
-		{
-			return;
-		}
-		
-		Material blockMaterial = event.getClickedBlock().getType();
-		
-		if (blockMaterial == Conf.altarInfect.material)
-		{
-			vplayer.useAltarInfect(event.getClickedBlock());
-		} 
-		else if (blockMaterial == Conf.altarCure.material)
-		{
-			vplayer.useAltarCure(event.getClickedBlock());
-		}
+		if ( action != Action.RIGHT_CLICK_BLOCK) return;
+		Conf.altarEvil.evalBlockUse(event.getClickedBlock(), player);
+		Conf.altarGood.evalBlockUse(event.getClickedBlock(), player);
 	}
 	
 	@Override

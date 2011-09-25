@@ -61,8 +61,11 @@ public class Recipe
 		ArrayList<String> lines = new ArrayList<String>();
 		for (Entry<Material, Integer> item : SortUtil.entriesSortedByValues(this.materialQuantities))
 		{
-			lines.add(""+item.getValue()+" "+TextUtil.getMaterialName(item.getKey()));
+			Material material = item.getKey();
+			int count = item.getValue();
+			lines.add(P.p.txt.parse("<h>%d <p>%s", count, TextUtil.getMaterialName(material)));
+					
 		}
-		return TextUtil.implode(lines, ", ");
+		return TextUtil.implode(lines, P.p.txt.parse("<i>, "));
 	}
 }

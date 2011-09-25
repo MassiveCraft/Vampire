@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
+import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
 import com.massivecraft.vampire.config.*;
@@ -17,6 +18,12 @@ import com.massivecraft.vampire.util.EntityUtil;
 
 public class VampireEntityListenerMonitor extends EntityListener
 {
+	public P p;
+	
+	public VampireEntityListenerMonitor(P p)
+	{
+		this.p = p;
+	}
 	
 	/**
 	 * In this entity-damage-listener we will obtain blood,
@@ -28,14 +35,8 @@ public class VampireEntityListenerMonitor extends EntityListener
 		if (event.isCancelled()) return;
 		
 		// For further interest this must be a close combat attack by another entity
-		if (event.getCause() != DamageCause.ENTITY_ATTACK)
-		{
-			return;
-		}
-		if ( ! (event instanceof EntityDamageByEntityEvent))
-		{
-			return;
-		}
+		if (event.getCause() != DamageCause.ENTITY_ATTACK) return;
+		if ( ! (event instanceof EntityDamageByEntityEvent)) return;
 		
 		// Define local fields
 		Entity damagee = event.getEntity();
@@ -50,10 +51,7 @@ public class VampireEntityListenerMonitor extends EntityListener
 		VPlayer vpDamager;
 		
 		// For further interest that attacker must be a player.
-		if ( ! (damager instanceof Player))
-		{
-			return;
-		}
+		if ( ! (damager instanceof Player)) return;
 		
 		pDamager = (Player)damager;
 		vpDamager = VPlayers.i.get(pDamager);

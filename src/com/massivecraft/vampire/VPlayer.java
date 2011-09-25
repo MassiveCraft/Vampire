@@ -13,7 +13,7 @@ import org.bukkit.util.Vector;
 
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
-import com.massivecraft.vampire.util.GeometryUtil;
+import com.massivecraft.vampire.util.SmokeUtil;
 import com.massivecraft.vampire.zcore.persist.PlayerEntity;
 
 /**
@@ -25,9 +25,9 @@ public class VPlayer extends PlayerEntity
 	public static transient P p = P.p;
 	
 	// Is the player a vampire?
-	private boolean isVampire = false;
-	public boolean isVampire() { return this.isVampire; }
-	public void setIsVampire(boolean isVampire) { this.isVampire = isVampire; }
+	private boolean vampire = false;
+	public boolean isVampire() { return this.vampire; }
+	public void setIsVampire(boolean isVampire) { this.vampire = isVampire; }
 	public boolean isExvampire() { return this.isVampire() == false && this.timeAsVampire > 0; }
 		
 	// 0 means no infection. If infection reaches 100 the player will turn to vampire.
@@ -36,6 +36,11 @@ public class VPlayer extends PlayerEntity
 	public void setInfection(double infection) { this.infection = limitNumber(infection, 0D, 100D); }	
 	public void alterInfection(double infection) { this.setInfection(this.getInfection() + infection); }
 	public boolean isInfected() { return this.infection > 0D; }
+	
+	public boolean isHealthy()
+	{
+		return ! this.isVampire() && ! this.isInfected();
+	}
 	
 	// Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
 	private boolean intendingToInfect = false;
@@ -98,7 +103,7 @@ public class VPlayer extends PlayerEntity
 	public void turn()
 	{
 		if (this.isVampire()) return;
-		
+		SmokeUtil.smokeifyPlayer(this.getPlayer(), 20*30);
 		this.setInfection(0);
 		this.setIsVampire(true);
 		this.msg(p.txt.parse(Lang.youWasTurned));
@@ -137,7 +142,7 @@ public class VPlayer extends PlayerEntity
 		
 		Player player = this.getPlayer();
 		
-		int targetFood = player.getFoodLevel() + deltaFood;
+		int targetFood = limitNumber(player.getFoodLevel() + deltaFood, 0, 20);
 		player.setFoodLevel(targetFood);
 	}
 	
@@ -415,6 +420,7 @@ public class VPlayer extends PlayerEntity
 		
 		if (oldMessageIndex != newMessageIndex)
 		{
+			P.p.log("WOOOP");
 			this.getPlayer().damage(1);
 			this.msg(p.txt.parse(Lang.infectionMessagesProgress.get(newMessageIndex)));
 			this.msg(p.txt.parse(Lang.infectionBreadHintMessages.get(P.random.nextInt(Lang.infectionBreadHintMessages.size()))));
@@ -427,8 +433,26 @@ public class VPlayer extends PlayerEntity
 	}
 	
 	// -------------------------------------------- //
-	// Infection Close Combat Contract Risk
+	// Close Combat
 	// -------------------------------------------- //
+	
+	public double getDamageDealtFactor()
+	{
+		if (this.intendingToInfect)
+		{
+			return Conf.damageDealtFactorWithIntent;
+		}
+		return Conf.damageDealtFactorWithoutIntent;
+	}
+	
+	public double getDamageReceivedFactor()
+	{
+		if (this.intendingToInfect)
+		{
+			return Conf.damageReceivedFactorWithIntent;
+		}
+		return Conf.damageReceivedFactorWithoutIntent;
+	}
 	
 	public double infectionGetRiskToInfectOther()
 	{
@@ -463,7 +487,7 @@ public class VPlayer extends PlayerEntity
 	// Altar Usage TODO: Abstract into the Altar Class
 	// -------------------------------------------- //
 	
-	public void useAltarInfect(Block centerBlock)
+	/*public void useAltarInfect(Block centerBlock)
 	{
 		// The altar must be big enough
 		int count = GeometryUtil.countNearby(centerBlock, Conf.altarInfect.materialSurround, Conf.altarInfect.surroundRadius);
@@ -502,7 +526,7 @@ public class VPlayer extends PlayerEntity
 		{
 			this.msg(Lang.altarUseIngredientsSuccess);
 			this.msg(Conf.altarInfect.recipe.getRecipeLine());
-			this.msg(Lang.altarInfectUse);
+			this.msg(Lang.altarEvilUse);
 			p.log(this.getId() + " was infected by an evil altar.");
 			Conf.altarInfect.recipe.removeFromPlayer(this.getPlayer());
 			this.alterInfection(3D);
@@ -537,14 +561,14 @@ public class VPlayer extends PlayerEntity
 		// If healthy
 		if ( ! this.isInfected() && ! this.isVampire())
 		{
-			this.msg(Lang.altarCureExamineMsgNoUse);
+			this.msg(Lang.altarGoodHealthy);
 			return;
 		}
 		
 		// If Infected
 		if (this.isInfected())
 		{
-			this.msg(Lang.altarCureExamineWhileInfected);
+			this.msg(Lang.altarGoodInfected);
 			this.setInfection(0);
 			this.msg(p.txt.parse(Lang.infectionMessageCured));
 			return;
@@ -555,7 +579,7 @@ public class VPlayer extends PlayerEntity
 		{
 			this.msg(Lang.altarUseIngredientsSuccess);
 			this.msg(Conf.altarCure.recipe.getRecipeLine());
-			this.msg(Lang.altarCureUse);
+			this.msg(Lang.altarGoodUse);
 			Conf.altarCure.recipe.removeFromPlayer(this.getPlayer());
 			p.log(this.getId() + " was cured from being a vampire by a healing altar.");
 			this.cureVampirism();
@@ -565,7 +589,7 @@ public class VPlayer extends PlayerEntity
 			this.msg(Lang.altarUseIngredientsFail);
 			this.msg(Conf.altarCure.recipe.getRecipeLine());
 		}
-	}
+	}*/
 
 	// -------------------------------------------- //
 	// Commonly used limiter of double

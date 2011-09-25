@@ -21,7 +21,13 @@ import com.massivecraft.vampire.zcore.util.TextUtil;
 
 public class VampireEntityListener extends EntityListener
 {
-	public static P p = P.p;
+	public P p;
+	
+	public VampireEntityListener(P p)
+	{
+		this.p = p;
+	}
+	
 	
 	/**
 	 * In this entity-damage-listener we will cancel fall damage
@@ -58,31 +64,17 @@ public class VampireEntityListener extends EntityListener
 				event.setCancelled(true);
 				return;
 			}
-			
-			// Add delay to regeneration ability
-			/*if (vpDamagee.isVampire())
-			{
-				vpDamagee.regenDelayLeftMilliseconds = Conf.regenStartDelayMilliseconds;
-			}*/
 		}
 		
 		// For further interest this must be a close combat attack by another entity
-		if (event.getCause() != DamageCause.ENTITY_ATTACK)
-		{
-			return;
-		}
-		if ( ! (event instanceof EntityDamageByEntityEvent))
-		{
-			return;
-		}
+		if (event.getCause() != DamageCause.ENTITY_ATTACK) return;
+		if ( ! (event instanceof EntityDamageByEntityEvent)) return;
 		
 		edbeEvent = (EntityDamageByEntityEvent)event;
 		damager = edbeEvent.getDamager();
 		
 		// For further interest that attacker must be a player.
-		if ( ! (damager instanceof Player)) {
-			return;
-		}
+		if ( ! (damager instanceof Player)) return;
 		pDamager = (Player)damager;
 		vpDamager = VPlayers.i.get(pDamager);
 		
@@ -92,7 +84,7 @@ public class VampireEntityListener extends EntityListener
 		// Modify damage if damager is a vampire
 		if (vpDamager.isVampire())
 		{
-			damage *= Conf.combatDamageDealtFactor;
+			damage *= vpDamager.getDamageDealtFactor();
 		}
 		
 		// Modify damage if damagee is a vampire
@@ -105,12 +97,12 @@ public class VampireEntityListener extends EntityListener
 				Material itemMaterial = pDamager.getItemInHand().getType();
 				if (Conf.woodMaterials.contains(itemMaterial))
 				{
-					damage *= Conf.combatDamageReceivedWoodFactor;
+					damage *= Conf.damageReceivedWoodFactor;
 					vpDamagee.msg(p.txt.parse(Lang.messageWoodCombatWarning, TextUtil.getMaterialName(itemMaterial)));
 				}
 				else
 				{
-					damage *= Conf.combatDamageReceivedFactor;
+					damage *= vpDamagee.getDamageReceivedFactor();
 				}
 			}
 		}
@@ -120,31 +112,21 @@ public class VampireEntityListener extends EntityListener
 	
 	@Override
 	public void onEntityTarget(EntityTargetEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
+		if (event.isCancelled()) return;
 		
 		// If a player is targeted...
-		if ( ! (event.getTarget() instanceof Player)) {
-			return;
-		}
+		if ( ! (event.getTarget() instanceof Player)) return;
 		
 		// ... by creature that cares about the truce with vampires ...
-		if ( ! (Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(event.getEntity())))) {
-			return;
-		}
+		if ( ! (Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(event.getEntity())))) return;
 		
 		VPlayer vplayer = VPlayers.i.get((Player)event.getTarget());
 		
 		// ... and that player is a vampire ...
-		if ( ! vplayer.isVampire()) {
-			return;
-		}
+		if ( ! vplayer.isVampire()) return;
 		
 		// ... that has not recently done something to break the truce...
-		if (vplayer.truceIsBroken()) {
-			return;
-		}
+		if (vplayer.truceIsBroken()) return;
 		
 		// Then the creature will not attack.
 		event.setCancelled(true);

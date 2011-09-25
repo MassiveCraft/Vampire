@@ -23,6 +23,7 @@ public class P extends MPlugin
 	public VampirePlayerListener playerListener;
 	public VampireEntityListener entityListener;
 	public VampireEntityListenerMonitor entityListenerMonitor;
+	public VampireBlockListener blockListener;
 	
 	public CmdHelp cmdHelp;
 	
@@ -32,9 +33,10 @@ public class P extends MPlugin
 	{
 		P.p = this;
 		
-		playerListener = new VampirePlayerListener();
-		entityListener = new VampireEntityListener();
-		entityListenerMonitor = new VampireEntityListenerMonitor();
+		playerListener = new VampirePlayerListener(this);
+		entityListener = new VampireEntityListener(this);
+		entityListenerMonitor = new VampireEntityListenerMonitor(this);
+		blockListener = new VampireBlockListener(this);
 	}
 
 	@Override
@@ -64,6 +66,8 @@ public class P extends MPlugin
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.High, this);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Highest, this);
+		
 		
 		postEnable();
 	}
