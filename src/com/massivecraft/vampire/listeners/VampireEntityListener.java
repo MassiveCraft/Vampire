@@ -1,13 +1,20 @@
 package com.massivecraft.vampire.listeners;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Chicken;
+import org.bukkit.entity.Cow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Squid;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.config.Conf;
@@ -47,6 +54,7 @@ public class VampireEntityListener extends EntityListener {
 			pDamagee = (Player)damagee;
 			vpDamagee = VPlayer.get(pDamagee);
 			
+		
 			// Vampires can not drown or take fall damage.
 			if (vpDamagee.isVampire() && (event.getCause() == DamageCause.DROWNING || event.getCause() == DamageCause.FALL)) {
 				event.setCancelled(true);
@@ -77,9 +85,20 @@ public class VampireEntityListener extends EntityListener {
 		if ( ! (damager instanceof Player)) {
 			return;
 		}
+
+		
+		
 		pDamager = (Player)damager;
 		vpDamager = VPlayer.get(pDamager);
-		
+		//Breaks truce if player hits hostile mob with a bow
+		if(event.getCause() == DamageCause.ENTITY_ATTACK){
+		Player p = (Player) damager;
+		ItemStack i = p.getItemInHand();
+		if(i.getType() == Material.BOW){
+			if(hostile(damagee))
+		        vpDamager.truceBreak();
+				}
+				}
 		// The damage will be modified under certain circumstances.
 		float damage = event.getDamage();
 		
@@ -136,7 +155,24 @@ public class VampireEntityListener extends EntityListener {
 		// Then the creature will not attack.
 		event.setCancelled(true);
 	}
-
+public boolean hostile(Entity a){
+	if(a instanceof Pig){
+		return false;
+	}
+	else if(a instanceof Cow){
+		return false;
+	}
+	else if(a instanceof Sheep){
+		return false;
+	}
+	else if(a instanceof Chicken){
+		return false;
+	}
+	else if(a instanceof Squid){
+		return false;
+	}
+	return true;
+}
 }
 
 
