@@ -56,7 +56,7 @@ public class VPlayer {
 	public Player getPlayer() {
 		return P.instance.getServer().getPlayer(playername);
 	}
-	
+	  //
 	public String getPlayerName() {
 		return this.playername;
 	}
