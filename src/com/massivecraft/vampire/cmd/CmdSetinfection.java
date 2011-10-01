@@ -3,25 +3,32 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.config.Lang;
+import com.massivecraft.vampire.zcore.CommandVisibility;
 
 
-public class CmdAdminInfect extends VCommand {
+public class CmdSetinfection extends VCommand
+{
 	
-	public CmdAdminInfect() {
-		aliases.add("ainfect");
+	public CmdSetinfection()
+	{
+		aliases.add("seti");
 
 		requiredArgs.add("playername");
 		optionalArgs.put("amount", "1.0");
 		
 		helpShort = "set infection (0 to 100)";
 		
-		permission = Permission.COMMAND_INFECT.node;
+		this.visibility = CommandVisibility.SECRET;
+		
+		permission = Permission.COMMAND_SETINFECTION.node;
 		senderMustBePlayer = false;
 		senderMustBeVampire = false;
 	}
 	
 	@Override
-	public void perform() {
+	public void perform()
+	{
 		Player you = this.argAsBestPlayerMatch(0);
 		if (you == null) return;
 		
@@ -29,8 +36,6 @@ public class CmdAdminInfect extends VCommand {
 		
 		VPlayer vyou = VPlayers.i.get(you);
 		vyou.setInfection(amount);
-		
-		// TODO: Improve Look and feel of this message
-		this.msg(you.getDisplayName() + " now has infection " + vyou.getInfection());
+		this.msg(p.txt.parse(Lang.xNowHasYInfection, you.getDisplayName(), vyou.getInfection()));
 	}
 }

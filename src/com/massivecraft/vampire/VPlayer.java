@@ -1,6 +1,10 @@
 package com.massivecraft.vampire;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -14,6 +18,7 @@ import org.bukkit.util.Vector;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.SmokeUtil;
+import com.massivecraft.vampire.zcore.MCommand;
 import com.massivecraft.vampire.zcore.persist.PlayerEntity;
 
 /**
@@ -36,6 +41,10 @@ public class VPlayer extends PlayerEntity
 	public void setInfection(double infection) { this.infection = limitNumber(infection, 0D, 100D); }	
 	public void alterInfection(double infection) { this.setInfection(this.getInfection() + infection); }
 	public boolean isInfected() { return this.infection > 0D; }
+	
+	// Used for the infec and accept commands.
+	private transient VPlayer infectionOfferedFrom;
+	private transient long infectionOfferedAtTicks;
 	
 	public boolean isHealthy()
 	{
@@ -114,6 +123,65 @@ public class VPlayer extends PlayerEntity
 		this.setInfection(0);
 		this.setIsVampire(false);
 		this.msg(p.txt.parse(Lang.youWasCured));
+	}
+	
+	// -------------------------------------------- //
+	// Offer and Accept infection
+	// -------------------------------------------- //
+	public void acceptInfection()
+	{
+		VPlayer vyou = this.infectionOfferedFrom;
+		if (vyou == null || System.currentTimeMillis() - this.infectionOfferedAtTicks > Conf.cmdInfectMillisRecentTolerance)
+		{
+			this.msg(p.txt.parse(Lang.infectNoRecentOffer));
+			return;
+		}
+		
+		Player me = this.getPlayer();
+		Player you = vyou.getPlayer();
+		
+		// Check the player-distance
+		Location l1 = me.getLocation();
+		Location l2 = you.getLocation();
+		
+		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
+		{
+			me.sendMessage(p.txt.parse(Lang.infectYouMustStandCloseToY, you.getDisplayName()));
+			return;
+		}
+		
+		me.sendMessage(p.txt.parse(Lang.infectYouDrinkSomeOfXBlood, you.getDisplayName()));
+		you.sendMessage(p.txt.parse(Lang.infectXDrinkSomeOfYourBlood, me.getDisplayName()));
+		
+		if (this.isVampire()) return;
+		
+		this.alterInfection(5.0);
+		you.damage(2);
+	}
+	
+	public void offerInfectionTo(VPlayer vyou)
+	{
+		Player me = this.getPlayer();
+		Player you = vyou.getPlayer();
+		
+		// Check the player-distance
+		Location l1 = me.getLocation();
+		Location l2 = you.getLocation();
+		
+		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
+		{
+			this.msg(p.txt.parse(Lang.infectYouMustStandCloseToY, you.getDisplayName()));
+			return;
+		}
+		
+		vyou.infectionOfferedFrom = this;
+		vyou.infectionOfferedAtTicks = System.currentTimeMillis();
+		vyou.msg(p.txt.parse(Lang.infectXOffersToInfectYou, me.getDisplayName()));
+		
+		List<MCommand<?>> cmdc = new ArrayList<MCommand<?>>();
+		cmdc.add(p.cmdBase);
+		vyou.msg(p.txt.parse(Lang.infectTypeXToAccept, p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false))); //TODO: Link to the accept command!
+		me.sendMessage(p.txt.parse(Lang.infectYouOfferToInfectX, you.getDisplayName()));
 	}
 	
 	// -------------------------------------------- //
@@ -420,7 +488,7 @@ public class VPlayer extends PlayerEntity
 		
 		if (oldMessageIndex != newMessageIndex)
 		{
-			P.p.log("WOOOP");
+			//P.p.log("WOOOP");
 			this.getPlayer().damage(1);
 			this.msg(p.txt.parse(Lang.infectionMessagesProgress.get(newMessageIndex)));
 			this.msg(p.txt.parse(Lang.infectionBreadHintMessages.get(P.random.nextInt(Lang.infectionBreadHintMessages.size()))));
@@ -607,6 +675,12 @@ public class VPlayer extends PlayerEntity
 		}
 		
 		return d;
+	}
+	
+	@Override
+	public boolean shouldBeSaved()
+	{
+		return this.isExvampire() || this.isVampire() || this.isInfected();
 	}
 	
 }

@@ -38,6 +38,7 @@ public class AltarGood extends Altar
 		//p.log(this.getId() + " was cured from being a vampire by a healing altar.");
 		player.sendMessage(P.p.txt.parse(Lang.altarGoodUse));
 		vplayer.cureVampirism();
+		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
 	}
 	
 	@Override

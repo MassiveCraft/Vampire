@@ -2,26 +2,31 @@ name: Vampire
 version: 4.0.0
 main: com.massivecraft.vampire.P
 permissions:
-  vampire.admin:
-    description: Give this permission to the admins on the server.
+  vampire.suite.admin:
+    description: do admin stuff
     default: op
     children:
-      vampire.command.list: true
+      vampire.command.intend: true
       vampire.command.infect: true
+      vampire.command.list: true
       vampire.command.turn: true
       vampire.command.cure: true
-      vampire.command.feed: true
-  vampire.command.help:
-    description: Display help pages
-    default: true
+      vampire.command.setinfection: true
+      vampire.command.setfood: true
+  vampire.suite.skilledvampire:
+    description: do skilled vampire stuff
+    default: op
+    children:
+      vampire.command.intend: true
+      vampire.command.infect: true
   vampire.command.intend:
     description: intend to infect others
-    default: true
-  vampire.command.list:
-    description: List vampires on the server
     default: op
   vampire.command.infect:
-    description: set infection (0 to 100)
+    description: infect others that are willing
+    default: op
+  vampire.command.list:
+    description: list the vampires on the server
     default: op
   vampire.command.turn:
     description: instantly turn player
@@ -29,6 +34,9 @@ permissions:
   vampire.command.cure:
     description: cure a vampire
     default: op
-  vampire.command.feed:
-    description: feed a vampire
+  vampire.command.setinfection:
+    description: set infection (0 to 100)
+    default: op
+  vampire.command.setfood:
+    description: set foodlevel (0 to 20)
     default: op

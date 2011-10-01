@@ -4,12 +4,14 @@ import org.bukkit.command.CommandSender;
 
 public enum Permission
 {
-	COMMAND_CURE("vampire.command.cure"),
-	COMMAND_FEED("vampire.command.feed"),
+	COMMAND_INTEND("vampire.command.intend"),
 	COMMAND_INFECT("vampire.command.infect"),
 	COMMAND_LIST("vampire.command.list"),
 	COMMAND_TURN("vampire.command.turn"),
-	COMMAND_INTEND("vampire.command.intend"),
+	COMMAND_CURE("vampire.command.cure"),
+	COMMAND_SETINFECTION("vampire.command.setinfection"),
+	COMMAND_SETFOOD("vampire.command.setfood"),
+	COMMAND_VERSION("vampire.command.version"),
 	;
 	
 	public final String node;

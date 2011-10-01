@@ -97,7 +97,7 @@ public class VampireEntityListener extends EntityListener
 				Material itemMaterial = pDamager.getItemInHand().getType();
 				if (Conf.woodMaterials.contains(itemMaterial))
 				{
-					damage *= Conf.damageReceivedWoodFactor;
+					damage = Conf.damageReceivedWood; // Just as much as a diamond sword.
 					vpDamagee.msg(p.txt.parse(Lang.messageWoodCombatWarning, TextUtil.getMaterialName(itemMaterial)));
 				}
 				else

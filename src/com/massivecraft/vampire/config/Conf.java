@@ -19,8 +19,11 @@ import com.massivecraft.vampire.P;
 public class Conf
 {
 	public final static transient int taskInterval = 40; // Defines often the task runs.
+	public final static transient double cmdInfectMaxDistance = 2d;
+	public final static transient long cmdInfectMillisRecentTolerance = 10000;
 	
 	public static List<String> baseCommandAliases = new ArrayList<String>();
+	public static boolean allowNoSlashCommand = true;
 	
 	public static Boolean nameColorize = false;
 	public static ChatColor nameColor = ChatColor.RED;
@@ -40,8 +43,10 @@ public class Conf
 	public static double infectionProgressPerTick = 100D / (20*60*60D) ; // It will take you 1h to turn
 	public static double infectionBreadHealAmount = 20D;
 	
-	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.001;
+	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
 	public static Double infectionRiskAtCloseCombatWithIntent = 0.05;
+	
+	
 	
 	// TODO: Rework to have different values for the intent modes!
 	public static double damageDealtFactorWithoutIntent = 1.5;
@@ -49,7 +54,7 @@ public class Conf
 	public static double damageReceivedFactorWithoutIntent = 0.65;
 	public static double damageReceivedFactorWithIntent = 1.0;
 	
-	public static double damageReceivedWoodFactor = 3.5;
+	public static int damageReceivedWood = 11;
 	public static Set<Material> woodMaterials = new HashSet<Material>();
 	
 	public static AltarEvil altarEvil = new AltarEvil();
@@ -84,7 +89,7 @@ public class Conf
 		canEat.put(Material.PORK, true);
 		canEat.put(Material.COOKED_BEEF, false);
 		canEat.put(Material.BREAD, false);
-		canEat.put(Material.CAKE, false);
+		canEat.put(Material.CAKE_BLOCK, false);
 		canEat.put(Material.COOKIE, false);
 		canEat.put(Material.COOKED_CHICKEN, false);
 		canEat.put(Material.RAW_FISH, false);
@@ -104,6 +109,9 @@ public class Conf
 		woodMaterials.add(Material.WOOD_SPADE);
 		woodMaterials.add(Material.WOOD_SWORD);
 		woodMaterials.add(Material.STICK);
+		woodMaterials.add(Material.TORCH);
+		woodMaterials.add(Material.REDSTONE_TORCH_OFF);
+		woodMaterials.add(Material.REDSTONE_TORCH_ON);
 		woodMaterials.add(Material.SIGN);
 		woodMaterials.add(Material.SIGN_POST);
 		woodMaterials.add(Material.FENCE);

@@ -50,6 +50,12 @@ public class VampirePlayerListener extends PlayerListener
 					event.setCancelled(true);
 				}
 			}
+			
+			if (action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CAKE_BLOCK && Conf.canEat.get(Material.CAKE_BLOCK) != true)
+			{
+				vplayer.msg(p.txt.parse(Lang.vampiresCantEatThat, TextUtil.getMaterialName(Material.CAKE)));
+				event.setCancelled(true);
+			}
 				
 			if (Conf.jumpMaterials.contains(event.getMaterial())) 
 			{

@@ -1,18 +1,23 @@
 package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
+
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Lang;
+import com.massivecraft.vampire.zcore.CommandVisibility;
 
-public class CmdAdminTurn extends VCommand
+public class CmdTurn extends VCommand
 {
 
-	public CmdAdminTurn() {	
-		aliases.add("aturn");
+	public CmdTurn()
+	{
+		aliases.add("turn");
 
 		requiredArgs.add("playername");
 		
 		helpShort = "instantly turn player";
+		
+		this.visibility = CommandVisibility.SECRET;
 		
 		permission = Permission.COMMAND_TURN.node;
 		senderMustBePlayer = false;

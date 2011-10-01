@@ -26,6 +26,17 @@ public class Lang
 	public static String youWasCured = "<g>You have been cured and is once again healthy and alive.<b> But will you miss the taste of blood on your lips? When you sleep, will you taste the salt and copper flowing over your tongue? Go, mortal. Bask in your precious sunlight.";
 	public static String xWasCured = "<h>%s <i>was cured and is no longer a vampire.";
 	
+	public static String xNowHasFoodY = "<h>%s <i>now has food <h>%d<i>.";
+	public static String xNowHasYInfection = "<h>%s <i>now has <h>%.1f%%<i> infection.";
+	
+	public static String infectYouMustStandCloseToY = "<b>You must stand close to <h>%s <i>for this to work.";
+	public static String infectXOffersToInfectYou = "<h>%s<i> offers to infect you with the vampire disease.";
+	public static String infectYouOfferToInfectX = "<i>You offer to infect <h>%s<i> with the vampire disease.";
+	public static String infectTypeXToAccept = "<i>Type %s<i> to accept.";
+	public static String infectNoRecentOffer = "<b>No vampire offered to infect you recently.";
+	public static String infectYouDrinkSomeOfXBlood = "<i>You drink some of <h>%s's<i> blood.";
+	public static String infectXDrinkSomeOfYourBlood = "<h>%s<i> drinks some of your blood.";
+	
 	public static List<String> infectionMessagesProgress = new ArrayList<String>();
 	public static List<String> infectionBreadHintMessages = new ArrayList<String>();
 	/*public static List<String> turnMessages = new ArrayList<String>(); // TODO
@@ -112,8 +123,6 @@ public class Lang
 		infectionBreadHintMessages.add("<i>The thought of bread makes you feel warm inside...");
 		infectionBreadHintMessages.add("<i>Maybe you should see the local farmer...");
 		infectionBreadHintMessages.add("<i>Bread...Bread...Bread...");
-		
-		
 	}
 	
 	private static transient Lang i = new Lang();

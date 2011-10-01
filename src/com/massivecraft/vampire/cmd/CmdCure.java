@@ -4,17 +4,20 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Lang;
+import com.massivecraft.vampire.zcore.CommandVisibility;
 
 
-public class CmdAdminCure extends VCommand
+public class CmdCure extends VCommand
 {
-	public CmdAdminCure()
+	public CmdCure()
 	{
-		aliases.add("acure");
+		aliases.add("cure");
 
 		requiredArgs.add("playername");
 		
 		helpShort = "cure a vampire";
+		
+		this.visibility = CommandVisibility.SECRET;
 		
 		permission = Permission.COMMAND_CURE.node;
 		senderMustBePlayer = false;

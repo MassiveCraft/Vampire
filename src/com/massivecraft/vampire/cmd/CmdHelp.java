@@ -3,6 +3,7 @@ package com.massivecraft.vampire.cmd;
 import java.util.ArrayList;
 
 import com.massivecraft.vampire.P;
+import com.massivecraft.vampire.zcore.CommandVisibility;
 import com.massivecraft.vampire.zcore.MCommand;
 
 public class CmdHelp extends MCommand<P>
@@ -10,6 +11,7 @@ public class CmdHelp extends MCommand<P>
 	public CmdHelp()
 	{
 		super(P.p);
+		this.aliases.add("?");
 		this.aliases.add("h");
 		this.aliases.add("help");
 		
@@ -30,7 +32,12 @@ public class CmdHelp extends MCommand<P>
 		
 		for(MCommand<?> scmd : pcmd.subCommands)
 		{
-			if (scmd.validSenderPermissions(sender, false))
+			if
+			(
+				scmd.visibility == CommandVisibility.VISIBLE
+				||
+				(scmd.visibility == CommandVisibility.SECRET && scmd.validSenderPermissions(sender, false))
+			)
 			{
 				lines.add(scmd.getUseageTemplate(this.commandChain, true));
 			}

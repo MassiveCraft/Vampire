@@ -70,6 +70,7 @@ public abstract class MPlugin extends JavaPlugin
 		this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_PRELOGIN, this.mPluginSecretPlayerListener, Event.Priority.Lowest, this);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, this.mPluginSecretPlayerListener, Event.Priority.Low, this);
 		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, this.mPluginSecretPlayerListener, Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.SERVER_COMMAND, this.mPluginSecretServerListener, Event.Priority.Lowest, this);
 		
@@ -136,7 +137,7 @@ public abstract class MPlugin extends JavaPlugin
 		this.lang.put("perm.dothat", "do that");
 		this.lang.put("command.sender_must_me_player", "<b>This command can only be used by ingame players.");
 		this.lang.put("command.to_few_args", "<b>To few arguments. <i>Use like this:");
-		this.lang.put("command.to_many_args", "<b>Strange argument \"<p>%s<b>\". <i>Use like this:");
+		this.lang.put("command.to_many_args", "<b>Strange argument \"<p>%s<b>\". <i>Use the command like this:");
 	}
 	
 	public void addTags()
@@ -192,14 +193,28 @@ public abstract class MPlugin extends JavaPlugin
 	// COMMAND HANDLING
 	// -------------------------------------------- //
 
-	public boolean handleCommand(String label, List<String> args, CommandSender player)
+	public boolean handleCommand(CommandSender sender, String commandString)
 	{
+		boolean noSlash = false;
+		if (commandString.startsWith("/"))
+		{
+			noSlash = true;
+			commandString = commandString.substring(1);
+		}
+		
 		for (MCommand<?> command : this.getBaseCommands())
 		{
-			if (command.aliases.contains(label))
+			if (noSlash && ! command.allowNoSlashAccess) continue;
+			
+			for (String alias : command.aliases)
 			{
-				command.execute(player, args);
-				return true;
+				if (commandString.startsWith(alias) || commandString.equals(alias+" "))
+				{
+					List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
+					args.remove(0);
+					command.execute(sender, args);
+					return true;
+				}
 			}
 		}
 		return false;

@@ -21,6 +21,7 @@ public abstract class MCommand<T extends MPlugin>
 	
 	// The different names this commands will react to  
 	public List<String> aliases;
+	public boolean allowNoSlashAccess;
 	
 	// Information on the args
 	public List<String> requiredArgs;
@@ -29,6 +30,7 @@ public abstract class MCommand<T extends MPlugin>
 	// Help info
 	public String helpShort;
 	public List<String> helpLong;
+	public CommandVisibility visibility;
 	
 	// Some information on permissions
 	public boolean senderMustBePlayer;
@@ -46,6 +48,8 @@ public abstract class MCommand<T extends MPlugin>
 		
 		this.permission = null;
 		
+		this.allowNoSlashAccess = false;
+		
 		this.subCommands = new ArrayList<MCommand<?>>();
 		this.aliases = new ArrayList<String>();
 		
@@ -54,6 +58,7 @@ public abstract class MCommand<T extends MPlugin>
 		
 		this.helpShort = "*Default helpShort*";
 		this.helpLong = new ArrayList<String>();
+		this.visibility = CommandVisibility.VISIBLE;
 	}
 	
 	// The commandChain is a list of the parent command chain used to get to this command.

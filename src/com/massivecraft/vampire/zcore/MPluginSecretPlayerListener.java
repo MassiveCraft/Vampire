@@ -1,9 +1,6 @@
 package com.massivecraft.vampire.zcore;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerPreLoginEvent;
@@ -26,10 +23,18 @@ public class MPluginSecretPlayerListener extends PlayerListener
 	{
 		if (event.isCancelled()) return;
 
-		List<String> args = new ArrayList<String>(Arrays.asList(event.getMessage().split("\\s+")));
-		String label = args.remove(0).substring(1);
+		if (p.handleCommand(event.getPlayer(), event.getMessage()))
+		{
+			event.setCancelled(true);
+		}
+	}
+	
+	@Override
+	public void onPlayerChat(PlayerChatEvent event)
+	{
+		if (event.isCancelled()) return;
 		
-		if (p.handleCommand(label, args, event.getPlayer()))
+		if (p.handleCommand(event.getPlayer(), event.getMessage()))
 		{
 			event.setCancelled(true);
 		}
@@ -46,4 +51,5 @@ public class MPluginSecretPlayerListener extends PlayerListener
 			}
 		}
 	}
+	
 }

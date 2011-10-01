@@ -26,6 +26,7 @@ public class P extends MPlugin
 	public VampireBlockListener blockListener;
 	
 	public CmdHelp cmdHelp;
+	public CmdBase cmdBase;
 	
 	public static Random random = new Random();
 	
@@ -52,7 +53,8 @@ public class P extends MPlugin
 		
 		// Add Base Commands
 		this.cmdHelp = new CmdHelp();
-		this.getBaseCommands().add(new CmdBase());
+		this.cmdBase = new CmdBase();
+		this.getBaseCommands().add(cmdBase);
 	
 		// Start timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, Conf.taskInterval);

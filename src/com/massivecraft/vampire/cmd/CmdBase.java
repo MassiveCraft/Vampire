@@ -4,6 +4,8 @@ import com.massivecraft.vampire.config.Conf;
 
 public class CmdBase extends VCommand
 {
+	public CmdAccept cmdAccept = new CmdAccept();
+	
 	public CmdBase()
 	{
 		super();
@@ -11,15 +13,19 @@ public class CmdBase extends VCommand
 		
 		this.subCommands.add(p.cmdHelp);
 		this.subCommands.add(new CmdIntend());
+		this.subCommands.add(new CmdInfect());
+		this.subCommands.add(cmdAccept);
 		this.subCommands.add(new CmdList());
-		this.subCommands.add(new CmdAdminInfect());
-		this.subCommands.add(new CmdAdminTurn());
-		this.subCommands.add(new CmdAdminCure());
-		this.subCommands.add(new CmdAdminFeed());
+		this.subCommands.add(new CmdSetfood());
+		this.subCommands.add(new CmdSetinfection());
+		this.subCommands.add(new CmdTurn());
+		this.subCommands.add(new CmdCure());
 		this.subCommands.add(new CmdVersion());
 		
 		this.helpShort = "The vampire base command";
 		this.helpLong.add(p.txt.tags("<i>This command contains all vampire stuff."));
+		
+		this.allowNoSlashAccess = Conf.allowNoSlashCommand;
 	}
 	
 	@Override

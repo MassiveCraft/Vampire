@@ -3,16 +3,21 @@ package com.massivecraft.vampire.cmd;
 import java.util.*;
 
 import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.zcore.CommandVisibility;
 import com.massivecraft.vampire.zcore.util.TextUtil;
 
 
-public class CmdList extends VCommand {
-	
+public class CmdList extends VCommand
+{	
 	public CmdList()
 	{
 		aliases.add("list");
+		aliases.add("ls");
+		aliases.add("l");
 		
-		helpShort = "List vampires on the server";
+		helpShort = "list vampires on the server";
+		
+		this.visibility = CommandVisibility.SECRET;
 		
 		permission = Permission.COMMAND_LIST.node;
 		senderMustBePlayer = false;
@@ -66,17 +71,17 @@ public class CmdList extends VCommand {
 			}
 		}
 		
-		String sep = p.txt.parse("<i>, ");
+		String sep = p.txt.parse("<i>, <white>");
 		
 		// Create Messages
 		List<String> messages = new ArrayList<String>();
 		messages.add(p.txt.titleize("Vampire Player List"));
-		messages.add(p.txt.parse("<h>= Vampires Online: <i>") + TextUtil.implode(vampiresOnline, sep));
-		messages.add(p.txt.parse("<h>= Vampires Offline: <i>") + TextUtil.implode(vampiresOffline, sep));
-		messages.add(p.txt.parse("<h>= Infected Online: <i>") + TextUtil.implode(infectedOnline, sep));
-		messages.add(p.txt.parse("<h>= Infected Offline: <i>") + TextUtil.implode(infectedOffline, sep));
-		messages.add(p.txt.parse("<h>= Exvampires Online: <i>") + TextUtil.implode(exvampiresOnline, sep));
-		messages.add(p.txt.parse("<h>= Exvampires Offline: <i>") + TextUtil.implode(exvampiresOffline, sep));
+		messages.add(p.txt.parse("<h>= Vampires Online: <white>") + TextUtil.implode(vampiresOnline, sep));
+		messages.add(p.txt.parse("<h>= Vampires Offline: <white>") + TextUtil.implode(vampiresOffline, sep));
+		messages.add(p.txt.parse("<h>= Infected Online: <white>") + TextUtil.implode(infectedOnline, sep));
+		messages.add(p.txt.parse("<h>= Infected Offline: <white>") + TextUtil.implode(infectedOffline, sep));
+		messages.add(p.txt.parse("<h>= Exvampires Online: <white>") + TextUtil.implode(exvampiresOnline, sep));
+		messages.add(p.txt.parse("<h>= Exvampires Offline: <white>") + TextUtil.implode(exvampiresOffline, sep));
 		
 		// Send them
 		this.msg(messages);	
