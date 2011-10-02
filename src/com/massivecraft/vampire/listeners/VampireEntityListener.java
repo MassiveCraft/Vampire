@@ -84,6 +84,7 @@ public class VampireEntityListener extends EntityListener {
 		
 		pDamager = (Player)damager;
 		vpDamager = VPlayer.get(pDamager);
+		
 		//Breaks truce if player hits hostile mob with a bow
 		if(event.getCause() == DamageCause.ENTITY_ATTACK){
 		Player p = (Player) damager;
