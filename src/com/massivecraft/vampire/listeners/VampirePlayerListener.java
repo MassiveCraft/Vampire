@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
@@ -100,6 +101,14 @@ public class VampirePlayerListener extends PlayerListener
 			event.setCancelled(true);
 		}
 		*/
+	}
+	
+	@Override
+	public void onPlayerJoin(PlayerJoinEvent event)
+	{
+		Player player = event.getPlayer();
+		VPlayer vplayer = VPlayers.i.get(player);
+		vplayer.updateVampPermission();
 	}
 	
 	@Override

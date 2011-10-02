@@ -13,6 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.util.Vector;
 
 import com.massivecraft.vampire.config.*;
@@ -32,7 +33,7 @@ public class VPlayer extends PlayerEntity
 	// Is the player a vampire?
 	private boolean vampire = false;
 	public boolean isVampire() { return this.vampire; }
-	public void setIsVampire(boolean isVampire) { this.vampire = isVampire; }
+	public void setIsVampire(boolean isVampire) { this.vampire = isVampire; this.updateVampPermission(); }
 	public boolean isExvampire() { return this.isVampire() == false && this.timeAsVampire > 0; }
 		
 	// 0 means no infection. If infection reaches 100 the player will turn to vampire.
@@ -63,6 +64,8 @@ public class VPlayer extends PlayerEntity
 	private long truceBreakTicksLeft = 0; // How many milliseconds more will the monsters be hostile?
 	private transient double foodAccumulator = 0;
 	//public transient long regenDelayLeftMilliseconds = 0;
+	
+	private transient PermissionAttachment permA;
 	
 	// GSON need this noarg constructor.
 	public VPlayer()
@@ -550,115 +553,30 @@ public class VPlayer extends PlayerEntity
 		if (P.random.nextDouble() > fromvplayer.infectionGetRiskToInfectOther()) return;
 		this.infectionContract(fromvplayer);
 	}
-	
+
 	// -------------------------------------------- //
-	// Altar Usage TODO: Abstract into the Altar Class
+	// Assigned Permission Update
 	// -------------------------------------------- //
-	
-	/*public void useAltarInfect(Block centerBlock)
+	public void updateVampPermission()
 	{
-		// The altar must be big enough
-		int count = GeometryUtil.countNearby(centerBlock, Conf.altarInfect.materialSurround, Conf.altarInfect.surroundRadius);
-		if (count == 0)
+		if (this.permA == null)
 		{
-			return;
+			this.permA = this.getPlayer().addAttachment(P.p);
 		}
-		
-		this.msg(" ");
-		
-		if (count < Conf.altarInfect.surroundCount)
-		{
-			this.msg(Lang.altarInfectToSmall);
-			return;
-		}
-		
-		// Always examine first
-		this.msg(Lang.altarInfectExamineMsg);
-		
-		// Is Vampire
+			
 		if (this.isVampire())
 		{
-			this.msg(Lang.altarInfectExamineMsgNoUse);
-			return;
-		}
-		
-		// Is Infected
-		if (this.isInfected())
-		{
-			this.msg(Lang.altarInfectExamineWhileInfected);
-			return;
-		}
-		
-		// Is healthy and thus can be infected...
-		if (Conf.altarInfect.recipe.playerHasEnough(this.getPlayer()))
-		{
-			this.msg(Lang.altarUseIngredientsSuccess);
-			this.msg(Conf.altarInfect.recipe.getRecipeLine());
-			this.msg(Lang.altarEvilUse);
-			p.log(this.getId() + " was infected by an evil altar.");
-			Conf.altarInfect.recipe.removeFromPlayer(this.getPlayer());
-			this.alterInfection(3D);
+			this.permA.setPermission(Permission.IS.node, true);
 		}
 		else
 		{
-			this.msg(Lang.altarUseIngredientsFail);
-			this.msg(Conf.altarInfect.recipe.getRecipeLine());
+			this.permA.setPermission(Permission.IS.node, false);
 		}
+		
+		// Debug
+		//p.log(this.getId() + " had vamp permission updated to " + this.getPlayer().hasPermission(Permission.IS.node));
 	}
 	
-	public void useAltarCure(Block centerBlock)
-	{
-		// The altar must be big enough;
-		int count = GeometryUtil.countNearby(centerBlock, Conf.altarCure.materialSurround, Conf.altarCure.surroundRadius);
-		if (count == 0)
-		{
-			return;
-		}
-		
-		this.msg(" ");
-		
-		if (count < Conf.altarCure.surroundCount)
-		{
-			this.msg(Lang.altarCureToSmall);
-			return;
-		}
-		
-		// Always examine first
-		this.msg(Lang.altarCureExamineMsg);
-		
-		// If healthy
-		if ( ! this.isInfected() && ! this.isVampire())
-		{
-			this.msg(Lang.altarGoodHealthy);
-			return;
-		}
-		
-		// If Infected
-		if (this.isInfected())
-		{
-			this.msg(Lang.altarGoodInfected);
-			this.setInfection(0);
-			this.msg(p.txt.parse(Lang.infectionMessageCured));
-			return;
-		}
-		
-		// Is vampire and thus can be cured...
-		if(Conf.altarCure.recipe.playerHasEnough(this.getPlayer()))
-		{
-			this.msg(Lang.altarUseIngredientsSuccess);
-			this.msg(Conf.altarCure.recipe.getRecipeLine());
-			this.msg(Lang.altarGoodUse);
-			Conf.altarCure.recipe.removeFromPlayer(this.getPlayer());
-			p.log(this.getId() + " was cured from being a vampire by a healing altar.");
-			this.cureVampirism();
-		} 
-		else
-		{
-			this.msg(Lang.altarUseIngredientsFail);
-			this.msg(Conf.altarCure.recipe.getRecipeLine());
-		}
-	}*/
-
 	// -------------------------------------------- //
 	// Commonly used limiter of double
 	// -------------------------------------------- //

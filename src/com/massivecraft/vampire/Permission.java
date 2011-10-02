@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 
 public enum Permission
 {
+	IS("vampire.is"),
 	COMMAND_INTEND("vampire.command.intend"),
 	COMMAND_INFECT("vampire.command.infect"),
 	COMMAND_LIST("vampire.command.list"),
