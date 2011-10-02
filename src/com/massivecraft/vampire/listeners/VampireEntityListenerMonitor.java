@@ -4,6 +4,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -35,7 +36,7 @@ public class VampireEntityListenerMonitor extends EntityListener
 		if (event.isCancelled()) return;
 		
 		// For further interest this must be a close combat attack by another entity
-		if (event.getCause() != DamageCause.ENTITY_ATTACK) return;
+		if (event.getCause() != DamageCause.ENTITY_ATTACK && event.getCause() != DamageCause.PROJECTILE) return;
 		if ( ! (event instanceof EntityDamageByEntityEvent)) return;
 		
 		// Define local fields
@@ -49,6 +50,12 @@ public class VampireEntityListenerMonitor extends EntityListener
 		Entity damager = edbeEvent.getDamager();
 		Player pDamager;
 		VPlayer vpDamager;
+		
+		// Consider the damager to be the shooter if this is a projectile
+		if (damager instanceof Projectile)
+		{
+			damager = ((Projectile)damager).getShooter();
+		}
 		
 		// For further interest that attacker must be a player.
 		if ( ! (damager instanceof Player)) return;
