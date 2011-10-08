@@ -89,18 +89,6 @@ public class VampirePlayerListener extends PlayerListener
 		if ( ! vme.isVampire()) return;
 		
 		me.setDisplayName(""+Conf.nameColor+ChatColor.stripColor(me.getDisplayName()));
-		
-		
-		/*
-		if (event.getMessage().startsWith("v ") || event.getMessage().equals("v"))
-		{
-			List<String> parameters = TextUtil.split(event.getMessage().trim());
-			parameters.remove(0);
-			CommandSender sender = event.getPlayer();
-			P.p.handleCommand(sender, parameters);
-			event.setCancelled(true);
-		}
-		*/
 	}
 	
 	@Override

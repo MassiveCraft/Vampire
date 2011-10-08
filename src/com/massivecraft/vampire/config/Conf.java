@@ -3,6 +3,7 @@ package com.massivecraft.vampire.config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,6 +72,9 @@ public class Conf
 	public static Set<CreatureType> creatureTypeTruceMonsters = new HashSet<CreatureType>();
 	
 	public static Map<Material,Double> materialOpacity = new HashMap<Material,Double>(); //We assume opacity 1 for all materials not in this map
+	
+	public static Map<String,Boolean> giveThesePermissionsToVampires  = new LinkedHashMap<String,Boolean>();
+	public static Map<String,Boolean> giveThesePermissionsToNonVampires  = new LinkedHashMap<String,Boolean>();
 	
 	static
 	{
@@ -161,6 +165,13 @@ public class Conf
 		creatureTypeTruceMonsters.add(CreatureType.ZOMBIE);
 		creatureTypeTruceMonsters.add(CreatureType.ENDERMAN);
 		creatureTypeTruceMonsters.add(CreatureType.GIANT);
+		
+		giveThesePermissionsToVampires.put("example.vampires.should.have.this", true);
+		giveThesePermissionsToVampires.put("example.this.to", true);
+		giveThesePermissionsToVampires.put("example.but.negate.this", false);
+		
+		giveThesePermissionsToNonVampires.put("example.nonvampires.can.do.this", true);
+		giveThesePermissionsToVampires.put("example.but.not.that", false);
 	}
 	
 	

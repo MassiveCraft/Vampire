@@ -2,9 +2,6 @@ name: Vampire
 version: 4.1.0
 main: com.massivecraft.vampire.P
 permissions:
-  vampire.is:
-    description: A special permission. Do NOT assign to anyone. It is automaticly added to those who are vampires.
-    default: false
   vampire.command.intend:
     description: intend to infect others
     default: true

@@ -2,6 +2,7 @@ package com.massivecraft.vampire;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -559,18 +560,33 @@ public class VPlayer extends PlayerEntity
 	// -------------------------------------------- //
 	public void updateVampPermission()
 	{
-		if (this.permA == null)
+		if (this.permA != null)
 		{
-			this.permA = this.getPlayer().addAttachment(P.p);
+			this.permA.remove();
 		}
+		
+		this.permA = this.getPlayer().addAttachment(P.p);
 			
+		String name;
+		boolean val;
+		
 		if (this.isVampire())
 		{
-			this.permA.setPermission(Permission.IS.node, true);
+			for (Entry<String, Boolean> entry : Conf.giveThesePermissionsToVampires.entrySet())
+			{
+				name = entry.getKey();
+				val = entry.getValue();
+				this.permA.setPermission(name, val);
+			}
 		}
 		else
 		{
-			this.permA.setPermission(Permission.IS.node, false);
+			for (Entry<String, Boolean> entry : Conf.giveThesePermissionsToNonVampires.entrySet())
+			{
+				name = entry.getKey();
+				val = entry.getValue();
+				this.permA.setPermission(name, val);
+			}
 		}
 		
 		// Debug

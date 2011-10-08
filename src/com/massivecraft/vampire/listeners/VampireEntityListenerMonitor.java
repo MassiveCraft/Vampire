@@ -32,7 +32,8 @@ public class VampireEntityListenerMonitor extends EntityListener
 	 * never cancel or alter an event so they belong at monitor level.
 	 */
 	@Override
-	public void onEntityDamage(EntityDamageEvent event) {
+	public void onEntityDamage(EntityDamageEvent event)
+	{
 		if (event.isCancelled()) return;
 		
 		// For further interest this must be a close combat attack by another entity
