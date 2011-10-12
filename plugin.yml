@@ -1,6 +1,7 @@
 name: Vampire
 version: 4.1.0
 main: com.massivecraft.vampire.P
+softdepend: [PermissionsEx, Permissions]
 permissions:
   vampire.command.intend:
     description: intend to infect others

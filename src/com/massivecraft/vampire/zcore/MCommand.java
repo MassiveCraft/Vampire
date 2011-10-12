@@ -18,6 +18,12 @@ public abstract class MCommand<T extends MPlugin>
 	
 	// The sub-commands to this command
 	public List<MCommand<?>> subCommands;
+	public void addSubCommand(MCommand<?> subCommand)
+	{
+		subCommand.commandChain.addAll(this.commandChain);
+		subCommand.commandChain.add(this);
+		this.subCommands.add(subCommand);
+	}
 	
 	// The different names this commands will react to  
 	public List<String> aliases;
@@ -26,9 +32,27 @@ public abstract class MCommand<T extends MPlugin>
 	// Information on the args
 	public List<String> requiredArgs;
 	public LinkedHashMap<String, String> optionalArgs;
+	public boolean errorOnToManyArgs = true;
 	
-	// Help info
-	public String helpShort;
+	// FIELD: Help Short
+	// This field may be left blank and will in such case be loaded from the permissions node instead.
+	// Thus make sure the permissions node description is an action description like "eat hamburgers" or "do admin stuff".
+	private String helpShort;
+	public void setHelpShort(String val) { this.helpShort = val; }
+	public String getHelpShort()
+	{
+		if (this.helpShort == null)
+		{
+			String pdesc = p.perm.getPermissionDescription(this.permission);
+			if (pdesc != null)
+			{
+				return pdesc;
+			}
+			return "*no short help available*";
+		}
+		return this.helpShort;
+	}
+	
 	public List<String> helpLong;
 	public CommandVisibility visibility;
 	
@@ -38,9 +62,10 @@ public abstract class MCommand<T extends MPlugin>
 	
 	// Information available on execution of the command
 	public CommandSender sender; // Will always be set
-	public Player player; // Will only be set when the sender is a player
+	public Player me; // Will only be set when the sender is a player
+	public boolean senderIsConsole;
 	public List<String> args; // Will contain the arguments, or and empty list if there are none.
-	public List<MCommand<?>> commandChain; // The command chain used to execute this command
+	public List<MCommand<?>> commandChain = new ArrayList<MCommand<?>>(); // The command chain used to execute this command
 	
 	public MCommand(T p)
 	{
@@ -56,7 +81,7 @@ public abstract class MCommand<T extends MPlugin>
 		this.requiredArgs = new ArrayList<String>();
 		this.optionalArgs = new LinkedHashMap<String, String>();
 		
-		this.helpShort = "*Default helpShort*";
+		this.helpShort = null;
 		this.helpLong = new ArrayList<String>();
 		this.visibility = CommandVisibility.VISIBLE;
 	}
@@ -68,11 +93,13 @@ public abstract class MCommand<T extends MPlugin>
 		this.sender = sender;
 		if (sender instanceof Player)
 		{
-			this.player = (Player)sender;
+			this.me = (Player)sender;
+			this.senderIsConsole = false;
 		}
 		else
 		{
-			this.player = null;
+			this.me = null;
+			this.senderIsConsole = true;
 		}
 		this.args = args;
 		this.commandChain = commandChain;
@@ -92,10 +119,9 @@ public abstract class MCommand<T extends MPlugin>
 			}
 		}
 		
-		if ( ! validCall(this.sender, this.args))
-		{
-			return;
-		}
+		if ( ! validCall(this.sender, this.args)) return;
+		
+		if ( ! this.isEnabled()) return;
 		
 		perform();
 	}
@@ -116,7 +142,6 @@ public abstract class MCommand<T extends MPlugin>
 	/**
 	 * In this method we validate that all prerequisites to perform this command has been met.
 	 */
-	
 	// TODO: There should be a boolean for silence 
 	public boolean validCall(CommandSender sender, List<String> args)
 	{
@@ -138,13 +163,18 @@ public abstract class MCommand<T extends MPlugin>
 		return true;
 	}
 	
+	public boolean isEnabled()
+	{
+		return true;
+	}
+	
 	public boolean validSenderType(CommandSender sender, boolean informSenderIfNot)
 	{
 		if (this.senderMustBePlayer && ! (sender instanceof Player))
 		{
 			if (informSenderIfNot)
 			{
-				sender.sendMessage(p.txt.get("command.sender_must_me_player"));
+				msg(Lang.commandSenderMustBePlayer);
 			}
 			return false;
 		}
@@ -163,19 +193,19 @@ public abstract class MCommand<T extends MPlugin>
 		{
 			if (sender != null)
 			{
-				sender.sendMessage(p.txt.get("command.to_few_args"));
+				msg(Lang.commandToFewArgs);
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
 		}
 		
-		if (args.size() > this.requiredArgs.size() + this.optionalArgs.size())
+		if (args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs)
 		{
 			if (sender != null)
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				sender.sendMessage(String.format(p.txt.get("command.to_many_args"), TextUtil.implode(theToMany, " ")));
+				msg(Lang.commandToManyArgs, TextUtil.implode(theToMany, " "));
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -194,7 +224,7 @@ public abstract class MCommand<T extends MPlugin>
 	public String getUseageTemplate(List<MCommand<?>> commandChain, boolean addShortHelp)
 	{
 		StringBuilder ret = new StringBuilder();
-		ret.append(p.txt.tags("<c>"));
+		ret.append(p.txt.parseTags("<c>"));
 		ret.append('/');
 		
 		for (MCommand<?> mc : commandChain)
@@ -228,13 +258,13 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (args.size() > 0)
 		{
-			ret.append(p.txt.tags("<p> "));
+			ret.append(p.txt.parseTags("<p> "));
 			ret.append(TextUtil.implode(args, " "));
 		}
 		
 		if (addShortHelp)
 		{
-			ret.append(p.txt.tags(" <i>"));
+			ret.append(p.txt.parseTags(" <i>"));
 			ret.append(this.helpShort);
 		}
 		
@@ -255,39 +285,39 @@ public abstract class MCommand<T extends MPlugin>
 	// Message Sending Helpers
 	// -------------------------------------------- //
 	
-	public void msg(String msg, boolean parseColors)
+	public void msg(String str, Object... args)
 	{
-		if (parseColors)
-		{
-			sender.sendMessage(p.txt.tags(msg));
-			return;
-		}
+		sender.sendMessage(p.txt.parse(str, args));
+	}
+	
+	public void sendMessage(String msg)
+	{
 		sender.sendMessage(msg);
 	}
 	
-	public void msg(String msg)
-	{
-		this.msg(msg, false);
-	}
-	
-	public void msg(List<String> msgs, boolean parseColors)
+	public void sendMessage(List<String> msgs)
 	{
 		for(String msg : msgs)
 		{
-			this.msg(msg, parseColors);
+			this.sendMessage(msg);
 		}
-	}
-	
-	public void msg(List<String> msgs)
-	{
-		msg(msgs, false);
 	}
 	
 	// -------------------------------------------- //
 	// Argument Readers
 	// -------------------------------------------- //
 	
-	// STRING
+	// Is set? ======================
+	public boolean argIsSet(int idx)
+	{
+		if (this.args.size() < idx+1)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	// STRING ======================
 	public String argAsString(int idx, String def)
 	{
 		if (this.args.size() < idx+1)
@@ -301,10 +331,9 @@ public abstract class MCommand<T extends MPlugin>
 		return this.argAsString(idx, null);
 	}
 	
-	// INT
-	public int argAsInt(int idx, int def)
+	// INT ======================
+	public int strAsInt(String str, int def)
 	{
-		String str = this.argAsString(idx);
 		if (str == null) return def;
 		try
 		{
@@ -316,15 +345,18 @@ public abstract class MCommand<T extends MPlugin>
 			return def;
 		}
 	}
+	public int argAsInt(int idx, int def)
+	{
+		return strAsInt(this.argAsString(idx), def);
+	}
 	public int argAsInt(int idx)
 	{
 		return this.argAsInt(idx, -1);
 	}
 	
-	// Double
-	public double argAsDouble(int idx, double def)
+	// Double ======================
+	public double strAsDouble(String str, double def)
 	{
-		String str = this.argAsString(idx);
 		if (str == null) return def;
 		try
 		{
@@ -336,17 +368,19 @@ public abstract class MCommand<T extends MPlugin>
 			return def;
 		}
 	}
+	public double argAsDouble(int idx, double def)
+	{
+		return strAsDouble(this.argAsString(idx), def);
+	}
 	public double argAsDouble(int idx)
 	{
 		return this.argAsDouble(idx, -1d);
 	}
 	
-	// Boolean
-	public boolean argAsBool(int idx, boolean def)
+	// TODO: Go through the str conversion for the other arg-readers as well.
+	// Boolean ======================
+	public Boolean strAsBool(String str)
 	{
-		String str = this.argAsString(idx);
-		if (str == null) return def;
-		
 		str = str.toLowerCase();
 		if (str.startsWith("y") || str.startsWith("t") || str.startsWith("on") || str.startsWith("+") || str.startsWith("1"))
 		{
@@ -354,17 +388,23 @@ public abstract class MCommand<T extends MPlugin>
 		}
 		return false;
 	}
-	public boolean argAsBool(int idx)
+	public Boolean argAsBool(int idx, boolean def)
+	{
+		String str = this.argAsString(idx);
+		if (str == null) return def;
+		
+		return strAsBool(str);
+	}
+	public Boolean argAsBool(int idx)
 	{
 		return this.argAsBool(idx, false);
 	}
 	
-	// PLAYER
-	public Player argAsPlayer(int idx, Player def, boolean msg)
+	// PLAYER ======================
+	public Player strAsPlayer(String name, Player def, boolean msg)
 	{
 		Player ret = def;
 		
-		String name = this.argAsString(idx);
 		if (name != null)
 		{
 			Player player = Bukkit.getServer().getPlayer(name);
@@ -376,11 +416,15 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (msg && ret == null)
 		{
-			// TODO: Fix this injection risk!
-			this.msg(p.txt.tags("<b>The player \"<p>"+name+"<b>\" could not be found."));
+			this.msg("<b>No player \"<p>%s<b>\" could not be found.", name);			
 		}
 		
 		return ret;
+	}
+	
+	public Player argAsPlayer(int idx, Player def, boolean msg)
+	{
+		return this.strAsPlayer(this.argAsString(idx), def, msg);
 	}
 	public Player argAsPlayer(int idx, Player def)
 	{
@@ -391,12 +435,11 @@ public abstract class MCommand<T extends MPlugin>
 		return this.argAsPlayer(idx, null);
 	}
 	
-	// BEST PLAYER MATCH
-	public Player argAsBestPlayerMatch(int idx, Player def, boolean msg)
+	// BEST PLAYER MATCH ======================
+	public Player strAsBestPlayerMatch(String name, Player def, boolean msg)
 	{
 		Player ret = def;
 		
-		String name = this.argAsString(idx);
 		if (name != null)
 		{
 			List<Player> players = Bukkit.getServer().matchPlayer(name);
@@ -408,11 +451,14 @@ public abstract class MCommand<T extends MPlugin>
 		
 		if (msg && ret == null)
 		{
-			// TODO: Fix this injection risk!
-			this.msg(p.txt.tags("<b>No player match found for \"<p>"+name+"<b>\"."));
+			this.msg("<b>No player match found for \"<p>%s<b>\".", name);
 		}
 		
 		return ret;
+	}
+	public Player argAsBestPlayerMatch(int idx, Player def, boolean msg)
+	{
+		return this.strAsBestPlayerMatch(this.argAsString(idx), def, msg);
 	}
 	public Player argAsBestPlayerMatch(int idx, Player def)
 	{
@@ -422,8 +468,4 @@ public abstract class MCommand<T extends MPlugin>
 	{
 		return this.argAsPlayer(idx, null);
 	}
-	
-	
-	
-	
 }

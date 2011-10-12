@@ -47,14 +47,14 @@ public class VampirePlayerListener extends PlayerListener
 			{
 				if ( ! Conf.canEat.get(itemMaterial))
 				{
-					vplayer.msg(p.txt.parse(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial)));
+					vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial));
 					event.setCancelled(true);
 				}
 			}
 			
 			if (action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CAKE_BLOCK && Conf.canEat.get(Material.CAKE_BLOCK) != true)
 			{
-				vplayer.msg(p.txt.parse(Lang.vampiresCantEatThat, TextUtil.getMaterialName(Material.CAKE)));
+				vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(Material.CAKE));
 				event.setCancelled(true);
 			}
 				

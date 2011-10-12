@@ -15,7 +15,7 @@ public class CmdHelp extends MCommand<P>
 		this.aliases.add("h");
 		this.aliases.add("help");
 		
-		this.helpShort = "";
+		this.setHelpShort("");
 		
 		this.optionalArgs.put("page","1");
 	}
@@ -43,6 +43,6 @@ public class CmdHelp extends MCommand<P>
 			}
 		}
 		
-		msg(p.txt.getPage(lines, this.argAsInt(0, 1), "Help for command \""+pcmd.aliases.get(0)+"\""));
+		sendMessage(p.txt.getPage(lines, this.argAsInt(0, 1), "Help for command \""+pcmd.aliases.get(0)+"\""));
 	}
 }

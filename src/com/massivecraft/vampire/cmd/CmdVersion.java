@@ -11,7 +11,7 @@ public class CmdVersion extends VCommand
 	{
 		aliases.add("version");
 		
-		helpShort = "display current version";
+		this.setHelpShort("display current version");
 		
 		this.visibility = CommandVisibility.SECRET;
 		
@@ -23,6 +23,6 @@ public class CmdVersion extends VCommand
 	@Override
 	public void perform()
 	{
-		this.msg(p.txt.parse("<i>You are running "+P.p.getDescription().getFullName()));
+		this.msg("<i>You are running %s", P.p.getDescription().getFullName());
 	}
 }

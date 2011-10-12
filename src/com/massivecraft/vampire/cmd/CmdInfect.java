@@ -13,7 +13,7 @@ public class CmdInfect extends VCommand
 		
 		requiredArgs.add("playername");
 		
-		helpShort = "infect others that are willing";
+		this.setHelpShort("infect others that are willing");
 		
 		permission = Permission.COMMAND_INFECT.node;
 		senderMustBePlayer = true;

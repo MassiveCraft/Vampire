@@ -15,7 +15,7 @@ public class CmdTurn extends VCommand
 
 		requiredArgs.add("playername");
 		
-		helpShort = "instantly turn player";
+		this.setHelpShort("instantly turn player");
 		
 		this.visibility = CommandVisibility.SECRET;
 		
@@ -34,6 +34,6 @@ public class CmdTurn extends VCommand
 		you.setFoodLevel(20);
 		vyou.turn();
 		
-		this.msg(p.txt.parse(Lang.xWasTurned, you.getDisplayName()));
+		this.msg(Lang.xWasTurned, you.getDisplayName());
 	}
 }

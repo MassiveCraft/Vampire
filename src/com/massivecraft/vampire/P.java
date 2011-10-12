@@ -74,25 +74,6 @@ public class P extends MPlugin
 		postEnable();
 	}
 	
-	// -------------------------------------------- //
-	// LANG AND TAGS
-	// -------------------------------------------- //
-	
-	@Override
-	public void addLang()
-	{
-		super.addLang();
-		this.lang.put("command.sender_must_me_vampire", "<b>Only vampires can use this command.");
-	}
-	
-	@Override
-	public void addTags()
-	{
-		super.addTags();
-		/*this.tags.put("i", "§b");
-		this.tags.put("h", "§a");*/
-	}
-	
 	@Override
 	public GsonBuilder getGsonBuilder()
 	{

@@ -15,7 +15,7 @@ public class CmdList extends VCommand
 		aliases.add("ls");
 		aliases.add("l");
 		
-		helpShort = "list vampires on the server";
+		this.setHelpShort("list vampires on the server");
 		
 		this.visibility = CommandVisibility.SECRET;
 		
@@ -84,6 +84,6 @@ public class CmdList extends VCommand
 		messages.add(p.txt.parse("<h>= Exvampires Offline: <white>") + TextUtil.implode(exvampiresOffline, sep));
 		
 		// Send them
-		this.msg(messages);	
+		this.sendMessage(messages);	
 	}
 }

@@ -15,7 +15,7 @@ public class CmdSetfood extends VCommand
 		requiredArgs.add("playername");
 		optionalArgs.put("food", "20");
 		
-		helpShort = "set foodlevel (0 to 20)";
+		this.setHelpShort("set foodlevel (0 to 20)");
 		
 		this.visibility = CommandVisibility.SECRET;
 		
@@ -33,6 +33,6 @@ public class CmdSetfood extends VCommand
 		int targetFood = this.argAsInt(1, 20);
 		you.setFoodLevel(VPlayer.limitNumber(targetFood, 0, 20));
 		
-		this.msg(p.txt.parse(Lang.xNowHasFoodY, you.getDisplayName(), you.getFoodLevel()));
+		this.msg(Lang.xNowHasFoodY, you.getDisplayName(), you.getFoodLevel());
 	}
 }

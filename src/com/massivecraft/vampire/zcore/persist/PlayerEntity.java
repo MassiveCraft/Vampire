@@ -12,22 +12,32 @@ public class PlayerEntity extends Entity
 		return Bukkit.getPlayer(this.getId());
 	}
 	
+	public boolean isOnline()
+	{
+		return this.getPlayer() != null;
+	}
+	
+	public boolean isOffline()
+	{
+		return ! isOnline();
+	}
+	
 	// -------------------------------------------- //
 	// Message Sending Helpers
 	// -------------------------------------------- //
 	
-	public void msg(String msg)
+	public void sendMessage(String msg)
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
 		player.sendMessage(msg);
 	}
 	
-	public void msg(List<String> msgs)
+	public void sendMessage(List<String> msgs)
 	{
 		for(String msg : msgs)
 		{
-			this.msg(msg);
+			this.sendMessage(msg);
 		}
 	}
 	

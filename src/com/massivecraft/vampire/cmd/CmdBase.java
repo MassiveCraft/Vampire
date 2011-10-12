@@ -10,6 +10,7 @@ public class CmdBase extends VCommand
 	{
 		super();
 		this.aliases.addAll(Conf.baseCommandAliases);
+		this.allowNoSlashAccess = Conf.allowNoSlashCommand;
 		
 		this.subCommands.add(p.cmdHelp);
 		this.subCommands.add(new CmdIntend());
@@ -22,10 +23,8 @@ public class CmdBase extends VCommand
 		this.subCommands.add(new CmdCure());
 		this.subCommands.add(new CmdVersion());
 		
-		this.helpShort = "The vampire base command";
-		this.helpLong.add(p.txt.tags("<i>This command contains all vampire stuff."));
-		
-		this.allowNoSlashAccess = Conf.allowNoSlashCommand;
+		this.setHelpShort("The vampire base command");
+		this.helpLong.add(p.txt.parse("<i>This command contains all vampire stuff."));
 	}
 	
 	@Override

@@ -119,14 +119,14 @@ public class VPlayer extends PlayerEntity
 		SmokeUtil.smokeifyPlayer(this.getPlayer(), 20*30);
 		this.setInfection(0);
 		this.setIsVampire(true);
-		this.msg(p.txt.parse(Lang.youWasTurned));
+		this.msg(Lang.youWasTurned);
 	}
 	
 	public void cureVampirism()
 	{
 		this.setInfection(0);
 		this.setIsVampire(false);
-		this.msg(p.txt.parse(Lang.youWasCured));
+		this.msg(Lang.youWasCured);
 	}
 	
 	// -------------------------------------------- //
@@ -137,7 +137,7 @@ public class VPlayer extends PlayerEntity
 		VPlayer vyou = this.infectionOfferedFrom;
 		if (vyou == null || System.currentTimeMillis() - this.infectionOfferedAtTicks > Conf.cmdInfectMillisRecentTolerance)
 		{
-			this.msg(p.txt.parse(Lang.infectNoRecentOffer));
+			this.msg(Lang.infectNoRecentOffer);
 			return;
 		}
 		
@@ -154,8 +154,8 @@ public class VPlayer extends PlayerEntity
 			return;
 		}
 		
-		me.sendMessage(p.txt.parse(Lang.infectYouDrinkSomeOfXBlood, you.getDisplayName()));
-		you.sendMessage(p.txt.parse(Lang.infectXDrinkSomeOfYourBlood, me.getDisplayName()));
+		this.msg(Lang.infectYouDrinkSomeOfXBlood, you.getDisplayName());
+		vyou.msg(Lang.infectXDrinkSomeOfYourBlood, me.getDisplayName());
 		
 		if (this.isVampire()) return;
 		
@@ -174,18 +174,18 @@ public class VPlayer extends PlayerEntity
 		
 		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
 		{
-			this.msg(p.txt.parse(Lang.infectYouMustStandCloseToY, you.getDisplayName()));
+			this.msg(Lang.infectYouMustStandCloseToY, you.getDisplayName());
 			return;
 		}
 		
 		vyou.infectionOfferedFrom = this;
 		vyou.infectionOfferedAtTicks = System.currentTimeMillis();
-		vyou.msg(p.txt.parse(Lang.infectXOffersToInfectYou, me.getDisplayName()));
+		vyou.msg(Lang.infectXOffersToInfectYou, me.getDisplayName());
 		
 		List<MCommand<?>> cmdc = new ArrayList<MCommand<?>>();
 		cmdc.add(p.cmdBase);
-		vyou.msg(p.txt.parse(Lang.infectTypeXToAccept, p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false))); //TODO: Link to the accept command!
-		me.sendMessage(p.txt.parse(Lang.infectYouOfferToInfectX, you.getDisplayName()));
+		vyou.msg(Lang.infectTypeXToAccept, p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false)); //TODO: Link to the accept command!
+		this.msg(Lang.infectYouOfferToInfectX, you.getDisplayName());
 	}
 	
 	// -------------------------------------------- //
@@ -230,14 +230,14 @@ public class VPlayer extends PlayerEntity
 	{
 		if ( ! this.truceIsBroken())
 		{
-			this.msg(p.txt.parse(Lang.messageTruceBroken));
+			this.msg(Lang.messageTruceBroken);
 		}
 		this.truceBreakTimeLeftSet(Conf.truceBreakTicks);
 	}
 	
 	public void truceRestore()
 	{
-		this.msg(p.txt.parse(Lang.messageTruceRestored));
+		this.msg(Lang.messageTruceRestored);
 		this.truceBreakTimeLeftSet(0);
 		
 		Player me = this.getPlayer();
@@ -339,7 +339,7 @@ public class VPlayer extends PlayerEntity
 		Player player = this.getPlayer();
 		if (player.getFireTicks() <= 0)
 		{
-			this.msg(p.txt.parse(Lang.combustMessage));
+			this.msg(Lang.combustMessage);
 		}
 		
 		player.setFireTicks((int) (ticks + Conf.combustFireExtinguishTicks));
@@ -459,12 +459,12 @@ public class VPlayer extends PlayerEntity
 		if (current <= 0D)
 		{
 			this.setInfection(0D);
-			this.msg(p.txt.parse(Lang.infectionMessageCured));
+			this.msg(Lang.infectionMessageCured);
 			return;
 		}
 		
 		this.setInfection(current);
-		this.msg(p.txt.parse(Lang.infectionMessageHeal));
+		this.msg(Lang.infectionMessageHeal);
 	}
 	
 	// -------------------------------------------- //
@@ -494,8 +494,8 @@ public class VPlayer extends PlayerEntity
 		{
 			//P.p.log("WOOOP");
 			this.getPlayer().damage(1);
-			this.msg(p.txt.parse(Lang.infectionMessagesProgress.get(newMessageIndex)));
-			this.msg(p.txt.parse(Lang.infectionBreadHintMessages.get(P.random.nextInt(Lang.infectionBreadHintMessages.size()))));
+			this.msg(Lang.infectionMessagesProgress.get(newMessageIndex));
+			this.msg(Lang.infectionBreadHintMessages.get(P.random.nextInt(Lang.infectionBreadHintMessages.size())));
 		}
 	}
 	
@@ -566,26 +566,19 @@ public class VPlayer extends PlayerEntity
 		}
 		
 		this.permA = this.getPlayer().addAttachment(P.p);
-			
-		String name;
-		boolean val;
 		
 		if (this.isVampire())
 		{
 			for (Entry<String, Boolean> entry : Conf.giveThesePermissionsToVampires.entrySet())
 			{
-				name = entry.getKey();
-				val = entry.getValue();
-				this.permA.setPermission(name, val);
+				this.permA.setPermission(entry.getKey(), entry.getValue());
 			}
 		}
 		else
 		{
 			for (Entry<String, Boolean> entry : Conf.giveThesePermissionsToNonVampires.entrySet())
 			{
-				name = entry.getKey();
-				val = entry.getValue();
-				this.permA.setPermission(name, val);
+				this.permA.setPermission(entry.getKey(), entry.getValue());
 			}
 		}
 		
@@ -609,6 +602,11 @@ public class VPlayer extends PlayerEntity
 		}
 		
 		return d;
+	}
+	
+	public void msg(String str, Object... args)
+	{
+		this.sendMessage(P.p.txt.parse(str, args));
 	}
 	
 	@Override

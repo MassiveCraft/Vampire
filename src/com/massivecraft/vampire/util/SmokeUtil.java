@@ -11,8 +11,13 @@ public class SmokeUtil
 {
 	public static void spawnAtLocation(Location location)
 	{
-		// Bit number four seems to be the most stationary one
-		location.getWorld().playEffect(location, Effect.SMOKE, 4);
+		for (int i = 0; i <= 8; i++)
+		{
+			if (P.random.nextBoolean())
+			{
+				location.getWorld().playEffect(location, Effect.SMOKE, i);
+			}
+		}
 	}
 	
 	public static void spawnAtPlayerFeet(Player player)

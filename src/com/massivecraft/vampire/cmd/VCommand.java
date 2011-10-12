@@ -29,6 +29,10 @@ public abstract class VCommand extends MCommand<P>
 		{
 			this.vme = VPlayers.i.get((Player)sender);
 		}
+		else
+		{
+			this.vme = null;
+		}
 		super.execute(sender, args, commandChain);
 	}
 	
@@ -40,7 +44,7 @@ public abstract class VCommand extends MCommand<P>
 		
 		if (this.senderMustBeVampire && ! VPlayers.i.get((Player)sender).isVampire())
 		{
-			sender.sendMessage(p.txt.get("command.sender_must_me_vampire"));
+			sender.sendMessage(p.txt.parse("<b>Only vampires can use this command."));
 			return false;
 		}
 			

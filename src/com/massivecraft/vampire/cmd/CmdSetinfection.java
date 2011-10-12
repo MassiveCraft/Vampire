@@ -17,7 +17,7 @@ public class CmdSetinfection extends VCommand
 		requiredArgs.add("playername");
 		optionalArgs.put("amount", "1.0");
 		
-		helpShort = "set infection (0 to 100)";
+		this.setHelpShort("set infection (0 to 100)");
 		
 		this.visibility = CommandVisibility.SECRET;
 		
@@ -36,6 +36,6 @@ public class CmdSetinfection extends VCommand
 		
 		VPlayer vyou = VPlayers.i.get(you);
 		vyou.setInfection(amount);
-		this.msg(p.txt.parse(Lang.xNowHasYInfection, you.getDisplayName(), vyou.getInfection()));
+		this.msg(Lang.xNowHasYInfection, you.getDisplayName(), vyou.getInfection());
 	}
 }

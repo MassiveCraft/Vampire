@@ -9,7 +9,7 @@ public class CmdAccept extends VCommand
 	{
 		aliases.add("accept");
 		
-		helpShort = "accept infection from someone";
+		this.setHelpShort("accept infection from someone");
 		
 		this.visibility = CommandVisibility.INVISIBLE;
 		

@@ -15,7 +15,7 @@ public class CmdCure extends VCommand
 
 		requiredArgs.add("playername");
 		
-		helpShort = "cure a vampire";
+		this.setHelpShort("cure a vampire");
 		
 		this.visibility = CommandVisibility.SECRET;
 		
@@ -31,6 +31,6 @@ public class CmdCure extends VCommand
 		if (you == null) return;
 		VPlayer vyou = VPlayers.i.get(you);
 		vyou.cureVampirism();
-		this.msg(p.txt.parse(Lang.xWasCured, you.getDisplayName()));
+		this.msg(Lang.xWasCured, you.getDisplayName());
 	}
 }
