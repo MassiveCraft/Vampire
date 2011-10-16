@@ -4,7 +4,6 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.event.Event;
 
 import com.google.gson.GsonBuilder;
@@ -60,16 +59,14 @@ public class P extends MPlugin
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, Conf.taskInterval);
 	
 		// Register events
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Low, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_ANIMATION, this.playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.High, this);
-		pm.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Highest, this);
-		
+		this.registerEvent(Event.Type.PLAYER_JOIN, this.playerListener, Event.Priority.Low);
+		this.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.PLAYER_ANIMATION, this.playerListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.High);
+		this.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High);
+		this.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Highest);
 		
 		postEnable();
 	}

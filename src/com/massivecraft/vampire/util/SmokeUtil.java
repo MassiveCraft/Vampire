@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.vampire.P;
 
 public class SmokeUtil
-{
+{	
 	public static void spawnAtLocation(Location location)
 	{
 		for (int i = 0; i <= 8; i++)

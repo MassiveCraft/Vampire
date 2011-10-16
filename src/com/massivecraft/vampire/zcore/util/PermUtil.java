@@ -44,6 +44,7 @@ public class PermUtil {
 	{
 		for(Permission permission : p.getDescription().getPermissions())
 		{
+			//p.log("\""+permission.getName()+"\" = \""+permission.getDescription()+"\"");
 			this.permissionDescriptions.put(permission.getName(), permission.getDescription());
 		}
 		
@@ -52,7 +53,7 @@ public class PermUtil {
 			pex = PermissionsEx.getPermissionManager();
 			p.log("Will use this plugin for permissions: " + Bukkit.getServer().getPluginManager().getPlugin("PermissionsEx").getDescription().getFullName());
 			return;
-		}		
+		}
 		
 		if ( Bukkit.getServer().getPluginManager().isPluginEnabled("Permissions"))
 		{
@@ -81,6 +82,8 @@ public class PermUtil {
 	 */
 	public boolean has (CommandSender me, String perm)
 	{
+		if (me == null) return false;
+		
 		if ( ! (me instanceof Player))
 		{
 			return me.hasPermission(perm);
@@ -88,7 +91,9 @@ public class PermUtil {
 		
 		if (pex != null)
 		{
-			return pex.has((Player)me, perm);
+			//return pex.has((Player)me, perm);
+			// Since pex supports superperms we should use those instead.
+			return ((Player)me).hasPermission(perm);
 		} 
 		
 		if (perm2or3 != null)
@@ -105,7 +110,7 @@ public class PermUtil {
 		{
 			return true;
 		}
-		else if (informSenderIfNot)
+		else if (informSenderIfNot && me != null)
 		{
 			me.sendMessage(this.getForbiddenMessage(perm));
 		}

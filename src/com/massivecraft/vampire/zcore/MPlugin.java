@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -113,6 +114,20 @@ public abstract class MPlugin extends JavaPlugin
 	}
 
 	// -------------------------------------------- //
+	// Register Event convenience method
+	// -------------------------------------------- //
+	
+	public void registerEvent(Event.Type type, Listener listener, Event.Priority priority)
+	{
+		Bukkit.getServer().getPluginManager().registerEvent(type, listener, priority, this);
+	}
+	
+	public void registerEvent(Event.Type type, Listener listener)
+	{
+		registerEvent(type, listener, Event.Priority.Normal);
+	}
+	
+	// -------------------------------------------- //
 	// Some inits...
 	// You are supposed to override these in the plugin if you aren't satisfied with the defaults
 	// The goal is that you always will be satisfied though.
@@ -170,10 +185,10 @@ public abstract class MPlugin extends JavaPlugin
 
 	public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
 	{
-		boolean noSlash = false;
+		boolean noSlash = true;
 		if (commandString.startsWith("/"))
 		{
-			noSlash = true;
+			noSlash = false;
 			commandString = commandString.substring(1);
 		}
 		
