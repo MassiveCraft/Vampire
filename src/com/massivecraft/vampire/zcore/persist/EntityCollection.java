@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 import com.massivecraft.vampire.zcore.util.DiscUtil;
+import com.massivecraft.vampire.zcore.util.TextUtil;
 
 public abstract class EntityCollection<E extends Entity>
 {	
@@ -16,7 +17,7 @@ public abstract class EntityCollection<E extends Entity>
 	
 	// These must be instantiated in order to allow for different configuration (orders, comparators etc)
 	private Collection<E> entities;
-	private Map<String, E> id2entity;
+	protected Map<String, E> id2entity;
 	
 	// If the entities are creative they will create a new instance if a non existent id was requested
 	private boolean creative;
@@ -94,16 +95,23 @@ public abstract class EntityCollection<E extends Entity>
 		return id2entity.get(id) != null;
 	}
 	
+	public E getBestIdMatch(String pattern)
+	{
+		String id = TextUtil.getBestStartWithCI(this.id2entity.keySet(), pattern);
+		if (id == null) return null;
+		return this.id2entity.get(id);
+	}
+	
 	// -------------------------------------------- //
 	// CREATE
 	// -------------------------------------------- //
 	
-	public E create()
+	public synchronized E create()
 	{
 		return this.create(this.getNextId());
 	}
 	
-	public E create(String id)
+	public synchronized E create(String id)
 	{
 		if ( ! this.isIdFree(id)) return null;
 		
@@ -217,21 +225,23 @@ public abstract class EntityCollection<E extends Entity>
 	
 	public String getNextId()
 	{
-		String next = Integer.toString(this.nextId);
-		do
+		while ( ! isIdFree(this.nextId) )
 		{
 			this.nextId += 1;
-		} while ( ! isIdFree(Integer.toString(this.nextId)) );
-
-		return next;
+		}
+		return Integer.toString(this.nextId);
 	}
 	
 	public boolean isIdFree(String id)
 	{
 		return ! this.id2entity.containsKey(id);
 	}
+	public boolean isIdFree(int id)
+	{
+		return this.isIdFree(Integer.toString(id));
+	}
 	
-	protected void fillIds()
+	protected synchronized void fillIds()
 	{
 		this.nextId = 1;
 		for(Entry<String, E> entry : this.id2entity.entrySet())
@@ -243,16 +253,21 @@ public abstract class EntityCollection<E extends Entity>
 		}
 	}
 	
+	protected synchronized void updateNextIdForId(int id)
+	{
+		if (this.nextId < id)
+		{
+			this.nextId = id + 1;
+		}
+	}
+	
 	protected void updateNextIdForId(String id)
 	{
 		try
 		{
 			int idAsInt = Integer.parseInt(id);
-			if (this.nextId < idAsInt)
-			{
-				this.nextId = idAsInt + 1;
-			}
-		} catch (Exception ignored) {}
+			this.updateNextIdForId(idAsInt);
+		}
+		catch (Exception ignored) { }
 	}
-	
 }
