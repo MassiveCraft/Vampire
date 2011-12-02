@@ -31,7 +31,8 @@ public class Conf
 	public final static transient int combustFromTime = 0;
 	public final static transient int combustToTime = 12400;
 	// After how many minecraft game ticks of no sunlight should the fire stop? 0 means right away.
-	public final static int combustFireExtinguishTicks = 10; 
+	public final static transient int combustFireExtinguishTicks = 10;
+	public final static transient Set<Material> foodMaterials = new HashSet<Material>();
 	
 	// -------------------------------------------- //
 	// CONFIGURABLE
@@ -111,6 +112,22 @@ public class Conf
 		woodMaterials.add(Material.SIGN_POST);
 		woodMaterials.add(Material.FENCE);
 		woodMaterials.add(Material.FENCE_GATE);
+		
+		foodMaterials.add(Material.APPLE);
+		foodMaterials.add(Material.BREAD);
+		foodMaterials.add(Material.COOKED_BEEF);
+		foodMaterials.add(Material.COOKED_CHICKEN);
+		foodMaterials.add(Material.COOKED_FISH);
+		foodMaterials.add(Material.COOKIE);
+		foodMaterials.add(Material.GRILLED_PORK);
+		foodMaterials.add(Material.MELON);
+		foodMaterials.add(Material.MUSHROOM_SOUP);
+		foodMaterials.add(Material.PORK);
+		foodMaterials.add(Material.RAW_BEEF);
+		foodMaterials.add(Material.RAW_CHICKEN);
+		foodMaterials.add(Material.RAW_FISH);
+		foodMaterials.add(Material.ROTTEN_FLESH);
+		foodMaterials.add(Material.SPIDER_EYE);
 		
 		materialOpacity.put(Material.AIR, 0D);
 		materialOpacity.put(Material.SAPLING, 0.3D);

@@ -44,7 +44,7 @@ public class VampirePlayerListener extends PlayerListener
 		if(vplayer.isVampire())
 		{
 			
-			if ( ! Conf.vampireCanEat(itemMaterial))
+			if ( Conf.foodMaterials.contains(itemMaterial) && ! Conf.vampireCanEat(itemMaterial))
 			{
 				vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial));
 				event.setCancelled(true);
