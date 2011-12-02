@@ -83,6 +83,7 @@ public class VampireEntityListenerMonitor extends EntityListener
 						damage = pDamagee.getHealth();
 					}
 					vpDamager.foodAdd(damage * Conf.foodPerDamageFromPlayer);
+					vpDamager.healthAdd(damage * Conf.healthPerDamageFromPlayer);
 				}
 			}
 			else if (damagee instanceof Creature)
@@ -100,6 +101,7 @@ public class VampireEntityListenerMonitor extends EntityListener
 						damage = cDamagee.getHealth();
 					}
 					vpDamager.foodAdd(damage * Conf.foodPerDamageFromCreature.get(creatureType));
+					vpDamager.healthAdd(damage * Conf.healthPerDamageFromCreature.get(creatureType));
 				}
 				
 				// Break truce

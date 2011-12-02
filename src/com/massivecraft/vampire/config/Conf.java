@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -77,6 +78,8 @@ public class Conf
 	
 	public static double foodPerDamageFromPlayer = 0.4d;
 	public static Map<CreatureType, Double> foodPerDamageFromCreature = new HashMap<CreatureType, Double>();
+	public static double healthPerDamageFromPlayer = foodPerDamageFromPlayer;
+	public static Map<CreatureType, Double> healthPerDamageFromCreature = new HashMap<CreatureType, Double>();
 	
 	public static long truceBreakTicks = 60 * 20; // One minute
 	public static Set<CreatureType> creatureTypeTruceMonsters = new HashSet<CreatureType>();
@@ -171,6 +174,11 @@ public class Conf
 		foodPerDamageFromCreature.put(CreatureType.SPIDER, foodPerDamageFromPlayer / 10D);
 		foodPerDamageFromCreature.put(CreatureType.CAVE_SPIDER, foodPerDamageFromPlayer / 10D);
 		foodPerDamageFromCreature.put(CreatureType.SQUID, foodPerDamageFromPlayer / 10D);
+		
+		for (Entry<CreatureType, Double> entry : foodPerDamageFromCreature.entrySet())
+		{
+			healthPerDamageFromCreature.put(entry.getKey(), entry.getValue());
+		}
 		
 		// These are the creature types that won't target vampires
 		creatureTypeTruceMonsters.add(CreatureType.BLAZE);

@@ -64,6 +64,7 @@ public class VPlayer extends PlayerEntity
 	private long timeAsVampire = 0; // The total amount of milliseconds this player has been vampire.
 	private long truceBreakTicksLeft = 0; // How many milliseconds more will the monsters be hostile?
 	private transient double foodAccumulator = 0;
+	private transient double healthAccumulator = 0;
 	//public transient long regenDelayLeftMilliseconds = 0;
 	
 	private transient PermissionAttachment permA;
@@ -193,14 +194,6 @@ public class VPlayer extends PlayerEntity
 	// This system uses an accumulator to wrap the int in a double
 	// -------------------------------------------- //
 	
-	public void foodSet(double food)
-	{
-		food = limitNumber(food, 0d, 20d);
-		int targetFood = (int)Math.floor(food);
-		this.foodAccumulator = food - targetFood;
-		this.getPlayer().setFoodLevel(targetFood);
-	}
-	
 	public void foodAdd(double food)
 	{
 		this.foodAccumulator += food;
@@ -216,6 +209,23 @@ public class VPlayer extends PlayerEntity
 		
 		int targetFood = limitNumber(player.getFoodLevel() + deltaFood, 0, 20);
 		player.setFoodLevel(targetFood);
+	}
+	
+	public void healthAdd(double health)
+	{
+		this.healthAccumulator += health;
+		this.healthApplyAccumulator();
+	}
+	
+	public void healthApplyAccumulator()
+	{
+		int deltaHealth = (int)Math.floor(this.healthAccumulator);
+		this.healthAccumulator = this.healthAccumulator - deltaHealth;
+		
+		Player player = this.getPlayer();
+		
+		int targetHealth = limitNumber(player.getHealth() + deltaHealth, 0, 20);
+		player.setHealth(targetHealth);
 	}
 	
 	// -------------------------------------------- //
