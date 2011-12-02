@@ -5,7 +5,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
@@ -58,8 +60,8 @@ public class VampireEntityListener extends EntityListener
 			pDamagee = (Player)damagee;
 			vpDamagee = VPlayers.i.get(pDamagee);
 			
-			// Vampires can not drown or take fall damage.
-			if (vpDamagee.isVampire() && (event.getCause() == DamageCause.DROWNING || event.getCause() == DamageCause.FALL))
+			// Vampires can not drown or take fall damage or starve
+			if (vpDamagee.isVampire() && Conf.vampiresCantTakeDamageFrom.contains(event.getCause()))
 			{
 				event.setCancelled(true);
 				return;
@@ -111,7 +113,34 @@ public class VampireEntityListener extends EntityListener
 	}
 	
 	@Override
-	public void onEntityTarget(EntityTargetEvent event) {
+	public void onEntityRegainHealth(EntityRegainHealthEvent event)
+	{
+		if (event.isCancelled()) return;
+		Entity entity = event.getEntity();
+		if ( ! (entity instanceof Player)) return;
+		if ( ! Conf.vampiresCantRegainHealthFrom.contains(event.getRegainReason())) return;
+		Player player = (Player) entity;		
+		VPlayer vplayer = VPlayers.i.get(player);
+		if ( ! vplayer.isVampire()) return;
+		event.setCancelled(true);
+	}
+	
+	@Override
+	public void onFoodLevelChange(FoodLevelChangeEvent event)
+	{
+		if (event.isCancelled()) return;
+		if (Conf.vampiresLooseFoodNaturally) return;
+		Entity entity = event.getEntity();
+		if ( ! (entity instanceof Player)) return;
+		Player player = (Player) entity;		
+		VPlayer vplayer = VPlayers.i.get(player);
+		if ( ! vplayer.isVampire()) return;
+		event.setCancelled(true);
+	}
+	
+	@Override
+	public void onEntityTarget(EntityTargetEvent event)
+	{
 		if (event.isCancelled()) return;
 		
 		// If a player is targeted...

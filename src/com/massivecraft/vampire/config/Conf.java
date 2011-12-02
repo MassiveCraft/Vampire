@@ -11,6 +11,8 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 
 import com.massivecraft.vampire.AltarEvil;
 import com.massivecraft.vampire.AltarGood;
@@ -19,9 +21,21 @@ import com.massivecraft.vampire.P;
 
 public class Conf
 {
+	// -------------------------------------------- //
+	// FINAL
+	// -------------------------------------------- //
 	public final static transient int taskInterval = 40; // Defines often the task runs.
 	public final static transient double cmdInfectMaxDistance = 2d;
-	public final static transient long cmdInfectMillisRecentTolerance = 10000;
+	public final static transient long cmdInfectMillisRecentTolerance = 20000;
+	// Time is "hours passed since the beginning of the day" * 1000
+	public final static transient int combustFromTime = 0;
+	public final static transient int combustToTime = 12400;
+	// After how many minecraft game ticks of no sunlight should the fire stop? 0 means right away.
+	public final static int combustFireExtinguishTicks = 10; 
+	
+	// -------------------------------------------- //
+	// CONFIGURABLE
+	// -------------------------------------------- //
 	
 	public static List<String> baseCommandAliases = new ArrayList<String>();
 	public static boolean allowNoSlashCommand = true;
@@ -30,12 +44,8 @@ public class Conf
 	public static ChatColor nameColor = ChatColor.RED;
 	public static Set<Material> dropSelfOverrideMaterials = new HashSet<Material>();
 	
-	// TODO REMOVE!! Abstract...
-	// Time is "hours passed since the beginning of the day" * 1000
-	public final static transient int combustFromTime = 0;
-	public final static transient int combustToTime = 12400;
-	// After how many minecraft game ticks of no sunlight should the fire stop? 0 means right away.
-	public static int combustFireExtinguishTicks = 10; 
+	public static Map<String,Boolean> giveThesePermissionsToVampires  = new LinkedHashMap<String,Boolean>();
+	public static Map<String,Boolean> giveThesePermissionsToNonVampires  = new LinkedHashMap<String,Boolean>();
 	
 	public static Double jumpDeltaSpeed = 3d;
 	public static Integer jumpFoodCost = 2;
@@ -47,8 +57,6 @@ public class Conf
 	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
 	public static Double infectionRiskAtCloseCombatWithIntent = 0.05;
 	
-	
-	
 	// TODO: Rework to have different values for the intent modes!
 	public static double damageDealtFactorWithoutIntent = 1.5;
 	public static double damageDealtFactorWithIntent = 0.65;
@@ -58,12 +66,13 @@ public class Conf
 	public static int damageReceivedWood = 11;
 	public static Set<Material> woodMaterials = new HashSet<Material>();
 	
-	public static AltarEvil altarEvil = new AltarEvil();
-	public static AltarGood altarGood = new AltarGood();
-	public static Map<Material, Boolean> canEat = new HashMap<Material, Boolean>();
+	public static boolean vampiresCanEat = false;
+	// http://www.minecraftwiki.net/wiki/Food
+	public static Set<Material> vampiresCanEatInverted = new HashSet<Material>();
 	
-	
-	
+	public static Set<DamageCause> vampiresCantTakeDamageFrom = new HashSet<DamageCause>();
+	public static Set<RegainReason> vampiresCantRegainHealthFrom = new HashSet<RegainReason>();
+	public static boolean vampiresLooseFoodNaturally = false;
 	
 	public static double foodPerDamageFromPlayer = 0.4d;
 	public static Map<CreatureType, Double> foodPerDamageFromCreature = new HashMap<CreatureType, Double>();
@@ -71,42 +80,24 @@ public class Conf
 	public static long truceBreakTicks = 60 * 20; // One minute
 	public static Set<CreatureType> creatureTypeTruceMonsters = new HashSet<CreatureType>();
 	
-	public static Map<Material,Double> materialOpacity = new HashMap<Material,Double>(); //We assume opacity 1 for all materials not in this map
+	public static AltarEvil altarEvil = new AltarEvil();
+	public static AltarGood altarGood = new AltarGood();
 	
-	public static Map<String,Boolean> giveThesePermissionsToVampires  = new LinkedHashMap<String,Boolean>();
-	public static Map<String,Boolean> giveThesePermissionsToNonVampires  = new LinkedHashMap<String,Boolean>();
+	//We assume opacity 1 for all materials not in this map
+	public static Map<Material,Double> materialOpacity = new HashMap<Material,Double>();
 	
 	static
 	{
 		baseCommandAliases.add("v");
 		
+		// Improve this system
 		dropSelfOverrideMaterials.add(Material.WEB);
 		dropSelfOverrideMaterials.add(Material.GLOWSTONE);
 		dropSelfOverrideMaterials.add(Material.BOOKSHELF);
 		dropSelfOverrideMaterials.add(Material.DEAD_BUSH);
 		
-		jumpMaterials.add(Material.ENDER_PEARL);
-		
-		// http://www.minecraftwiki.net/wiki/Food
-		canEat.put(Material.RAW_BEEF, true);
-		canEat.put(Material.RAW_CHICKEN, true);
-		canEat.put(Material.PORK, true);
-		canEat.put(Material.COOKED_BEEF, false);
-		canEat.put(Material.BREAD, false);
-		canEat.put(Material.CAKE_BLOCK, false);
-		canEat.put(Material.COOKIE, false);
-		canEat.put(Material.COOKED_CHICKEN, false);
-		canEat.put(Material.RAW_FISH, false);
-		canEat.put(Material.COOKED_FISH, false);
-		canEat.put(Material.GRILLED_PORK, false);
-		canEat.put(Material.APPLE, false);
-		canEat.put(Material.GOLDEN_APPLE, false);
-		canEat.put(Material.MELON, false);
-		canEat.put(Material.MUSHROOM_SOUP, false);
-		canEat.put(Material.ROTTEN_FLESH, false);
-		
-		// TODO Maybe cake could cure vampirism...
-		// "You forget about blood this is way better :)"
+		jumpMaterials.add(Material.BONE);
+
 		woodMaterials.add(Material.WOOD_AXE);
 		woodMaterials.add(Material.WOOD_HOE);
 		woodMaterials.add(Material.WOOD_PICKAXE);
@@ -147,6 +138,14 @@ public class Conf
 		materialOpacity.put(Material.DIODE_BLOCK_OFF, 0D);
 		materialOpacity.put(Material.DIODE_BLOCK_ON, 0D);
 		
+		
+		vampiresCantTakeDamageFrom.add(DamageCause.DROWNING);
+		vampiresCantTakeDamageFrom.add(DamageCause.FALL);
+		vampiresCantTakeDamageFrom.add(DamageCause.STARVATION);
+		
+		vampiresCantRegainHealthFrom.add(RegainReason.SATIATED);
+		vampiresCantRegainHealthFrom.add(RegainReason.REGEN);
+		
 		// For each damage to the creature; how much blood will the vampire obtain
 		foodPerDamageFromCreature.put(CreatureType.CHICKEN, foodPerDamageFromPlayer / 5D);
 		foodPerDamageFromCreature.put(CreatureType.COW, foodPerDamageFromPlayer / 5D);
@@ -157,14 +156,17 @@ public class Conf
 		foodPerDamageFromCreature.put(CreatureType.SQUID, foodPerDamageFromPlayer / 10D);
 		
 		// These are the creature types that won't target vampires
+		creatureTypeTruceMonsters.add(CreatureType.BLAZE);
+		creatureTypeTruceMonsters.add(CreatureType.CAVE_SPIDER);
 		creatureTypeTruceMonsters.add(CreatureType.CREEPER);
+		creatureTypeTruceMonsters.add(CreatureType.ENDERMAN);
 		creatureTypeTruceMonsters.add(CreatureType.GHAST);
+		creatureTypeTruceMonsters.add(CreatureType.GIANT);
+		creatureTypeTruceMonsters.add(CreatureType.MAGMA_CUBE);
+		creatureTypeTruceMonsters.add(CreatureType.PIG_ZOMBIE);
 		creatureTypeTruceMonsters.add(CreatureType.SKELETON);
 		creatureTypeTruceMonsters.add(CreatureType.SPIDER);
-		creatureTypeTruceMonsters.add(CreatureType.CAVE_SPIDER);
 		creatureTypeTruceMonsters.add(CreatureType.ZOMBIE);
-		creatureTypeTruceMonsters.add(CreatureType.ENDERMAN);
-		creatureTypeTruceMonsters.add(CreatureType.GIANT);
 		
 		giveThesePermissionsToVampires.put("example.vampires.should.have.this", true);
 		giveThesePermissionsToVampires.put("example.this.to", true);
@@ -174,6 +176,18 @@ public class Conf
 		giveThesePermissionsToVampires.put("example.but.not.that", false);
 	}
 	
+	// -------------------------------------------- //
+	// Calculators
+	// -------------------------------------------- //
+	public static boolean vampireCanEat(Material material)
+	{
+		boolean ret = vampiresCanEat;
+		if (vampiresCanEatInverted.contains(material))
+		{
+			ret = ! ret;
+		}
+		return ret;
+	}
 	
 	// -------------------------------------------- //
 	// Persistance

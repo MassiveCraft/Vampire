@@ -65,8 +65,12 @@ public class P extends MPlugin
 		this.registerEvent(Event.Type.PLAYER_ANIMATION, this.playerListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.High);
 		this.registerEvent(Event.Type.ENTITY_TARGET, this.entityListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.ENTITY_REGAIN_HEALTH, this.entityListener, Event.Priority.Normal);
+		this.registerEvent(Event.Type.FOOD_LEVEL_CHANGE, this.entityListener, Event.Priority.Normal);
 		this.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High);
 		this.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Highest);
+		
+		
 		
 		postEnable();
 	}

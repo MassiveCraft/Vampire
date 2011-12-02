@@ -43,16 +43,14 @@ public class VampirePlayerListener extends PlayerListener
 		
 		if(vplayer.isVampire())
 		{
-			if (Conf.canEat.containsKey(itemMaterial))
+			
+			if ( ! Conf.vampireCanEat(itemMaterial))
 			{
-				if ( ! Conf.canEat.get(itemMaterial))
-				{
-					vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial));
-					event.setCancelled(true);
-				}
+				vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial));
+				event.setCancelled(true);
 			}
 			
-			if (action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CAKE_BLOCK && Conf.canEat.get(Material.CAKE_BLOCK) != true)
+			if (action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CAKE_BLOCK && Conf.vampireCanEat(Material.CAKE_BLOCK))
 			{
 				vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(Material.CAKE));
 				event.setCancelled(true);

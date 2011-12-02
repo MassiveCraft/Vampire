@@ -355,25 +355,13 @@ public class VPlayer extends PlayerEntity
 		Material material = player.getLocation().getBlock().getType();
 		World playerWorld = player.getWorld();
 		
-		if
-		(
-			player.getWorld().getEnvironment() == Environment.NETHER
-			||
-			this.worldTimeIsNight()
-			||
-			this.isUnderRoof()
-			||
-			material == Material.STATIONARY_WATER
-			||
-			material == Material.WATER
-			||
-			playerWorld.hasStorm()
-			||
-			playerWorld.isThundering()
-		)
-		{
-			return false;
-		}
+		if (player.getWorld().getEnvironment() == Environment.NETHER) return false;
+		if (this.worldTimeIsNight()) return false;
+		if (material == Material.STATIONARY_WATER) return false;
+		if (material == Material.WATER) return false;
+		if (playerWorld.hasStorm()) return false;
+		if (playerWorld.isThundering()) return false;
+		if (this.isUnderRoof()) return false;
 		
 		return true;
 	}
