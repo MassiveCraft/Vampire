@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.FloodUtil;
 import com.massivecraft.vampire.util.GeometryUtil;
-import com.massivecraft.vampire.zcore.util.TextUtil;
 
 public abstract class Altar
 {
@@ -75,7 +74,7 @@ public abstract class Altar
 		{
 			Material material = entry.getKey();
 			int count = entry.getValue();
-			player.sendMessage(P.p.txt.parse("<h>%d <p>%s", count, TextUtil.getMaterialName(material)));
+			player.sendMessage(P.p.txt.parse("<h>%d <p>%s", count, P.p.txt.getMaterialName(material)));
 		}
 	}
 	

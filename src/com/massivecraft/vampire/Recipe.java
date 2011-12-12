@@ -11,8 +11,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.vampire.util.SortUtil;
-import com.massivecraft.vampire.zcore.util.TextUtil;
-
 
 public class Recipe
 {
@@ -63,9 +61,9 @@ public class Recipe
 		{
 			Material material = item.getKey();
 			int count = item.getValue();
-			lines.add(P.p.txt.parse("<h>%d <p>%s", count, TextUtil.getMaterialName(material)));
+			lines.add(P.p.txt.parse("<h>%d <p>%s", count, P.p.txt.getMaterialName(material)));
 					
 		}
-		return TextUtil.implode(lines, P.p.txt.parse("<i>, "));
+		return P.p.txt.implode(lines, P.p.txt.parse("<i>, "));
 	}
 }

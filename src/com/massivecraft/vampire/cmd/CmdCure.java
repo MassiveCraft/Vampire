@@ -2,32 +2,29 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.cmd.VisibilityMode;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.zcore.CommandVisibility;
 
 
 public class CmdCure extends VCommand
 {
 	public CmdCure()
 	{
-		aliases.add("cure");
+		this.addAliases("cure");
 
 		requiredArgs.add("playername");
 		
-		this.setHelpShort("cure a vampire");
+		this.setDesc("cure a vampire");
+		this.setVisibilityMode(VisibilityMode.SECRET);
 		
-		this.visibility = CommandVisibility.SECRET;
-		
-		permission = Permission.COMMAND_CURE.node;
-		senderMustBePlayer = false;
-		senderMustBeVampire = false;
+		this.setDescPermission(Permission.COMMAND_CURE.node);
 	}
 	
 	@Override
 	public void perform()
 	{
-		Player you = this.argAsBestPlayerMatch(0);
+		Player you = this.argAs(0, Player.class, "match");
 		if (you == null) return;
 		VPlayer vyou = VPlayers.i.get(you);
 		vyou.cureVampirism();

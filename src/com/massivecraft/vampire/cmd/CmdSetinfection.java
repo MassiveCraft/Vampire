@@ -2,9 +2,9 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.cmd.VisibilityMode;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.zcore.CommandVisibility;
 
 
 public class CmdSetinfection extends VCommand
@@ -12,27 +12,26 @@ public class CmdSetinfection extends VCommand
 	
 	public CmdSetinfection()
 	{
-		aliases.add("seti");
+		this.addAliases("seti");
 
 		requiredArgs.add("playername");
 		optionalArgs.put("amount", "1.0");
 		
-		this.setHelpShort("set infection (0 to 100)");
+		this.setDesc("set infection (0 to 100)");
 		
-		this.visibility = CommandVisibility.SECRET;
+		this.setVisibilityMode(VisibilityMode.SECRET);
 		
-		permission = Permission.COMMAND_SETINFECTION.node;
-		senderMustBePlayer = false;
-		senderMustBeVampire = false;
+		this.setDescPermission(Permission.COMMAND_SETINFECTION.node);
 	}
 	
 	@Override
 	public void perform()
 	{
-		Player you = this.argAsBestPlayerMatch(0);
+		Player you = this.argAs(0, Player.class, "match");
 		if (you == null) return;
 		
-		double amount = this.argAsDouble(1, 1.0);
+		Double amount = this.argAs(1, Double.class, 1.0);
+		if (amount == null) return;
 		
 		VPlayer vyou = VPlayers.i.get(you);
 		vyou.setInfection(amount);

@@ -5,6 +5,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.MCore;
 import com.massivecraft.vampire.P;
 
 public class SmokeUtil
@@ -13,7 +14,7 @@ public class SmokeUtil
 	{
 		for (int i = 0; i <= 8; i++)
 		{
-			if (P.random.nextBoolean())
+			if (MCore.random.nextBoolean())
 			{
 				location.getWorld().playEffect(location, Effect.SMOKE, i);
 			}

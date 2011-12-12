@@ -9,7 +9,7 @@ public class VampireTask implements Runnable
 	public void run()
 	{
 		// Tick each online player
-		for (VPlayer vplayer : VPlayers.i.getOnline())
+		for (VPlayer vplayer : VPlayers.i.getAllOnline())
 		{
 			vplayer.advanceTime(Conf.taskInterval);
 		}

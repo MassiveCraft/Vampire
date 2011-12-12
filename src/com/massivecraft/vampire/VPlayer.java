@@ -17,18 +17,32 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.util.Vector;
 
+import com.massivecraft.mcore1.MCore;
+import com.massivecraft.mcore1.cmd.MCommand;
+import com.massivecraft.mcore1.persist.IClassManager;
+import com.massivecraft.mcore1.persist.PlayerEntity;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.SmokeUtil;
-import com.massivecraft.vampire.zcore.MCommand;
-import com.massivecraft.vampire.zcore.persist.PlayerEntity;
 
 /**
  * The VPlayer is a "skin" for a normal player.
  * Through this skin we can reach the player plus extra plugin specific data and functionality.
  */
-public class VPlayer extends PlayerEntity
+public class VPlayer extends PlayerEntity<VPlayer>
 {
+	@Override
+	public IClassManager<VPlayer> getManager()
+	{
+		return VPlayers.i;
+	}
+	
+	@Override
+	protected VPlayer getThis()
+	{
+		return this;
+	}
+	
 	public static transient P p = P.p;
 	
 	// Is the player a vampire?
@@ -183,7 +197,8 @@ public class VPlayer extends PlayerEntity
 		vyou.infectionOfferedAtTicks = System.currentTimeMillis();
 		vyou.msg(Lang.infectXOffersToInfectYou, me.getDisplayName());
 		
-		List<MCommand<?>> cmdc = new ArrayList<MCommand<?>>();
+		// TODO: WHAT's THIS FOR!?!?!?!?!?!?!
+		List<MCommand> cmdc = new ArrayList<MCommand>();
 		cmdc.add(p.cmdBase);
 		vyou.msg(Lang.infectTypeXToAccept, p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false)); //TODO: Link to the accept command!
 		this.msg(Lang.infectYouOfferToInfectX, you.getDisplayName());
@@ -493,7 +508,7 @@ public class VPlayer extends PlayerEntity
 			//P.p.log("WOOOP");
 			this.getPlayer().damage(1);
 			this.msg(Lang.infectionMessagesProgress.get(newMessageIndex));
-			this.msg(Lang.infectionBreadHintMessages.get(P.random.nextInt(Lang.infectionBreadHintMessages.size())));
+			this.msg(Lang.infectionBreadHintMessages.get(MCore.random.nextInt(Lang.infectionBreadHintMessages.size())));
 		}
 	}
 	
@@ -549,7 +564,7 @@ public class VPlayer extends PlayerEntity
 	
 	public void infectionContractRisk(VPlayer fromvplayer)
 	{
-		if (P.random.nextDouble() > fromvplayer.infectionGetRiskToInfectOther()) return;
+		if (MCore.random.nextDouble() > fromvplayer.infectionGetRiskToInfectOther()) return;
 		this.infectionContract(fromvplayer);
 	}
 
@@ -606,11 +621,4 @@ public class VPlayer extends PlayerEntity
 	{
 		this.sendMessage(P.p.txt.parse(str, args));
 	}
-	
-	@Override
-	public boolean shouldBeSaved()
-	{
-		return this.isExvampire() || this.isVampire() || this.isInfected();
-	}
-	
 }

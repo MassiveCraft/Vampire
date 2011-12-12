@@ -1,6 +1,5 @@
 package com.massivecraft.vampire.listeners;
 
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,8 +17,6 @@ import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.zcore.util.TextUtil;
-
 
 public class VampirePlayerListener extends PlayerListener
 {
@@ -46,13 +43,13 @@ public class VampirePlayerListener extends PlayerListener
 			
 			if ( Conf.foodMaterials.contains(itemMaterial) && ! Conf.vampireCanEat(itemMaterial))
 			{
-				vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(itemMaterial));
+				vplayer.msg(Lang.vampiresCantEatThat, p.txt.getMaterialName(itemMaterial));
 				event.setCancelled(true);
 			}
 			
 			if (action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CAKE_BLOCK && Conf.vampireCanEat(Material.CAKE_BLOCK))
 			{
-				vplayer.msg(Lang.vampiresCantEatThat, TextUtil.getMaterialName(Material.CAKE));
+				vplayer.msg(Lang.vampiresCantEatThat, p.txt.getMaterialName(Material.CAKE));
 				event.setCancelled(true);
 			}
 				

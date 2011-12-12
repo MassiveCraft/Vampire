@@ -40,7 +40,6 @@ public class Conf
 	// -------------------------------------------- //
 	
 	public static List<String> baseCommandAliases = new ArrayList<String>();
-	public static boolean allowNoSlashCommand = true;
 	
 	public static Boolean nameColorize = false;
 	public static ChatColor nameColor = ChatColor.RED;

@@ -1,16 +1,14 @@
 package com.massivecraft.vampire;
 
-import java.lang.reflect.Modifier;
-import java.util.*;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
-import com.google.gson.GsonBuilder;
+import com.massivecraft.mcore1.MCore;
+import com.massivecraft.mcore1.lib.gson.Gson;
+import com.massivecraft.mcore1.plugin.MPlugin;
 import com.massivecraft.vampire.cmd.*;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.listeners.*;
-import com.massivecraft.vampire.zcore.MPlugin;
 
 
 public class P extends MPlugin
@@ -24,10 +22,12 @@ public class P extends MPlugin
 	public VampireEntityListenerMonitor entityListenerMonitor;
 	public VampireBlockListener blockListener;
 	
+	// Command
 	public CmdHelp cmdHelp;
 	public CmdBase cmdBase;
 	
-	public static Random random = new Random();
+	// Derp
+	public Gson gson;
 	
 	public P()
 	{
@@ -44,16 +44,21 @@ public class P extends MPlugin
 	{
 		if ( ! preEnable()) return;
 		
+		// Create gson instance
+		this.gson = MCore.getGsonBuilder().create();
+		
+		// Create and load VPlayers
+		new VPlayers();
+		
 		// Load Conf from disk
 		Conf.load();
 		Lang.load();
 		
-		VPlayers.i.loadFromDisc();
-		
 		// Add Base Commands
 		this.cmdHelp = new CmdHelp();
 		this.cmdBase = new CmdBase();
-		this.getBaseCommands().add(cmdBase);
+		this.cmd.addCommand(this.cmdBase);
+		this.cmd.addCommand(this.cmdBase);
 	
 		// Start timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, Conf.taskInterval);
@@ -70,17 +75,6 @@ public class P extends MPlugin
 		this.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListenerMonitor, Event.Priority.High);
 		this.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Highest);
 		
-		
-		
 		postEnable();
-	}
-	
-	@Override
-	public GsonBuilder getGsonBuilder()
-	{
-		return new GsonBuilder()
-		.setPrettyPrinting()
-		.disableHtmlEscaping()
-		.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
 	}
 }

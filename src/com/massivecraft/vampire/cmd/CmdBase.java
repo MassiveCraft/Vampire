@@ -9,29 +9,26 @@ public class CmdBase extends VCommand
 	public CmdBase()
 	{
 		super();
-		this.aliases.addAll(Conf.baseCommandAliases);
-		this.allowNoSlashAccess = Conf.allowNoSlashCommand;
+		this.addAliases(Conf.baseCommandAliases);
+		this.addSubCommand(p().cmdHelp);
+		this.addSubCommand(new CmdIntend());
+		this.addSubCommand(new CmdInfect());
+		this.addSubCommand(cmdAccept);
+		this.addSubCommand(new CmdList());
+		this.addSubCommand(new CmdSetfood());
+		this.addSubCommand(new CmdSetinfection());
+		this.addSubCommand(new CmdTurn());
+		this.addSubCommand(new CmdCure());
+		this.addSubCommand(new CmdVersion());
 		
-		this.subCommands.add(p.cmdHelp);
-		this.subCommands.add(new CmdIntend());
-		this.subCommands.add(new CmdInfect());
-		this.subCommands.add(cmdAccept);
-		this.subCommands.add(new CmdList());
-		this.subCommands.add(new CmdSetfood());
-		this.subCommands.add(new CmdSetinfection());
-		this.subCommands.add(new CmdTurn());
-		this.subCommands.add(new CmdCure());
-		this.subCommands.add(new CmdVersion());
-		
-		this.setHelpShort("The vampire base command");
-		this.helpLong.add(p.txt.parse("<i>This command contains all vampire stuff."));
+		this.setDesc("The vampire base command");
 	}
 	
 	@Override
 	public void perform()
 	{
-		this.commandChain.add(this);
-		p.cmdHelp.execute(this.sender, this.args, this.commandChain);
+		this.getCommandChain().add(this);
+		p().cmdHelp.execute(this.sender, this.args, this.commandChain);
 	}
 
 }

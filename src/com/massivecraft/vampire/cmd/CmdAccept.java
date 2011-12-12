@@ -1,25 +1,23 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.vampire.zcore.CommandVisibility;
+import com.massivecraft.mcore1.cmd.VisibilityMode;
+import com.massivecraft.mcore1.cmd.req.ReqIsPlayer;
 
 public class CmdAccept extends VCommand
 {
-	
 	public CmdAccept()
 	{
-		aliases.add("accept");
+		this.addAliases("accept");
 		
-		this.setHelpShort("accept infection from someone");
+		this.setDesc("accept infection from someone");
+		this.setVisibilityMode(VisibilityMode.INVISIBLE);
 		
-		this.visibility = CommandVisibility.INVISIBLE;
-		
-		senderMustBePlayer = true;
-		senderMustBeVampire = false;
+		this.addRequirements(ReqIsPlayer.getInstance());
 	}
 	
 	@Override
 	public void perform()
 	{
-		vme.acceptInfection();
+		this.vme().acceptInfection();
 	}
 }

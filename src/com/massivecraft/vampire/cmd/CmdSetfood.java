@@ -2,35 +2,35 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.cmd.VisibilityMode;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.zcore.CommandVisibility;
 
 public class CmdSetfood extends VCommand
 {
 	public CmdSetfood()
 	{
-		aliases.add("setf");
+		this.addAliases("setf");
 
 		requiredArgs.add("playername");
 		optionalArgs.put("food", "20");
 		
-		this.setHelpShort("set foodlevel (0 to 20)");
+		this.setDesc("set foodlevel (0 to 20)");
 		
-		this.visibility = CommandVisibility.SECRET;
+		this.setVisibilityMode(VisibilityMode.SECRET);
 		
-		permission = Permission.COMMAND_SETFOOD.node;
-		senderMustBePlayer = false;
-		senderMustBeVampire = false;
+		this.setDescPermission(Permission.COMMAND_SETFOOD.node);
 	}
 	
 	@Override
 	public void perform()
 	{
-		Player you = this.argAsBestPlayerMatch(0);
+		Player you = this.argAs(0, Player.class, "match");
 		if (you == null) return;
 		
-		int targetFood = this.argAsInt(1, 20);
+		Integer targetFood = this.argAs(1, Integer.class, 20);
+		if (targetFood == null) return;
+		
 		you.setFoodLevel(VPlayer.limitNumber(targetFood, 0, 20));
 		
 		this.msg(Lang.xNowHasFoodY, you.getDisplayName(), you.getFoodLevel());

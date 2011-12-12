@@ -1,23 +1,21 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.mcore1.cmd.VisibilityMode;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.Permission;
-import com.massivecraft.vampire.zcore.CommandVisibility;
 
 public class CmdVersion extends VCommand
 {
 	
 	public CmdVersion()
 	{
-		aliases.add("version");
+		this.addAliases("version");
 		
-		this.setHelpShort("display current version");
+		this.setDesc("display current version");
 		
-		this.visibility = CommandVisibility.SECRET;
+		this.setVisibilityMode(VisibilityMode.SECRET);
 		
-		permission = Permission.COMMAND_VERSION.node;
-		senderMustBePlayer = false;
-		senderMustBeVampire = false;
+		this.setDescPermission(Permission.COMMAND_VERSION.node);
 	}
 	
 	@Override

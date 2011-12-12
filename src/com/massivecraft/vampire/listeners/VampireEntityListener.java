@@ -17,7 +17,6 @@ import com.massivecraft.vampire.VPlayers;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.EntityUtil;
-import com.massivecraft.vampire.zcore.util.TextUtil;
 
 //import com.bukkit.mcteam.vampire.Vampire;
 
@@ -100,7 +99,7 @@ public class VampireEntityListener extends EntityListener
 				if (Conf.woodMaterials.contains(itemMaterial))
 				{
 					damage = Conf.damageReceivedWood; // Just as much as a diamond sword.
-					vpDamagee.msg(Lang.messageWoodCombatWarning, TextUtil.getMaterialName(itemMaterial));
+					vpDamagee.msg(Lang.messageWoodCombatWarning, p.txt.getMaterialName(itemMaterial));
 				}
 				else
 				{

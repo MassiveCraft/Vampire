@@ -2,32 +2,30 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.cmd.VisibilityMode;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.zcore.CommandVisibility;
 
 public class CmdTurn extends VCommand
 {
 
 	public CmdTurn()
 	{
-		aliases.add("turn");
+		this.addAliases("turn");
 
 		requiredArgs.add("playername");
 		
-		this.setHelpShort("instantly turn player");
+		this.setDesc("instantly turn player");
 		
-		this.visibility = CommandVisibility.SECRET;
+		this.setVisibilityMode(VisibilityMode.SECRET);
 		
-		permission = Permission.COMMAND_TURN.node;
-		senderMustBePlayer = false;
-		senderMustBeVampire = false;
+		this.setDescPermission(Permission.COMMAND_TURN.node);
 	}
 	
 	@Override
 	public void perform()
 	{
-		Player you = this.argAsBestPlayerMatch(0);
+		Player you = this.argAs(0, Player.class, "match");
 		if (you == null) return;
 		VPlayer vyou = VPlayers.i.get(you);
 		
