@@ -58,13 +58,12 @@ public class Conf
 	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
 	public static Double infectionRiskAtCloseCombatWithIntent = 0.05;
 	
-	// TODO: Rework to have different values for the intent modes!
-	public static double damageDealtFactorWithoutIntent = 1.5;
+	public static double damageDealtFactorWithoutIntent = 1.2;
 	public static double damageDealtFactorWithIntent = 0.65;
-	public static double damageReceivedFactorWithoutIntent = 0.65;
+	public static double damageReceivedFactorWithoutIntent = 0.80;
 	public static double damageReceivedFactorWithIntent = 1.0;
 	
-	public static int damageReceivedWood = 11;
+	public static int damageReceivedWood = 14;
 	public static Set<Material> woodMaterials = new HashSet<Material>();
 	
 	public static boolean vampiresCanEat = false;
@@ -75,7 +74,7 @@ public class Conf
 	public static Set<RegainReason> vampiresCantRegainHealthFrom = new HashSet<RegainReason>();
 	public static boolean vampiresLooseFoodNaturally = false;
 	
-	public static double foodPerDamageFromPlayer = 0.4d;
+	public static double foodPerDamageFromPlayer = 0.2d;
 	public static Map<CreatureType, Double> foodPerDamageFromCreature = new HashMap<CreatureType, Double>();
 	public static double healthPerDamageFromPlayer = foodPerDamageFromPlayer;
 	public static Map<CreatureType, Double> healthPerDamageFromCreature = new HashMap<CreatureType, Double>();
@@ -166,13 +165,13 @@ public class Conf
 		vampiresCantRegainHealthFrom.add(RegainReason.REGEN);
 		
 		// For each damage to the creature; how much blood will the vampire obtain
-		foodPerDamageFromCreature.put(CreatureType.CHICKEN, foodPerDamageFromPlayer / 5D);
-		foodPerDamageFromCreature.put(CreatureType.COW, foodPerDamageFromPlayer / 5D);
-		foodPerDamageFromCreature.put(CreatureType.PIG, foodPerDamageFromPlayer / 5D);
-		foodPerDamageFromCreature.put(CreatureType.SHEEP, foodPerDamageFromPlayer / 5D);
-		foodPerDamageFromCreature.put(CreatureType.SPIDER, foodPerDamageFromPlayer / 10D);
-		foodPerDamageFromCreature.put(CreatureType.CAVE_SPIDER, foodPerDamageFromPlayer / 10D);
-		foodPerDamageFromCreature.put(CreatureType.SQUID, foodPerDamageFromPlayer / 10D);
+		foodPerDamageFromCreature.put(CreatureType.CHICKEN, foodPerDamageFromPlayer / 2D);
+		foodPerDamageFromCreature.put(CreatureType.COW, foodPerDamageFromPlayer / 2D);
+		foodPerDamageFromCreature.put(CreatureType.PIG, foodPerDamageFromPlayer / 2D);
+		foodPerDamageFromCreature.put(CreatureType.SHEEP, foodPerDamageFromPlayer / 2D);
+		foodPerDamageFromCreature.put(CreatureType.SPIDER, foodPerDamageFromPlayer / 5D);
+		foodPerDamageFromCreature.put(CreatureType.CAVE_SPIDER, foodPerDamageFromPlayer / 5D);
+		foodPerDamageFromCreature.put(CreatureType.SQUID, foodPerDamageFromPlayer / 5D);
 		
 		for (Entry<CreatureType, Double> entry : foodPerDamageFromCreature.entrySet())
 		{
