@@ -32,6 +32,6 @@ public class CmdHelp extends VCommand
 			}
 		}
 		
-		sendMessage(p().txt.getPage(lines, this.argAs(0, Integer.class, 1), "Help for command \""+pcmd.getAliases().get(0)+"\""));
+		sendMessage(p.txt.getPage(lines, this.argAs(0, Integer.class, 1), "Help for command \""+pcmd.getAliases().get(0)+"\""));
 	}
 }

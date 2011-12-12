@@ -219,7 +219,7 @@ public class Conf
 	private static transient Conf i = new Conf();
 	public static void load()
 	{
-		P.p.one.loadOrSaveDefault(i, Conf.class, "conf");
+		P.p.one.loadOrSaveDefault(i, Conf.class);
 	}
 	public static void save()
 	{

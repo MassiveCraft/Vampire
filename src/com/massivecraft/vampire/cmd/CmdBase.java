@@ -28,7 +28,7 @@ public class CmdBase extends VCommand
 	public void perform()
 	{
 		this.getCommandChain().add(this);
-		p().cmdHelp.execute(this.sender, this.args, this.commandChain);
+		p.cmdHelp.execute(this.sender, this.args, this.commandChain);
 	}
 
 }

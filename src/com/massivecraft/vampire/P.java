@@ -41,6 +41,7 @@ public class P extends MPlugin
 		
 		// Create and load VPlayers
 		new VPlayers();
+		VPlayers.i.loadOldFormat();
 		
 		// Load Conf from disk
 		Conf.load();
@@ -68,5 +69,13 @@ public class P extends MPlugin
 		this.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Event.Priority.Highest);
 		
 		postEnable();
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		Conf.save();
+		Lang.save();
+		super.onDisable();
 	}
 }
