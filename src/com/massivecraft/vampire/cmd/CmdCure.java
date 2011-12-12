@@ -27,6 +27,12 @@ public class CmdCure extends VCommand
 		Player you = this.argAs(0, Player.class, "match");
 		if (you == null) return;
 		VPlayer vyou = VPlayers.i.get(you);
+		if (vyou.isHealthy())
+		{
+			this.msg(Lang.xIsHealthy, you.getDisplayName());
+			return;
+		}
+		
 		vyou.cureVampirism();
 		this.msg(Lang.xWasCured, you.getDisplayName());
 	}

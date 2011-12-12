@@ -7,9 +7,11 @@ import com.massivecraft.vampire.VPlayers;
 
 public abstract class VCommand extends MCommand
 {
+	public P p;
 	public VCommand()
 	{
 		super();
+		this.p = P.p;
 	}
 	
 	@Override

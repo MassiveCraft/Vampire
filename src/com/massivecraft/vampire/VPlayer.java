@@ -362,10 +362,6 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if ( ! this.standsInSunlight()) return false;
 		
 		Player player = this.getPlayer();
-		if (player.getFireTicks() <= 0)
-		{
-			this.msg(Lang.combustMessage);
-		}
 		
 		player.setFireTicks((int) (ticks + Conf.combustFireExtinguishTicks));
 		

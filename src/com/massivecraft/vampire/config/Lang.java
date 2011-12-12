@@ -18,13 +18,12 @@ public class Lang
 	
 	public static String messageWoodCombatWarning = "<b>Ouch!!! <h>%s <b>is made of <h>wood <b>and hurt vampires a lot!";
 	
-	public static String combustMessage = "<b>Vampires burn in sunlight! Take cover!";
-	
 	public static String youWasTurned = "<b>Your heart stops. You don't breathe anymore. You are now a VAMPIRE!";
 	public static String xWasTurned = "<h>%s <i>is now a vampire.";
 	
 	public static String youWasCured = "<g>You have been cured and is once again healthy and alive.<b> But will you miss the taste of blood on your lips? When you sleep, will you taste the salt and copper flowing over your tongue? Go, mortal. Bask in your precious sunlight.";
 	public static String xWasCured = "<h>%s <i>was cured and is no longer a vampire.";
+	public static String xIsHealthy = "<h>%s <i>is healthy. No need for a cure.";
 	
 	public static String xNowHasFoodY = "<h>%s <i>now has food <h>%d<i>.";
 	public static String xNowHasYInfection = "<h>%s <i>now has <h>%.1f%%<i> infection.";
