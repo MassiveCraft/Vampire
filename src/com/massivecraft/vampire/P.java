@@ -3,9 +3,7 @@ package com.massivecraft.vampire;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
-import com.massivecraft.mcore1.MCore;
-import com.massivecraft.mcore1.lib.gson.Gson;
-import com.massivecraft.mcore1.plugin.MPlugin;
+import com.massivecraft.mcore1.MPlugin;
 import com.massivecraft.vampire.cmd.*;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.listeners.*;
@@ -26,9 +24,6 @@ public class P extends MPlugin
 	public CmdHelp cmdHelp;
 	public CmdBase cmdBase;
 	
-	// Derp
-	public Gson gson;
-	
 	public P()
 	{
 		P.p = this;
@@ -43,9 +38,6 @@ public class P extends MPlugin
 	public void onEnable()
 	{
 		if ( ! preEnable()) return;
-		
-		// Create gson instance
-		this.gson = MCore.getGsonBuilder().create();
 		
 		// Create and load VPlayers
 		new VPlayers();

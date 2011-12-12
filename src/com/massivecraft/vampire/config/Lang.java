@@ -128,10 +128,10 @@ public class Lang
 	private static transient Lang i = new Lang();
 	public static void load()
 	{
-		P.p.persist.loadOrSaveDefault(i, Lang.class, "lang");
+		P.p.one.loadOrSaveDefault(i, Lang.class, "lang");
 	}
 	public static void save()
 	{
-		P.p.persist.save(i, "lang");
+		P.p.one.save(i, "lang");
 	}
 }
