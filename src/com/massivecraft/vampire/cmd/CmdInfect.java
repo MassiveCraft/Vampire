@@ -2,6 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.cmd.req.ReqIsVampire;
 
@@ -17,6 +18,7 @@ public class CmdInfect extends VCommand
 		this.setDesc("infect others that are willing");
 		
 		this.setDescPermission(Permission.COMMAND_INFECT.node);
+		this.addRequirements(new ReqHasPerm(Permission.COMMAND_INFECT.node));
 		this.addRequirements(ReqIsVampire.getInstance());
 	}
 	

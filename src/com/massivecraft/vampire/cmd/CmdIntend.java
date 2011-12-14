@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.cmd.req.ReqIsVampire;
 import com.massivecraft.vampire.config.Conf;
@@ -17,6 +18,7 @@ public class CmdIntend extends VCommand
 		this.setDesc("intend to infect others?");
 		
 		this.setDescPermission(Permission.COMMAND_INTEND.node);
+		this.addRequirements(new ReqHasPerm(Permission.COMMAND_INTEND.node));
 		this.addRequirements(ReqIsVampire.getInstance());
 	}
 	

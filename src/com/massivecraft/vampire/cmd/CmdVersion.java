@@ -1,6 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.mcore1.cmd.VisibilityMode;
+import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.Permission;
 
@@ -16,6 +17,7 @@ public class CmdVersion extends VCommand
 		this.setVisibilityMode(VisibilityMode.SECRET);
 		
 		this.setDescPermission(Permission.COMMAND_VERSION.node);
+		this.addRequirements(new ReqHasPerm(Permission.COMMAND_VERSION.node));
 	}
 	
 	@Override

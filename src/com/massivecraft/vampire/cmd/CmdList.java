@@ -5,6 +5,7 @@ import java.util.*;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.mcore1.cmd.VisibilityMode;
+import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;
 
 public class CmdList extends VCommand
@@ -20,6 +21,7 @@ public class CmdList extends VCommand
 		this.setVisibilityMode(VisibilityMode.SECRET);
 		
 		this.setDescPermission(Permission.COMMAND_LIST.node);
+		this.addRequirements(new ReqHasPerm(Permission.COMMAND_LIST.node));
 	}
 	
 	@Override
