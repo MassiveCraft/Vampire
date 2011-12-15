@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.mcore1.cmd.HelpCommand;
 import com.massivecraft.vampire.config.Conf;
 
 public class CmdBase extends VCommand
@@ -10,7 +11,7 @@ public class CmdBase extends VCommand
 	{
 		super();
 		this.addAliases(Conf.baseCommandAliases);
-		this.addSubCommand(p().cmdHelp);
+		this.addSubCommand(HelpCommand.getInstance());
 		this.addSubCommand(new CmdIntend());
 		this.addSubCommand(new CmdInfect());
 		this.addSubCommand(cmdAccept);
@@ -28,7 +29,6 @@ public class CmdBase extends VCommand
 	public void perform()
 	{
 		this.getCommandChain().add(this);
-		p.cmdHelp.execute(this.sender, this.args, this.commandChain);
+		HelpCommand.getInstance().execute(this.sender, this.args, this.commandChain);
 	}
-
 }

@@ -21,7 +21,6 @@ public class P extends MPlugin
 	public VampireBlockListener blockListener;
 	
 	// Command
-	public CmdHelp cmdHelp;
 	public CmdBase cmdBase;
 	
 	public P()
@@ -40,7 +39,6 @@ public class P extends MPlugin
 		if ( ! preEnable()) return;
 		
 		// Create and load VPlayers
-		new VPlayers();
 		VPlayers.i.loadOldFormat();
 		
 		// Load Conf from disk
@@ -48,9 +46,7 @@ public class P extends MPlugin
 		Lang.load();
 		
 		// Add Base Commands
-		this.cmdHelp = new CmdHelp();
 		this.cmdBase = new CmdBase();
-		this.cmd.addCommand(this.cmdBase);
 		this.cmd.addCommand(this.cmdBase);
 	
 		// Start timer

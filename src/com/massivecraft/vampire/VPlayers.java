@@ -13,12 +13,11 @@ import com.massivecraft.mcore1.util.DiscUtil;
 
 public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 {
-	public static VPlayers i;
+	public static VPlayers i = new VPlayers();
 	
-	public VPlayers()
+	private VPlayers()
 	{
 		super(P.p.gson, new File(P.p.getDataFolder(), "player"), true, true);
-		i = this;
 		P.p.persist.setManager(VPlayer.class, this);
 		P.p.persist.setSaveInterval(VPlayer.class, 1000*60*30);
 	}
@@ -82,13 +81,4 @@ public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 		
 		P.p.log("... done");
 	}
-	
-	/*
-	 * 
-	Use for the converter later
-	@Override
-	public Type getMapType()
-	{
-		return ;
-	}*/
 }
