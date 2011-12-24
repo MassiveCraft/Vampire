@@ -82,6 +82,8 @@ public class Conf
 	public static long truceBreakTicks = 60 * 20; // One minute
 	public static Set<CreatureType> creatureTypeTruceMonsters = new HashSet<CreatureType>();
 	
+	public static int altarSearchRadius = 10;
+	
 	public static AltarEvil altarEvil = new AltarEvil();
 	public static AltarGood altarGood = new AltarGood();
 	

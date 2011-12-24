@@ -10,8 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.util.FloodUtil;
 import com.massivecraft.vampire.util.GeometryUtil;
 
 public abstract class Altar
@@ -40,8 +40,8 @@ public abstract class Altar
 			this.materialCounts.put(this.coreMaterial, 1);
 		}
 		
-		ArrayList<Block> blocks = FloodUtil.get(coreBlock, this.materialCounts.keySet(), reach, false, 1024);
-		Map<Material, Integer> nearbyMaterialCounts = GeometryUtil.countMaterials(blocks);
+		ArrayList<Block> blocks = GeometryUtil.getCubeBlocks(coreBlock, Conf.altarSearchRadius);
+		Map<Material, Integer> nearbyMaterialCounts = GeometryUtil.countMaterials(blocks, this.materialCounts.keySet());
 				
 		//P.p.log("This is our nearby materials");
 		//P.p.log(nearbyMaterialCounts);

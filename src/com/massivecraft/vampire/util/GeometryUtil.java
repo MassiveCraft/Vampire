@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -53,26 +54,29 @@ public class GeometryUtil
 		return blocks;
 	}
 	
-	public static int countNearby(Block centerBlock, Material material, double radius)
-	{
-		ArrayList<Block> ballBlocks = GeometryUtil.getBallBlocks(centerBlock, radius);
-		int count = 0;
-		for (Block block : ballBlocks)
-		{
-			if (block.getType() == material)
-			{
-				count += 1;
-			}
-		}
-		return count;
-	}
-	
 	public static Map<Material, Integer> countMaterials(Collection<Block> blocks)
 	{
 		Map<Material, Integer> ret = new HashMap<Material, Integer>();
 		for (Block block : blocks)
 		{
 			Material material = block.getType();
+			if ( ! ret.containsKey(material))
+			{
+				ret.put(material, 1);
+				continue;
+			}
+			ret.put(material, ret.get(material)+1);
+		}
+		return ret;
+	}
+	
+	public static Map<Material, Integer> countMaterials(Collection<Block> blocks, Set<Material> materialsToCount)
+	{
+		Map<Material, Integer> ret = new HashMap<Material, Integer>();
+		for (Block block : blocks)
+		{
+			Material material = block.getType();
+			if ( ! materialsToCount.contains(material)) continue;
 			if ( ! ret.containsKey(material))
 			{
 				ret.put(material, 1);
