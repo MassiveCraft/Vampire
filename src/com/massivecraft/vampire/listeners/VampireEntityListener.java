@@ -11,6 +11,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityListener;
 
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
@@ -99,7 +100,7 @@ public class VampireEntityListener extends EntityListener
 				if (Conf.woodMaterials.contains(itemMaterial))
 				{
 					damage = Conf.damageReceivedWood; // Just as much as a diamond sword.
-					vpDamagee.msg(Lang.messageWoodCombatWarning, p.txt.getMaterialName(itemMaterial));
+					vpDamagee.msg(Lang.messageWoodCombatWarning, Txt.getMaterialName(itemMaterial));
 				}
 				else
 				{
@@ -161,17 +162,3 @@ public class VampireEntityListener extends EntityListener
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

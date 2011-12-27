@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.SmokeUtil;
 
@@ -33,7 +34,7 @@ public class AltarEvil extends Altar
 	@Override
 	public void applyEffect(Player player)
 	{
-		player.sendMessage(P.p.txt.parse(Lang.altarEvilUse));
+		player.sendMessage(Txt.parse(Lang.altarEvilUse));
 		VPlayer vplayer = VPlayers.i.get(player);
 		vplayer.alterInfection(3D);
 		SmokeUtil.smokeifyPlayer(player, 20*30);
@@ -49,14 +50,14 @@ public class AltarEvil extends Altar
 		// Is Infected
 		if (vplayer.isInfected())
 		{
-			player.sendMessage(P.p.txt.parse(Lang.altarEvilAlreadyInfected));
+			player.sendMessage(Txt.parse(Lang.altarEvilAlreadyInfected));
 			return false;
 		}
 		
 		// Is Vampire
 		if (vplayer.isVampire())
 		{
-			player.sendMessage(P.p.txt.parse(Lang.altarEvilAlreadyVampire));
+			player.sendMessage(Txt.parse(Lang.altarEvilAlreadyVampire));
 			return false;
 		}
 		

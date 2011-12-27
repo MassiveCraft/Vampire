@@ -2,6 +2,8 @@ package com.massivecraft.vampire;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.mcore1.util.Perm;
+
 public enum Permission
 {
 	IS("vampire.is"),
@@ -24,7 +26,7 @@ public enum Permission
 	
 	public boolean has(CommandSender sender, boolean informSenderIfNot)
 	{
-		return P.p.perm.has(sender, this.node, informSenderIfNot);
+		return Perm.has(sender, this.node, informSenderIfNot);
 	}
 	
 	public boolean has(CommandSender sender)

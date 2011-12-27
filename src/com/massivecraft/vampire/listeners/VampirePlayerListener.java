@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
@@ -43,13 +44,13 @@ public class VampirePlayerListener extends PlayerListener
 			
 			if ( Conf.foodMaterials.contains(itemMaterial) && ! Conf.vampireCanEat(itemMaterial))
 			{
-				vplayer.msg(Lang.vampiresCantEatThat, p.txt.getMaterialName(itemMaterial));
+				vplayer.msg(Lang.vampiresCantEatThat, Txt.getMaterialName(itemMaterial));
 				event.setCancelled(true);
 			}
 			
 			if (action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CAKE_BLOCK && Conf.vampireCanEat(Material.CAKE_BLOCK))
 			{
-				vplayer.msg(Lang.vampiresCantEatThat, p.txt.getMaterialName(Material.CAKE));
+				vplayer.msg(Lang.vampiresCantEatThat, Txt.getMaterialName(Material.CAKE));
 				event.setCancelled(true);
 			}
 				

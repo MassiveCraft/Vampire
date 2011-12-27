@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.config.Conf;
 import com.massivecraft.vampire.config.Lang;
 import com.massivecraft.vampire.util.GeometryUtil;
@@ -68,19 +69,19 @@ public abstract class Altar
 		}
 		
 		// Send info on what to do to finish the altar 
-		player.sendMessage(P.p.txt.parse(Lang.altarIncomplete, this.name));
+		player.sendMessage(Txt.parse(Lang.altarIncomplete, this.name));
 		
 		for (Entry<Material, Integer> entry : missingMaterialCounts.entrySet())
 		{
 			Material material = entry.getKey();
 			int count = entry.getValue();
-			player.sendMessage(P.p.txt.parse("<h>%d <p>%s", count, P.p.txt.getMaterialName(material)));
+			player.sendMessage(Txt.parse("<h>%d <p>%s", count, Txt.getMaterialName(material)));
 		}
 	}
 	
 	public void onUse(Player player)
 	{
-		player.sendMessage(P.p.txt.parse(this.desc));
+		player.sendMessage(Txt.parse(this.desc));
 		
 		if ( ! this.validateUser(player)) return;
 		if ( ! this.validateIngredients(player)) return;
@@ -97,12 +98,12 @@ public abstract class Altar
 	{
 		if ( ! this.recipe.playerHasEnough(player))
 		{
-			player.sendMessage(P.p.txt.parse(Lang.altarUseIngredientsFail));
+			player.sendMessage(Txt.parse(Lang.altarUseIngredientsFail));
 			player.sendMessage(this.recipe.getRecipeLine());
 			return false;
 		}
 
-		player.sendMessage(P.p.txt.parse(Lang.altarUseIngredientsSuccess));
+		player.sendMessage(Txt.parse(Lang.altarUseIngredientsSuccess));
 		player.sendMessage(this.recipe.getRecipeLine());
 		this.recipe.removeFromPlayer(player);
 		return true;

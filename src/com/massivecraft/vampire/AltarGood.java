@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.config.Lang;
 
 public class AltarGood extends Altar
@@ -36,7 +37,7 @@ public class AltarGood extends Altar
 	{
 		VPlayer vplayer = VPlayers.i.get(player);
 		//p.log(this.getId() + " was cured from being a vampire by a healing altar.");
-		player.sendMessage(P.p.txt.parse(Lang.altarGoodUse));
+		player.sendMessage(Txt.parse(Lang.altarGoodUse));
 		vplayer.cureVampirism();
 		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
 	}
@@ -49,16 +50,16 @@ public class AltarGood extends Altar
 		// Is Infected
 		if (vplayer.isInfected())
 		{
-			player.sendMessage(P.p.txt.parse(Lang.altarGoodInfected));
+			player.sendMessage(Txt.parse(Lang.altarGoodInfected));
 			vplayer.setInfection(0);
-			player.sendMessage(P.p.txt.parse(Lang.infectionMessageCured));
+			player.sendMessage(Txt.parse(Lang.infectionMessageCured));
 			return false;
 		}
 		
 		// Is Healthy
 		if ( ! vplayer.isVampire())
 		{
-			player.sendMessage(P.p.txt.parse(Lang.altarGoodHealthy));
+			player.sendMessage(Txt.parse(Lang.altarGoodHealthy));
 			return false;
 		}
 		

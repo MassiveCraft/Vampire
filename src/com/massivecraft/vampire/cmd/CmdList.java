@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.mcore1.cmd.VisibilityMode;
 import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.*;
 
 public class CmdList extends VCommand
@@ -80,42 +81,42 @@ public class CmdList extends VCommand
 		if (vampiresOnline.size() > 0)
 		{
 			lines.add("<h>=== Vampires Online ===");
-			lines.add(p.txt.implodeCommaAnd(vampiresOnline, "<i>"));
+			lines.add(Txt.implodeCommaAnd(vampiresOnline, "<i>"));
 		}
 		
 		if (vampiresOffline.size() > 0)
 		{
 			lines.add("<h>=== Vampires Offline ===");
-			lines.add(p.txt.implodeCommaAnd(vampiresOffline, "<i>"));
+			lines.add(Txt.implodeCommaAnd(vampiresOffline, "<i>"));
 		}
 		
 		if (infectedOnline.size() > 0)
 		{
 			lines.add("<h>=== Infected Online ===");
-			lines.add(p.txt.implodeCommaAnd(infectedOnline, "<i>"));
+			lines.add(Txt.implodeCommaAnd(infectedOnline, "<i>"));
 		}
 		
 		if (infectedOffline.size() > 0)
 		{
 			lines.add("<h>=== Infected Offline ===");
-			lines.add(p.txt.implodeCommaAnd(infectedOffline, "<i>"));
+			lines.add(Txt.implodeCommaAnd(infectedOffline, "<i>"));
 		}
 		
 		if (exvampiresOnline.size() > 0)
 		{
 			lines.add("<h>=== Exvampires Online ===");
-			lines.add(p.txt.implodeCommaAnd(exvampiresOnline, "<i>"));
+			lines.add(Txt.implodeCommaAnd(exvampiresOnline, "<i>"));
 		}
 		
 		if (exvampiresOffline.size() > 0)
 		{
 			lines.add("<h>=== Exvampires Offline ===");
-			lines.add(p.txt.implodeCommaAnd(exvampiresOffline, "<i>"));
+			lines.add(Txt.implodeCommaAnd(exvampiresOffline, "<i>"));
 		}
 		
 		
 		// Send them
-		lines = p.txt.parseWrap(lines);
-		this.sendMessage(p.txt.getPage(lines, pageHumanBased, "Vampire Player List"));	
+		lines = Txt.parseWrap(lines);
+		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Vampire Player List"));	
 	}
 }

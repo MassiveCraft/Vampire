@@ -21,6 +21,7 @@ import com.massivecraft.mcore1.MCore;
 import com.massivecraft.mcore1.cmd.MCommand;
 import com.massivecraft.mcore1.persist.IClassManager;
 import com.massivecraft.mcore1.persist.PlayerEntity;
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.SmokeUtil;
@@ -165,7 +166,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
 		{
-			me.sendMessage(p.txt.parse(Lang.infectYouMustStandCloseToY, you.getDisplayName()));
+			me.sendMessage(Txt.parse(Lang.infectYouMustStandCloseToY, you.getDisplayName()));
 			return;
 		}
 		
@@ -615,6 +616,6 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	
 	public void msg(String str, Object... args)
 	{
-		this.sendMessage(P.p.txt.parse(str, args));
+		this.sendMessage(Txt.parse(str, args));
 	}
 }

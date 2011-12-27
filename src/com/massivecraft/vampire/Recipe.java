@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.mcore1.util.Txt;
 import com.massivecraft.vampire.util.SortUtil;
 
 public class Recipe
@@ -61,9 +62,9 @@ public class Recipe
 		{
 			Material material = item.getKey();
 			int count = item.getValue();
-			lines.add(P.p.txt.parse("<h>%d <p>%s", count, P.p.txt.getMaterialName(material)));
+			lines.add(Txt.parse("<h>%d <p>%s", count, Txt.getMaterialName(material)));
 					
 		}
-		return P.p.txt.implode(lines, P.p.txt.parse("<i>, "));
+		return Txt.implode(lines, Txt.parse("<i>, "));
 	}
 }
