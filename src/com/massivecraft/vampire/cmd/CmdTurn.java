@@ -9,7 +9,6 @@ import com.massivecraft.vampire.config.Lang;
 
 public class CmdTurn extends VCommand
 {
-
 	public CmdTurn()
 	{
 		this.addAliases("turn");

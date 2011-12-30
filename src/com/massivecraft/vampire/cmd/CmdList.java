@@ -81,37 +81,37 @@ public class CmdList extends VCommand
 		if (vampiresOnline.size() > 0)
 		{
 			lines.add("<h>=== Vampires Online ===");
-			lines.add(Txt.implodeCommaAnd(vampiresOnline, "<i>"));
+			lines.add(Txt.implodeCommaAndDot(vampiresOnline, "<i>"));
 		}
 		
 		if (vampiresOffline.size() > 0)
 		{
 			lines.add("<h>=== Vampires Offline ===");
-			lines.add(Txt.implodeCommaAnd(vampiresOffline, "<i>"));
+			lines.add(Txt.implodeCommaAndDot(vampiresOffline, "<i>"));
 		}
 		
 		if (infectedOnline.size() > 0)
 		{
 			lines.add("<h>=== Infected Online ===");
-			lines.add(Txt.implodeCommaAnd(infectedOnline, "<i>"));
+			lines.add(Txt.implodeCommaAndDot(infectedOnline, "<i>"));
 		}
 		
 		if (infectedOffline.size() > 0)
 		{
 			lines.add("<h>=== Infected Offline ===");
-			lines.add(Txt.implodeCommaAnd(infectedOffline, "<i>"));
+			lines.add(Txt.implodeCommaAndDot(infectedOffline, "<i>"));
 		}
 		
 		if (exvampiresOnline.size() > 0)
 		{
 			lines.add("<h>=== Exvampires Online ===");
-			lines.add(Txt.implodeCommaAnd(exvampiresOnline, "<i>"));
+			lines.add(Txt.implodeCommaAndDot(exvampiresOnline, "<i>"));
 		}
 		
 		if (exvampiresOffline.size() > 0)
 		{
 			lines.add("<h>=== Exvampires Offline ===");
-			lines.add(Txt.implodeCommaAnd(exvampiresOffline, "<i>"));
+			lines.add(Txt.implodeCommaAndDot(exvampiresOffline, "<i>"));
 		}
 		
 		

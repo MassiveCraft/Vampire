@@ -10,7 +10,6 @@ import com.massivecraft.vampire.config.Lang;
 
 public class CmdSetinfection extends VCommand
 {
-	
 	public CmdSetinfection()
 	{
 		this.addAliases("seti");

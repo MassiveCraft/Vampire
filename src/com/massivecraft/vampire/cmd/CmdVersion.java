@@ -7,7 +7,6 @@ import com.massivecraft.vampire.Permission;
 
 public class CmdVersion extends VCommand
 {
-	
 	public CmdVersion()
 	{
 		this.addAliases("version");

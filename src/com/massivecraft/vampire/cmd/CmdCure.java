@@ -1,7 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
-
 import com.massivecraft.mcore1.cmd.VisibilityMode;
 import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;

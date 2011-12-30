@@ -8,7 +8,6 @@ import com.massivecraft.vampire.config.Lang;
 
 public class CmdIntend extends VCommand
 {
-	
 	public CmdIntend()
 	{
 		this.addAliases("intend", "intent");
@@ -25,15 +24,15 @@ public class CmdIntend extends VCommand
 	@Override
 	public void perform()
 	{
-		Boolean intend = this.argAs(0, Boolean.class, ! this.vme().isIntendingToInfect());
+		Boolean intend = this.argAs(0, Boolean.class, ! vme.isIntendingToInfect());
 		if (intend == null) return;
 			
-		this.vme().setIntendingToInfect(intend);
+		vme.setIntendingToInfect(intend);
 		
 		this.msg(intend ? Lang.intentOnMessage : Lang.intentOffMessage);
-		this.msg("<h>%.1f%% <p>risk to infect for each attack", this.vme().infectionGetRiskToInfectOther() * 100d);
-		this.msg("<h>%.1f%% <p>damage dealt", this.vme().getDamageDealtFactor() * 100d);
-		this.msg("<h>%.1f%% <p>damage received", this.vme().getDamageReceivedFactor() * 100d);
+		this.msg("<h>%.1f%% <p>risk to infect for each attack", vme.infectionGetRiskToInfectOther() * 100d);
+		this.msg("<h>%.1f%% <p>damage dealt", vme.getDamageDealtFactor() * 100d);
+		this.msg("<h>%.1f%% <p>damage received", vme.getDamageReceivedFactor() * 100d);
 		this.msg("<h>%.1f <p>hearts of damage received from wood", Conf.damageReceivedWood * 0.5d);
 	}
 }

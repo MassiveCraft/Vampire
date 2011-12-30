@@ -18,6 +18,6 @@ public class CmdAccept extends VCommand
 	@Override
 	public void perform()
 	{
-		this.vme().acceptInfection();
+		vme.acceptInfection();
 	}
 }

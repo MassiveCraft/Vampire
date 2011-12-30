@@ -8,7 +8,6 @@ import com.massivecraft.vampire.cmd.req.ReqIsVampire;
 
 public class CmdInfect extends VCommand
 {
-	
 	public CmdInfect()
 	{
 		this.addAliases("infect");
@@ -28,6 +27,6 @@ public class CmdInfect extends VCommand
 		Player you = this.argAs(0, Player.class, "match");
 		if (you == null) return;
 		VPlayer vyou = VPlayers.i.get(you);
-		this.vme().offerInfectionTo(vyou);
+		vme.offerInfectionTo(vyou);
 	}
 }

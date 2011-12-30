@@ -20,8 +20,11 @@ public abstract class VCommand extends MCommand
 		return P.p;
 	}
 	
-	public VPlayer vme()
+	public VPlayer vme;
+	@Override
+	public void fixSenderVars()
 	{
-		return VPlayers.i.get(this.me());
+		this.vme = VPlayers.i.get(this.me);
 	}
+	
 }
