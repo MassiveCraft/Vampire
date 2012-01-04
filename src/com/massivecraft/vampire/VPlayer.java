@@ -613,9 +613,4 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		return d;
 	}
-	
-	public void msg(String str, Object... args)
-	{
-		this.sendMessage(Txt.parse(str, args));
-	}
 }
