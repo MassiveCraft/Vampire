@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore1.cmd.VisibilityMode;
-import com.massivecraft.mcore1.cmd.req.ReqIsPlayer;
+import com.massivecraft.mcore2.cmd.VisibilityMode;
+import com.massivecraft.mcore2.cmd.req.ReqIsPlayer;
 
 public class CmdAccept extends VCommand
 {

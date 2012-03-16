@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.massivecraft.mcore1.Predictate;
-import com.massivecraft.mcore1.lib.gson.reflect.TypeToken;
-import com.massivecraft.mcore1.persist.gson.GsonPlayerEntityManager;
-import com.massivecraft.mcore1.util.DiscUtil;
+import com.massivecraft.mcore2.Predictate;
+import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
+import com.massivecraft.mcore2.persist.gson.GsonPlayerEntityManager;
+import com.massivecraft.mcore2.util.DiscUtil;
 
 public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 {
@@ -62,20 +62,20 @@ public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 		File file = new File(P.p.getDataFolder(), "player.json");
 		if ( ! file.exists()) return;
 		
-		P.p.log("Converting players to new file format...");
+		P.p.log("Converting "+this.getManagedClass().getSimpleName()+" to new file format...");
 		
 		Type type = new TypeToken<Map<String, VPlayer>>(){}.getType();
 		String json = DiscUtil.readCatch(file);
-		Map<String, VPlayer> id2vplayers = P.p.gson.fromJson(json, type);
+		Map<String, VPlayer> id2entity = P.p.gson.fromJson(json, type);
 		
-		for (Entry<String, VPlayer> entry : id2vplayers.entrySet())
+		for (Entry<String, VPlayer> entry : id2entity.entrySet())
 		{
 			String id = entry.getKey();
-			VPlayer vplayer = entry.getValue();
-			VPlayers.i.attach(vplayer, id);
+			VPlayer entity = entry.getValue();
+			i.attach(entity, id);
 		}
 		
-		VPlayers.i.saveAll();
+		i.saveAll();
 		
 		file.renameTo(new File(P.p.getDataFolder(), "player.json.old"));
 		

@@ -5,7 +5,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore1.MCore;
+import com.massivecraft.mcore2.MCore;
 import com.massivecraft.vampire.P;
 
 public class SmokeUtil

@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore1.cmd.VisibilityMode;
-import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore2.cmd.VisibilityMode;
+import com.massivecraft.mcore2.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.Permission;
 

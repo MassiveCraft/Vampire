@@ -17,11 +17,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.util.Vector;
 
-import com.massivecraft.mcore1.MCore;
-import com.massivecraft.mcore1.cmd.MCommand;
-import com.massivecraft.mcore1.persist.IClassManager;
-import com.massivecraft.mcore1.persist.PlayerEntity;
-import com.massivecraft.mcore1.util.Txt;
+import com.massivecraft.mcore2.MCore;
+import com.massivecraft.mcore2.cmd.MCommand;
+import com.massivecraft.mcore2.persist.IClassManager;
+import com.massivecraft.mcore2.persist.PlayerEntity;
+import com.massivecraft.mcore2.util.Txt;
 import com.massivecraft.vampire.config.*;
 import com.massivecraft.vampire.util.EntityUtil;
 import com.massivecraft.vampire.util.SmokeUtil;
