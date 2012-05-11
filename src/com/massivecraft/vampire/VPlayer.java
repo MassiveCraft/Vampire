@@ -66,7 +66,10 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			this.intend(false);
 		}
 		this.updateVampPermission();
-		this.updateSpoutFeatures();
+		
+		// We do not change spout-features if we are in creative-mode.
+		if (this.isGameMode(GameMode.CREATIVE, true)) return;
+		this.updateSpoutMovement();
 	}
 	
 	// FIELD: infection - 0 means no infection. If infection reaches 1 the player will turn to vampire.
@@ -131,15 +134,32 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// FIELD: bloodlust - Is bloodlust activated?
 	protected boolean bloodlust = false;
 	public boolean bloodlust() { return bloodlust; }
-	public void bloodlust(boolean val) {
-		if (val && this.food().get() < Conf.bloodlustMinFood)
+	public void bloodlust(boolean val)
+	{
+		if (this.bloodlust == val)
 		{
-			msg("<b>Your food is to low for bloodlust.");
+			// No real change - just view the info.
+			this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Bloodlust");
 			return;
 		}
+		
+		if (val)
+		{
+			// There is a few reasons to when you can turn it on.
+			if (this.food().get() < Conf.bloodlustMinFood)
+			{
+				msg("<b>Your food is to low for bloodlust.");
+				return;
+			}
+			
+			if (this.isGameMode(GameMode.CREATIVE, true))
+			{
+				msg("<b>You cant use bloodlust while in creativemode."); // or offline :P but offline players wont see the message
+				return;
+			}
+		}
 		this.bloodlust = val;
-		this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Bloodlust");
-		this.updateSpoutFeatures();
+		this.updateSpoutMovement();
 	}
 	
 	// -------------------------------------------- //
@@ -546,7 +566,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		//p.log(this.getId() + " had vamp permission updated to " + this.getPlayer().hasPermission(Permission.IS.node));
 	}
 	
-	public void updateSpoutFeatures()
+	public void updateSpoutMovement()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
@@ -587,11 +607,12 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			noSpoutWarn = Lang.noSpoutWarnHuman;
 		}
 
+		if ( ! splayer.isSpoutCraftEnabled() && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
+		
 		if (multGravity != null) splayer.setGravityMultiplier(multGravity);
 		if (multSwimming != null) splayer.setSwimmingMultiplier(multSwimming);
 		if (multWalking != null) splayer.setWalkingMultiplier(multWalking);
 		if (multJumping != null) splayer.setJumpingMultiplier(multJumping);
 		if (multAirSpeed != null) splayer.setAirSpeedMultiplier(multAirSpeed);
-		if ( ! splayer.isSpoutCraftEnabled() && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
 	}
 }

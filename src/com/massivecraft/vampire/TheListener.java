@@ -101,15 +101,14 @@ public class TheListener implements Listener
 		final VPlayer vplayer = VPlayers.i.get(player);
 		
 		vplayer.updateVampPermission();
+		
+		// We wait a second before updating spout movement
+		// For some reason it fails otherwise.
+		// This may be because of the slight delay before the spoutcraft client is authenticated.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this.p, new Runnable()
 		{
-			@Override
-			public void run()
-			{
-				
-				vplayer.updateSpoutFeatures();
-			}
-		}, 5); // For some reason Spout update fails otherwise :O
+			@Override public void run() { vplayer.updateSpoutMovement(); }
+		}, 20); 
 	}
 	
 	// -------------------------------------------- //
@@ -290,15 +289,18 @@ public class TheListener implements Listener
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void bloodlust(PlayerMoveEvent event)
+	public void bloodlustSmokeTrail(PlayerMoveEvent event)
 	{
-		// If a player moved between two blocks ...
+		// If a survivalmode player ...
+		Player player = event.getPlayer();
+		if (player.getGameMode() != GameMode.SURVIVAL) return;
+		
+		// ... moved between two blocks ...
 		Block from = event.getFrom().getBlock();
 		Block to = event.getTo().getBlock();
 		if (from.equals(to)) return;
 		
 		// ... and that player is a vampire ...
-		Player player = event.getPlayer();
 		VPlayer vplayer = VPlayers.i.get(player);
 		if (vplayer.human()) return;
 		
