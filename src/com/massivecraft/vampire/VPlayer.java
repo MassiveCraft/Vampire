@@ -159,6 +159,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			}
 		}
 		this.bloodlust = val;
+		this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Bloodlust");
 		this.updateSpoutMovement();
 	}
 	
