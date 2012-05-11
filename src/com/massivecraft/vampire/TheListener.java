@@ -108,7 +108,7 @@ public class TheListener implements Listener
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this.p, new Runnable()
 		{
 			@Override public void run() { vplayer.updateSpoutMovement(); }
-		}, 20); 
+		}, 100); 
 	}
 	
 	// -------------------------------------------- //
