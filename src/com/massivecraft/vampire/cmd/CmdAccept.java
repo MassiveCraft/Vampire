@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore2.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore2.cmd.req.ReqIsPlayer;
+import com.massivecraft.mcore3.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore3.cmd.req.ReqIsPlayer;
 import com.massivecraft.vampire.Permission;
 
 public class CmdAccept extends VCommand

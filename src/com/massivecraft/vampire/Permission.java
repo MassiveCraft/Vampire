@@ -2,7 +2,7 @@ package com.massivecraft.vampire;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore2.util.Perm;
+import com.massivecraft.mcore3.util.Perm;
 
 public enum Permission
 {

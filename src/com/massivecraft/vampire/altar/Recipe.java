@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore2.util.MUtil;
-import com.massivecraft.mcore2.util.Txt;
+import com.massivecraft.mcore3.util.MUtil;
+import com.massivecraft.mcore3.util.Txt;
 
 public class Recipe
 {

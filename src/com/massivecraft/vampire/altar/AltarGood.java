@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore2.util.Txt;
+import com.massivecraft.mcore3.util.Txt;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;

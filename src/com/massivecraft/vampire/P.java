@@ -2,7 +2,7 @@ package com.massivecraft.vampire;
 
 import org.bukkit.Bukkit;
 
-import com.massivecraft.mcore2.MPlugin;
+import com.massivecraft.mcore3.MPlugin;
 import com.massivecraft.vampire.cmd.CmdBase;
 import com.massivecraft.vampire.cmdarg.AHVPlayer;
 

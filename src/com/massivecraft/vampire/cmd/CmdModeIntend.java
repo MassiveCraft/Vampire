@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore2.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore3.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;
 
 public class CmdModeIntend extends CmdModeAbstract

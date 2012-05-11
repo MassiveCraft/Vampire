@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.mcore2.Predictate;
-import com.massivecraft.mcore2.persist.gson.GsonPlayerEntityManager;
-import com.massivecraft.mcore2.util.DiscUtil;
+import com.massivecraft.mcore3.Predictate;
+import com.massivecraft.mcore3.persist.gson.GsonPlayerEntityManager;
+import com.massivecraft.mcore3.util.DiscUtil;
 
 public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 {

@@ -10,7 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 
-import com.massivecraft.mcore2.util.MUtil;
+import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.vampire.altar.AltarEvil;
 import com.massivecraft.vampire.altar.AltarGood;
 

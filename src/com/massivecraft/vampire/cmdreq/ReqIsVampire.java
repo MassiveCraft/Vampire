@@ -2,8 +2,8 @@ package com.massivecraft.vampire.cmdreq;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore2.cmd.MCommand;
-import com.massivecraft.mcore2.cmd.req.IReq;
+import com.massivecraft.mcore3.cmd.MCommand;
+import com.massivecraft.mcore3.cmd.req.IReq;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
 

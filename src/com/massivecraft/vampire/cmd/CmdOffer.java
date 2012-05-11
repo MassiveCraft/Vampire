@@ -2,7 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore2.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore3.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 

@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmdarg;
 
-import com.massivecraft.mcore2.cmd.arg.AHPlayerWrapper;
+import com.massivecraft.mcore3.cmd.arg.AHPlayerWrapper;
 import com.massivecraft.vampire.VPlayer;
 
 public class AHVPlayer extends AHPlayerWrapper<VPlayer>

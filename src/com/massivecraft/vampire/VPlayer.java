@@ -14,12 +14,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.massivecraft.mcore2.MCore;
-import com.massivecraft.mcore2.cmd.MCommand;
-import com.massivecraft.mcore2.persist.IClassManager;
-import com.massivecraft.mcore2.persist.PlayerEntity;
-import com.massivecraft.mcore2.util.MUtil;
-import com.massivecraft.mcore2.util.Txt;
+import com.massivecraft.mcore3.MCore;
+import com.massivecraft.mcore3.cmd.MCommand;
+import com.massivecraft.mcore3.persist.IClassManager;
+import com.massivecraft.mcore3.persist.PlayerEntity;
+import com.massivecraft.mcore3.util.MUtil;
+import com.massivecraft.mcore3.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
 import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
 import com.massivecraft.vampire.util.FxUtil;
