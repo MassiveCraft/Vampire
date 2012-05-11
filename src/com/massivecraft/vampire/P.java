@@ -5,6 +5,9 @@ import org.bukkit.Bukkit;
 import com.massivecraft.mcore3.MPlugin;
 import com.massivecraft.vampire.cmd.CmdBase;
 import com.massivecraft.vampire.cmdarg.AHVPlayer;
+import com.massivecraft.vampire.keyboard.BloodlustOff;
+import com.massivecraft.vampire.keyboard.BloodlustOn;
+import com.massivecraft.vampire.keyboard.BloodlustToggle;
 
 public class P extends MPlugin 
 {
@@ -47,6 +50,11 @@ public class P extends MPlugin
 	
 		// Register events
 		new TheListener(this);
+		
+		// Register Key Bindings
+		BloodlustToggle.get().register();
+		BloodlustOn.get().register();
+		BloodlustOff.get().register();
 		
 		postEnable();
 	}

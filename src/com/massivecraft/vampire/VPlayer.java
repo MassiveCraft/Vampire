@@ -145,7 +145,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		if (val)
 		{
-			// There is a few reasons to when you can turn it on.
+			// There are a few reasons to when you can turn it on.
+			if (this.human())
+			{
+				msg("<b>Only vampires can use bloodlust.");
+				return;
+			}
+			
 			if (this.food().get() < Conf.bloodlustMinFood)
 			{
 				msg("<b>Your food is to low for bloodlust.");
