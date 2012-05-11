@@ -1,20 +1,47 @@
 package com.massivecraft.vampire.keyboard;
 
+import java.util.Set;
+
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.input.KeyBindingEvent;
+import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.keyboard.BindingExecutionDelegate;
 import org.getspout.spoutapi.keyboard.Keyboard;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.vampire.P;
+import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VPlayers;
 
-public class VampireKeyBinding implements BindingExecutionDelegate 
+public abstract class VampireKeyBinding implements BindingExecutionDelegate 
 {
 	// -------------------------------------------- //
 	// INTERFACE IMPLEMENTATION
 	// -------------------------------------------- //
 	
-	@Override public void keyPressed(KeyBindingEvent event){}
-	@Override public void keyReleased(KeyBindingEvent event){}
+	@Override public void keyPressed(KeyBindingEvent event)
+	{
+		if ( ! this.allowed(event)) return;
+		SpoutPlayer splayer = event.getPlayer();
+		VPlayer vplayer = VPlayers.i.get(splayer);
+		this.pressed(event, splayer, vplayer);
+	}
+	
+	@Override public void keyReleased(KeyBindingEvent event)
+	{
+		if ( ! this.allowed(event)) return;
+		SpoutPlayer splayer = event.getPlayer();
+		VPlayer vplayer = VPlayers.i.get(splayer);
+		this.released(event, splayer, vplayer);
+	}
+	
+	// -------------------------------------------- //
+	// METHODS TO OVERRIDE
+	// -------------------------------------------- //
+	
+	public void pressed(KeyBindingEvent event, SpoutPlayer splayer, VPlayer vplayer){};
+	public void released(KeyBindingEvent event, SpoutPlayer splayer, VPlayer vplayer){};
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -36,6 +63,14 @@ public class VampireKeyBinding implements BindingExecutionDelegate
 	protected boolean registered = false;
 	public boolean registered() { return this.registered; }
 	
+	// FIELD: screenWhitelist - Only these are allowed if non-null.
+	protected Set<ScreenType> screenWhitelist = MUtil.set(ScreenType.GAME_SCREEN);
+	public Set<ScreenType> screenWhitelist() { return this.screenWhitelist; }
+	
+	// FIELD: screenBlacklist - These are forbidden if non-null.
+	protected Set<ScreenType> screenBlacklist = null;
+	public Set<ScreenType> screenBlacklist() { return this.screenBlacklist; }
+	
 	// -------------------------------------------- //
 	// REGISTER
 	// -------------------------------------------- //
@@ -44,6 +79,20 @@ public class VampireKeyBinding implements BindingExecutionDelegate
 	{
 		if (registered) return;
 		SpoutManager.getKeyBindingManager().registerBinding(this.id(), this.defaultKey(), this.description(), this, P.p);
+	}
+	
+	// -------------------------------------------- //
+	// ALLOWED DUE TO SCREEN? 
+	// -------------------------------------------- //
+	
+	public boolean allowed (KeyBindingEvent event)
+	{
+		SpoutPlayer splayer = event.getPlayer();
+		ScreenType screen = splayer.getActiveScreen();
+		
+		if (this.screenWhitelist != null && ! this.screenWhitelist.contains(screen)) return false;
+		if (this.screenBlacklist != null && this.screenBlacklist.contains(screen)) return false;
+		return true;
 	}
 	 
 }

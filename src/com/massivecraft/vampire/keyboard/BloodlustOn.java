@@ -2,14 +2,16 @@ package com.massivecraft.vampire.keyboard;
 
 import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.keyboard.Keyboard;
-import com.massivecraft.vampire.VPlayers;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
+import com.massivecraft.vampire.VPlayer;
 
 public class BloodlustOn extends VampireKeyBinding 
 {
 	@Override
-	public void keyPressed(KeyBindingEvent event)
+	public void pressed(KeyBindingEvent event, SpoutPlayer splayer, VPlayer vplayer)
 	{
-		VPlayers.i.get(event.getPlayer()).bloodlust(true);
+		vplayer.bloodlust(true);
 	}
 
 	// The Single Instance

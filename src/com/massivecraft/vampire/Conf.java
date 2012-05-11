@@ -116,7 +116,7 @@ public class Conf
 	// -------------------------------------------- //
 	
 	public static double bloodlustMinFood = 2.5D;
-	public static double bloodlustFoodPerTick = -0.005D;
+	public static double bloodlustFoodPerTick = -0.015D;
 	public static double bloodlustSmokes = 1.5D;
 	
 	public static Double multGravityBloodlust = null;
@@ -145,7 +145,7 @@ public class Conf
 	public static boolean foodCakeAllowed = true;
 	
 	// Food from blood drinking (damaging)
-	private final static transient Double foodPerPlayerDamage = 0.2D;
+	private final static transient Double foodPerPlayerDamage = 0.5D;
 	public static Map<EntityType, Double> foodPerDamageFromCreature = MUtil.map(
 		EntityType.PLAYER,       foodPerPlayerDamage,
 		EntityType.CHICKEN,      foodPerPlayerDamage / 2D,
