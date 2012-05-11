@@ -207,6 +207,15 @@ public class Conf
 	);
 
 	// -------------------------------------------- //
+	// ALTARS
+	// -------------------------------------------- //
+	
+	public static int altarSearchRadius = 10;
+	
+	public static AltarEvil altarEvil = new AltarEvil();
+	public static AltarGood altarGood = new AltarGood();	
+	
+	// -------------------------------------------- //
 	// SUN
 	// -------------------------------------------- //
 	
@@ -228,43 +237,145 @@ public class Conf
 	public static double sunFlamesPerTempAndTick = 0.05d;
 	
 	//We assume opacity 1 for all materials not in this map
+	private final static transient Double AIR = 0D;
+	private final static transient Double GROUND = 0D;
+	private final static transient Double STAIRS = 0D;
+	private final static transient Double SLABS = 0D;
+	private final static transient Double DOOR = 0D;
+	private final static transient Double THIN = 0D;
+	private final static transient Double STICK = 0.1D;
+	private final static transient Double WATER = 0.2D;
+	private final static transient Double VEGETATION = 0.2D;
+	private final static transient Double FENCE = 0.4D;
+	private final static transient Double GLASS = 0.5D;
+	
 	public static Map<Integer,Double> typeIdOpacity = MUtil.map(
-		Material.AIR.getId(), 0D,
-		Material.SAPLING.getId(), 0.3D,
-		Material.LEAVES.getId(), 0.3D,
-		Material.GLASS.getId(), 0.5D, // Double glass means UV protection :)
-		Material.YELLOW_FLOWER.getId(), 0.1D,
-		Material.RED_ROSE.getId(), 0.1D,
-		Material.BROWN_MUSHROOM.getId(), 0.1D,
-		Material.RED_MUSHROOM.getId(), 0.1D,
-		Material.TORCH.getId(), 0.1D,
-		Material.FIRE.getId(), 0D,
-		Material.MOB_SPAWNER.getId(), 0.3D,
-		Material.REDSTONE_WIRE.getId(), 0D,
-		Material.CROPS.getId(), 0.2D,
-		Material.SIGN.getId(), 0.1D,
-		Material.SIGN_POST.getId(), 0.2D,
-		Material.LEVER.getId(), 0.1D,
-		Material.STONE_PLATE.getId(), 0D,
-		Material.WOOD_PLATE.getId(), 0D,
-		Material.REDSTONE_TORCH_OFF.getId(), 0.1D,
-		Material.REDSTONE_TORCH_ON.getId(), 0.1D,
-		Material.STONE_BUTTON.getId(), 0D,
-		Material.SUGAR_CANE_BLOCK.getId(), 0.3D,
-		Material.FENCE.getId(), 0.2D,
-		Material.DIODE_BLOCK_OFF.getId(), 0D,
-		Material.DIODE_BLOCK_ON.getId(), 0D,
-		Material.SNOW.getId(), 0.1D
+		0, AIR, //AIR
+		//1, XD, //STONE
+		//2, XD, //GRASS
+		//3, XD, //DIRT
+		//4, XD, //COBBLESTONE
+		//5, XD, //WOOD
+		6, VEGETATION, //SAPLING
+		//7, XD, //BEDROCK
+		8, WATER, //WATER
+		9, WATER, //STATIONARY_WATER
+		//10, XD, //LAVA
+		//11, XD, //STATIONARY_LAVA
+		//12, XD, //SAND
+		//13, XD, //GRAVEL
+		//14, XD, //GOLD_ORE
+		//15, XD, //IRON_ORE
+		//16, XD, //COAL_ORE
+		//17, XD, //LOG
+		18, VEGETATION, //LEAVES
+		//19, XD, //SPONGE
+		20, GLASS, //GLASS
+		//21, XD, //LAPIS_ORE
+		//22, XD, //LAPIS_BLOCK
+		//23, XD, //DISPENSER
+		//24, XD, //SANDSTONE
+		//25, XD, //NOTE_BLOCK
+		//26, XD, //BED_BLOCK
+		27, GROUND, //POWERED_RAIL
+		28, GROUND, //DETECTOR_RAIL
+		//29, XD, //PISTON_STICKY_BASE
+		30, THIN, //WEB
+		31, VEGETATION, //LONG_GRASS
+		32, VEGETATION, //DEAD_BUSH
+		//33, XD, //PISTON_BASE
+		34, STICK, //PISTON_EXTENSION
+		//35, XD, //WOOL
+		//36, XD, //PISTON_MOVING_PIECE
+		37, VEGETATION, //YELLOW_FLOWER
+		38, VEGETATION, //RED_ROSE
+		39, VEGETATION, //BROWN_MUSHROOM
+		40, VEGETATION, //RED_MUSHROOM
+		//41, XD, //GOLD_BLOCK
+		//42, XD, //IRON_BLOCK
+		//43, XD, //DOUBLE_STEP
+		44, SLABS, //STEP
+		//45, XD, //BRICK
+		//46, XD, //TNT
+		//47, XD, //BOOKSHELF
+		//48, XD, //MOSSY_COBBLESTONE
+		//49, XD, //OBSIDIAN
+		50, STICK, //TORCH
+		51, THIN, //FIRE
+		//52, XD, //MOB_SPAWNER
+		53, STAIRS, //WOOD_STAIRS
+		//54, XD, //CHEST
+		55, GROUND, //REDSTONE_WIRE
+		//56, XD, //DIAMOND_ORE
+		//57, XD, //DIAMOND_BLOCK
+		//58, XD, //WORKBENCH
+		59, VEGETATION, //CROPS
+		//60, XD, //SOIL
+		//61, XD, //FURNACE
+		//62, XD, //BURNING_FURNACE
+		63, STICK, //SIGN_POST
+		64, DOOR, //WOODEN_DOOR
+		65, THIN, //LADDER
+		66, GROUND, //RAILS
+		67, STAIRS, //COBBLESTONE_STAIRS
+		68, THIN, //WALL_SIGN
+		69, STICK, //LEVER
+		70, GROUND, //STONE_PLATE
+		71, DOOR, //IRON_DOOR_BLOCK
+		72, GROUND, //WOOD_PLATE
+		//73, XD, //REDSTONE_ORE
+		//74, XD, //GLOWING_REDSTONE_ORE
+		75, STICK, //REDSTONE_TORCH_OFF
+		76, STICK, //REDSTONE_TORCH_ON
+		77, THIN, //STONE_BUTTON
+		78, GROUND, //SNOW
+		//79, XD, //ICE
+		//80, XD, //SNOW_BLOCK
+		//81, XD, //CACTUS
+		//82, XD, //CLAY
+		83, VEGETATION, //SUGAR_CANE_BLOCK
+		//84, XD, //JUKEBOX
+		85, FENCE, //FENCE
+		//86, XD, //PUMPKIN
+		//87, XD, //NETHERRACK
+		//88, XD, //SOUL_SAND
+		//89, XD, //GLOWSTONE
+		//90, XD, //PORTAL
+		//91, XD, //JACK_O_LANTERN
+		//92, XD, //CAKE_BLOCK
+		93, GROUND, //DIODE_BLOCK_OFF
+		94, GROUND, //DIODE_BLOCK_ON
+		//95, XD, //LOCKED_CHEST
+		96, DOOR, //TRAP_DOOR
+		//97, XD, //MONSTER_EGGS
+		//98, XD, //SMOOTH_BRICK
+		//99, XD, //HUGE_MUSHROOM_1
+		//100, XD, //HUGE_MUSHROOM_2
+		101, FENCE, //IRON_FENCE
+		102, THIN, //THIN_GLASS
+		//103, XD, //MELON_BLOCK
+		104, VEGETATION, //PUMPKIN_STEM
+		105, VEGETATION, //MELON_STEM
+		106, VEGETATION, //VINE
+		107, DOOR, //FENCE_GATE
+		108, STAIRS, //BRICK_STAIRS
+		109, STAIRS, //SMOOTH_STAIRS
+		//110, XD, //MYCEL
+		111, VEGETATION, //WATER_LILY
+		//112, XD, //NETHER_BRICK
+		113, FENCE, //NETHER_FENCE
+		114, STAIRS, //NETHER_BRICK_STAIRS
+		115, VEGETATION //NETHER_WARTS
+		//116, XD, //ENCHANTMENT_TABLE
+		//117, XD, //BREWING_STAND
+		//118, XD, //CAULDRON
+		//119, XD, //ENDER_PORTAL
+		//120, XD, //ENDER_PORTAL_FRAME
+		//121, XD, //ENDER_STONE
+		//122, XD, //DRAGON_EGG
+		//123, XD, //REDSTONE_LAMP_OFF
+		//124, XD, //REDSTONE_LAMP_ON
 	);
-
-	// -------------------------------------------- //
-	// ALTARS
-	// -------------------------------------------- //
-	
-	public static int altarSearchRadius = 10;
-	
-	public static AltarEvil altarEvil = new AltarEvil();
-	public static AltarGood altarGood = new AltarGood();	
 	
 	// -------------------------------------------- //
 	// Persistance
