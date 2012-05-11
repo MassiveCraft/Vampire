@@ -1,29 +1,111 @@
 name: vampire
-version: 4.3.2
+version: 5.0.0
 main: com.massivecraft.vampire.P
-depend: [mcore2]
+depend: [mcore2, Spout]
 permissions:
-  vampire.command.intend:
-    description: intend to infect others
-    default: true
-  vampire.command.infect:
-    description: infect others that are willing
-    default: true
-  vampire.command.list:
-    description: list the vampires on the server
+# -------------------------------------------- #
+# THE REAL NODES
+# -------------------------------------------- #
+  vampire.is.vampire:        {description: An example permission. See the config., default: false}
+  vampire.is.human:          {description: An example permission. See the config., default: false}
+  vampire.show.self:         {description: show info on yourself, default: false}
+  vampire.show.other:        {description: show info on others, default: false}
+  vampire.mode.bloodlust:    {description: use bloodlust, default: false}
+  vampire.mode.intent:       {description: use intent to infect, default: false}
+  vampire.altar.evil:        {description: use an evil altar, default: false}
+  vampire.altar.good:        {description: use a good altar, default: false}
+  vampire.trade.offer:       {description: offer to infect someone, default: false}
+  vampire.trade.accept:      {description: accept infection offer, default: false}
+  vampire.combat.infect:     {description: be infectious in combat, default: false}
+  vampire.combat.contract:   {description: contract infection in combat, default: false}
+  vampire.version:           {description: check the plugin version, default: false}
+  vampire.list:              {description: list vampires and infected, default: false}
+  vampire.set:               {description: set player attributes, default: false}
+  vampire.set.vampire.true:  {description: instantly turn player, default: false}
+  vampire.set.vampire.false: {description: instantly cure a vampire, default: false}
+  vampire.set.infection:     {description: set infection (0 to 1), default: false}
+  vampire.set.food:          {description: set foodl (0 to 20), default: false}
+  vampire.set.health:        {description: set health (0 to 20), default: false}
+# -------------------------------------------- #
+# STAR NOTATION
+# -------------------------------------------- #
+  vampire.show.*:
+    default: false
+    children:
+      vampire.show.self: true
+      vampire.mode.other: true
+  vampire.mode.*:
+    default: false
+    children:
+      vampire.mode.bloodlust: true
+      vampire.mode.intent: true
+  vampire.altar.*:
+    default: false
+    children:
+      vampire.altar.evil: true
+      vampire.altar.good: true
+  vampire.trade.*:
+    default: false
+    children:
+      vampire.trade.offer: true
+      vampire.trade.accept: true
+  vampire.combat.*:
+    default: false
+    children:
+      vampire.combat.infect: true
+      vampire.combat.contract: true
+  vampire.set.vampire.*:
+    default: false
+    children:
+      vampire.set.vampire.true: true
+      vampire.set.vampire.false: true
+  vampire.set.*:
+    default: false
+    children:
+      vampire.set.vampire.*: true
+      vampire.set.infection: true
+      vampire.set.food: true
+      vampire.set.health: true
+# -------------------------------------------- #
+# KITS
+# -------------------------------------------- #
+  vampire.kit.miniplayer:
+    description: Can only contract using trade and can't infect.
+    default: false
+    children:
+      vampire.show.self: true
+      vampire.mode.bloodlust: true
+      vampire.altar.good: true
+      vampire.trade.accept: true
+  vampire.kit.fullplayer:
+    description: This is the suggested kit for normal players on the server.
+    default: false
+    children:
+      vampire.kit.miniplayer: true
+      vampire.show.self: true
+      vampire.mode.*: true
+      vampire.altar.*: true
+      vampire.trade.*: true
+      vampire.combat.*: true
+  vampire.kit.halfmod:
+    description: Can list and inspect others and show plugin version.
+    default: false
+    children:
+      vampire.kit.fullplayer: true
+      vampire.show.other: true
+      vampire.version: true
+      vampire.list: true
+  vampire.kit.mod:
+    description: Can do everything but setting food and health.
+    default: false
+    children:
+      vampire.kit.halfmod: true
+      vampire.set: true
+      vampire.set.vampire.*: true
+      vampire.set.infection: true
+  vampire.kit.admin:
+    description: Can do everything.
     default: op
-  vampire.command.turn:
-    description: instantly turn player
-    default: op
-  vampire.command.cure:
-    description: cure a vampire
-    default: op
-  vampire.command.setinfection:
-    description: set infection (0 to 100)
-    default: op
-  vampire.command.setfood:
-    description: set foodlevel (0 to 20)
-    default: op
-  vampire.command.version:
-    description: check the plugin version
-    default: op
+    children:
+      vampire.kit.mod: true
+      vampire.set.*: true

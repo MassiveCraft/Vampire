@@ -1,4 +1,4 @@
-package com.massivecraft.vampire;
+package com.massivecraft.vampire.altar;
 
 import java.util.HashMap;
 
@@ -6,8 +6,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore2.util.Txt;
-import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.util.SmokeUtil;
+import com.massivecraft.vampire.InfectionReason;
+import com.massivecraft.vampire.Lang;
+import com.massivecraft.vampire.Permission;
+import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VPlayers;
 
 public class AltarEvil extends Altar
 {
@@ -36,26 +39,28 @@ public class AltarEvil extends Altar
 	{
 		player.sendMessage(Txt.parse(Lang.altarEvilUse));
 		VPlayer vplayer = VPlayers.i.get(player);
-		vplayer.alterInfection(3D);
-		SmokeUtil.smokeifyPlayer(player, 20*30);
+		vplayer.infectionAdd(0.01D, InfectionReason.ALTAR, null);
+		
+		vplayer.fxSmokeRun();
 		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-		//P.p.log(player.getDisplayName() + " was infected by an evil altar.");
 	}
 	
 	@Override
 	public boolean validateUser(Player player)
 	{
+		if ( ! Permission.ALTAR_EVIL.has(player, true)) return false;
+		
 		VPlayer vplayer = VPlayers.i.get(player);
 
 		// Is Infected
-		if (vplayer.isInfected())
+		if (vplayer.infected())
 		{
 			player.sendMessage(Txt.parse(Lang.altarEvilAlreadyInfected));
 			return false;
 		}
 		
 		// Is Vampire
-		if (vplayer.isVampire())
+		if (vplayer.vampire())
 		{
 			player.sendMessage(Txt.parse(Lang.altarEvilAlreadyVampire));
 			return false;

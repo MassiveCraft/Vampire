@@ -1,4 +1,4 @@
-package com.massivecraft.vampire;
+package com.massivecraft.vampire.altar;
 
 import java.util.HashMap;
 
@@ -6,7 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore2.util.Txt;
-import com.massivecraft.vampire.config.Lang;
+import com.massivecraft.vampire.Lang;
+import com.massivecraft.vampire.Permission;
+import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VPlayers;
 
 public class AltarGood extends Altar
 {
@@ -30,34 +33,38 @@ public class AltarGood extends Altar
 		this.recipe.materialQuantities.put(Material.WHEAT, 20);
 	}
 
-	// TODO: Fix the log info messages!
-	
 	@Override
 	public void applyEffect(Player player)
 	{
 		VPlayer vplayer = VPlayers.i.get(player);
-		//p.log(this.getId() + " was cured from being a vampire by a healing altar.");
-		player.sendMessage(Txt.parse(Lang.altarGoodUse));
-		vplayer.cureVampirism();
+		
+		vplayer.fxEnderRun();
 		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+		
+		// Is Infected
+		if (vplayer.infected())
+		{
+			player.sendMessage(Txt.parse(Lang.altarGoodInfected));
+			vplayer.infection(0);
+			player.sendMessage(Txt.parse(Lang.infectionMessageCured));
+		}
+		
+		if (vplayer.vampire())
+		{
+			player.sendMessage(Txt.parse(Lang.altarGoodUse));
+			vplayer.vampire(false);
+		}
 	}
 	
 	@Override
 	public boolean validateUser(Player player)
 	{
+		if ( ! Permission.ALTAR_GOOD.has(player, true)) return false;
+		
 		VPlayer vplayer = VPlayers.i.get(player);
-
-		// Is Infected
-		if (vplayer.isInfected())
-		{
-			player.sendMessage(Txt.parse(Lang.altarGoodInfected));
-			vplayer.setInfection(0);
-			player.sendMessage(Txt.parse(Lang.infectionMessageCured));
-			return false;
-		}
 		
 		// Is Healthy
-		if ( ! vplayer.isVampire())
+		if (vplayer.healthy())
 		{
 			player.sendMessage(Txt.parse(Lang.altarGoodHealthy));
 			return false;

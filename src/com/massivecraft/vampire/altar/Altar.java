@@ -1,9 +1,10 @@
-package com.massivecraft.vampire;
+package com.massivecraft.vampire.altar;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
@@ -11,9 +12,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore2.util.Txt;
-import com.massivecraft.vampire.config.Conf;
-import com.massivecraft.vampire.config.Lang;
-import com.massivecraft.vampire.util.GeometryUtil;
+import com.massivecraft.vampire.Conf;
+import com.massivecraft.vampire.Lang;
 
 public abstract class Altar
 {
@@ -41,8 +41,8 @@ public abstract class Altar
 			this.materialCounts.put(this.coreMaterial, 1);
 		}
 		
-		ArrayList<Block> blocks = GeometryUtil.getCubeBlocks(coreBlock, Conf.altarSearchRadius);
-		Map<Material, Integer> nearbyMaterialCounts = GeometryUtil.countMaterials(blocks, this.materialCounts.keySet());
+		ArrayList<Block> blocks = getCubeBlocks(coreBlock, Conf.altarSearchRadius);
+		Map<Material, Integer> nearbyMaterialCounts = countMaterials(blocks, this.materialCounts.keySet());
 				
 		//P.p.log("This is our nearby materials");
 		//P.p.log(nearbyMaterialCounts);
@@ -141,5 +141,38 @@ public abstract class Altar
 		return ret;
 	}
 	
+	public static Map<Material, Integer> countMaterials(Collection<Block> blocks, Set<Material> materialsToCount)
+	{
+		Map<Material, Integer> ret = new HashMap<Material, Integer>();
+		for (Block block : blocks)
+		{
+			Material material = block.getType();
+			if ( ! materialsToCount.contains(material)) continue;
+			if ( ! ret.containsKey(material))
+			{
+				ret.put(material, 1);
+				continue;
+			}
+			ret.put(material, ret.get(material)+1);
+		}
+		return ret;
+	}
+	
+	public static ArrayList<Block> getCubeBlocks(Block centerBlock, int radius)
+	{
+		ArrayList<Block> blocks = new ArrayList<Block>();
+		
+		for (int y = -radius; y <= radius; y++)
+		{
+			for (int z = -radius; z <= radius; z++)
+			{
+				for (int x = -radius; x <= radius; x++)
+				{
+					blocks.add(centerBlock.getRelative(x, y, z));
+				}
+			}
+		}
+		return blocks;
+	}
 }
 

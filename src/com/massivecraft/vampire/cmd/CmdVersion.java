@@ -9,14 +9,9 @@ public class CmdVersion extends VCommand
 {
 	public CmdVersion()
 	{
-		this.addAliases("version");
-		
-		this.setDesc("display current version");
-		
+		this.addAliases("version", "ver");
 		this.setVisibilityMode(VisibilityMode.SECRET);
-		
-		this.setDescPermission(Permission.COMMAND_VERSION.node);
-		this.addRequirements(new ReqHasPerm(Permission.COMMAND_VERSION.node));
+		this.addRequirements(ReqHasPerm.get(Permission.VERSION.node));
 	}
 	
 	@Override

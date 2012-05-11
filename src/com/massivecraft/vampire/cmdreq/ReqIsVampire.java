@@ -1,4 +1,4 @@
-package com.massivecraft.vampire.cmd.req;
+package com.massivecraft.vampire.cmdreq;
 
 import org.bukkit.command.CommandSender;
 
@@ -13,17 +13,18 @@ public class ReqIsVampire implements IReq
 	public boolean test(CommandSender sender, MCommand command)
 	{
 		VPlayer vplayer = VPlayers.i.get(sender);
-		return vplayer.isVampire();
+		if (vplayer == null) return false; // Probably some kind of console user ^^
+		return vplayer.vampire();
 	}
 
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return "<b>Only vampires can use this command.";
+		return "<b>Only vampires can "+command.getDesc()+".";
 	}
 	
 	protected static ReqIsVampire instance = new ReqIsVampire();
-	public static ReqIsVampire getInstance()
+	public static ReqIsVampire get()
 	{
 		return instance;
 	}

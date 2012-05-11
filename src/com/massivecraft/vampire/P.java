@@ -3,21 +3,19 @@ package com.massivecraft.vampire;
 import org.bukkit.Bukkit;
 
 import com.massivecraft.mcore2.MPlugin;
-import com.massivecraft.vampire.cmd.*;
-import com.massivecraft.vampire.config.*;
-import com.massivecraft.vampire.listeners.*;
+import com.massivecraft.vampire.cmd.CmdBase;
+import com.massivecraft.vampire.cmdarg.AHVPlayer;
 
-
-public class P extends MPlugin
+public class P extends MPlugin 
 {
 	// Our single plugin instance
 	public static P p;
 	
-	// Listeners
-	public VampireListener vampireListener;
-	
 	// Command
 	public CmdBase cmdBase;
+	
+	// Listeners
+	public TheListener theListener;
 	
 	public P()
 	{
@@ -33,27 +31,23 @@ public class P extends MPlugin
 		VPlayers.i.loadOldFormat();
 		
 		// Load Conf from disk
-		Conf.load();
-		Lang.load();
+		//Conf.load();
+		//Conf.save();
+		//Lang.load();
 		
 		// Add Base Commands
 		this.cmdBase = new CmdBase();
-		this.cmd.addCommand(this.cmdBase);
-	
+		this.cmdBase.register();
+		
+		// Add Argument Handlers
+		this.cmd.setArgHandler(VPlayer.class, AHVPlayer.getInstance());
+		
 		// Start timer
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new VampireTask(), 0, Conf.taskInterval);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TheTask(), 0, Conf.taskInterval);
 	
 		// Register events
-		vampireListener = new VampireListener(this);
+		new TheListener(this);
 		
 		postEnable();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		Conf.save();
-		Lang.save();
-		super.onDisable();
 	}
 }

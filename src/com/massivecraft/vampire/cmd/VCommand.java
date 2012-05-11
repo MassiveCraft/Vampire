@@ -26,5 +26,4 @@ public abstract class VCommand extends MCommand
 	{
 		this.vme = VPlayers.i.get(this.me);
 	}
-	
 }

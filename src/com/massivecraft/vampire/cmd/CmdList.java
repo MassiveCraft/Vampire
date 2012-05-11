@@ -14,15 +14,11 @@ public class CmdList extends VCommand
 	public CmdList()
 	{
 		this.addAliases("list", "ls", "l");
-		
 		this.addOptionalArg("page", "1");
-		
-		this.setDesc("list vampires on the server");
 		
 		this.setVisibilityMode(VisibilityMode.SECRET);
 		
-		this.setDescPermission(Permission.COMMAND_LIST.node);
-		this.addRequirements(new ReqHasPerm(Permission.COMMAND_LIST.node));
+		this.addRequirements(ReqHasPerm.get(Permission.LIST.node));
 	}
 	
 	@Override
@@ -35,12 +31,10 @@ public class CmdList extends VCommand
 		List<String> vampiresOffline = new ArrayList<String>();
 		List<String> infectedOnline = new ArrayList<String>();
 		List<String> infectedOffline = new ArrayList<String>();
-		List<String> exvampiresOnline = new ArrayList<String>();
-		List<String> exvampiresOffline = new ArrayList<String>();
 		
 		for (VPlayer vplayer : VPlayers.i.getAll())
 		{
-			if (vplayer.isVampire())
+			if (vplayer.vampire())
 			{
 				if (vplayer.isOnline())
 				{
@@ -51,7 +45,7 @@ public class CmdList extends VCommand
 					vampiresOffline.add(ChatColor.WHITE.toString() + vplayer.getId());
 				}
 			}
-			else if (vplayer.isInfected())
+			else if (vplayer.infected())
 			{
 				if (vplayer.isOnline())
 				{
@@ -60,17 +54,6 @@ public class CmdList extends VCommand
 				else
 				{
 					infectedOffline.add(ChatColor.WHITE.toString() + vplayer.getId());
-				}
-			}
-			else if (vplayer.isExvampire())
-			{
-				if (vplayer.isOnline())
-				{
-					exvampiresOnline.add(ChatColor.WHITE.toString() + vplayer.getPlayer().getDisplayName());
-				}
-				else
-				{
-					exvampiresOffline.add(ChatColor.WHITE.toString() + vplayer.getId());
 				}
 			}
 		}
@@ -101,19 +84,6 @@ public class CmdList extends VCommand
 			lines.add("<h>=== Infected Offline ===");
 			lines.add(Txt.implodeCommaAndDot(infectedOffline, "<i>"));
 		}
-		
-		if (exvampiresOnline.size() > 0)
-		{
-			lines.add("<h>=== Exvampires Online ===");
-			lines.add(Txt.implodeCommaAndDot(exvampiresOnline, "<i>"));
-		}
-		
-		if (exvampiresOffline.size() > 0)
-		{
-			lines.add("<h>=== Exvampires Offline ===");
-			lines.add(Txt.implodeCommaAndDot(exvampiresOffline, "<i>"));
-		}
-		
 		
 		// Send them
 		lines = Txt.parseWrap(lines);

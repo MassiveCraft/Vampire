@@ -2,40 +2,34 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore2.cmd.VisibilityMode;
 import com.massivecraft.mcore2.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore2.util.MUtil;
 import com.massivecraft.vampire.*;
-import com.massivecraft.vampire.config.Lang;
 
-
-public class CmdSetinfection extends VCommand
+public class CmdSetInfection extends CmdSetAbstract<Double>
 {
-	public CmdSetinfection()
+	public CmdSetInfection()
 	{
-		this.addAliases("seti");
-
-		requiredArgs.add("playername");
-		optionalArgs.put("amount", "1.0");
-		
-		this.setDesc("set infection (0 to 100)");
-		
-		this.setVisibilityMode(VisibilityMode.SECRET);
-		
-		this.setDescPermission(Permission.COMMAND_SETINFECTION.node);
-		this.addRequirements(new ReqHasPerm(Permission.COMMAND_SETINFECTION.node));
+		targetMustBeOnline = false;
+		classOfT = Double.class;
+		this.addAliases("i");
+		this.addRequirements(ReqHasPerm.get(Permission.SET_INFECTION.node));
 	}
-	
+
 	@Override
-	public void perform()
+	public Double set(VPlayer vplayer, Player player, Double val)
 	{
-		Player you = this.argAs(0, Player.class, "match");
-		if (you == null) return;
+		Double res = MUtil.limitNumber(val, 0D, 100D);
+		if (vplayer.vampire())
+		{
+			msg("<b>%s is already a vampire.", vplayer.getId());
+			return null;
+		}
 		
-		Double amount = this.argAs(1, Double.class, 1.0);
-		if (amount == null) return;
-		
-		VPlayer vyou = VPlayers.i.get(you);
-		vyou.setInfection(amount);
-		this.msg(Lang.xNowHasYInfection, you.getDisplayName(), vyou.getInfection());
+		vplayer.reason(InfectionReason.OPERATOR);
+		vplayer.maker(null);
+		vplayer.infection(res);
+		vplayer.infectionAdd(0, InfectionReason.OPERATOR, null);
+		return res;
 	}
 }

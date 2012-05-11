@@ -1,15 +1,29 @@
-package com.massivecraft.vampire.config;
+package com.massivecraft.vampire;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import com.massivecraft.vampire.P;
 
 public class Lang
-{	
+{
+	public static String consolePlayerArgRequired = "<b>You must specify player from console.";
+	
+	public static String noSpoutWarnHuman = "";
+	public static String noSpoutWarnVamp = "<b>Use SpoutCraft for improved vampire movement.\n<aqua>http://dev.bukkit.org/client-mods/spoutcraft/";
+	public static String noSpoutWarnBloodlust = "<b>Use SpoutCraft! Bloodlust will then grant you faster movement.<aqua>http://dev.bukkit.org/client-mods/spoutcraft/";
+	
+	public static String on = "<lime>ON";
+	public static String off = "<lime>OFF";
+	public static String xIsOn = "<i>%s is <lime>ON<i>.";
+	public static String xIsOff = "<i>%s is <rose>OFF<i>.";
+	
 	public static String infectionMessageHeal = "<g>You feel a little better. Bread helps you fight the sickness.";
 	public static String infectionMessageCured = "<g>You are now completely cured from the sickness you had.";
-	public static String vampiresCantEatThat = "<b>Vampires can't eat <h>%s<b>.";
+	public static String vampiresCantEatThat = "<b>Vampires can't eat %s.";
 	public static String messageTruceBroken = "<b>You temporarily broke your truce with the monsters.";
 	public static String messageTruceRestored = "<g>Your truce with the monsters has been restored.";
 	
@@ -22,18 +36,18 @@ public class Lang
 	public static String xWasTurned = "<h>%s <i>is now a vampire.";
 	
 	public static String youWasCured = "<g>You have been cured and is once again healthy and alive.<b> But will you miss the taste of blood on your lips? When you sleep, will you taste the salt and copper flowing over your tongue? Go, mortal. Bask in your precious sunlight.";
-	public static String xWasCured = "<h>%s <i>was cured and is no longer a vampire.";
-	public static String xIsHealthy = "<h>%s <i>is healthy. No need for a cure.";
+	//public static String xWasCured = "<h>%s <i>was cured and is no longer a vampire.";
+	//public static String xIsHealthy = "<h>%s <i>is healthy. No need for a cure.";
 	
-	public static String xNowHasFoodY = "<h>%s <i>now has food <h>%d<i>.";
-	public static String xNowHasYInfection = "<h>%s <i>now has <h>%.1f%%<i> infection.";
+	//public static String xNowHasFoodY = "<h>%s <i>now has food <h>%d<i>.";
+	//public static String xNowHasYInfection = "<h>%s <i>now has <h>%.1f%%<i> infection.";
 	
 	public static String infectYouMustStandCloseToY = "<b>You must stand close to <h>%s <i>for this to work.";
 	public static String infectXOffersToInfectYou = "<h>%s<i> offers to infect you with the vampire disease.";
 	public static String infectYouOfferToInfectX = "<i>You offer to infect <h>%s<i> with the vampire disease.";
 	public static String infectTypeXToAccept = "<i>Type %s<i> to accept.";
 	public static String infectNoRecentOffer = "<b>No vampire offered to infect you recently.";
-	public static String infectYouDrinkSomeOfXBlood = "<i>You drink some of <h>%s's<i> blood.";
+	//public static String infectYouDrinkSomeOfXBlood = "<i>You drink some of <h>%s's<i> blood.";
 	public static String infectXDrinkSomeOfYourBlood = "<h>%s<i> drinks some of your blood.";
 	
 	public static List<String> infectionMessagesProgress = new ArrayList<String>();
@@ -124,6 +138,35 @@ public class Lang
 		infectionBreadHintMessages.add("<i>Bread...Bread...Bread...");
 	}
 	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public static <T> List<T> list(T... items)
+	{
+		return Arrays.asList(items);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <K, V> Map<K, V> map(Class<K> classOfK, Class<V> classOfV, Object... objects)
+	{
+		Map<K, V> ret = new HashMap<K, V>();
+		
+		Iterator<Object> iter = Arrays.asList(objects).iterator();
+		while (iter.hasNext())
+		{
+			K key = (K) iter.next();
+			V value = (V) iter.next();
+			ret.put(key, value);
+		}
+		
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// Persistance
+	// -------------------------------------------- //
+	/*
 	private static transient Lang i = new Lang();
 	public static void load()
 	{
@@ -132,5 +175,5 @@ public class Lang
 	public static void save()
 	{
 		P.p.one.save(i, "lang");
-	}
+	}*/
 }

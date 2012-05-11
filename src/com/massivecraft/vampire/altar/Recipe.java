@@ -1,4 +1,4 @@
-package com.massivecraft.vampire;
+package com.massivecraft.vampire.altar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.mcore2.util.MUtil;
 import com.massivecraft.mcore2.util.Txt;
-import com.massivecraft.vampire.util.SortUtil;
 
 public class Recipe
 {
@@ -58,7 +58,7 @@ public class Recipe
 	public String getRecipeLine()
 	{
 		ArrayList<String> lines = new ArrayList<String>();
-		for (Entry<Material, Integer> item : SortUtil.entriesSortedByValues(this.materialQuantities))
+		for (Entry<Material, Integer> item : MUtil.entriesSortedByValues(this.materialQuantities))
 		{
 			Material material = item.getKey();
 			int count = item.getValue();

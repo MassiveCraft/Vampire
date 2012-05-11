@@ -1,26 +1,33 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.mcore2.cmd.HelpCommand;
-import com.massivecraft.vampire.config.Conf;
+import com.massivecraft.vampire.Conf;
 
 public class CmdBase extends VCommand
 {
+	public CmdShow cmdShow = new CmdShow();
+	public CmdModeBloodlust cmdModeBloodlust = new CmdModeBloodlust();
+	public CmdModeIntend cmdModeIntend = new CmdModeIntend();
+	public CmdOffer cmdOffer = new CmdOffer();
 	public CmdAccept cmdAccept = new CmdAccept();
+	public CmdVersion cmdVersion = new CmdVersion();
+	public CmdList cmdList = new CmdList();
+	public CmdSet cmdSet = new CmdSet();
 	
 	public CmdBase()
 	{
 		super();
 		this.addAliases(Conf.baseCommandAliases);
+		
 		this.addSubCommand(HelpCommand.getInstance());
-		this.addSubCommand(new CmdIntend());
-		this.addSubCommand(new CmdInfect());
+		this.addSubCommand(cmdShow);
+		this.addSubCommand(cmdModeBloodlust);
+		this.addSubCommand(cmdModeIntend);
+		this.addSubCommand(cmdOffer);
 		this.addSubCommand(cmdAccept);
-		this.addSubCommand(new CmdList());
-		this.addSubCommand(new CmdSetfood());
-		this.addSubCommand(new CmdSetinfection());
-		this.addSubCommand(new CmdTurn());
-		this.addSubCommand(new CmdCure());
-		this.addSubCommand(new CmdVersion());
+		this.addSubCommand(cmdVersion);
+		this.addSubCommand(cmdList);
+		this.addSubCommand(cmdSet);
 		
 		this.setDesc("The vampire base command");
 	}

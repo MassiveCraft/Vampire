@@ -1,7 +1,8 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore2.cmd.VisibilityMode;
+import com.massivecraft.mcore2.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore2.cmd.req.ReqIsPlayer;
+import com.massivecraft.vampire.Permission;
 
 public class CmdAccept extends VCommand
 {
@@ -9,15 +10,13 @@ public class CmdAccept extends VCommand
 	{
 		this.addAliases("accept");
 		
-		this.setDesc("accept infection from someone");
-		this.setVisibilityMode(VisibilityMode.INVISIBLE);
-		
-		this.addRequirements(ReqIsPlayer.getInstance());
+		this.addRequirements(ReqHasPerm.get(Permission.TRADE_ACCEPT.node));
+		this.addRequirements(ReqIsPlayer.get());
 	}
 	
 	@Override
 	public void perform()
 	{
-		vme.acceptInfection();
+		vme.infectionAccept();
 	}
 }

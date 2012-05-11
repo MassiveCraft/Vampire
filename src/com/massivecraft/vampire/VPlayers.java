@@ -6,28 +6,37 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.gson.reflect.TypeToken;
 import com.massivecraft.mcore2.Predictate;
-import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 import com.massivecraft.mcore2.persist.gson.GsonPlayerEntityManager;
 import com.massivecraft.mcore2.util.DiscUtil;
 
 public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 {
+	// -------------------------------------------- //
+	// META
+	// -------------------------------------------- //
 	public static VPlayers i = new VPlayers();
 	
 	private VPlayers()
 	{
-		super(P.p.gson, new File(P.p.getDataFolder(), "player"), true, true);
+		super(P.p.gson, new File(P.p.getDataFolder(), "player"), true, false);
 		P.p.persist.setManager(VPlayer.class, this);
 		P.p.persist.setSaveInterval(VPlayer.class, 1000*60*30);
 	}
 
 	@Override
-	public Class<VPlayer> getManagedClass()
-	{
-		return VPlayer.class;
-	}
+	public Class<VPlayer> getManagedClass() { return VPlayer.class; }
 	
+	// -------------------------------------------- //
+	// EXTRAS
+	// -------------------------------------------- //
+	
+	@Override
+	public boolean shouldBeSaved(VPlayer entity)
+	{
+		return entity.vampire() || entity.infected();
+	}
 	
 	public Collection<VPlayer> getAllOnlineInfected()
 	{
@@ -35,7 +44,7 @@ public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 		{
 			public boolean apply(VPlayer entity)
 			{
-				return entity.isOnline() && entity.isInfected();
+				return entity.isOnline() && entity.infected();
 			}
 		});
 	}
@@ -46,15 +55,9 @@ public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 		{
 			public boolean apply(VPlayer entity)
 			{
-				return entity.isOnline() && entity.isVampire();
+				return entity.isOnline() && entity.vampire();
 			}
 		});
-	}
-	
-	@Override
-	public boolean shouldBeSaved(VPlayer entity)
-	{
-		return entity.isExvampire() || entity.isVampire() || entity.isInfected();
 	}
 	
 	public void loadOldFormat()

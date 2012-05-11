@@ -4,27 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.util.Vector;
+import org.bukkit.potion.PotionEffectType;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.massivecraft.mcore2.MCore;
 import com.massivecraft.mcore2.cmd.MCommand;
 import com.massivecraft.mcore2.persist.IClassManager;
 import com.massivecraft.mcore2.persist.PlayerEntity;
+import com.massivecraft.mcore2.util.MUtil;
 import com.massivecraft.mcore2.util.Txt;
-import com.massivecraft.vampire.config.*;
-import com.massivecraft.vampire.util.EntityUtil;
-import com.massivecraft.vampire.util.SmokeUtil;
+import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
+import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
+import com.massivecraft.vampire.util.FxUtil;
+import com.massivecraft.vampire.util.SunUtil;
 
 /**
  * The VPlayer is a "skin" for a normal player.
@@ -32,154 +31,329 @@ import com.massivecraft.vampire.util.SmokeUtil;
  */
 public class VPlayer extends PlayerEntity<VPlayer>
 {
-	@Override
-	public IClassManager<VPlayer> getManager()
-	{
-		return VPlayers.i;
-	}
-	
-	@Override
-	protected VPlayer getThis()
-	{
-		return this;
-	}
-	
-	public static transient P p = P.p;
-	
-	// Is the player a vampire?
-	private boolean vampire = false;
-	public boolean isVampire() { return this.vampire; }
-	public void setIsVampire(boolean isVampire) { this.vampire = isVampire; this.updateVampPermission(); }
-	public boolean isExvampire() { return this.isVampire() == false && this.timeAsVampire > 0; }
-		
-	// 0 means no infection. If infection reaches 100 the player will turn to vampire.
-	private double infection = 0; 
-	public double getInfection() { return this.infection; }
-	public void setInfection(double infection) { this.infection = limitNumber(infection, 0D, 100D); }	
-	public void alterInfection(double infection) { this.setInfection(this.getInfection() + infection); }
-	public boolean isInfected() { return this.infection > 0D; }
-	
-	// Used for the infec and accept commands.
-	private transient VPlayer infectionOfferedFrom;
-	private transient long infectionOfferedAtTicks;
-	
-	public boolean isHealthy()
-	{
-		return ! this.isVampire() && ! this.isInfected();
-	}
-	
-	// Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
-	private boolean intendingToInfect = false;
-	public boolean isIntendingToInfect() { return intendingToInfect; }
-	public void setIntendingToInfect(boolean intendingToInfect) { this.intendingToInfect = intendingToInfect; }
-
-	private String makerId;
-	// TODO: Extend the maker and turn reason concept!!
-	
-	private long timeAsVampire = 0; // The total amount of milliseconds this player has been vampire.
-	private long truceBreakTicksLeft = 0; // How many milliseconds more will the monsters be hostile?
-	private transient double foodAccumulator = 0;
-	private transient double healthAccumulator = 0;
-	//public transient long regenDelayLeftMilliseconds = 0;
-	
-	private transient PermissionAttachment permA;
-	
-	// GSON need this noarg constructor.
-	public VPlayer()
-	{
-		
-	}
-	
-	public Player getPlayer()
-	{
-		return Bukkit.getPlayer(this.getId());
-	}
-	
 	// -------------------------------------------- //
-	// Online / Offline State Checking
+	// META
 	// -------------------------------------------- //
 	
-	public boolean isOnline()
-	{
-		return this.getPlayer() != null;
-	}
-	
-	public boolean isOffline()
-	{
-		return ! isOnline();
-	}
+	@Override public IClassManager<VPlayer> getManager() { return VPlayers.i; }
+	@Override protected VPlayer getThis() { return this; }
 	
 	// -------------------------------------------- //
-	// The Each Second Tick
+	// PERSISTENT FIELDS
 	// -------------------------------------------- //
-	public void advanceTime(long ticks)
+	
+	// FIELD: vampire - Is the player a vampire?
+	protected boolean vampire = false;
+	public boolean vampire() { return this.vampire; }
+	public boolean human() { return ! this.vampire(); } // Shortcut
+	public void vampire(boolean val)
 	{
-		if (this.isVampire())
+		this.infection = 0;
+		if (this.vampire == val) return;
+		this.vampire = val;
+		if (this.vampire)
 		{
-			this.timeAsVampire += ticks;
-			this.combustAdvanceTime(ticks);
-			this.truceBreakAdvanceTime(ticks);
+			this.msg(Lang.youWasTurned);
+			this.fxSmokeRun();
 		}
-		else if (this.isInfected())
+		else
 		{
-			this.infectionAdvanceTime(ticks);
+			this.msg(Lang.youWasCured);
+			this.fxEnderRun();
+			this.maker(null);
+			this.reason(null);
+			this.bloodlust(false);
+			this.intend(false);
+		}
+		this.updateVampPermission();
+		this.updateSpoutFeatures();
+	}
+	
+	// FIELD: infection - 0 means no infection. If infection reaches 1 the player will turn to vampire.
+	protected double infection = 0; 
+	public double infection() { return this.infection; }
+	public boolean infected() { return this.infection > 0D; }
+	public void infection(double val)
+	{
+		if (val >= 1D)
+		{
+			this.vampire(true);
+		}
+		else if (val <= 0D)
+		{
+			if (this.infection > 0D)
+			{
+				this.msg(Lang.infectionMessageCured);
+			}
+			this.infection = 0D;
+		}
+		else
+		{
+			this.infection = val;
 		}
 	}
-	
-	// -------------------------------------------- //
-	// Vampire
-	// -------------------------------------------- //
-	public void turn()
+	public void infectionAdd(double val)
 	{
-		if (this.isVampire()) return;
-		SmokeUtil.smokeifyPlayer(this.getPlayer(), 20*30);
-		this.setInfection(0);
-		this.setIsVampire(true);
-		this.msg(Lang.youWasTurned);
+		this.infection(this.infection()+val);
+	}
+	public void infectionAdd(double val, InfectionReason reason, VPlayer maker)
+	{
+		if (vampire) return;
+		this.reason(reason);
+		this.makerId(maker == null ? null : maker.getId());
+		P.p.log(Txt.parse(this.reasonDesc(false)));
+		if (reason.notice()) this.msg(this.reasonDesc(true));
+		this.infectionAdd(val);
 	}
 	
-	public void cureVampirism()
-	{
-		this.setInfection(0);
-		this.setIsVampire(false);
-		this.msg(Lang.youWasCured);
+	// FIELD: healthy and unhealthy - Fake field shortcuts
+	public boolean healthy() { return ! this.vampire() && ! this.infected(); }
+	public boolean unhealthy() { return ! this.healthy(); }
+	
+	// FIELD: reason - How come this player is infected?
+	protected InfectionReason reason;
+	public InfectionReason reason() { return reason == null ? InfectionReason.UNKNOWN : reason; }
+	public void reason(InfectionReason val) { this.reason = val; }
+	public String reasonDesc(boolean self) { return this.reason().getDesc(this, self); }
+	
+	// FIELD: makerId - Who made this vampire?
+	protected String makerId;
+	public String makerId() { return this.makerId; }
+	public void makerId(String val) { this.makerId = val; }
+	public VPlayer maker() { return VPlayers.i.get(this.makerId); }
+	public void maker(VPlayer val) { this.makerId(val == null ? null : val.getId()); }
+	
+	// FIELD: intending - Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
+	protected boolean intend = false;
+	public boolean intend() { return intend; }
+	public void intend(boolean val) { this.intend = val; this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Infect intent"); }
+	
+	// FIELD: bloodlust - Is bloodlust activated?
+	protected boolean bloodlust = false;
+	public boolean bloodlust() { return bloodlust; }
+	public void bloodlust(boolean val) {
+		if (val && this.food().get() < Conf.bloodlustMinFood)
+		{
+			msg("<b>Your food is to low for bloodlust.");
+			return;
+		}
+		this.bloodlust = val;
+		this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Bloodlust");
+		this.updateSpoutFeatures();
 	}
 	
 	// -------------------------------------------- //
-	// Offer and Accept infection
+	// TRANSIENT FIELDS
 	// -------------------------------------------- //
-	public void acceptInfection()
+	
+	// FIELD: rad - The irradiation for the player.
+	protected transient double rad = 0;
+	public double rad() { return this.rad; }
+	public void rad(double val) { this.rad = val; }
+	
+	// FIELD: temp - The temperature of the player. a double between 0 and 1.
+	protected transient double temp = 0;
+	public double temp() { return this.temp; }
+	public void temp(double val) { this.temp = MUtil.limitNumber(val, 0D, 1D); }
+	public void tempAdd(double val) { this.temp(this.temp()+val); }
+	
+	// FIELD: food - the food accumulator
+	protected transient VPlayerFoodAccumulator food = new VPlayerFoodAccumulator(this);
+	public VPlayerFoodAccumulator food() { return this.food; }
+	
+	// FIELD: health - the health accumulator
+	protected transient VPlayerHealthAccumulator health = new VPlayerHealthAccumulator(this);
+	public VPlayerHealthAccumulator health() { return this.health; }
+	
+	// FIELD: lastDamageMillis - for the regen
+	protected transient long lastDamageMillis = 0;
+	public long lastDamageMillis() { return this.lastDamageMillis; }
+	public void lastDamageMillis(long val) { this.lastDamageMillis = val; }
+	
+	// FIELD: truceBreakTicksLeft - How many milliseconds more will the monsters be hostile?
+	protected transient long truceBreakTicksLeft = 0;
+	
+	// FIELD: infectionOfferedFrom and infectionOfferedAtTicks - infect and accept commands.
+	protected transient VPlayer infectionOfferedFrom;
+	protected transient long infectionOfferedAtTicks;
+	
+	// FIELD: smokeTicksLeft - Container for the special effect
+	protected transient int fxSmokeTicks = 0;
+	public int fxSmokeTicks() { return this.fxSmokeTicks; }
+	public void fxSmokeTicks(int val) { this.fxSmokeTicks = val; }
+	public void fxSmokeRun() { this.fxSmokeTicks = 20 * 20; }
+	
+	// FIELD: enderTicksLeft - Container for the special effect
+	protected transient int fxEnderTicks = 0;
+	public int fxEnderTicks() { return this.fxEnderTicks; }
+	public void fxEnderTicks(int val) { this.fxEnderTicks = val; }
+	public void fxEnderRun() { this.fxEnderTicks = 10 * 20; }
+	
+	// FIELD: permA - permission assignments
+	protected transient PermissionAttachment permA;
+	
+	// -------------------------------------------- //
+	// TICK
+	// -------------------------------------------- //
+	public void tick(long ticks)
+	{
+		this.tickRadTemp(ticks);
+		this.tickInfection(ticks);
+		this.tickRegen(ticks);
+		this.tickBloodlust(ticks);
+		this.tickEffects(ticks);
+		this.tickTruce(ticks);
+	}
+	
+	public void tickRadTemp(long ticks)
+	{
+		// Update rad and temp
+		Player player = this.getPlayer();
+		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		if (survival && this.vampire() && ! player.isDead())
+		{
+			this.rad = Conf.baseRad + SunUtil.calcPlayerIrradiation(player);
+			Double tempDelta = Conf.tempPerRadAndTick * this.rad * ticks;
+			this.tempAdd(tempDelta);
+		}
+		else
+		{
+			this.rad = 0;
+			this.temp = 0;
+		}
+		
+		//P.p.log("this.rad ", this.rad);
+		//P.p.log("this.temp ", this.temp);
+	}
+	
+	public void tickInfection(long ticks)
+	{
+		if ( ! this.infected()) return;
+		int indexOld = this.infectionGetMessageIndex();
+		this.infectionAdd(ticks * Conf.infectionPerTick);
+		int indexNew = this.infectionGetMessageIndex();
+		
+		if (this.vampire()) return;
+		if (indexOld == indexNew) return;
+		
+		Player player = this.getPlayer();
+		
+		if (Conf.infectionProgressDamage != 0) player.damage(Conf.infectionProgressDamage);
+		if (Conf.infectionProgressNauseaTicks > 0) FxUtil.ensure(PotionEffectType.CONFUSION, player, Conf.infectionProgressNauseaTicks);
+		
+		this.msg(Lang.infectionMessagesProgress.get(indexNew));
+		this.msg(Lang.infectionBreadHintMessages.get(MCore.random.nextInt(Lang.infectionBreadHintMessages.size())));
+	}
+	public int infectionGetMessageIndex()
+	{
+		return (int)((Lang.infectionMessagesProgress.size()+1) * this.infection() / 100D) - 1;
+	}
+	
+	public void tickRegen(long ticks)
+	{
+		if ( ! this.vampire()) return;
+		Player player = this.getPlayer();
+		if (player.isDead()) return;
+		if (player.getHealth() >= 20) return;
+		if (this.food().get() < Conf.regenMinFood) return;
+		
+		long millisSinceLastDamage = System.currentTimeMillis() - this.lastDamageMillis;
+		if (millisSinceLastDamage < Conf.regenDelayMillis) return;
+		
+		double foodDiff = this.food().add(-Conf.regenFoodPerTick * ticks);
+		this.health().add(-foodDiff * Conf.regenHealthPerFood);
+	}
+	
+	public void tickBloodlust(long ticks)
+	{
+		if ( ! this.vampire()) return;
+		if ( ! this.bloodlust()) return;
+		Player player = this.getPlayer();
+		if (player.isDead()) return;
+		
+		this.food().add(ticks * Conf.bloodlustFoodPerTick);
+		if (this.food().get() < Conf.bloodlustMinFood) this.bloodlust(false);
+	}
+	
+	public void tickEffects(long ticks)
+	{
+		Player player = this.getPlayer();
+		if ( ! player.isOnline()) return;
+		if (player.isDead()) return;
+		
+		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		
+		// The generic smoke effect
+		if (this.fxSmokeTicks > 0)
+		{
+			this.fxSmokeTicks -= ticks;
+			double dcount = Conf.fxSmokePerTick * ticks;
+			long lcount = MUtil.probabilityRound(dcount);
+			for (long i = lcount; i > 0; i--) FxUtil.smoke(player);
+		}
+		
+		// The ender effect
+		if (this.fxEnderTicks > 0)
+		{
+			this.fxEnderTicks -= ticks;
+			double dcount = Conf.fxEnderPerTick * ticks;
+			long lcount = MUtil.probabilityRound(dcount);
+			for (long i = lcount; i > 0; i--) FxUtil.ender(player, Conf.fxEnderRandomMaxLen);
+		}
+		
+		// Vampire sun reactions
+		if (survival && this.vampire())
+		{
+			// Buffs
+			if (this.temp() > Conf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, player, Conf.sunNauseaTicks);
+			if (this.temp() > Conf.sunSlowTemp)      FxUtil.ensure(PotionEffectType.SLOW, player, Conf.sunSlowTicks);
+			if (this.temp() > Conf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, player, Conf.sunBlindnessTicks);
+			if (this.temp() > Conf.sunBurnTemp)      FxUtil.ensureBurn(player, Conf.sunBurnTicks);
+			
+			// Fx
+			double dsmokes = Conf.sunSmokesPerTempAndTick * this.temp * ticks;
+			long lsmokes = MUtil.probabilityRound(dsmokes);
+			for (long i = lsmokes; i > 0; i--) FxUtil.smoke(player);
+			
+			double dflames = Conf.sunFlamesPerTempAndTick * this.temp * ticks;
+			long lflames = MUtil.probabilityRound(dflames);
+			for (long i = lflames; i > 0; i--) FxUtil.flame(player);
+		}
+	}
+	
+	// -------------------------------------------- //
+	// OFFER AND ACCEPT INFECTION
+	// -------------------------------------------- //
+	public void infectionAccept()
 	{
 		VPlayer vyou = this.infectionOfferedFrom;
-		if (vyou == null || System.currentTimeMillis() - this.infectionOfferedAtTicks > Conf.cmdInfectMillisRecentTolerance)
+		Player me = this.getPlayer();
+		if (vyou == null || vyou.isOffline() || me == null || System.currentTimeMillis() - this.infectionOfferedAtTicks > Conf.infectOfferToleranceTicks)
 		{
 			this.msg(Lang.infectNoRecentOffer);
 			return;
 		}
-		
-		Player me = this.getPlayer();
 		Player you = vyou.getPlayer();
 		
 		// Check the player-distance
 		Location l1 = me.getLocation();
 		Location l2 = you.getLocation();
 		
-		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
+		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.infectOfferMaxDistance)
 		{
 			me.sendMessage(Txt.parse(Lang.infectYouMustStandCloseToY, you.getDisplayName()));
 			return;
 		}
 		
-		this.msg(Lang.infectYouDrinkSomeOfXBlood, you.getDisplayName());
+		//this.msg(Lang.infectYouDrinkSomeOfXBlood, you.getDisplayName());
 		vyou.msg(Lang.infectXDrinkSomeOfYourBlood, me.getDisplayName());
-		
-		if (this.isVampire()) return;
-		
-		this.alterInfection(5.0);
 		you.damage(2);
+		
+		if (this.vampire()) return;
+		this.infectionAdd(5.0D, InfectionReason.OFFER, vyou);
 	}
 	
-	public void offerInfectionTo(VPlayer vyou)
+	public void infectionOffer(VPlayer vyou)
 	{
 		Player me = this.getPlayer();
 		Player you = vyou.getPlayer();
@@ -188,7 +362,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		Location l1 = me.getLocation();
 		Location l2 = you.getLocation();
 		
-		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
+		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.infectOfferMaxDistance)
 		{
 			this.msg(Lang.infectYouMustStandCloseToY, you.getDisplayName());
 			return;
@@ -198,55 +372,28 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		vyou.infectionOfferedAtTicks = System.currentTimeMillis();
 		vyou.msg(Lang.infectXOffersToInfectYou, me.getDisplayName());
 		
-		// TODO: WHAT's THIS FOR!?!?!?!?!?!?!
 		List<MCommand> cmdc = new ArrayList<MCommand>();
-		cmdc.add(p.cmdBase);
-		vyou.msg(Lang.infectTypeXToAccept, p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false)); //TODO: Link to the accept command!
+		cmdc.add(P.p.cmdBase);
+		vyou.msg(Lang.infectTypeXToAccept, P.p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false));
 		this.msg(Lang.infectYouOfferToInfectX, you.getDisplayName());
 	}
 	
 	// -------------------------------------------- //
-	// Food. The food is handled as a double from 0 to 20
-	// This system uses an accumulator to wrap the int in a double
+	// TRUCE
 	// -------------------------------------------- //
-	
-	public void foodAdd(double food)
+	public void tickTruce(long ticks)
 	{
-		this.foodAccumulator += food;
-		this.foodApplyAccumulator();
+		if ( ! this.vampire()) return;
+		if ( ! this.truceIsBroken()) return;
+		
+		this.truceBreakTicksLeftAlter(-ticks);
+		
+		if ( ! this.truceIsBroken())
+		{
+			this.truceRestore();
+		}
 	}
 	
-	public void foodApplyAccumulator()
-	{
-		int deltaFood = (int)Math.floor(this.foodAccumulator);
-		this.foodAccumulator = this.foodAccumulator - deltaFood;
-		
-		Player player = this.getPlayer();
-		
-		int targetFood = limitNumber(player.getFoodLevel() + deltaFood, 0, 20);
-		player.setFoodLevel(targetFood);
-	}
-	
-	public void healthAdd(double health)
-	{
-		this.healthAccumulator += health;
-		this.healthApplyAccumulator();
-	}
-	
-	public void healthApplyAccumulator()
-	{
-		int deltaHealth = (int)Math.floor(this.healthAccumulator);
-		this.healthAccumulator = this.healthAccumulator - deltaHealth;
-		
-		Player player = this.getPlayer();
-		
-		int targetHealth = limitNumber(player.getHealth() + deltaHealth, 0, 20);
-		player.setHealth(targetHealth);
-	}
-	
-	// -------------------------------------------- //
-	// Monster Truce Feature (Passive)
-	// -------------------------------------------- //
 	public boolean truceIsBroken()
 	{
 		return this.truceBreakTicksLeft != 0;
@@ -258,13 +405,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		{
 			this.msg(Lang.messageTruceBroken);
 		}
-		this.truceBreakTimeLeftSet(Conf.truceBreakTicks);
+		this.truceBreakTicksLeftSet(Conf.truceBreakTicks);
 	}
 	
 	public void truceRestore()
 	{
 		this.msg(Lang.messageTruceRestored);
-		this.truceBreakTimeLeftSet(0);
+		this.truceBreakTicksLeftSet(0);
 		
 		Player me = this.getPlayer();
 		
@@ -276,7 +423,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 				continue;
 			}
 			
-			if ( ! Conf.creatureTypeTruceMonsters.contains(EntityUtil.creatureTypeFromEntity(entity)))
+			if ( ! Conf.truceEntityTypes.contains(entity.getType()))
 			{
 				continue;
 			}
@@ -292,44 +439,32 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		}
 	}
 	
-	public void truceBreakAdvanceTime(long ticks)
-	{
-		if ( ! this.truceIsBroken()) return;
-		
-		this.truceBreakTimeLeftAlter(-ticks);
-		
-		if ( ! this.truceIsBroken())
-		{
-			this.truceRestore();
-		}
-	}
-	
-	public long truceBreakTimeLeftGet()
+	public long truceBreakTicksLeftGet()
 	{
 		return this.truceBreakTicksLeft;
 	}
 	
-	private void truceBreakTimeLeftSet(long milliseconds)
+	private void truceBreakTicksLeftSet(long ticks)
 	{
-		if (milliseconds < 0)
+		if (ticks < 0)
 		{
 			this.truceBreakTicksLeft = 0;
 		}
 		else
 		{
-			this.truceBreakTicksLeft = milliseconds;
+			this.truceBreakTicksLeft = ticks;
 		}
 	}
 	
-	private void truceBreakTimeLeftAlter(long delta)
+	private void truceBreakTicksLeftAlter(long delta)
 	{
-		this.truceBreakTimeLeftSet(this.truceBreakTimeLeftGet() + delta);
+		this.truceBreakTicksLeftSet(this.truceBreakTicksLeftGet() + delta);
 	}
 	
 	// -------------------------------------------- //
 	// Jump ability
 	// -------------------------------------------- //
-	public void jump(double deltaSpeed, boolean upOnly)
+	/*public void jump(double deltaSpeed, boolean upOnly)
 	{
 		Player player = this.getPlayer();
 		
@@ -353,166 +488,9 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		vjadd.setY(vjadd.getY() / 2.5D); // Compensates for the "in air friction" that not applies to y-axis.
 		
 		player.setVelocity(player.getVelocity().add(vjadd));
-	}
-	
-	// -------------------------------------------- //
-	// Combustion
-	// -------------------------------------------- //
-	public boolean combustAdvanceTime(long ticks)
-	{
-		if ( ! this.standsInSunlight()) return false;
-		
-		Player player = this.getPlayer();
-		
-		player.setFireTicks((int) (ticks + Conf.combustFireExtinguishTicks));
-		
-		return true;
-	}
-	
-	public boolean standsInSunlight()
-	{
-		Player player = this.getPlayer();
-		
-		// No need to set on fire if the water will put the fire out at once.
-		Material material = player.getLocation().getBlock().getType();
-		World playerWorld = player.getWorld();
-		
-		if (player.getWorld().getEnvironment() == Environment.NETHER) return false;
-		if (this.worldTimeIsNight()) return false;
-		if (material == Material.STATIONARY_WATER) return false;
-		if (material == Material.WATER) return false;
-		if (playerWorld.hasStorm()) return false;
-		if (playerWorld.isThundering()) return false;
-		if (this.isUnderRoof()) return false;
-		
-		return true;
-	}
-	
-	public boolean isUnderRoof()
-	{
-		/*
-		We start checking opacity 2 blocks up.
-		As Max Y is 127 there CAN be a roof over the player if he is standing in block 125:
-		127 Solid Block
-		126 
-		125 Player
-		However if he is standing in 126 there is no chance.
-		*/
-		boolean retVal = false;
-		Block blockCurrent = this.getPlayer().getLocation().getBlock();
-
-		if (this.getPlayer().getLocation().getY() >= 126)
-		{
-			retVal = false;
-		}
-		else
-		{
-			blockCurrent = blockCurrent.getRelative(BlockFace.UP, 1); // I said 2 up yes. Another 1 is added in the beginning of the loop.
-				
-			double opacityAccumulator = 0;
-			Double opacity;
-		
-			while (blockCurrent.getY() + 1 <= 127) 
-			{
-				blockCurrent = blockCurrent.getRelative(BlockFace.UP);
-			
-				opacity = Conf.materialOpacity.get(blockCurrent.getType());
-				if (opacity == null)
-				{
-					retVal = true; // Blocks not in that map have opacity 1;
-					break;
-				}
-			
-				opacityAccumulator += opacity;
-				if (opacityAccumulator >= 1.0D)
-				{
-					retVal = true;
-					break;
-				}
-			}
-		}
-		return retVal;
-	}
-	
-	public boolean worldTimeIsNight()
-	{
-		long time = this.getPlayer().getWorld().getTime() % 24000;
-		
-		if (time < Conf.combustFromTime || time > Conf.combustToTime) return true;
-		
-		return false; 
-	}
-	
-	// -------------------------------------------- //
-	// Infection 
-	// -------------------------------------------- //
+	}*/
 	
 	
-	
-	public void infectionHeal(double amount)
-	{
-		if (this.isVampire())
-		{
-			return;
-		}
-		
-		double current = this.getInfection();
-		
-		if (current == 0D )
-		{
-			// The player is already completely healthy
-			return;
-		}
-		
-		current -= amount; 
-		
-		if (current <= 0D)
-		{
-			this.setInfection(0D);
-			this.msg(Lang.infectionMessageCured);
-			return;
-		}
-		
-		this.setInfection(current);
-		this.msg(Lang.infectionMessageHeal);
-	}
-	
-	// -------------------------------------------- //
-	// Infection Natural Advancement
-	// -------------------------------------------- //
-	
-	public void infectionAdvanceTime(long ticks)
-	{
-		this.infectionAdvance(ticks * Conf.infectionProgressPerTick);
-	}
-	
-	public void infectionAdvance(double amount)
-	{
-		if (this.isVampire()) return; 
-		
-		int oldMessageIndex = this.infectionGetMessageIndex();
-		this.alterInfection(amount);
-		int newMessageIndex = this.infectionGetMessageIndex();
-		
-		if (this.getInfection() >= 100)
-		{
-			this.turn();
-			return;
-		}
-		
-		if (oldMessageIndex != newMessageIndex)
-		{
-			//P.p.log("WOOOP");
-			this.getPlayer().damage(1);
-			this.msg(Lang.infectionMessagesProgress.get(newMessageIndex));
-			this.msg(Lang.infectionBreadHintMessages.get(MCore.random.nextInt(Lang.infectionBreadHintMessages.size())));
-		}
-	}
-	
-	public int infectionGetMessageIndex()
-	{
-		return (int)((Lang.infectionMessagesProgress.size()+1) * this.getInfection() / 100D) - 1;
-	}
 	
 	// -------------------------------------------- //
 	// Close Combat
@@ -520,54 +498,26 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	
 	public double getDamageDealtFactor()
 	{
-		if (this.intendingToInfect)
-		{
-			return Conf.damageDealtFactorWithIntent;
-		}
+		if (this.intend) return Conf.damageDealtFactorWithIntent;
 		return Conf.damageDealtFactorWithoutIntent;
 	}
 	
 	public double getDamageReceivedFactor()
 	{
-		if (this.intendingToInfect)
-		{
-			return Conf.damageReceivedFactorWithIntent;
-		}
+		if (this.intend) return Conf.damageReceivedFactorWithIntent;
 		return Conf.damageReceivedFactorWithoutIntent;
 	}
 	
 	public double infectionGetRiskToInfectOther()
 	{
-		if (this.intendingToInfect)
-		{
-			return Conf.infectionRiskAtCloseCombatWithIntent;
-		}
+		if (this.intend) return Conf.infectionRiskAtCloseCombatWithIntent;
 		return Conf.infectionRiskAtCloseCombatWithoutIntent;
-	}
-	
-	public void infectionContract(VPlayer fromvplayer)
-	{
-		if (this.isVampire()) return;
-		
-		if (fromvplayer != null && this.makerId == null)
-		{
-			this.makerId = fromvplayer.getId();
-		}
-		
-		p.log(this.getId() + " contracted vampirism infection."); // TODO: Better messages and
-		
-		this.infectionAdvance(1);
-	}
-	
-	public void infectionContractRisk(VPlayer fromvplayer)
-	{
-		if (MCore.random.nextDouble() > fromvplayer.infectionGetRiskToInfectOther()) return;
-		this.infectionContract(fromvplayer);
 	}
 
 	// -------------------------------------------- //
-	// Assigned Permission Update
+	// UPDATE 
 	// -------------------------------------------- //
+	
 	public void updateVampPermission()
 	{
 		if (this.permA != null)
@@ -577,16 +527,16 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		this.permA = this.getPlayer().addAttachment(P.p);
 		
-		if (this.isVampire())
+		if (this.vampire())
 		{
-			for (Entry<String, Boolean> entry : Conf.giveThesePermissionsToVampires.entrySet())
+			for (Entry<String, Boolean> entry : Conf.permissionsGrantVampire.entrySet())
 			{
 				this.permA.setPermission(entry.getKey(), entry.getValue());
 			}
 		}
 		else
 		{
-			for (Entry<String, Boolean> entry : Conf.giveThesePermissionsToNonVampires.entrySet())
+			for (Entry<String, Boolean> entry : Conf.permissionsGrantHuman.entrySet())
 			{
 				this.permA.setPermission(entry.getKey(), entry.getValue());
 			}
@@ -596,21 +546,52 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		//p.log(this.getId() + " had vamp permission updated to " + this.getPlayer().hasPermission(Permission.IS.node));
 	}
 	
-	// -------------------------------------------- //
-	// Commonly used limiter of double
-	// -------------------------------------------- //
-	public static <T extends Number> T limitNumber(T d, T min, T max)
+	public void updateSpoutFeatures()
 	{
-		if (d.doubleValue() < min.doubleValue())
-		{
-			return min;
-		}
+		Player player = this.getPlayer();
+		if (player == null) return;
+		SpoutPlayer splayer = SpoutManager.getPlayer(player);
 		
-		if (d.doubleValue() > max.doubleValue())
-		{
-			return max;
-		}
+		Double multGravity = null;
+		Double multSwimming = null;
+		Double multWalking = null;
+		Double multJumping = null;
+		Double multAirSpeed = null;
+		String noSpoutWarn = null;		
 		
-		return d;
+		if (this.vampire() && this.bloodlust())
+		{
+			multGravity = Conf.multGravityBloodlust;
+			multSwimming = Conf.multSwimmingBloodlust;
+			multWalking = Conf.multWalkingBloodlust;
+			multJumping = Conf.multJumpingBloodlust;
+			multAirSpeed = Conf.multAirSpeedBloodlust;
+			noSpoutWarn = Lang.noSpoutWarnBloodlust;
+		}
+		else if (this.vampire())
+		{
+			multGravity = Conf.multGravityVamp;
+			multSwimming = Conf.multSwimmingVamp;
+			multWalking = Conf.multWalkingVamp;
+			multJumping = Conf.multJumpingVamp;
+			multAirSpeed = Conf.multAirSpeedVamp;
+			noSpoutWarn = Lang.noSpoutWarnVamp;
+		}
+		else
+		{
+			multGravity = Conf.multGravityHuman;
+			multSwimming = Conf.multSwimmingHuman;
+			multWalking = Conf.multWalkingHuman;
+			multJumping = Conf.multJumpingHuman;
+			multAirSpeed = Conf.multAirSpeedHuman;
+			noSpoutWarn = Lang.noSpoutWarnHuman;
+		}
+
+		if (multGravity != null) splayer.setGravityMultiplier(multGravity);
+		if (multSwimming != null) splayer.setSwimmingMultiplier(multSwimming);
+		if (multWalking != null) splayer.setWalkingMultiplier(multWalking);
+		if (multJumping != null) splayer.setJumpingMultiplier(multJumping);
+		if (multAirSpeed != null) splayer.setAirSpeedMultiplier(multAirSpeed);
+		if ( ! splayer.isSpoutCraftEnabled() && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
 	}
 }
