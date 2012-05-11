@@ -24,7 +24,7 @@ permissions:
   vampire.set.vampire.true:  {description: instantly turn player, default: false}
   vampire.set.vampire.false: {description: instantly cure a vampire, default: false}
   vampire.set.infection:     {description: set infection (0 to 1), default: false}
-  vampire.set.food:          {description: set foodl (0 to 20), default: false}
+  vampire.set.food:          {description: set food (0 to 20), default: false}
   vampire.set.health:        {description: set health (0 to 20), default: false}
 # -------------------------------------------- #
 # STAR NOTATION

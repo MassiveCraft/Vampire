@@ -221,20 +221,22 @@ public class Conf
 	
 	public static double opacityPerArmorPice = 0.125d;
 	public static double baseRad = -0.2d;
-	public static double tempPerRadAndTick = 1d / (5d * 20d); // it should take 5 seconds to reach max temp in maximum sunlight.
+	public static double tempPerRadAndTick = 1d / (10d * 20d); // it should take 10 seconds to reach max temp in maximum sunlight.
 	
 	public static double sunNauseaTemp = 0.20d;
-	public static double sunSlowTemp = 0.30d;
-	public static double sunBlindnessTemp = 0.40d;
-	public static double sunBurnTemp = 0.50d;
+	public static double sunWeaknessTemp = 0.30d;
+	public static double sunSlowTemp = 0.50d;
+	public static double sunBlindnessTemp = 0.80d;
+	public static double sunBurnTemp = 0.90d;
 	
 	public static int sunNauseaTicks = 10*20;
+	public static int sunWeaknessTicks = 10*20;
 	public static int sunSlowTicks = 10*20;
 	public static int sunBlindnessTicks = 10*20;
 	public static int sunBurnTicks = 3*20;	
 	
-	public static double sunSmokesPerTempAndTick = 1.00d;
-	public static double sunFlamesPerTempAndTick = 0.05d;
+	public static double sunSmokesPerTempAndTick = 0.60d;
+	public static double sunFlamesPerTempAndTick = 0.02d;
 	
 	//We assume opacity 1 for all materials not in this map
 	private final static transient Double AIR = 0D;

@@ -327,6 +327,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		{
 			// Buffs
 			if (this.temp() > Conf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, player, Conf.sunNauseaTicks);
+			if (this.temp() > Conf.sunWeaknessTemp)  FxUtil.ensure(PotionEffectType.WEAKNESS, player, Conf.sunWeaknessTicks);
 			if (this.temp() > Conf.sunSlowTemp)      FxUtil.ensure(PotionEffectType.SLOW, player, Conf.sunSlowTicks);
 			if (this.temp() > Conf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, player, Conf.sunBlindnessTicks);
 			if (this.temp() > Conf.sunBurnTemp)      FxUtil.ensureBurn(player, Conf.sunBurnTicks);
