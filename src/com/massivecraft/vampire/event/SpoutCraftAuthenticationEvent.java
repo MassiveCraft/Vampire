@@ -39,7 +39,7 @@ public class SpoutCraftAuthenticationEvent extends VampireEvent
 	// -------------------------------------------- //
 	
 	protected final static int pollEachXTicks = 3;
-	protected int pollsLeft = 5 * 20 / pollEachXTicks;
+	protected int pollsLeft = 5 * 20 / pollEachXTicks; // about 5 seconds
 	protected int taskId;
 	protected void startPolling()
 	{
