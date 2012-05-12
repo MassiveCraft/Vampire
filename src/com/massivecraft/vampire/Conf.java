@@ -142,10 +142,8 @@ public class Conf
 	// COMBAT
 	// -------------------------------------------- //
 	
-	public static double damageDealtFactorWithoutIntent = 1.2;
-	public static double damageDealtFactorWithIntent = 0.65;
-	public static double damageReceivedFactorWithoutIntent = 0.80;
-	public static double damageReceivedFactorWithIntent = 1.0;
+	public static double combatDamageFactorWithoutBloodlust = 1.0;
+	public static double combatDamageFactorWithBloodlust = 1.2;
 	
 	private final static int damageDiamondSword = 7;
 	public static int combatWoodDamage = 3*damageDiamondSword;
@@ -172,7 +170,6 @@ public class Conf
 	
 	// It will take you 1h to turn
 	public static double infectionPerTick = 1D / (20*60*60D);
-	//public static double infectionPerBread = -0.2D;
 	
 	public static int infectionProgressNauseaTicks = 12*20;
 	public static int infectionProgressDamage = 1;
@@ -392,6 +389,9 @@ public class Conf
 	// -------------------------------------------- //
 	
 	public static int altarSearchRadius = 10;
+	public static double altarMinRatioForInfo = 0;
+	
+	
 	
 	public static AltarEvil altarEvil = new AltarEvil();
 	public static AltarGood altarGood = new AltarGood();	

@@ -11,6 +11,7 @@ permissions:
   vampire.is.human:          {description: An example permission. See the config., default: false}
   vampire.show.self:         {description: show info on yourself, default: false}
   vampire.show.other:        {description: show info on others, default: false}
+  vampire.shriek:            {description: shriek, default: false}
   vampire.mode.bloodlust:    {description: use bloodlust, default: false}
   vampire.mode.intent:       {description: use intent to infect, default: false}
   vampire.altar.evil:        {description: use an evil altar, default: false}
@@ -84,6 +85,7 @@ permissions:
     children:
       vampire.kit.miniplayer: true
       vampire.show.self: true
+      vampire.shriek: true
       vampire.mode.*: true
       vampire.altar.*: true
       vampire.trade.*: true

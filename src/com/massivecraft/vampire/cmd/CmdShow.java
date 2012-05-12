@@ -74,8 +74,9 @@ public class CmdShow extends VCommand
 		//msg(vplayer.bloodlust() ? Lang.xIsOn : Lang.xIsOff, "Bloodlust");
 		//msg(vplayer.intend() ? Lang.xIsOn : Lang.xIsOff, "Infect intent");
 		
-		msg("<k>Bloodlust " + (vplayer.bloodlust() ? Lang.on : Lang.off));
-		msg("<k>Infect intent " + (vplayer.intend() ? Lang.on : Lang.off));
+		this.msg(vplayer.bloodlustMsg());
+		this.msg(vplayer.intendMsg());
+		
 		msg("<k>Temperature <v>%d%%", (int)Math.round(vplayer.temp()*100));
 		if (player == null)
 		{

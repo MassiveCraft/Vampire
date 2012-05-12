@@ -10,6 +10,7 @@ public class CmdBase extends VCommand
 	public CmdModeIntend cmdModeIntend = new CmdModeIntend();
 	public CmdOffer cmdOffer = new CmdOffer();
 	public CmdAccept cmdAccept = new CmdAccept();
+	//public CmdShriek cmdShriek = new CmdShriek();
 	public CmdVersion cmdVersion = new CmdVersion();
 	public CmdList cmdList = new CmdList();
 	public CmdSet cmdSet = new CmdSet();
@@ -25,6 +26,7 @@ public class CmdBase extends VCommand
 		this.addSubCommand(cmdModeIntend);
 		this.addSubCommand(cmdOffer);
 		this.addSubCommand(cmdAccept);
+		//this.addSubCommand(cmdShriek);
 		this.addSubCommand(cmdVersion);
 		this.addSubCommand(cmdList);
 		this.addSubCommand(cmdSet);

@@ -57,7 +57,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (this.vampire)
 		{
 			this.msg(Lang.vampireTrue);
-			this.fxScreamRun();
+			this.fxShriek();
 			this.fxSmokeBurstRun();
 			this.fxSmokeRun();
 		}
@@ -134,7 +134,12 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// FIELD: intending - Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
 	protected boolean intend = false;
 	public boolean intend() { return intend; }
-	public void intend(boolean val) { this.intend = val; this.msg(Lang.boolIsY("Infect intent", val)); }
+	public void intend(boolean val)
+	{
+		this.intend = val;
+		this.msg(this.intendMsg());
+	}
+	public String intendMsg() { return Lang.boolIsY("Infect intent", this.intend())+ " " + Lang.quotaIsPercent("Combat infect risk", this.combatInfectRisk()); }
 	
 	// FIELD: bloodlust - Is bloodlust activated?
 	protected boolean bloodlust = false;
@@ -170,9 +175,10 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			}
 		}
 		this.bloodlust = val;
-		this.msg(Lang.boolIsY("Bloodlust", val));
+		this.msg(this.bloodlustMsg());
 		this.updateSpoutMovement();
 	}
+	public String bloodlustMsg() { return Lang.boolIsY("Bloodlust", this.bloodlust()) + " " + Lang.quotaIsPercent("combat damage", this.combatDamageFactor()); }
 	
 	// -------------------------------------------- //
 	// TRANSIENT FIELDS
@@ -229,8 +235,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void fxEnderTicks(int val) { this.fxEnderTicks = val; }
 	public void fxEnderRun() { this.fxEnderTicks = 10 * 20; }
 	
-	// FX: Scream
-	public void fxScreamRun()
+	// FX: Shriek
+	public void fxShriek()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
@@ -689,21 +695,15 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// COMBAT
 	// -------------------------------------------- //
 	
-	public double getDamageDealtFactor()
+	public double combatDamageFactor()
 	{
-		if (this.intend) return Conf.damageDealtFactorWithIntent;
-		return Conf.damageDealtFactorWithoutIntent;
+		if (this.bloodlust()) return Conf.combatDamageFactorWithBloodlust;
+		return Conf.combatDamageFactorWithoutBloodlust;
 	}
 	
-	public double getDamageReceivedFactor()
+	public double combatInfectRisk()
 	{
-		if (this.intend) return Conf.damageReceivedFactorWithIntent;
-		return Conf.damageReceivedFactorWithoutIntent;
-	}
-	
-	public double infectionGetRiskToInfectOther()
-	{
-		if (this.intend) return Conf.infectionRiskAtCloseCombatWithIntent;
+		if (this.intend()) return Conf.infectionRiskAtCloseCombatWithIntent;
 		return Conf.infectionRiskAtCloseCombatWithoutIntent;
 	}
 }

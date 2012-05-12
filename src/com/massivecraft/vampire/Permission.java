@@ -10,6 +10,7 @@ public enum Permission
 	IS_HUMAN("is.human"),
 	SHOW_SELF("show.self"),
 	SHOW_OTHER("show.other"),
+	SHRIEK("shriek"),
 	MODE_BLOODLUST("mode.bloodlust"),
 	MODE_INTENT("mode.intent"),
 	ALTAR_EVIL("altar.evil"),

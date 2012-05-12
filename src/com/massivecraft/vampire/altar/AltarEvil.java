@@ -4,13 +4,13 @@ import java.util.HashMap;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore3.util.Txt;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.VPlayers;
+import com.massivecraft.vampire.util.FxUtil;
 
 public class AltarEvil extends Altar
 {
@@ -35,37 +35,43 @@ public class AltarEvil extends Altar
 	}
 
 	@Override
-	public void applyEffect(Player player)
+	public boolean worship(VPlayer vplayer, Player player)
 	{
-		player.sendMessage(Txt.parse(Lang.altarEvilUse));
-		VPlayer vplayer = VPlayers.i.get(player);
-		vplayer.infectionAdd(0.01D, InfectionReason.ALTAR, null);
-		
-		vplayer.fxSmokeRun();
+		return Permission.ALTAR_EVIL.has(player, true);
+	}
+
+	@Override
+	public boolean isPaymentRequired(VPlayer vplayer, Player player)
+	{
+		return vplayer.healthy();
+	}
+
+	@Override
+	public void effectFree(VPlayer vplayer, Player player)
+	{
+		if (vplayer.vampire())
+		{
+			vplayer.msg(Lang.altarEvilFreeVampire);
+		}
+		else if (vplayer.infected())
+		{
+			vplayer.msg(Lang.altarEvilFreeInfected);
+		}
+	}
+
+	@Override
+	public void effectPaid(VPlayer vplayer, Player player)
+	{
 		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+		vplayer.msg(Lang.altarEvilPaid);
+		vplayer.infectionAdd(0.01D, InfectionReason.ALTAR, null);
 	}
 	
 	@Override
-	public boolean validateUser(Player player)
+	public void effectCommon(VPlayer vplayer, Player player)
 	{
-		if ( ! Permission.ALTAR_EVIL.has(player, true)) return false;
-		
-		VPlayer vplayer = VPlayers.i.get(player);
-
-		// Is Infected
-		if (vplayer.infected())
-		{
-			player.sendMessage(Txt.parse(Lang.altarEvilAlreadyInfected));
-			return false;
-		}
-		
-		// Is Vampire
-		if (vplayer.vampire())
-		{
-			player.sendMessage(Txt.parse(Lang.altarEvilAlreadyVampire));
-			return false;
-		}
-		
-		return true;
+		vplayer.msg(Lang.altarEvilCommon);
+		vplayer.fxSmokeRun();
+		FxUtil.ensure(PotionEffectType.BLINDNESS, player, 12*20);
 	}
 }

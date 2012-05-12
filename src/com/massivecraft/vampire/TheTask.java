@@ -1,6 +1,5 @@
 package com.massivecraft.vampire;
 
-
 public class TheTask implements Runnable
 {
 	@Override

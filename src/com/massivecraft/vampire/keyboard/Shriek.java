@@ -4,21 +4,23 @@ import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
 
-public class BloodlustOn extends VampireKeyBinding 
+public class Shriek extends VampireKeyBinding 
 {
 	@Override
 	public void pressed(KeyBindingEvent event, SpoutPlayer splayer, VPlayer vplayer)
 	{
-		vplayer.bloodlust(true);
+		if ( ! Permission.SHRIEK.has(splayer, true)) return;
+		vplayer.fxShriek();
 	}
 
 	// The Single Instance
-	private BloodlustOn()
+	private Shriek()
 	{
 		this.defaultKey = Keyboard.KEY_X;
 	}
-	private static BloodlustOn instance = new BloodlustOn();
-	public static BloodlustOn get() { return instance; } 
+	private static Shriek instance = new Shriek();
+	public static Shriek get() { return instance; } 
 }

@@ -5,11 +5,9 @@ import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore3.util.Txt;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.VPlayers;
 
 public class AltarGood extends Altar
 {
@@ -32,44 +30,45 @@ public class AltarGood extends Altar
 		this.recipe.materialQuantities.put(Material.SUGAR, 20);
 		this.recipe.materialQuantities.put(Material.WHEAT, 20);
 	}
+	
+	@Override
+	public boolean worship(VPlayer vplayer, Player player)
+	{
+		return Permission.ALTAR_GOOD.has(player, true);
+	}
 
 	@Override
-	public void applyEffect(Player player)
+	public boolean isPaymentRequired(VPlayer vplayer, Player player)
 	{
-		VPlayer vplayer = VPlayers.i.get(player);
-		
-		vplayer.fxEnderRun();
-		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-		
-		// Is Infected
-		if (vplayer.infected())
+		return vplayer.vampire();
+	}
+
+	@Override
+	public void effectFree(VPlayer vplayer, Player player)
+	{
+		if (vplayer.healthy())
 		{
-			player.sendMessage(Txt.parse(Lang.altarGoodInfected));
+			vplayer.msg(Lang.altarGoodFreeHealthy);
+		}
+		else if (vplayer.infected())
+		{
+			vplayer.msg(Lang.altarGoodFreeInfected);
 			vplayer.infection(0);
-			player.sendMessage(Txt.parse(Lang.infectionCured));
 		}
-		
-		if (vplayer.vampire())
-		{
-			player.sendMessage(Txt.parse(Lang.altarGoodUse));
-			vplayer.vampire(false);
-		}
+	}
+
+	@Override
+	public void effectPaid(VPlayer vplayer, Player player)
+	{
+		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+		vplayer.msg(Lang.altarGoodPaid);
+		vplayer.vampire(false);
 	}
 	
 	@Override
-	public boolean validateUser(Player player)
+	public void effectCommon(VPlayer vplayer, Player player)
 	{
-		if ( ! Permission.ALTAR_GOOD.has(player, true)) return false;
-		
-		VPlayer vplayer = VPlayers.i.get(player);
-		
-		// Is Healthy
-		if (vplayer.healthy())
-		{
-			player.sendMessage(Txt.parse(Lang.altarGoodHealthy));
-			return false;
-		}
-		
-		return true;
+		vplayer.msg(Lang.altarGoodCommon);
+		vplayer.fxEnderRun();
 	}
 }

@@ -33,7 +33,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.massivecraft.mcore3.MCore;
 import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.mcore3.util.PlayerUtil;
-import com.massivecraft.mcore3.util.Txt;
 import com.massivecraft.vampire.event.SpoutCraftAuthenticationEvent;
 import com.massivecraft.vampire.util.FxUtil;
 
@@ -63,7 +62,7 @@ public class TheListener implements Listener
 		if (vplayer.vampire() == false) return;
 		
 		// ... burns up with a violent scream ;,,;
-		vplayer.fxScreamRun();
+		vplayer.fxShriek();
 		vplayer.fxFlameBurstRun();
 		vplayer.fxSmokeBurstRun();
 		
@@ -321,20 +320,12 @@ public class TheListener implements Listener
 		if (vampire == null) return;
 		if ( ! vampire.vampire()) return;
 		
-		// ... Then modify damage!
-		double damage = event.getDamage();
+		// ... and a wooden item was used ...
 		Material itemMaterial = damager.getItemInHand().getType();
-		if (Conf.combatWoodMaterials.contains(itemMaterial))
-		{
-			damage = Conf.combatWoodDamage; // Just as much as a diamond sword.
-			vampire.msg(Lang.combatWoodWarning, Txt.getMaterialName(itemMaterial));
-		}
-		else
-		{
-			damage *= vampire.getDamageReceivedFactor();
-		}
+		if ( ! Conf.combatWoodMaterials.contains(itemMaterial)) return;
 		
-		event.setDamage((int) MUtil.probabilityRound(damage));
+		// ... Then modify damage!
+		event.setDamage(Conf.combatWoodDamage);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -350,7 +341,7 @@ public class TheListener implements Listener
 		
 		// ... Then modify damage!
 		double damage = event.getDamage();
-		damage *= vampire.getDamageDealtFactor();
+		damage *= vampire.combatDamageFactor();
 		event.setDamage((int) MUtil.probabilityRound(damage));
 	}
 	
@@ -400,7 +391,7 @@ public class TheListener implements Listener
 		if ( ! Permission.COMBAT_CONTRACT.has(human.getPlayer())) return;
 		
 		// ... Then there is a risk for infection ...
-		if (MCore.random.nextDouble() > vampire.infectionGetRiskToInfectOther()) return;
+		if (MCore.random.nextDouble() > vampire.combatInfectRisk()) return;
 		
 		InfectionReason reason = vampire.intend() ? InfectionReason.COMBAT_INTENDED : InfectionReason.COMBAT_MISTAKE;
 		human.infectionAdd(0.01D, reason, vampire);

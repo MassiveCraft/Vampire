@@ -18,12 +18,15 @@ public class Lang
 	public static String onlyVampsCanX = "<b>Only vampires can %s.";
 	
 	public static String xIsY = "<k>%s: <v>%s";
-	public static String on = "<lime>ON";
-	public static String off = "<lime>OFF";
+	public static String on = "<lime>ON  ";
+	public static String off = "<rose>OFF";
 	public static String boolIsY(String boolName, boolean val) { return String.format(xIsY, boolName, val ? on : off); }
-
-	public static String vampireTrue = "<b>Your heart stops. You don't breathe anymore. You are now a VAMPIRE!";
-	public static String vampireFalse = "<g>You have been cured and is once again healthy and alive.<b> But will you miss the taste of blood on your lips? When you sleep, will you taste the salt and copper flowing over your tongue? Go, mortal. Bask in your precious sunlight.";
+	public static String quotaIsPercent(String quotaName, double val) { return String.format(xIsY, quotaName, percent(val)); }
+	public static String percent(double quota) { return String.format("%.1f%%", quota*100); }
+	
+	
+	public static String vampireTrue = "<b><strong>You are now a vampire!";
+	public static String vampireFalse = "<g><strong>You were cured from vampirism!";
 	
 	public static String tradeSelf = "<i>You drink some of your own blood. Forever alone :'/";
 	public static String tradeNotClose = "<b>You must stand close to <h>%s <i>for this to work.";
@@ -74,28 +77,31 @@ public class Lang
 	);
 	
 	public static List<String> infectionHint = MUtil.list(
-		"<i>Altar Hint 1",
-		"<i>Altar Hint 2",
-		"<i>Altar Hint 3"
+		"<i>You may want use a good altar.",
+		"<i>Perhaps you should visit a temple of light?",
+		"<i>Only bright light may purge you of this darkness",
+		"<i>You want to touch a lapis lazuli block"
 	);
 	
 	public static String foodCantEat = "<b>Vampires can't eat %s.";
 
-	public static String altarIncomplete = "<i>This is an incomplete %s. This is missing:";
+	public static String altarIncomplete = "<i>An incomplete %s. These blocks are missing:";
 	public static String altarUseIngredientsSuccess = "<i>You use these items on the altar:";
 	public static String altarUseIngredientsFail = "<i>To use it you need to collect these ingredients:";
 	
 	public static String altarEvilName = "evil altar";
-	public static String altarEvilDesc = "<i>The very sight of this altar makes you feel cold and corrupted down to your bones.";
-	public static String altarEvilUse = "<i>Tendrils of power reach into your very soul and forever change you, for better or worse?";
-	public static String altarEvilAlreadyInfected = "<i>You feel some of it's energy inside you...";
-	public static String altarEvilAlreadyVampire = "<i>You understand this altar can turn people into vampires. But it's of no use to you as your'e already one.";
+	public static String altarEvilDesc = "<i>This altar looks dark and evil.";
+	public static String altarEvilCommon = "<i>You meditate and let darkness surround you...";
+	public static String altarEvilFreeVampire = "<i>...you feel as one with the darkness.";
+	public static String altarEvilFreeInfected = "<i>...some of the darkness already dwells within you.";
+	public static String altarEvilPaid = "<i>...an intense darkness purge you of light.";
 	
 	public static String altarGoodName = "good altar";
-	public static String altarGoodDesc = "<i>This altar looks bright and nice.";
-	public static String altarGoodUse = "<i>Energy rushes through you and you feel warm inside.";
-	public static String altarGoodInfected = "<i>You touch it and warm energy flows through you.";
-	public static String altarGoodHealthy = "<i>It can probably cure curses, but you feel well right now.";
+	public static String altarGoodDesc = "<i>This altar looks bright and good.";
+	public static String altarGoodCommon = "<i>You meditate and feel at peace...";
+	public static String altarGoodFreeHealthy = "<i>...you feel as one with the light.";
+	public static String altarGoodFreeInfected = "<i>...a warm energy flows through you.";
+	public static String altarGoodPaid = "<i>...a bright light purge you of all darkness.";
 	
 	// -------------------------------------------- //
 	// Persistance

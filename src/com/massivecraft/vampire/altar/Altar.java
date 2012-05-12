@@ -14,26 +14,21 @@ import org.bukkit.entity.Player;
 import com.massivecraft.mcore3.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
+import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VPlayers;
 
 public abstract class Altar
-{
-	public static final transient double reach = 5;
-	public static final transient double minRatioForInfo = 0.2;
-	
+{	
 	public String name;
 	public String desc;
 	public Material coreMaterial;
 	public Map<Material, Integer> materialCounts;
 	public Recipe recipe;
 	
-	public Altar()
-	{
-		
-	}
-	
 	public void evalBlockUse(Block coreBlock, Player player)
 	{
 		if (coreBlock.getType() != coreMaterial) return;
+		VPlayer vplayer = VPlayers.i.get(player);
 		
 		// Make sure we include the coreBlock material in the wanted ones
 		if ( ! this.materialCounts.containsKey(this.coreMaterial))
@@ -43,75 +38,104 @@ public abstract class Altar
 		
 		ArrayList<Block> blocks = getCubeBlocks(coreBlock, Conf.altarSearchRadius);
 		Map<Material, Integer> nearbyMaterialCounts = countMaterials(blocks, this.materialCounts.keySet());
-				
-		//P.p.log("This is our nearby materials");
-		//P.p.log(nearbyMaterialCounts);
 		
 		int requiredMaterialCountSum = this.sumCollection(this.materialCounts.values());
 		int nearbyMaterialCountSum   = this.sumCollection(nearbyMaterialCounts.values());
 		
-		//P.p.log("requiredMaterialCountSum: "+requiredMaterialCountSum);
-		//P.p.log("nearbyMaterialCountSum: "+nearbyMaterialCountSum);
-		
 		// If the blocks are to far from looking anything like an altar we will just skip.
-		if (nearbyMaterialCountSum < requiredMaterialCountSum * minRatioForInfo) return;
+		if (nearbyMaterialCountSum < requiredMaterialCountSum * Conf.altarMinRatioForInfo) return;
 		
-		// This is what's missing
+		// What alter blocks are missing?
 		Map<Material, Integer> missingMaterialCounts = this.getMissingMaterialCounts(nearbyMaterialCounts);
-		//P.p.log("This is what's missing:");
-		//P.p.log(missingMaterialCounts);
 		
-		// Have we got all we need?
-		if (this.sumCollection(missingMaterialCounts.values()) == 0)
+		// Is the altar complete?
+		if (this.sumCollection(missingMaterialCounts.values()) > 0)
 		{
-			this.onUse(player);
+			// Send info on what to do to finish the altar 
+			player.sendMessage(Txt.parse(Lang.altarIncomplete, this.name));
+			for (Entry<Material, Integer> entry : missingMaterialCounts.entrySet())
+			{
+				Material material = entry.getKey();
+				int count = entry.getValue();
+				player.sendMessage(Txt.parse("<h>%d <p>%s", count, Txt.getMaterialName(material)));
+			}
 			return;
 		}
 		
-		// Send info on what to do to finish the altar 
-		player.sendMessage(Txt.parse(Lang.altarIncomplete, this.name));
-		for (Entry<Material, Integer> entry : missingMaterialCounts.entrySet())
+		// Watch the altar
+		this.watch(vplayer, player);
+		
+		// Attempt a worship
+		if (this.worship(vplayer, player) == false) return;
+		
+		// Can we worship for free?
+		if ( ! this.isPaymentRequired(vplayer, player))
 		{
-			Material material = entry.getKey();
-			int count = entry.getValue();
-			player.sendMessage(Txt.parse("<h>%d <p>%s", count, Txt.getMaterialName(material)));
+			this.effectCommon(vplayer, player);
+			this.effectFree(vplayer, player);
+			return;
 		}
-	}
-	
-	public void onUse(Player player)
-	{
-		player.sendMessage(Txt.parse(this.desc));
 		
-		if ( ! this.validateUser(player)) return;
-		if ( ! this.validateIngredients(player)) return;
+		// Do we manage to make the payment?
+		if ( ! this.attemptTakePayment(vplayer, player)) return;
 		
-		this.applyEffect(player);
+		// Apply paid effect
+		this.effectCommon(vplayer, player);
+		this.effectPaid(vplayer, player);
 	}
 	
-	public void applyEffect(Player player)
+	/**
+	 * At the watch stage the player is simply looking at the altar.
+	 */
+	public void watch (VPlayer vplayer, Player player)
 	{
-		player.sendMessage("DERP :)!");
+		vplayer.msg(this.desc);
 	}
 	
-	public boolean validateIngredients(Player player)
+	/**
+	 * At the worship stage the player will get accepted or not.
+	 * true means accepted
+	 */
+	public abstract boolean worship(VPlayer vplayer, Player player);
+	
+	/**
+	 * Next the altar decides on if payment is required
+	 */
+	public abstract boolean isPaymentRequired(VPlayer vplayer, Player player);
+	
+	/**
+	 * If payment was required we try to take it
+	 */
+	public boolean attemptTakePayment(VPlayer vplayer, Player player)
 	{
 		if ( ! this.recipe.playerHasEnough(player))
 		{
-			player.sendMessage(Txt.parse(Lang.altarUseIngredientsFail));
-			player.sendMessage(this.recipe.getRecipeLine());
+			vplayer.msg(Lang.altarUseIngredientsFail);
+			vplayer.msg(this.recipe.getRecipeLine());
 			return false;
 		}
 
-		player.sendMessage(Txt.parse(Lang.altarUseIngredientsSuccess));
-		player.sendMessage(this.recipe.getRecipeLine());
+		vplayer.msg(Lang.altarUseIngredientsSuccess);
+		vplayer.msg(this.recipe.getRecipeLine());
 		this.recipe.removeFromPlayer(player);
 		return true;
 	}
 	
-	public boolean validateUser(Player player)
-	{
-		return true;
-	}
+	/**
+	 * Apply the free effect to the player
+	 */
+	public abstract void effectFree(VPlayer vplayer, Player player);
+	
+	/**
+	 * Apply the paid effect to the player
+	 */
+	public abstract void effectPaid(VPlayer vplayer, Player player);
+	
+	/**
+	 * The effectCommon is run in both of the cases
+	 */
+	public void effectCommon(VPlayer vplayer, Player player) { } ;
+	
 	
 	// ------------------------------------------------------------ //
 	// Some calculation utilities
