@@ -7,7 +7,7 @@ public class CmdModeIntend extends CmdModeAbstract
 {	
 	public CmdModeIntend()
 	{
-		this.addAliases("intend");
+		this.addAliases("i", "intend");
 		this.addRequirements(new ReqHasPerm(Permission.MODE_INTENT.node));
 	}
 	

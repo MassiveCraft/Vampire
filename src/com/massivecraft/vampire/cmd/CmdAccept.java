@@ -8,7 +8,7 @@ public class CmdAccept extends VCommand
 {
 	public CmdAccept()
 	{
-		this.addAliases("accept");
+		this.addAliases("a", "accept");
 		
 		this.addRequirements(ReqHasPerm.get(Permission.TRADE_ACCEPT.node));
 		this.addRequirements(ReqIsPlayer.get());
@@ -17,6 +17,6 @@ public class CmdAccept extends VCommand
 	@Override
 	public void perform()
 	{
-		vme.infectionAccept();
+		vme.tradeAccept();
 	}
 }

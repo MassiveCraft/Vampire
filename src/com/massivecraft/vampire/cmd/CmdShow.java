@@ -13,7 +13,7 @@ public class CmdShow extends VCommand
 {
 	public CmdShow()
 	{
-		this.addAliases("s", "show", "who");
+		this.addAliases("s", "show");
 		this.addOptionalArg("player", "you");
 		this.setDesc("Show player info");
 	}

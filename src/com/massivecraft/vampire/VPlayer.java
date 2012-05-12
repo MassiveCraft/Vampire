@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -51,9 +53,12 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.infection = 0;
 		if (this.vampire == val) return;
 		this.vampire = val;
+		this.save();
 		if (this.vampire)
 		{
 			this.msg(Lang.youWasTurned);
+			this.fxScreamRun();
+			this.fxSmokeBurstRun();
 			this.fxSmokeRun();
 		}
 		else
@@ -200,24 +205,59 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// FIELD: truceBreakTicksLeft - How many milliseconds more will the monsters be hostile?
 	protected transient long truceBreakTicksLeft = 0;
 	
-	// FIELD: infectionOfferedFrom and infectionOfferedAtTicks - infect and accept commands.
-	protected transient VPlayer infectionOfferedFrom;
-	protected transient long infectionOfferedAtTicks;
+	// FIELD: infectionOffered data - for the offer and accept commands.
+	protected transient VPlayer tradeOfferedFrom;
+	protected transient double tradeOfferedAmount;
+	protected transient long tradeOfferedAtMillis;
 	
-	// FIELD: smokeTicksLeft - Container for the special effect
+	// FIELD: permA - permission assignments
+	protected transient PermissionAttachment permA;
+	
+	// -------------------------------------------- //
+	// FX
+	// -------------------------------------------- //
+	
+	// FX: Smoke
 	protected transient int fxSmokeTicks = 0;
 	public int fxSmokeTicks() { return this.fxSmokeTicks; }
 	public void fxSmokeTicks(int val) { this.fxSmokeTicks = val; }
 	public void fxSmokeRun() { this.fxSmokeTicks = 20 * 20; }
 	
-	// FIELD: enderTicksLeft - Container for the special effect
+	// FX: Ender
 	protected transient int fxEnderTicks = 0;
 	public int fxEnderTicks() { return this.fxEnderTicks; }
 	public void fxEnderTicks(int val) { this.fxEnderTicks = val; }
 	public void fxEnderRun() { this.fxEnderTicks = 10 * 20; }
 	
-	// FIELD: permA - permission assignments
-	protected transient PermissionAttachment permA;
+	// FX: Scream
+	public void fxScreamRun()
+	{
+		Player player = this.getPlayer();
+		if (player == null) return;
+		Location location = player.getLocation();
+		World world = location.getWorld();
+		world.playEffect(location, Effect.GHAST_SHRIEK, 0);
+	}
+	
+	// FX: SmokeBurst
+	public void fxSmokeBurstRun()
+	{
+		Player player = this.getPlayer();
+		if (player == null) return;
+		double dcount = Conf.fxSmokeBurstCount;
+		long lcount = MUtil.probabilityRound(dcount);
+		for (long i = lcount; i > 0; i--) FxUtil.smoke(player);
+	}
+	
+	// FX: FlameBurst
+	public void fxFlameBurstRun()
+	{
+		Player player = this.getPlayer();
+		if (player == null) return;
+		double dcount = Conf.fxFlameBurstCount;
+		long lcount = MUtil.probabilityRound(dcount);
+		for (long i = lcount; i > 0; i--) FxUtil.flame(player);
+	}
 	
 	// -------------------------------------------- //
 	// TICK
@@ -273,6 +313,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		this.msg(Lang.infectionMessagesProgress.get(indexNew));
 		this.msg(Lang.infectionBreadHintMessages.get(MCore.random.nextInt(Lang.infectionBreadHintMessages.size())));
+		this.save();
 	}
 	public int infectionGetMessageIndex()
 	{
@@ -317,8 +358,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
 		if ( ! survival) return;
-		
-		// The generic smoke effect
+
+		// FX: Smoke
 		if (this.fxSmokeTicks > 0)
 		{
 			this.fxSmokeTicks -= ticks;
@@ -327,7 +368,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			for (long i = lcount; i > 0; i--) FxUtil.smoke(player);
 		}
 		
-		// The ender effect
+		// FX: Ender
 		if (this.fxEnderTicks > 0)
 		{
 			this.fxEnderTicks -= ticks;
@@ -358,54 +399,100 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	
 	// -------------------------------------------- //
-	// OFFER AND ACCEPT INFECTION
+	// TRADE
 	// -------------------------------------------- //
-	public void infectionAccept()
+	public void tradeAccept()
 	{
-		VPlayer vyou = this.infectionOfferedFrom;
-		if (vyou == null || System.currentTimeMillis() - this.infectionOfferedAtTicks > Conf.infectOfferToleranceTicks)
+		VPlayer vyou = this.tradeOfferedFrom;
+		
+		// Any offer available?
+		if (vyou == null || System.currentTimeMillis() - this.tradeOfferedAtMillis > Conf.tradeOfferToleranceMillis)
 		{
-			this.msg(Lang.infectNoRecentOffer);
+			this.msg(Lang.tradeAcceptNone);
 			return;
 		}
 
-		if ( ! this.withinDistanceOf(vyou, Conf.infectOfferMaxDistance))
+		// Standing close enough?
+		if ( ! this.withinDistanceOf(vyou, Conf.tradeOfferMaxDistance))
 		{
-			this.msg(Lang.infectYouMustStandCloseToY, vyou.getId());
+			this.msg(Lang.tradeNotClose, vyou.getId());
 			return;
 		}
 		
-		Player me = this.getPlayer();
 		Player you = vyou.getPlayer();
+		Player me = this.getPlayer();
+		double amount = this.tradeOfferedAmount;
 		
-		//this.msg(Lang.infectYouDrinkSomeOfXBlood, you.getDisplayName());
-		vyou.msg(Lang.infectXDrinkSomeOfYourBlood, me.getDisplayName());
-		you.damage(2);
-		this.infectionOfferedFrom = null; //TODO: Add an RP message about being drained to death instead \:D/ 
+		// Enough blood?
+		if (this.tradeOfferedAmount > vyou.food().get())
+		{
+			vyou.msg(Lang.tradeLackingOut);
+			this.msg(Lang.tradeLackingIn, you.getDisplayName());
+			return;
+		}
 		
-		if (this.vampire()) return;
-		this.infectionAdd(5.0D, InfectionReason.OFFER, vyou);
+		// Transfer food level
+		vyou.food().add(-amount);
+		this.food().add(amount);
+		
+		// Risk infection
+		if (MCore.random.nextDouble()*20 < amount)
+		{
+			this.infectionAdd(0.05D, InfectionReason.TRADE, vyou);
+		}
+		
+		// Trader Messages
+		vyou.msg(Lang.tradeTransferOut, me.getDisplayName(), amount);
+		this.msg(Lang.tradeTransferIn, amount, you.getDisplayName());
+		
+		// Who noticed?
+		Location tradeLocation = me.getLocation();
+		World tradeWorld = tradeLocation.getWorld();
+		Location l1 = me.getEyeLocation();
+		Location l2 = you.getEyeLocation();
+		for (Player player : tradeWorld.getPlayers())
+		{
+			if (player.getLocation().distance(tradeLocation) > Conf.tradeVisualDistance) continue;
+			player.playEffect(l1, Effect.POTION_BREAK, 5);
+			player.playEffect(l2, Effect.POTION_BREAK, 5);
+			if (player.equals(me)) continue;
+			if (player.equals(you)) continue;
+			player.sendMessage(Txt.parse(Lang.tradeSeen));
+		}
+		
+		// Reset trade memory
+		this.tradeOfferedFrom = null;
+		this.tradeOfferedAtMillis = 0;
+		this.tradeOfferedAmount = 0;
 	}
 	
-	public void infectionOffer(VPlayer vyou)
+	public void tradeOffer(VPlayer vyou, double amount)
 	{
-		if ( ! this.withinDistanceOf(vyou, Conf.infectOfferMaxDistance))
+		if ( ! this.withinDistanceOf(vyou, Conf.tradeOfferMaxDistance))
 		{
-			this.msg(Lang.infectYouMustStandCloseToY, vyou.getId());
+			this.msg(Lang.tradeNotClose, vyou.getId());
 			return;
 		}
 		
 		Player me = this.getPlayer();
 		Player you = vyou.getPlayer();
 		
-		this.msg(Lang.infectYouOfferToInfectX, you.getDisplayName());
+		if (this == vyou)
+		{
+			this.msg(Lang.tradeSelf);
+			FxUtil.ensure(PotionEffectType.CONFUSION, me, 12*20);
+			return;
+		}
 		
-		vyou.infectionOfferedFrom = this;
-		vyou.infectionOfferedAtTicks = System.currentTimeMillis();
-		vyou.msg(Lang.infectXOffersToInfectYou, me.getDisplayName());
+		vyou.tradeOfferedFrom = this;
+		vyou.tradeOfferedAtMillis = System.currentTimeMillis();
+		vyou.tradeOfferedAmount = amount;
+		
+		this.msg(Lang.tradeOfferOut, amount, you.getDisplayName());
+		vyou.msg(Lang.tradeOfferIn, me.getDisplayName(), amount);
 		List<MCommand> cmdc = new ArrayList<MCommand>();
 		cmdc.add(P.p.cmdBase);
-		vyou.msg(Lang.infectTypeXToAccept, P.p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false));
+		vyou.msg(Lang.tradeAcceptHelp, P.p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false));
 	}
 	
 	public boolean withinDistanceOf(VPlayer vyou, double maxDistance)
@@ -505,37 +592,6 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		this.truceBreakTicksLeftSet(this.truceBreakTicksLeftGet() + delta);
 	}
-	
-	// -------------------------------------------- //
-	// Jump ability
-	// -------------------------------------------- //
-	/*public void jump(double deltaSpeed, boolean upOnly)
-	{
-		Player player = this.getPlayer();
-		
-		int targetFood = player.getFoodLevel() - Conf.jumpFoodCost;
-		
-		if (targetFood < 0) return;
-		
-		player.setFoodLevel(targetFood);
-		
-		Vector vjadd;
-		if (upOnly)
-		{
-			vjadd = new Vector(0, 1, 0);
-		}
-		else
-		{
-			vjadd = player.getLocation().getDirection();
-			vjadd.normalize();
-		}
-		vjadd.multiply(deltaSpeed);
-		vjadd.setY(vjadd.getY() / 2.5D); // Compensates for the "in air friction" that not applies to y-axis.
-		
-		player.setVelocity(player.getVelocity().add(vjadd));
-	}*/
-	
-	
 	
 	// -------------------------------------------- //
 	// Close Combat

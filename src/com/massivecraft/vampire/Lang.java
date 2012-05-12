@@ -42,13 +42,17 @@ public class Lang
 	//public static String xNowHasFoodY = "<h>%s <i>now has food <h>%d<i>.";
 	//public static String xNowHasYInfection = "<h>%s <i>now has <h>%.1f%%<i> infection.";
 	
-	public static String infectYouMustStandCloseToY = "<b>You must stand close to <h>%s <i>for this to work.";
-	public static String infectXOffersToInfectYou = "<h>%s<i> offers to infect you with the vampire disease.";
-	public static String infectYouOfferToInfectX = "<i>You offer to infect <h>%s<i> with the vampire disease.";
-	public static String infectTypeXToAccept = "<i>Type %s<i> to accept.";
-	public static String infectNoRecentOffer = "<b>No vampire offered to infect you recently.";
-	//public static String infectYouDrinkSomeOfXBlood = "<i>You drink some of <h>%s's<i> blood.";
-	public static String infectXDrinkSomeOfYourBlood = "<h>%s<i> drinks some of your blood.";
+	public static String tradeSelf = "<i>You drink some of your own blood. Forever alone :'/";
+	public static String tradeNotClose = "<b>You must stand close to <h>%s <i>for this to work.";
+	public static String tradeOfferOut = "<i>You offer <h>%.1f<i> of your blood to <h>%s<i>.";
+	public static String tradeOfferIn = "<h>%s<i> offers you <h>%.1f <i>of their blood.";
+	public static String tradeAcceptHelp = "<i>Type %s<i> to accept.";
+	public static String tradeAcceptNone = "<b>Noone offered you blood recently.";
+	public static String tradeLackingOut = "<b>You don't have enough blood to complete the trade.";
+	public static String tradeLackingIn = "<b><h>%s<b> don't have enough blood to complete the trade.";
+	public static String tradeTransferOut = "<h>%s<i> drinks <h>%.1f <i>of your blood.";
+	public static String tradeTransferIn = "<i>You drink <h>%.1f <i> of <h>%s's<i> blood.";
+	public static String tradeSeen = "<h>%s <i>drinks blood from <h>%s <i><strong>:O<reset> <i>!";
 	
 	public static List<String> infectionMessagesProgress = new ArrayList<String>();
 	public static List<String> infectionBreadHintMessages = new ArrayList<String>();

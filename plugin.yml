@@ -15,8 +15,8 @@ permissions:
   vampire.mode.intent:       {description: use intent to infect, default: false}
   vampire.altar.evil:        {description: use an evil altar, default: false}
   vampire.altar.good:        {description: use a good altar, default: false}
-  vampire.trade.offer:       {description: offer to infect someone, default: false}
-  vampire.trade.accept:      {description: accept infection offer, default: false}
+  vampire.trade.offer:       {description: offer blood to someone, default: false}
+  vampire.trade.accept:      {description: accept blood offer, default: false}
   vampire.combat.infect:     {description: be infectious in combat, default: false}
   vampire.combat.contract:   {description: contract infection in combat, default: false}
   vampire.version:           {description: check the plugin version, default: false}

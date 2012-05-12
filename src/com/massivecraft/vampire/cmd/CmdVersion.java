@@ -9,7 +9,7 @@ public class CmdVersion extends VCommand
 {
 	public CmdVersion()
 	{
-		this.addAliases("version", "ver");
+		this.addAliases("v", "version");
 		this.setVisibilityMode(VisibilityMode.SECRET);
 		this.addRequirements(ReqHasPerm.get(Permission.VERSION.node));
 	}

@@ -50,7 +50,7 @@ public class SpoutCraftAuthenticationEvent extends VampireEvent
 			@Override
 			public void run()
 			{
-				pollsLeft--;
+				ME.pollsLeft--;
 				if (ME.splayer.isSpoutCraftEnabled())
 				{
 					ME.successful = true;

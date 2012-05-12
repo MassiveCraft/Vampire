@@ -35,7 +35,6 @@ public class Conf
 	// DROP SELF
 	// -------------------------------------------- //
 	
-	// TODO: Improve this system
 	public static Set<Material> dropSelfMaterials = MUtil.set(
 		Material.WEB,
 		Material.GLOWSTONE,
@@ -58,15 +57,26 @@ public class Conf
 	);
 	
 	// -------------------------------------------- //
-	// INFECTION
+	// FX
 	// -------------------------------------------- //
 	
-	public final static transient double fxSmokePerTick = 0.40d;
-	public final static transient double fxEnderPerTick = 0.70d;
+	public final static transient double fxSmokePerTick = 0.40D;
+	public final static transient double fxEnderPerTick = 0.70D;
 	public final static transient int fxEnderRandomMaxLen = 2;
+	public final static transient double fxSmokeBurstCount = 30D;
+	public final static transient double fxFlameBurstCount = 5D;
 	
-	public final static transient double infectOfferMaxDistance = 2d;
-	public final static transient long infectOfferToleranceTicks = 20 * 20;
+	// -------------------------------------------- //
+	// TRADE
+	// -------------------------------------------- //
+	
+	public final static transient double tradeOfferMaxDistance = 2d;
+	public final static transient long tradeOfferToleranceMillis = 20 * 1000;
+	public final static transient double tradeVisualDistance = 7D;
+	
+	// -------------------------------------------- //
+	// INFECTION
+	// -------------------------------------------- //
 	
 	// It will take you 1h to turn
 	public static double infectionPerTick = 1D / (20*60*60D);

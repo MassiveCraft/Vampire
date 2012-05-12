@@ -13,7 +13,7 @@ public class CmdList extends VCommand
 {	
 	public CmdList()
 	{
-		this.addAliases("list", "ls", "l");
+		this.addAliases("l", "list");
 		this.addOptionalArg("page", "1");
 		
 		this.setVisibilityMode(VisibilityMode.SECRET);

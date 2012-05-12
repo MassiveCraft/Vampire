@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -116,6 +117,28 @@ public class TheListener implements Listener
 		VPlayer vplayer = VPlayers.i.get(event.splayer());
 		vplayer.updateSpoutMovement();
 	}
+	
+	// -------------------------------------------- //
+	// FX
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void fxOnDeath(EntityDeathEvent event)
+	{
+		// If a vampire dies ...
+		VPlayer vplayer = VPlayers.i.get(event.getEntity());
+		if (vplayer == null) return;
+		if (vplayer.vampire() == false) return;
+		
+		// ... burns up with a violent scream ;,,;
+		vplayer.fxScreamRun();
+		vplayer.fxFlameBurstRun();
+		vplayer.fxSmokeBurstRun();
+		
+		vplayer.updateSpoutMovement();
+	}
+	
+	
 	
 	// -------------------------------------------- //
 	// INFECTION
