@@ -20,16 +20,20 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.massivecraft.mcore3.MCore;
 import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.mcore3.util.PlayerUtil;
 import com.massivecraft.mcore3.util.Txt;
+import com.massivecraft.vampire.event.SpoutCraftAuthenticationEvent;
 import com.massivecraft.vampire.util.FxUtil;
 
 public class TheListener implements Listener
@@ -95,20 +99,22 @@ public class TheListener implements Listener
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void permissionsGrant(PlayerJoinEvent event)
+	public void update(PlayerJoinEvent event)
 	{
 		final Player player = event.getPlayer();
+		final SpoutPlayer splayer = SpoutManager.getPlayer(player);
 		final VPlayer vplayer = VPlayers.i.get(player);
 		
 		vplayer.updateVampPermission();
 		
-		// We wait a second before updating spout movement
-		// For some reason it fails otherwise.
-		// This may be because of the slight delay before the spoutcraft client is authenticated.
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this.p, new Runnable()
-		{
-			@Override public void run() { vplayer.updateSpoutMovement(); }
-		}, 100); 
+		new SpoutCraftAuthenticationEvent(splayer);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void update(SpoutCraftAuthenticationEvent event)
+	{
+		VPlayer vplayer = VPlayers.i.get(event.splayer());
+		vplayer.updateSpoutMovement();
 	}
 	
 	// -------------------------------------------- //
@@ -314,6 +320,18 @@ public class TheListener implements Listener
 		long count2 = MUtil.probabilityRound(Conf.bloodlustSmokes);
 		for (long i = count1; i > 0; i--) FxUtil.smoke(one);
 		for (long i = count2; i > 0; i--) FxUtil.smoke(two);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void bloodlustGameModeToggle(PlayerGameModeChangeEvent event)
+	{
+		// If a player enters creative-mode ...
+		if (event.getNewGameMode() != GameMode.CREATIVE) return;
+		
+		// ... turn of bloodlust ...
+		Player player = event.getPlayer();
+		VPlayer vplayer = VPlayers.i.get(player);
+		vplayer.bloodlust(false);
 	}
 	
 	// -------------------------------------------- //

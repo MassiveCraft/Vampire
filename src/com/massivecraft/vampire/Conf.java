@@ -230,19 +230,6 @@ public class Conf
 		EntityType.PLAYER,        10/20D
 	);
 	
-	/*// Food from blood drinking (damaging)
-	private final static transient Double foodPerPlayerDamage = 0.5D;
-	public static Map<EntityType, Double> foodPerDamageFromCreature = MUtil.map(
-		EntityType.PLAYER,       foodPerPlayerDamage,
-		EntityType.CHICKEN,      foodPerPlayerDamage / 2D,
-		EntityType.COW,          foodPerPlayerDamage / 2D,
-		EntityType.PIG,          foodPerPlayerDamage / 2D,
-		EntityType.SHEEP,        foodPerPlayerDamage / 2D,
-		EntityType.SPIDER,       foodPerPlayerDamage / 5D,
-		EntityType.CAVE_SPIDER,  foodPerPlayerDamage / 5D,
-		EntityType.SQUID,        foodPerPlayerDamage / 5D
-	);*/
-	
 	// -------------------------------------------- //
 	// SUN
 	// -------------------------------------------- //

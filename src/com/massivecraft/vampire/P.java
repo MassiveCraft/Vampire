@@ -1,6 +1,10 @@
 package com.massivecraft.vampire;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore3.MPlugin;
 import com.massivecraft.vampire.cmd.CmdBase;
@@ -17,8 +21,10 @@ public class P extends MPlugin
 	// Command
 	public CmdBase cmdBase;
 	
-	// Listeners
-	public TheListener theListener;
+	// noCheatExemptedPlayerNames
+	// http://dev.bukkit.org/server-mods/nocheatplus/
+	// https://gist.github.com/2638309
+	public Set<String> noCheatExemptedPlayerNames = new HashSet<String>();
 	
 	public P()
 	{
@@ -50,6 +56,7 @@ public class P extends MPlugin
 	
 		// Register events
 		new TheListener(this);
+		this.noCheatPlusSetup();
 		
 		// Register Key Bindings
 		BloodlustToggle.get().register();
@@ -57,5 +64,23 @@ public class P extends MPlugin
 		BloodlustOff.get().register();
 		
 		postEnable();
+	}
+	
+	protected void noCheatPlusSetup()
+	{
+		Plugin noCheatPlus = Bukkit.getPluginManager().getPlugin("NoCheatPlus");
+		if (noCheatPlus == null) return;
+		if (noCheatPlus.isEnabled() == false) return;
+		try
+		{
+			new NoCheatPlusListener(this);
+		}
+		catch (Exception e)
+		{
+			log("NoCheatPlus integration failed :( this Exception was raised:");
+			e.printStackTrace();
+			return;
+		}
+		log("NoCheatPlus integration successful :)");
 	}
 }

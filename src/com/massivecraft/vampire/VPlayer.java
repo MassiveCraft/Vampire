@@ -145,7 +145,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		if (val)
 		{
-			// There are a few reasons to when you can turn it on.
+			// There are a few rules to when you can turn it on:
 			if (this.human())
 			{
 				msg("<b>Only vampires can use bloodlust.");
@@ -256,14 +256,17 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void tickInfection(long ticks)
 	{
 		if ( ! this.infected()) return;
+		
+		Player player = this.getPlayer();
+		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		if ( ! survival) return;
+		
 		int indexOld = this.infectionGetMessageIndex();
 		this.infectionAdd(ticks * Conf.infectionPerTick);
 		int indexNew = this.infectionGetMessageIndex();
 		
 		if (this.vampire()) return;
 		if (indexOld == indexNew) return;
-		
-		Player player = this.getPlayer();
 		
 		if (Conf.infectionProgressDamage != 0) player.damage(Conf.infectionProgressDamage);
 		if (Conf.infectionProgressNauseaTicks > 0) FxUtil.ensure(PotionEffectType.CONFUSION, player, Conf.infectionProgressNauseaTicks);
@@ -280,6 +283,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		if ( ! this.vampire()) return;
 		Player player = this.getPlayer();
+		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		if ( ! survival) return;
 		if (player.isDead()) return;
 		if (player.getHealth() >= 20) return;
 		if (this.food().get() < Conf.regenMinFood) return;
@@ -296,6 +301,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if ( ! this.vampire()) return;
 		if ( ! this.bloodlust()) return;
 		Player player = this.getPlayer();
+		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		if ( ! survival) return;
 		if (player.isDead()) return;
 		
 		this.food().add(ticks * Conf.bloodlustFoodPerTick);
@@ -309,6 +316,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (player.isDead()) return;
 		
 		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		if ( ! survival) return;
 		
 		// The generic smoke effect
 		if (this.fxSmokeTicks > 0)
@@ -355,27 +363,25 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void infectionAccept()
 	{
 		VPlayer vyou = this.infectionOfferedFrom;
-		Player me = this.getPlayer();
-		if (vyou == null || vyou.isOffline() || me == null || System.currentTimeMillis() - this.infectionOfferedAtTicks > Conf.infectOfferToleranceTicks)
+		if (vyou == null || System.currentTimeMillis() - this.infectionOfferedAtTicks > Conf.infectOfferToleranceTicks)
 		{
 			this.msg(Lang.infectNoRecentOffer);
 			return;
 		}
-		Player you = vyou.getPlayer();
-		
-		// Check the player-distance
-		Location l1 = me.getLocation();
-		Location l2 = you.getLocation();
-		
-		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.infectOfferMaxDistance)
+
+		if ( ! this.withinDistanceOf(vyou, Conf.infectOfferMaxDistance))
 		{
-			me.sendMessage(Txt.parse(Lang.infectYouMustStandCloseToY, you.getDisplayName()));
+			this.msg(Lang.infectYouMustStandCloseToY, vyou.getId());
 			return;
 		}
+		
+		Player me = this.getPlayer();
+		Player you = vyou.getPlayer();
 		
 		//this.msg(Lang.infectYouDrinkSomeOfXBlood, you.getDisplayName());
 		vyou.msg(Lang.infectXDrinkSomeOfYourBlood, me.getDisplayName());
 		you.damage(2);
+		this.infectionOfferedFrom = null; //TODO: Add an RP message about being drained to death instead \:D/ 
 		
 		if (this.vampire()) return;
 		this.infectionAdd(5.0D, InfectionReason.OFFER, vyou);
@@ -383,27 +389,38 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	
 	public void infectionOffer(VPlayer vyou)
 	{
+		if ( ! this.withinDistanceOf(vyou, Conf.infectOfferMaxDistance))
+		{
+			this.msg(Lang.infectYouMustStandCloseToY, vyou.getId());
+			return;
+		}
+		
 		Player me = this.getPlayer();
 		Player you = vyou.getPlayer();
 		
-		// Check the player-distance
-		Location l1 = me.getLocation();
-		Location l2 = you.getLocation();
-		
-		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.infectOfferMaxDistance)
-		{
-			this.msg(Lang.infectYouMustStandCloseToY, you.getDisplayName());
-			return;
-		}
+		this.msg(Lang.infectYouOfferToInfectX, you.getDisplayName());
 		
 		vyou.infectionOfferedFrom = this;
 		vyou.infectionOfferedAtTicks = System.currentTimeMillis();
 		vyou.msg(Lang.infectXOffersToInfectYou, me.getDisplayName());
-		
 		List<MCommand> cmdc = new ArrayList<MCommand>();
 		cmdc.add(P.p.cmdBase);
 		vyou.msg(Lang.infectTypeXToAccept, P.p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false));
-		this.msg(Lang.infectYouOfferToInfectX, you.getDisplayName());
+	}
+	
+	public boolean withinDistanceOf(VPlayer vyou, double maxDistance)
+	{
+		Player me = this.getPlayer();
+		Player you = vyou.getPlayer();
+		if (you == null) return false;
+		if (me == null) return false;
+		if (me.isDead()) return false;
+		if (you.isDead()) return false;
+		Location l1 = me.getLocation();
+		Location l2 = you.getLocation();
+		if ( ! l1.getWorld().equals(l2.getWorld())) return false;
+		if (l1.distance(l2) > maxDistance) return false;
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -579,6 +596,16 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		Player player = this.getPlayer();
 		if (player == null) return;
 		SpoutPlayer splayer = SpoutManager.getPlayer(player);
+		boolean spoutuser = splayer.isSpoutCraftEnabled();
+		
+		if (spoutuser && this.vampire())
+		{
+			P.p.noCheatExemptedPlayerNames.add(player.getName());
+		}
+		else
+		{
+			P.p.noCheatExemptedPlayerNames.remove(player.getName());
+		}
 		
 		Double multGravity = null;
 		Double multSwimming = null;
@@ -615,7 +642,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			noSpoutWarn = Lang.noSpoutWarnHuman;
 		}
 
-		if ( ! splayer.isSpoutCraftEnabled() && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
+		if ( ! spoutuser && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
 		
 		if (multGravity != null) splayer.setGravityMultiplier(multGravity);
 		if (multSwimming != null) splayer.setSwimmingMultiplier(multSwimming);
