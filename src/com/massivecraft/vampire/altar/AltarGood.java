@@ -15,8 +15,8 @@ public class AltarGood extends Altar
 {
 	public AltarGood()
 	{
-		this.name = "good altar";
-		this.desc = "<i>This altar looks bright and nice.";
+		this.name = Lang.altarGoodName;
+		this.desc = Lang.altarGoodDesc;
 		
 		this.coreMaterial = Material.LAPIS_BLOCK;
 		
@@ -46,7 +46,7 @@ public class AltarGood extends Altar
 		{
 			player.sendMessage(Txt.parse(Lang.altarGoodInfected));
 			vplayer.infection(0);
-			player.sendMessage(Txt.parse(Lang.infectionMessageCured));
+			player.sendMessage(Txt.parse(Lang.infectionCured));
 		}
 		
 		if (vplayer.vampire())

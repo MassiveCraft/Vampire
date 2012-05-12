@@ -25,8 +25,9 @@ public abstract class CmdSetAbstract<T> extends VCommand
 		}
 		VPlayer vplayer = this.argAs(1, VPlayer.class, "matchany", vme);
 		if (vplayer == null) return;
+		Player player = vplayer.getPlayer();
 		
-		if (targetMustBeOnline && vplayer.isOffline())
+		if (targetMustBeOnline && player == null)
 		{
 			msg("<b>%s is not online.", vplayer.getId());
 			return;
@@ -35,7 +36,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 		T val = this.argAs(0, classOfT);
 		if (val == null) return;
 		
-		T res = this.set(vplayer, vplayer.getPlayer(), val);
+		T res = this.set(vplayer, player, val);
 		
 		if (res == null) return;
 		

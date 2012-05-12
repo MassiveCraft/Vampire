@@ -56,14 +56,14 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.save();
 		if (this.vampire)
 		{
-			this.msg(Lang.youWasTurned);
+			this.msg(Lang.vampireTrue);
 			this.fxScreamRun();
 			this.fxSmokeBurstRun();
 			this.fxSmokeRun();
 		}
 		else
 		{
-			this.msg(Lang.youWasCured);
+			this.msg(Lang.vampireFalse);
 			this.fxEnderRun();
 			this.maker(null);
 			this.reason(null);
@@ -91,7 +91,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		{
 			if (this.infection > 0D)
 			{
-				this.msg(Lang.infectionMessageCured);
+				this.msg(Lang.infectionCured);
 			}
 			this.infection = 0D;
 		}
@@ -134,7 +134,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// FIELD: intending - Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
 	protected boolean intend = false;
 	public boolean intend() { return intend; }
-	public void intend(boolean val) { this.intend = val; this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Infect intent"); }
+	public void intend(boolean val) { this.intend = val; this.msg(Lang.boolIsY("Infect intent", val)); }
 	
 	// FIELD: bloodlust - Is bloodlust activated?
 	protected boolean bloodlust = false;
@@ -144,7 +144,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (this.bloodlust == val)
 		{
 			// No real change - just view the info.
-			this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Bloodlust");
+			this.msg(Lang.boolIsY("Bloodlust", val));
 			return;
 		}
 		
@@ -170,7 +170,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			}
 		}
 		this.bloodlust = val;
-		this.msg(val ? Lang.xIsOn : Lang.xIsOff, "Bloodlust");
+		this.msg(Lang.boolIsY("Bloodlust", val));
 		this.updateSpoutMovement();
 	}
 	
@@ -260,6 +260,98 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	
 	// -------------------------------------------- //
+	// UPDATE 
+	// -------------------------------------------- //
+	
+	public void updateVampPermission()
+	{
+		if (this.permA != null)
+		{
+			this.permA.remove();
+		}
+		
+		this.permA = this.getPlayer().addAttachment(P.p);
+		
+		if (this.vampire())
+		{
+			for (Entry<String, Boolean> entry : Conf.updatePermsVampire.entrySet())
+			{
+				this.permA.setPermission(entry.getKey(), entry.getValue());
+			}
+		}
+		else
+		{
+			for (Entry<String, Boolean> entry : Conf.updatePermsHuman.entrySet())
+			{
+				this.permA.setPermission(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		// Debug
+		//p.log(this.getId() + " had vamp permission updated to " + this.getPlayer().hasPermission(Permission.IS.node));
+	}
+	
+	public void updateSpoutMovement()
+	{
+		Player player = this.getPlayer();
+		if (player == null) return;
+		SpoutPlayer splayer = SpoutManager.getPlayer(player);
+		boolean spoutuser = splayer.isSpoutCraftEnabled();
+		
+		if (spoutuser && this.vampire())
+		{
+			P.p.noCheatExemptedPlayerNames.add(player.getName());
+		}
+		else
+		{
+			P.p.noCheatExemptedPlayerNames.remove(player.getName());
+		}
+		
+		Double multGravity = null;
+		Double multSwimming = null;
+		Double multWalking = null;
+		Double multJumping = null;
+		Double multAirSpeed = null;
+		String noSpoutWarn = null;		
+		
+		if (this.vampire() && this.bloodlust())
+		{
+			multGravity = Conf.multGravityBloodlust;
+			multSwimming = Conf.multSwimmingBloodlust;
+			multWalking = Conf.multWalkingBloodlust;
+			multJumping = Conf.multJumpingBloodlust;
+			multAirSpeed = Conf.multAirSpeedBloodlust;
+			noSpoutWarn = Lang.noSpoutWarnBloodlust;
+		}
+		else if (this.vampire())
+		{
+			multGravity = Conf.multGravityVamp;
+			multSwimming = Conf.multSwimmingVamp;
+			multWalking = Conf.multWalkingVamp;
+			multJumping = Conf.multJumpingVamp;
+			multAirSpeed = Conf.multAirSpeedVamp;
+			noSpoutWarn = Lang.noSpoutWarnVamp;
+		}
+		else
+		{
+			multGravity = Conf.multGravityHuman;
+			multSwimming = Conf.multSwimmingHuman;
+			multWalking = Conf.multWalkingHuman;
+			multJumping = Conf.multJumpingHuman;
+			multAirSpeed = Conf.multAirSpeedHuman;
+			noSpoutWarn = Lang.noSpoutWarnHuman;
+		}
+
+		if ( ! spoutuser && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
+		
+		if (multGravity != null) splayer.setGravityMultiplier(multGravity);
+		if (multSwimming != null) splayer.setSwimmingMultiplier(multSwimming);
+		if (multWalking != null) splayer.setWalkingMultiplier(multWalking);
+		if (multJumping != null) splayer.setJumpingMultiplier(multJumping);
+		if (multAirSpeed != null) splayer.setAirSpeedMultiplier(multAirSpeed);
+	}
+	
+	// -------------------------------------------- //
 	// TICK
 	// -------------------------------------------- //
 	public void tick(long ticks)
@@ -311,13 +403,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (Conf.infectionProgressDamage != 0) player.damage(Conf.infectionProgressDamage);
 		if (Conf.infectionProgressNauseaTicks > 0) FxUtil.ensure(PotionEffectType.CONFUSION, player, Conf.infectionProgressNauseaTicks);
 		
-		this.msg(Lang.infectionMessagesProgress.get(indexNew));
-		this.msg(Lang.infectionBreadHintMessages.get(MCore.random.nextInt(Lang.infectionBreadHintMessages.size())));
+		this.msg(Lang.infectionFeeling.get(indexNew));
+		this.msg(Lang.infectionHint.get(MCore.random.nextInt(Lang.infectionHint.size())));
 		this.save();
 	}
 	public int infectionGetMessageIndex()
 	{
-		return (int)((Lang.infectionMessagesProgress.size()+1) * this.infection() / 100D) - 1;
+		return (int)((Lang.infectionFeeling.size()+1) * this.infection() / 1D) - 1;
 	}
 	
 	public void tickRegen(long ticks)
@@ -535,14 +627,14 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		if ( ! this.truceIsBroken())
 		{
-			this.msg(Lang.messageTruceBroken);
+			this.msg(Lang.truceBroken);
 		}
 		this.truceBreakTicksLeftSet(Conf.truceBreakTicks);
 	}
 	
 	public void truceRestore()
 	{
-		this.msg(Lang.messageTruceRestored);
+		this.msg(Lang.truceRestored);
 		this.truceBreakTicksLeftSet(0);
 		
 		Player me = this.getPlayer();
@@ -594,7 +686,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	
 	// -------------------------------------------- //
-	// Close Combat
+	// COMBAT
 	// -------------------------------------------- //
 	
 	public double getDamageDealtFactor()
@@ -613,97 +705,5 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		if (this.intend) return Conf.infectionRiskAtCloseCombatWithIntent;
 		return Conf.infectionRiskAtCloseCombatWithoutIntent;
-	}
-
-	// -------------------------------------------- //
-	// UPDATE 
-	// -------------------------------------------- //
-	
-	public void updateVampPermission()
-	{
-		if (this.permA != null)
-		{
-			this.permA.remove();
-		}
-		
-		this.permA = this.getPlayer().addAttachment(P.p);
-		
-		if (this.vampire())
-		{
-			for (Entry<String, Boolean> entry : Conf.permissionsGrantVampire.entrySet())
-			{
-				this.permA.setPermission(entry.getKey(), entry.getValue());
-			}
-		}
-		else
-		{
-			for (Entry<String, Boolean> entry : Conf.permissionsGrantHuman.entrySet())
-			{
-				this.permA.setPermission(entry.getKey(), entry.getValue());
-			}
-		}
-		
-		// Debug
-		//p.log(this.getId() + " had vamp permission updated to " + this.getPlayer().hasPermission(Permission.IS.node));
-	}
-	
-	public void updateSpoutMovement()
-	{
-		Player player = this.getPlayer();
-		if (player == null) return;
-		SpoutPlayer splayer = SpoutManager.getPlayer(player);
-		boolean spoutuser = splayer.isSpoutCraftEnabled();
-		
-		if (spoutuser && this.vampire())
-		{
-			P.p.noCheatExemptedPlayerNames.add(player.getName());
-		}
-		else
-		{
-			P.p.noCheatExemptedPlayerNames.remove(player.getName());
-		}
-		
-		Double multGravity = null;
-		Double multSwimming = null;
-		Double multWalking = null;
-		Double multJumping = null;
-		Double multAirSpeed = null;
-		String noSpoutWarn = null;		
-		
-		if (this.vampire() && this.bloodlust())
-		{
-			multGravity = Conf.multGravityBloodlust;
-			multSwimming = Conf.multSwimmingBloodlust;
-			multWalking = Conf.multWalkingBloodlust;
-			multJumping = Conf.multJumpingBloodlust;
-			multAirSpeed = Conf.multAirSpeedBloodlust;
-			noSpoutWarn = Lang.noSpoutWarnBloodlust;
-		}
-		else if (this.vampire())
-		{
-			multGravity = Conf.multGravityVamp;
-			multSwimming = Conf.multSwimmingVamp;
-			multWalking = Conf.multWalkingVamp;
-			multJumping = Conf.multJumpingVamp;
-			multAirSpeed = Conf.multAirSpeedVamp;
-			noSpoutWarn = Lang.noSpoutWarnVamp;
-		}
-		else
-		{
-			multGravity = Conf.multGravityHuman;
-			multSwimming = Conf.multSwimmingHuman;
-			multWalking = Conf.multWalkingHuman;
-			multJumping = Conf.multJumpingHuman;
-			multAirSpeed = Conf.multAirSpeedHuman;
-			noSpoutWarn = Lang.noSpoutWarnHuman;
-		}
-
-		if ( ! spoutuser && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
-		
-		if (multGravity != null) splayer.setGravityMultiplier(multGravity);
-		if (multSwimming != null) splayer.setSwimmingMultiplier(multSwimming);
-		if (multWalking != null) splayer.setWalkingMultiplier(multWalking);
-		if (multJumping != null) splayer.setJumpingMultiplier(multJumping);
-		if (multAirSpeed != null) splayer.setAirSpeedMultiplier(multAirSpeed);
 	}
 }

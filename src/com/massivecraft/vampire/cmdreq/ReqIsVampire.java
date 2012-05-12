@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore3.cmd.MCommand;
 import com.massivecraft.mcore3.cmd.req.IReq;
+import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;
 
@@ -20,7 +21,7 @@ public class ReqIsVampire implements IReq
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return "<b>Only vampires can "+command.getDesc()+".";
+		return String.format(Lang.onlyVampsCanX, command.getDesc());
 	}
 	
 	protected static ReqIsVampire instance = new ReqIsVampire();

@@ -16,8 +16,8 @@ public class AltarEvil extends Altar
 {
 	public AltarEvil()
 	{
-		this.name = "evil altar";
-		this.desc = "<i>The very sight of this altar makes you feel cold and corrupted down to your bones.";
+		this.name = Lang.altarEvilName;
+		this.desc = Lang.altarEvilDesc;
 		
 		this.coreMaterial = Material.GOLD_BLOCK;
 		

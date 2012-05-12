@@ -70,7 +70,6 @@ public abstract class Altar
 		
 		// Send info on what to do to finish the altar 
 		player.sendMessage(Txt.parse(Lang.altarIncomplete, this.name));
-		
 		for (Entry<Material, Integer> entry : missingMaterialCounts.entrySet())
 		{
 			Material material = entry.getKey();

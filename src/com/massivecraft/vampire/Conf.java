@@ -25,38 +25,6 @@ public class Conf
 	public static List<String> baseCommandAliases = MUtil.list("v");
 	
 	// -------------------------------------------- //
-	// NAME COLORIZE
-	// -------------------------------------------- //
-	
-	public static Boolean nameColorize = false;
-	public static ChatColor nameColor = ChatColor.RED;
-	
-	// -------------------------------------------- //
-	// DROP SELF
-	// -------------------------------------------- //
-	
-	public static Set<Material> dropSelfMaterials = MUtil.set(
-		Material.WEB,
-		Material.GLOWSTONE,
-		Material.BOOKSHELF,
-		Material.DEAD_BUSH
-	);
-	
-	// -------------------------------------------- //
-	// PERMISSIONS GRANT
-	// -------------------------------------------- //
-	
-	public static Map<String,Boolean> permissionsGrantVampire = MUtil.map(
-		"vampire.is.vampire", true,
-		"vampire.is.human", false
-	);
-	
-	public static Map<String,Boolean> permissionsGrantHuman = MUtil.map(
-		"vampire.is.vampire", false,
-		"vampire.is.human", true
-	);
-	
-	// -------------------------------------------- //
 	// FX
 	// -------------------------------------------- //
 	
@@ -67,32 +35,8 @@ public class Conf
 	public final static transient double fxFlameBurstCount = 5D;
 	
 	// -------------------------------------------- //
-	// TRADE
+	// MISC
 	// -------------------------------------------- //
-	
-	public final static transient double tradeOfferMaxDistance = 2d;
-	public final static transient long tradeOfferToleranceMillis = 20 * 1000;
-	public final static transient double tradeVisualDistance = 7D;
-	
-	// -------------------------------------------- //
-	// INFECTION
-	// -------------------------------------------- //
-	
-	// It will take you 1h to turn
-	public static double infectionPerTick = 1D / (20*60*60D);
-	public static double infectionPerBread = -0.2D;
-	
-	public static int infectionProgressNauseaTicks = 40;
-	public static int infectionProgressDamage = 1;
-	
-	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
-	public static Double infectionRiskAtCloseCombatWithIntent = 0.05;
-	
-	// -------------------------------------------- //
-	// BLOCK EVENTS
-	// -------------------------------------------- //
-	// TODO: Split into HEALTH (with regen speed and such features), FOOD for level change stuff and so on?
-	// TODO: Conf.foodCanEat is very related to the block health from.
 	
 	public static Set<DamageCause> blockDamageFrom = MUtil.set(
 		DamageCause.DROWNING,
@@ -106,20 +50,35 @@ public class Conf
 	);
 	
 	// -------------------------------------------- //
-	// RESPAWN
+	// UPDATE
 	// -------------------------------------------- //
 	
-	public static int respawnFood = 2;
-	public static int respawnHealth = 20;
+	public static Map<String,Boolean> updatePermsVampire = MUtil.map(
+		"vampire.is.vampire", true,
+		"vampire.is.human", false
+	);
+	
+	public static Map<String,Boolean> updatePermsHuman = MUtil.map(
+		"vampire.is.vampire", false,
+		"vampire.is.human", true
+	);
+
+	public static int updateRespawnFood = 2;
+	public static int updateRespawnHealth = 20;
+	
+	public static Boolean updateNameColor = false;
+	public static ChatColor updateNameColorTo = ChatColor.RED;
 	
 	// -------------------------------------------- //
-	// REGEN
+	// DROP SELF
 	// -------------------------------------------- //
 	
-	public static double regenMinFood = 2.5D;
-	public static int regenDelayMillis = 10*1000;
-	public static double regenFoodPerTick = 0.025D;
-	public static double regenHealthPerFood = 2D;
+	public static Set<Material> dropSelfMaterials = MUtil.set(
+		Material.WEB,
+		Material.GLOWSTONE,
+		Material.BOOKSHELF,
+		Material.DEAD_BUSH
+	);
 	
 	// -------------------------------------------- //
 	// BLOODLUST
@@ -148,32 +107,13 @@ public class Conf
 	public static Double multAirSpeedHuman = 1D;
 	
 	// -------------------------------------------- //
-	// COMBAT
+	// REGEN
 	// -------------------------------------------- //
 	
-	public static double damageDealtFactorWithoutIntent = 1.2;
-	public static double damageDealtFactorWithIntent = 0.65;
-	public static double damageReceivedFactorWithoutIntent = 0.80;
-	public static double damageReceivedFactorWithIntent = 1.0;
-	
-	private final static int damageDiamondSword = 7;
-	public static int damageReceivedWood = 3*damageDiamondSword;
-	
-	public final static transient Set<Material> woodMaterials = MUtil.set(
-		Material.WOOD_AXE,
-		Material.WOOD_HOE,
-		Material.WOOD_PICKAXE,
-		Material.WOOD_SPADE,
-		Material.WOOD_SWORD,
-		Material.STICK,
-		Material.TORCH,
-		Material.REDSTONE_TORCH_OFF,
-		Material.REDSTONE_TORCH_ON,
-		Material.SIGN,
-		Material.SIGN_POST,
-		Material.FENCE,
-		Material.FENCE_GATE
-	);
+	public static double regenMinFood = 2.5D;
+	public static int regenDelayMillis = 10*1000;
+	public static double regenFoodPerTick = 0.025D;
+	public static double regenHealthPerFood = 2D;
 	
 	// -------------------------------------------- //
 	// TRUCE
@@ -197,15 +137,57 @@ public class Conf
 		EntityType.ZOMBIE
 	);
 
+	
 	// -------------------------------------------- //
-	// ALTARS
+	// COMBAT
 	// -------------------------------------------- //
 	
-	public static int altarSearchRadius = 10;
+	public static double damageDealtFactorWithoutIntent = 1.2;
+	public static double damageDealtFactorWithIntent = 0.65;
+	public static double damageReceivedFactorWithoutIntent = 0.80;
+	public static double damageReceivedFactorWithIntent = 1.0;
 	
-	public static AltarEvil altarEvil = new AltarEvil();
-	public static AltarGood altarGood = new AltarGood();	
+	private final static int damageDiamondSword = 7;
+	public static int combatWoodDamage = 3*damageDiamondSword;
 	
+	public final static transient Set<Material> combatWoodMaterials = MUtil.set(
+		Material.WOOD_AXE,
+		Material.WOOD_HOE,
+		Material.WOOD_PICKAXE,
+		Material.WOOD_SPADE,
+		Material.WOOD_SWORD,
+		Material.STICK,
+		Material.TORCH,
+		Material.REDSTONE_TORCH_OFF,
+		Material.REDSTONE_TORCH_ON,
+		Material.SIGN,
+		Material.SIGN_POST,
+		Material.FENCE,
+		Material.FENCE_GATE
+	);
+	
+	// -------------------------------------------- //
+	// INFECTION
+	// -------------------------------------------- //
+	
+	// It will take you 1h to turn
+	public static double infectionPerTick = 1D / (20*60*60D);
+	//public static double infectionPerBread = -0.2D;
+	
+	public static int infectionProgressNauseaTicks = 12*20;
+	public static int infectionProgressDamage = 1;
+	
+	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
+	public static Double infectionRiskAtCloseCombatWithIntent = 0.05;
+	
+	// -------------------------------------------- //
+	// TRADE
+	// -------------------------------------------- //
+	
+	public final static transient double tradeOfferMaxDistance = 2d;
+	public final static transient long tradeOfferToleranceMillis = 20 * 1000;
+	public final static transient double tradeVisualDistance = 7D;
+
 	// -------------------------------------------- //
 	// FOOD
 	// -------------------------------------------- //
@@ -404,6 +386,15 @@ public class Conf
 		//123, XD, //REDSTONE_LAMP_OFF
 		//124, XD, //REDSTONE_LAMP_ON
 	);
+	
+	// -------------------------------------------- //
+	// ALTARS
+	// -------------------------------------------- //
+	
+	public static int altarSearchRadius = 10;
+	
+	public static AltarEvil altarEvil = new AltarEvil();
+	public static AltarGood altarGood = new AltarGood();	
 	
 	// -------------------------------------------- //
 	// Persistance
