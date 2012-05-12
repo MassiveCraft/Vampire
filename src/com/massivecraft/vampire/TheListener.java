@@ -350,8 +350,8 @@ public class TheListener implements Listener
 		LivingEntity damagee = (LivingEntity)event.getEntity();
 		
 		// ... of a tasty type ...
-		Double foodPerDamage = Conf.foodPerDamageFromCreature.get(damagee.getType());
-		if (foodPerDamage == null) return;
+		Double fullFoodQuotient = Conf.entityTypeFullFoodQuotient.get(damagee.getType());
+		if (fullFoodQuotient == null || fullFoodQuotient == 0) return;
 		
 		// ... that has blood left ...
 		if (damagee.getHealth() < 0) return;
@@ -363,9 +363,11 @@ public class TheListener implements Listener
 		if ( ! vampire.vampire()) return;
 		
 		// ... drink blood! ;,,;
-		int damage = event.getDamage();
+		double damage = event.getDamage();
 		if (damagee.getHealth() < damage) damage = damagee.getHealth();
-		vampire.food().add(damage * foodPerDamage);
+		double food = damage / damagee.getMaxHealth() * fullFoodQuotient * vampire.getPlayer().getMaxHealth();
+		
+		vampire.food().add(food);
 	}
 	
 	// -------------------------------------------- //

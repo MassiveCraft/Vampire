@@ -137,26 +137,6 @@ public class Conf
 	public static Double multJumpingHuman = 1D;
 	public static Double multAirSpeedHuman = 1D;
 	
-	
-	// -------------------------------------------- //
-	// FOOD
-	// -------------------------------------------- //
-	
-	public static boolean foodCakeAllowed = true;
-	
-	// Food from blood drinking (damaging)
-	private final static transient Double foodPerPlayerDamage = 0.5D;
-	public static Map<EntityType, Double> foodPerDamageFromCreature = MUtil.map(
-		EntityType.PLAYER,       foodPerPlayerDamage,
-		EntityType.CHICKEN,      foodPerPlayerDamage / 2D,
-		EntityType.COW,          foodPerPlayerDamage / 2D,
-		EntityType.PIG,          foodPerPlayerDamage / 2D,
-		EntityType.SHEEP,        foodPerPlayerDamage / 2D,
-		EntityType.SPIDER,       foodPerPlayerDamage / 5D,
-		EntityType.CAVE_SPIDER,  foodPerPlayerDamage / 5D,
-		EntityType.SQUID,        foodPerPlayerDamage / 5D
-	);	
-	
 	// -------------------------------------------- //
 	// COMBAT
 	// -------------------------------------------- //
@@ -214,6 +194,54 @@ public class Conf
 	
 	public static AltarEvil altarEvil = new AltarEvil();
 	public static AltarGood altarGood = new AltarGood();	
+	
+	// -------------------------------------------- //
+	// FOOD
+	// -------------------------------------------- //
+	
+	public static boolean foodCakeAllowed = true;
+	
+	public static Map<EntityType, Double> entityTypeFullFoodQuotient = MUtil.map(
+		EntityType.CREEPER,        0/20D,
+		EntityType.SKELETON,       0/20D,
+		EntityType.SPIDER,         3/20D,
+		EntityType.GIANT,         50/20D,
+		EntityType.ZOMBIE,         0/20D,
+		EntityType.SLIME,          0/20D,
+		EntityType.GHAST,          0/20D,
+		EntityType.PIG_ZOMBIE,     0/20D,
+		EntityType.ENDERMAN,       0/20D,
+		EntityType.CAVE_SPIDER,    3/20D,
+		EntityType.SILVERFISH,     1/20D,
+		EntityType.BLAZE,          0/20D,
+		EntityType.MAGMA_CUBE,     0/20D,
+		EntityType.ENDER_DRAGON, 140/20D,
+		EntityType.PIG,            5/20D,
+		EntityType.SHEEP,          5/20D,
+		EntityType.COW,            7/20D,
+		EntityType.CHICKEN,        2/20D,
+		EntityType.SQUID,          4/20D,
+		EntityType.WOLF,           5/20D,
+		EntityType.MUSHROOM_COW,  20/20D,
+		EntityType.SNOWMAN,        0/20D,
+		EntityType.OCELOT,         5/20D,
+		EntityType.IRON_GOLEM,     0/20D,
+		EntityType.VILLAGER,      10/20D,
+		EntityType.PLAYER,        10/20D
+	);
+	
+	/*// Food from blood drinking (damaging)
+	private final static transient Double foodPerPlayerDamage = 0.5D;
+	public static Map<EntityType, Double> foodPerDamageFromCreature = MUtil.map(
+		EntityType.PLAYER,       foodPerPlayerDamage,
+		EntityType.CHICKEN,      foodPerPlayerDamage / 2D,
+		EntityType.COW,          foodPerPlayerDamage / 2D,
+		EntityType.PIG,          foodPerPlayerDamage / 2D,
+		EntityType.SHEEP,        foodPerPlayerDamage / 2D,
+		EntityType.SPIDER,       foodPerPlayerDamage / 5D,
+		EntityType.CAVE_SPIDER,  foodPerPlayerDamage / 5D,
+		EntityType.SQUID,        foodPerPlayerDamage / 5D
+	);*/
 	
 	// -------------------------------------------- //
 	// SUN
