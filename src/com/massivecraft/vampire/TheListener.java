@@ -459,24 +459,7 @@ public class TheListener implements Listener
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void damageDeal(EntityDamageEvent event)
-	{
-		// If this is a close combat event ...
-		if ( ! MUtil.isCloseCombatEvent(event)) return;
-		
-		// ... and the liable damager is a vampire ...
-		VPlayer vampire = VPlayers.i.get(MUtil.getLiableDamager(event));
-		if (vampire == null) return;
-		if ( ! vampire.vampire()) return;
-		
-		// ... Then modify damage!
-		double damage = event.getDamage();
-		damage *= vampire.getDamageDealtFactor();
-		event.setDamage((int) MUtil.probabilityRound(damage));
-	}
-	
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void damageReceive(EntityDamageEvent event)
+	public void combatVulnerability(EntityDamageEvent event)
 	{
 		// If this is a close combat event ...
 		if ( ! MUtil.isCloseCombatEvent(event)) return;
@@ -506,4 +489,23 @@ public class TheListener implements Listener
 		
 		event.setDamage((int) MUtil.probabilityRound(damage));
 	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void combatVampireStrength(EntityDamageEvent event)
+	{
+		// If this is a close combat event ...
+		if ( ! MUtil.isCloseCombatEvent(event)) return;
+		
+		// ... and the liable damager is a vampire ...
+		VPlayer vampire = VPlayers.i.get(MUtil.getLiableDamager(event));
+		if (vampire == null) return;
+		if ( ! vampire.vampire()) return;
+		
+		// ... Then modify damage!
+		double damage = event.getDamage();
+		damage *= vampire.getDamageDealtFactor();
+		event.setDamage((int) MUtil.probabilityRound(damage));
+	}
+	
+	
 }

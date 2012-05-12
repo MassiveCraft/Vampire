@@ -457,7 +457,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			player.playEffect(l2, Effect.POTION_BREAK, 5);
 			if (player.equals(me)) continue;
 			if (player.equals(you)) continue;
-			player.sendMessage(Txt.parse(Lang.tradeSeen));
+			player.sendMessage(Txt.parse(Lang.tradeSeen, me.getDisplayName(), you.getDisplayName()));
 		}
 		
 		// Reset trade memory

@@ -117,7 +117,7 @@ public class Conf
 	// -------------------------------------------- //
 	
 	public static double regenMinFood = 2.5D;
-	public static int regenDelayMillis = 3*1000;
+	public static int regenDelayMillis = 10*1000;
 	public static double regenFoodPerTick = 0.025D;
 	public static double regenHealthPerFood = 2D;
 	
@@ -156,7 +156,8 @@ public class Conf
 	public static double damageReceivedFactorWithoutIntent = 0.80;
 	public static double damageReceivedFactorWithIntent = 1.0;
 	
-	public static int damageReceivedWood = 14;
+	private final static int damageDiamondSword = 7;
+	public static int damageReceivedWood = 3*damageDiamondSword;
 	
 	public final static transient Set<Material> woodMaterials = MUtil.set(
 		Material.WOOD_AXE,
