@@ -20,7 +20,7 @@ public class Conf
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
-	public final static transient int taskInterval = 10; // Defines often the task runs.
+	public final static transient int taskInterval = 10; // Defines how often the task runs.
 	
 	public static List<String> baseCommandAliases = MUtil.list("v");
 	
@@ -33,6 +33,13 @@ public class Conf
 	public final static transient int fxEnderRandomMaxLen = 2;
 	public final static transient double fxSmokeBurstCount = 30D;
 	public final static transient double fxFlameBurstCount = 5D;
+	
+	// -------------------------------------------- //
+	// SHRIEK
+	// -------------------------------------------- //
+	
+	public static long shriekWaitMessageCooldownMillis = 500;
+	public static long shriekCooldownMillis = 30 * 1000;
 	
 	// -------------------------------------------- //
 	// MISC

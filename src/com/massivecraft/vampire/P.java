@@ -10,6 +10,7 @@ import com.massivecraft.mcore3.MPlugin;
 import com.massivecraft.vampire.cmd.CmdBase;
 import com.massivecraft.vampire.cmdarg.AHVPlayer;
 import com.massivecraft.vampire.keyboard.BloodlustToggle;
+import com.massivecraft.vampire.keyboard.Shriek;
 
 public class P extends MPlugin 
 {
@@ -58,7 +59,7 @@ public class P extends MPlugin
 		
 		// Register Key Bindings
 		BloodlustToggle.get().register();
-		//Shriek.get().register();
+		Shriek.get().register();
 		
 		postEnable();
 	}

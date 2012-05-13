@@ -57,7 +57,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (this.vampire)
 		{
 			this.msg(Lang.vampireTrue);
-			this.fxShriek();
+			this.fxShriekRun();
 			this.fxSmokeBurstRun();
 			this.fxSmokeRun();
 		}
@@ -156,9 +156,9 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (val)
 		{
 			// There are a few rules to when you can turn it on:
-			if (this.human())
+			if ( ! this.vampire())
 			{
-				msg("<b>Only vampires can use bloodlust.");
+				msg(Lang.onlyVampsCanX, "use bloodlust");
 				return;
 			}
 			
@@ -208,6 +208,16 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public long lastDamageMillis() { return this.lastDamageMillis; }
 	public void lastDamageMillis(long val) { this.lastDamageMillis = val; }
 	
+	// FIELD: lastShriekMillis - for the shriek ability
+	protected transient long lastShriekMillis = 0;
+	public long lastShriekMillis() { return this.lastShriekMillis; }
+	public void lastShriekMillis(long val) { this.lastShriekMillis = val; }
+	
+	// FIELD: lastShriekMessageMillis - Anti pwnage
+	protected transient long lastShriekWaitMessageMillis = 0;
+	public long lastShriekMessageMillis() { return this.lastShriekWaitMessageMillis; }
+	public void lastShriekMessageMillis(long val) { this.lastShriekWaitMessageMillis = val; }
+	
 	// FIELD: truceBreakTicksLeft - How many milliseconds more will the monsters be hostile?
 	protected transient long truceBreakTicksLeft = 0;
 	
@@ -236,7 +246,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void fxEnderRun() { this.fxEnderTicks = 10 * 20; }
 	
 	// FX: Shriek
-	public void fxShriek()
+	public void fxShriekRun()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
@@ -263,6 +273,47 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		double dcount = Conf.fxFlameBurstCount;
 		long lcount = MUtil.probabilityRound(dcount);
 		for (long i = lcount; i > 0; i--) FxUtil.flame(player);
+	}
+	
+	// -------------------------------------------- //
+	// SHRIEK
+	// -------------------------------------------- //
+	
+	public void shriek()
+	{
+		// You must be online to shriek
+		Player player = this.getPlayer();
+		if (player == null) return;
+		
+		// You must be a vampire to shriek
+		if ( ! this.vampire())
+		{
+			msg(Lang.onlyVampsCanX, "shriek");
+			return;
+		}
+		
+		long now = System.currentTimeMillis();
+		
+		long millisSinceLastShriekWaitMessage = now - this.lastShriekWaitMessageMillis;
+		if (millisSinceLastShriekWaitMessage < Conf.shriekWaitMessageCooldownMillis)
+		{
+			return;
+		}
+		
+		long millisSinceLastShriek = now - this.lastShriekMillis;
+		long millisToWait = Conf.shriekCooldownMillis - millisSinceLastShriek;
+		
+		if (millisToWait > 0)
+		{
+			long secondsToWait = (long) Math.ceil(millisToWait / 1000D);
+			this.msg(Lang.shriekWait, secondsToWait);
+			this.lastShriekWaitMessageMillis = now;
+			return;
+		}
+		
+		this.fxShriekRun();
+		this.fxSmokeBurstRun();
+		this.lastShriekMillis = now;
 	}
 	
 	// -------------------------------------------- //
@@ -703,6 +754,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	
 	public double combatInfectRisk()
 	{
+		if (this.human()) return 0D;
 		if (this.intend()) return Conf.infectionRiskAtCloseCombatWithIntent;
 		return Conf.infectionRiskAtCloseCombatWithoutIntent;
 	}

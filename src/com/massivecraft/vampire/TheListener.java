@@ -53,7 +53,7 @@ public class TheListener implements Listener
 	// FX
 	// -------------------------------------------- //
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void fxOnDeath(EntityDeathEvent event)
 	{
 		// If a vampire dies ...
@@ -62,11 +62,9 @@ public class TheListener implements Listener
 		if (vplayer.vampire() == false) return;
 		
 		// ... burns up with a violent scream ;,,;
-		vplayer.fxShriek();
+		vplayer.fxShriekRun();
 		vplayer.fxFlameBurstRun();
 		vplayer.fxSmokeBurstRun();
-		
-		vplayer.updateSpoutMovement();
 	}
 	
 	// -------------------------------------------- //
@@ -138,6 +136,43 @@ public class TheListener implements Listener
 		vplayer.updateSpoutMovement();
 	}
 	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void updateOnDeath(EntityDeathEvent event)
+	{
+		// If a vampire dies ...
+		VPlayer vplayer = VPlayers.i.get(event.getEntity());
+		if (vplayer == null) return;
+		if (vplayer.vampire() == false) return;
+		
+		// Close down bloodlust.
+		vplayer.rad(0);
+		vplayer.temp(0);
+		vplayer.bloodlust(false);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void updateOnRespawn(PlayerRespawnEvent event)
+	{
+		// If the player is a vampire ...
+		final VPlayer vplayer = VPlayers.i.get(event.getPlayer());
+		if (vplayer == null) return;
+		if ( ! vplayer.vampire()) return;
+		
+		// ... modify food and health levels and force another speed-update.
+		Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Player player = vplayer.getPlayer();
+				player.setFoodLevel(Conf.updateRespawnFood);
+				player.setHealth(Conf.updateRespawnHealth);
+				PlayerUtil.sendHealthFoodUpdatePacket(player);
+				vplayer.updateSpoutMovement();
+			}
+		});
+	}
+	
 	public void updateNameColor(Player player)
 	{
 		if (Conf.updateNameColor == false) return;
@@ -156,24 +191,6 @@ public class TheListener implements Listener
 	public void updateNameColor(PlayerJoinEvent event)
 	{
 		updateNameColor(event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void updateOnRespawn(PlayerRespawnEvent event)
-	{
-		// If the player is a vampire ...
-		Player player = event.getPlayer();
-		VPlayer vampire = VPlayers.i.get(player);
-		if (vampire == null) return;
-		if ( ! vampire.vampire()) return;
-		
-		// ... we apply the respawn logic.
-		vampire.bloodlust(false);
-		vampire.rad(0);
-		vampire.temp(0);
-		player.setFoodLevel(Conf.updateRespawnFood);
-		player.setHealth(Conf.updateRespawnHealth);
-		PlayerUtil.sendHealthFoodUpdatePacket(player);
 	}
 	
 	// -------------------------------------------- //

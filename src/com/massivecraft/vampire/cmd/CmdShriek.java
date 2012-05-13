@@ -17,6 +17,6 @@ public class CmdShriek extends VCommand
 	@Override
 	public void perform()
 	{
-		vme.fxShriek();
+		vme.shriek();
 	}
 }

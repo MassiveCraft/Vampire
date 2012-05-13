@@ -24,9 +24,10 @@ public class Lang
 	public static String quotaIsPercent(String quotaName, double val) { return String.format(xIsY, quotaName, percent(val)); }
 	public static String percent(double quota) { return String.format("%.1f%%", quota*100); }
 	
-	
 	public static String vampireTrue = "<b><strong>You are now a vampire!";
 	public static String vampireFalse = "<g><strong>You were cured from vampirism!";
+	
+	public static String shriekWait = "<i>You must wait <h>%ds <i>before you can shriek again.";
 	
 	public static String tradeSelf = "<i>You drink some of your own blood. Forever alone :'/";
 	public static String tradeNotClose = "<b>You must stand close to <h>%s <i>for this to work.";
@@ -85,18 +86,18 @@ public class Lang
 	
 	public static String foodCantEat = "<b>Vampires can't eat %s.";
 
-	public static String altarIncomplete = "<i>An incomplete %s. These blocks are missing:";
+	public static String altarIncomplete = "<i>An incomplete %s. Missing blocks:";
 	public static String altarUseIngredientsSuccess = "<i>You use these items on the altar:";
 	public static String altarUseIngredientsFail = "<i>To use it you need to collect these ingredients:";
 	
-	public static String altarEvilName = "evil altar";
+	public static String altarEvilName = "altar of darkness";
 	public static String altarEvilDesc = "<i>This altar looks dark and evil.";
 	public static String altarEvilCommon = "<i>You meditate and let darkness surround you...";
 	public static String altarEvilFreeVampire = "<i>...you feel as one with the darkness.";
 	public static String altarEvilFreeInfected = "<i>...some of the darkness already dwells within you.";
 	public static String altarEvilPaid = "<i>...an intense darkness purge you of light.";
 	
-	public static String altarGoodName = "good altar";
+	public static String altarGoodName = "altar of light";
 	public static String altarGoodDesc = "<i>This altar looks bright and good.";
 	public static String altarGoodCommon = "<i>You meditate and feel at peace...";
 	public static String altarGoodFreeHealthy = "<i>...you feel as one with the light.";

@@ -13,7 +13,7 @@ public class Shriek extends VampireKeyBinding
 	public void pressed(KeyBindingEvent event, SpoutPlayer splayer, VPlayer vplayer)
 	{
 		if ( ! Permission.SHRIEK.has(splayer, true)) return;
-		vplayer.fxShriek();
+		vplayer.shriek();
 	}
 
 	// The Single Instance
