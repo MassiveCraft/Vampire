@@ -2,19 +2,23 @@ package com.massivecraft.vampire.altar;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
+import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
 
-public class AltarGood extends Altar
+public class AltarLight extends Altar
 {
-	public AltarGood()
+	public AltarLight()
 	{
-		this.name = Lang.altarGoodName;
-		this.desc = Lang.altarGoodDesc;
+		this.name = Lang.altarLightName;
+		this.desc = Lang.altarLightDesc;
 		
 		this.coreMaterial = Material.LAPIS_BLOCK;
 		
@@ -34,7 +38,7 @@ public class AltarGood extends Altar
 	@Override
 	public boolean worship(VPlayer vplayer, Player player)
 	{
-		return Permission.ALTAR_GOOD.has(player, true);
+		return Permission.ALTAR_LIGHT.has(player, true);
 	}
 
 	@Override
@@ -44,31 +48,53 @@ public class AltarGood extends Altar
 	}
 
 	@Override
-	public void effectFree(VPlayer vplayer, Player player)
+	public void effectFree(VPlayer vplayer, final Player player)
 	{
-		if (vplayer.healthy())
+		if (playerHoldsWaterBottle(player))
 		{
-			vplayer.msg(Lang.altarGoodFreeHealthy);
+			final int amount = player.getItemInHand().getAmount();
+			vplayer.msg(Lang.altarLightWater);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					player.setItemInHand(new ItemStack(Material.POTION, amount, Conf.holyWaterPotionValue));
+				}
+			});
+		}
+		else if (vplayer.healthy())
+		{
+			vplayer.msg(Lang.altarLightFreeHealthy);
 		}
 		else if (vplayer.infected())
 		{
-			vplayer.msg(Lang.altarGoodFreeInfected);
+			vplayer.msg(Lang.altarLightFreeInfected);
 			vplayer.infection(0);
+			vplayer.fxEnderBurstRun();
 		}
 	}
 
 	@Override
 	public void effectPaid(VPlayer vplayer, Player player)
 	{
+		vplayer.msg(Lang.altarLightPaid);
 		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-		vplayer.msg(Lang.altarGoodPaid);
+		vplayer.fxEnderBurstRun();
+		
 		vplayer.vampire(false);
 	}
 	
 	@Override
 	public void effectCommon(VPlayer vplayer, Player player)
 	{
-		vplayer.msg(Lang.altarGoodCommon);
+		vplayer.msg(Lang.altarLightCommon);
 		vplayer.fxEnderRun();
+	}
+	
+	protected static boolean playerHoldsWaterBottle(Player player)
+	{
+		if (player.getItemInHand().getType() != Material.POTION) return false;
+		return player.getItemInHand().getDurability() == 0;
 	}
 }

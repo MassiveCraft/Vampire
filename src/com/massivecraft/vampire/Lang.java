@@ -78,31 +78,37 @@ public class Lang
 	);
 	
 	public static List<String> infectionHint = MUtil.list(
-		"<i>You may want use a good altar.",
+		"<i>You may want use an altar of light.",
 		"<i>Perhaps you should visit a temple of light?",
 		"<i>Only bright light may purge you of this darkness",
 		"<i>You want to touch a lapis lazuli block"
 	);
 	
 	public static String foodCantEat = "<b>Vampires can't eat %s.";
+	
+	public static String holyWaterCommon = "<h>%s <i>throws holy water at you.";
+	public static String holyWaterVampire = "<b>The sparkles of light burn you.";
+	public static String holyWaterInfected = "<i>The sparkles of light purge you of all darkness.";
+	public static String holyWaterHealthy = "<i>You feel cleansed by the sparkles of light.";
 
 	public static String altarIncomplete = "<i>An incomplete %s. Missing blocks:";
 	public static String altarUseIngredientsSuccess = "<i>You use these items on the altar:";
 	public static String altarUseIngredientsFail = "<i>To use it you need to collect these ingredients:";
 	
-	public static String altarEvilName = "altar of darkness";
-	public static String altarEvilDesc = "<i>This altar looks dark and evil.";
-	public static String altarEvilCommon = "<i>You meditate and let darkness surround you...";
-	public static String altarEvilFreeVampire = "<i>...you feel as one with the darkness.";
-	public static String altarEvilFreeInfected = "<i>...some of the darkness already dwells within you.";
-	public static String altarEvilPaid = "<i>...an intense darkness purge you of light.";
+	public static String altarDarkName = "altar of darkness";
+	public static String altarDarkDesc = "<i>This altar looks dark and evil.";
+	public static String altarDarkCommon = "<i>You meditate and let darkness surround you...";
+	public static String altarDarkFreeVampire = "<i>...you feel as one with the darkness.";
+	public static String altarDarkFreeInfected = "<i>...some of the darkness already dwells within you.";
+	public static String altarDarkPaid = "<i>...an intense darkness purge you of light.";
 	
-	public static String altarGoodName = "altar of light";
-	public static String altarGoodDesc = "<i>This altar looks bright and good.";
-	public static String altarGoodCommon = "<i>You meditate and feel at peace...";
-	public static String altarGoodFreeHealthy = "<i>...you feel as one with the light.";
-	public static String altarGoodFreeInfected = "<i>...a warm energy flows through you.";
-	public static String altarGoodPaid = "<i>...a bright light purge you of all darkness.";
+	public static String altarLightName = "altar of light";
+	public static String altarLightDesc = "<i>This altar looks bright and good.";
+	public static String altarLightCommon = "<i>You meditate and feel at peace...";
+	public static String altarLightWater = "<i>...the water in the bottle starts to sparkle.";
+	public static String altarLightFreeHealthy = "<i>...you feel as one with the light.";
+	public static String altarLightFreeInfected = "<i>...a warm energy flows through you.";
+	public static String altarLightPaid = "<i>...a bright light purge you of all darkness.";
 	
 	// -------------------------------------------- //
 	// Persistance

@@ -265,6 +265,16 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		for (long i = lcount; i > 0; i--) FxUtil.smoke(player);
 	}
 	
+	// FX: EnderBurst
+	public void fxEnderBurstRun()
+	{
+		Player player = this.getPlayer();
+		if (player == null) return;
+		double dcount = Conf.fxEnderBurstCount;
+		long lcount = MUtil.probabilityRound(dcount);
+		for (long i = lcount; i > 0; i--) FxUtil.ender(player, 0);
+	}
+	
 	// FX: FlameBurst
 	public void fxFlameBurstRun()
 	{

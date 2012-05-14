@@ -11,8 +11,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 
 import com.massivecraft.mcore3.util.MUtil;
-import com.massivecraft.vampire.altar.AltarEvil;
-import com.massivecraft.vampire.altar.AltarGood;
+import com.massivecraft.vampire.altar.AltarDark;
+import com.massivecraft.vampire.altar.AltarLight;
 
 
 public class Conf
@@ -29,10 +29,11 @@ public class Conf
 	// -------------------------------------------- //
 	
 	public final static transient double fxSmokePerTick = 0.40D;
-	public final static transient double fxEnderPerTick = 0.70D;
-	public final static transient int fxEnderRandomMaxLen = 2;
+	public final static transient double fxEnderPerTick = 0.10D;
+	public final static transient int fxEnderRandomMaxLen = 1;
 	public final static transient double fxSmokeBurstCount = 30D;
 	public final static transient double fxFlameBurstCount = 5D;
+	public final static transient double fxEnderBurstCount = 3D;
 	
 	// -------------------------------------------- //
 	// SHRIEK
@@ -226,6 +227,14 @@ public class Conf
 		EntityType.VILLAGER,      10/20D,
 		EntityType.PLAYER,        10/20D
 	);
+
+	// -------------------------------------------- //
+	// HOLY WATER
+	// -------------------------------------------- //
+	
+	public static short holyWaterPotionValue = 16430;
+	public static double holyWaterSplashRadius = 3D;
+	public static double holyWaterTemp = 0.7D;
 	
 	// -------------------------------------------- //
 	// SUN
@@ -400,8 +409,8 @@ public class Conf
 	
 	
 	
-	public static AltarEvil altarEvil = new AltarEvil();
-	public static AltarGood altarGood = new AltarGood();	
+	public static AltarDark altarEvil = new AltarDark();
+	public static AltarLight altarGood = new AltarLight();	
 	
 	// -------------------------------------------- //
 	// Persistance

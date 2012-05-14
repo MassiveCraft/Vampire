@@ -6,20 +6,26 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.entity.CraftThrownPotion;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -467,6 +473,64 @@ public class TheListener implements Listener
 		
 		vampire.food().add(food);
 	}
+	
+	// -------------------------------------------- //
+	// HOLY WATER
+	// -------------------------------------------- //
+	
+	/**
+	 * You may wonder why the PotionSplashEvent was not used.
+	 * That event is not triggered. This potion has no vanilla effects.
+	 * Thus only this projectile hit event is triggered.
+	 */
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void holyWater(ProjectileHitEvent event)
+	{
+		// If this projectile is a thrown potion ...
+		Projectile projectile = event.getEntity();
+		if ( ! (projectile instanceof ThrownPotion)) return;
+		
+		// ... and the potion type is holy water ...
+		ThrownPotion potion = (ThrownPotion)projectile;
+		CraftThrownPotion cpotion = (CraftThrownPotion)potion;
+		int potionvalue = cpotion.getHandle().getPotionValue();
+		if (potionvalue != Conf.holyWaterPotionValue) return;
+		
+		// ... who is the thrower and where did it splash? ...
+		Location splashLocation = potion.getLocation();
+		Player shooter = (Player)projectile.getShooter();
+		
+		// ... then to all nearby players ...
+		for (Player player : splashLocation.getWorld().getPlayers())
+		{
+			if (player.getLocation().distance(splashLocation) > Conf.holyWaterSplashRadius) continue;
+			VPlayer vplayer = VPlayers.i.get(player);
+			vplayer.msg(Lang.holyWaterCommon, shooter.getDisplayName());
+			vplayer.fxEnderBurstRun();
+			
+			// Trigger a damage event so other plugins can cancel this.
+			EntityDamageByEntityEvent triggeredEvent = new EntityDamageByEntityEvent(projectile.getShooter(), player, DamageCause.CUSTOM, 1);
+			Bukkit.getPluginManager().callEvent(triggeredEvent);
+			if (triggeredEvent.isCancelled()) continue;
+			
+			if (vplayer.healthy())
+			{
+				vplayer.msg(Lang.holyWaterHealthy);
+			}
+			else if (vplayer.infected())
+			{
+				vplayer.msg(Lang.holyWaterInfected);
+				vplayer.infection(0);
+				vplayer.fxEnderRun();
+			}
+			else if (vplayer.vampire())
+			{
+				vplayer.msg(Lang.holyWaterVampire);
+				vplayer.tempAdd(Conf.holyWaterTemp);
+				vplayer.fxFlameBurstRun();
+			}
+		}
+	}	
 	
 	// -------------------------------------------- //
 	// ALTARS

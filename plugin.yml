@@ -14,8 +14,8 @@ permissions:
   vampire.shriek:            {description: shriek, default: false}
   vampire.mode.bloodlust:    {description: use bloodlust, default: false}
   vampire.mode.intent:       {description: use intent to infect, default: false}
-  vampire.altar.evil:        {description: use an evil altar, default: false}
-  vampire.altar.good:        {description: use a good altar, default: false}
+  vampire.altar.dark:        {description: use an altar of darkness, default: false}
+  vampire.altar.light:       {description: use an altar of light, default: false}
   vampire.trade.offer:       {description: offer blood to someone, default: false}
   vampire.trade.accept:      {description: accept blood offer, default: false}
   vampire.combat.infect:     {description: be infectious in combat, default: false}
@@ -44,8 +44,8 @@ permissions:
   vampire.altar.*:
     default: false
     children:
-      vampire.altar.evil: true
-      vampire.altar.good: true
+      vampire.altar.dark: true
+      vampire.altar.light: true
   vampire.trade.*:
     default: false
     children:
@@ -77,7 +77,7 @@ permissions:
     children:
       vampire.show.self: true
       vampire.mode.bloodlust: true
-      vampire.altar.good: true
+      vampire.altar.light: true
       vampire.trade.accept: true
   vampire.kit.fullplayer:
     description: This is the suggested kit for normal players on the server.
