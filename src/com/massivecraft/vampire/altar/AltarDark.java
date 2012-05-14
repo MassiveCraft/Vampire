@@ -4,13 +4,16 @@ import java.util.HashMap;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.util.FxUtil;
+import com.massivecraft.vampire.util.ResourceUtil;
 
 public class AltarDark extends Altar
 {
@@ -27,53 +30,41 @@ public class AltarDark extends Altar
 		this.materialCounts.put(Material.DEAD_BUSH, 5);
 		this.materialCounts.put(Material.DIAMOND_BLOCK, 2);
 		
-		this.recipe = new Recipe();
-		this.recipe.materialQuantities.put(Material.MUSHROOM_SOUP, 1);
-		this.recipe.materialQuantities.put(Material.BONE, 10);
-		this.recipe.materialQuantities.put(Material.SULPHUR, 10);
-		this.recipe.materialQuantities.put(Material.REDSTONE, 10);
-	}
-
-	@Override
-	public boolean worship(VPlayer vplayer, Player player)
-	{
-		return Permission.ALTAR_DARK.has(player, true);
-	}
-
-	@Override
-	public boolean isPaymentRequired(VPlayer vplayer, Player player)
-	{
-		return vplayer.healthy();
-	}
-
-	@Override
-	public void effectFree(VPlayer vplayer, Player player)
-	{
-		if (vplayer.vampire())
-		{
-			vplayer.msg(Lang.altarDarkFreeVampire);
-		}
-		else if (vplayer.infected())
-		{
-			vplayer.msg(Lang.altarDarkFreeInfected);
-		}
-	}
-
-	@Override
-	public void effectPaid(VPlayer vplayer, Player player)
-	{
-		vplayer.msg(Lang.altarDarkPaid);
-		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-		vplayer.fxSmokeBurstRun();
-		
-		vplayer.infectionAdd(0.01D, InfectionReason.ALTAR, null);
+		this.resources = MUtil.list(
+			new ItemStack(Material.MUSHROOM_SOUP, 1),
+			new ItemStack(Material.BONE, 10),
+			new ItemStack(Material.SULPHUR, 10),
+			new ItemStack(Material.REDSTONE, 10)
+		);
 	}
 	
 	@Override
-	public void effectCommon(VPlayer vplayer, Player player)
+	public void use(VPlayer vplayer, Player player)
 	{
+		vplayer.msg("");
+		vplayer.msg(this.desc);
+		
+		if ( ! Permission.ALTAR_DARK.has(player, true)) return;
+		
 		vplayer.msg(Lang.altarDarkCommon);
-		vplayer.fxSmokeRun();
 		FxUtil.ensure(PotionEffectType.BLINDNESS, player, 12*20);
+		vplayer.fxSmokeRun();
+		
+		if (vplayer.healthy())
+		{
+			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarResourceSuccess, Lang.altarResourceFail)) return;
+			vplayer.msg(Lang.altarDarkHealthy);
+			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+			vplayer.fxSmokeBurstRun();
+			vplayer.infectionAdd(0.01D, InfectionReason.ALTAR, null);
+		}
+		else if (vplayer.vampire())
+		{
+			vplayer.msg(Lang.altarDarkVampire);
+		}
+		else if (vplayer.infected())
+		{
+			vplayer.msg(Lang.altarDarkInfected);
+		}
 	}
 }

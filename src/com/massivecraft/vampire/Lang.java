@@ -5,10 +5,7 @@ import java.util.List;
 import com.massivecraft.mcore3.util.MUtil;
 
 public class Lang
-{
-	//public static String intentOnMessage  = "<i>You now <h>do intend <i>to infect others in combat.";
-	//public static String intentOffMessage = "<i>You now <h>don't intend <i>to infect others in combat.";
-	
+{	
 	public static String consolePlayerArgRequired = "<b>You must specify player from console.";
 	public static String noSpoutWarnHuman = "";
 	public static String noSpoutWarnVamp = "<b>Use SpoutCraft for improved vampire movement.\n<aqua>http://dev.bukkit.org/client-mods/spoutcraft/";
@@ -92,23 +89,26 @@ public class Lang
 	public static String holyWaterHealthy = "<i>You feel cleansed by the sparkles of light.";
 
 	public static String altarIncomplete = "<i>An incomplete %s. Missing blocks:";
-	public static String altarUseIngredientsSuccess = "<i>You use these items on the altar:";
-	public static String altarUseIngredientsFail = "<i>To use it you need to collect these ingredients:";
+	public static String altarResourceSuccess = "<i>You use these items on the altar:";
+	public static String altarResourceFail = "<i>To use it you need to collect these ingredients:";
 	
 	public static String altarDarkName = "altar of darkness";
 	public static String altarDarkDesc = "<i>This altar looks dark and evil.";
 	public static String altarDarkCommon = "<i>You meditate and let darkness surround you...";
-	public static String altarDarkFreeVampire = "<i>...you feel as one with the darkness.";
-	public static String altarDarkFreeInfected = "<i>...some of the darkness already dwells within you.";
-	public static String altarDarkPaid = "<i>...an intense darkness purge you of light.";
+	public static String altarDarkVampire = "<i>...you feel as one with the darkness.";
+	public static String altarDarkInfected = "<i>...some of the darkness already dwells within you.";
+	public static String altarDarkHealthy = "<i>...an intense darkness purge you of light.";
 	
 	public static String altarLightName = "altar of light";
 	public static String altarLightDesc = "<i>This altar looks bright and good.";
+	
+	public static String altarLightWaterResourceSuccess = "<i>You mix these items on the altar:";
+	public static String altarLightWaterResourceFail = "<i>You need these items to create holy water:";
+	public static String altarLightWaterResult = "<i>...the water in the bottle starts to sparkle.";
 	public static String altarLightCommon = "<i>You meditate and feel at peace...";
-	public static String altarLightWater = "<i>...the water in the bottle starts to sparkle.";
-	public static String altarLightFreeHealthy = "<i>...you feel as one with the light.";
-	public static String altarLightFreeInfected = "<i>...a warm energy flows through you.";
-	public static String altarLightPaid = "<i>...a bright light purge you of all darkness.";
+	public static String altarLightHealthy = "<i>...you feel as one with the light.";
+	public static String altarLightInfected = "<i>...a warm energy flows through you.";
+	public static String altarLightVampire = "<i>...a bright light purge you of all darkness.";
 	
 	// -------------------------------------------- //
 	// Persistance

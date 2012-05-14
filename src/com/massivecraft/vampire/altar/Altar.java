@@ -3,6 +3,7 @@ package com.massivecraft.vampire.altar;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.mcore3.util.Txt;
 import com.massivecraft.vampire.Conf;
@@ -23,7 +25,7 @@ public abstract class Altar
 	public String desc;
 	public Material coreMaterial;
 	public Map<Material, Integer> materialCounts;
-	public Recipe recipe;
+	public List<ItemStack> resources;
 	
 	public void evalBlockUse(Block coreBlock, Player player)
 	{
@@ -62,7 +64,9 @@ public abstract class Altar
 			return;
 		}
 		
-		// Watch the altar
+		this.use(vplayer, player);
+		
+		/*// Watch the altar
 		this.watch(vplayer, player);
 		
 		// Attempt a worship
@@ -82,59 +86,31 @@ public abstract class Altar
 		// Apply paid effect
 		this.effectCommon(vplayer, player);
 		this.effectPaid(vplayer, player);
+		*/
 	}
 	
-	/**
-	 * At the watch stage the player is simply looking at the altar.
-	 */
+	public abstract void use(VPlayer vplayer, Player player);
+	
 	public void watch (VPlayer vplayer, Player player)
 	{
 		vplayer.msg(this.desc);
 	}
 	
-	/**
-	 * At the worship stage the player will get accepted or not.
-	 * true means accepted
-	 */
-	public abstract boolean worship(VPlayer vplayer, Player player);
+	/*public abstract boolean worship(VPlayer vplayer, Player player);
 	
-	/**
-	 * Next the altar decides on if payment is required
-	 */
 	public abstract boolean isPaymentRequired(VPlayer vplayer, Player player);
 	
-	/**
-	 * If payment was required we try to take it
-	 */
 	public boolean attemptTakePayment(VPlayer vplayer, Player player)
 	{
-		if ( ! this.recipe.playerHasEnough(player))
-		{
-			vplayer.msg(Lang.altarUseIngredientsFail);
-			vplayer.msg(this.recipe.getRecipeLine());
-			return false;
-		}
-
-		vplayer.msg(Lang.altarUseIngredientsSuccess);
-		vplayer.msg(this.recipe.getRecipeLine());
-		this.recipe.removeFromPlayer(player);
-		return true;
+		return ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarUseIngredientsSuccess, Lang.altarUseIngredientsFail);
 	}
 	
-	/**
-	 * Apply the free effect to the player
-	 */
 	public abstract void effectFree(VPlayer vplayer, Player player);
 	
-	/**
-	 * Apply the paid effect to the player
-	 */
 	public abstract void effectPaid(VPlayer vplayer, Player player);
 	
-	/**
-	 * The effectCommon is run in both of the cases
-	 */
 	public void effectCommon(VPlayer vplayer, Player player) { } ;
+	*/
 	
 	
 	// ------------------------------------------------------------ //

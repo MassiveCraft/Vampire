@@ -3,9 +3,9 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore3.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore3.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.vampire.*;
-import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 
 public class CmdOffer extends VCommand
 {
@@ -17,7 +17,7 @@ public class CmdOffer extends VCommand
 		this.addOptionalArg("amount", "4.0");
 		
 		this.addRequirements(ReqHasPerm.get(Permission.TRADE_OFFER.node));
-		this.addRequirements(ReqIsVampire.get());
+		this.addRequirements(ReqIsPlayer.get());
 	}
 	
 	@Override

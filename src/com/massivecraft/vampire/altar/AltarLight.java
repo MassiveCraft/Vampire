@@ -2,16 +2,16 @@ package com.massivecraft.vampire.altar;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.util.ResourceUtil;
 
 public class AltarLight extends Altar
 {
@@ -28,68 +28,53 @@ public class AltarLight extends Altar
 		this.materialCounts.put(Material.RED_ROSE, 5);
 		this.materialCounts.put(Material.DIAMOND_BLOCK, 2);
 		
-		this.recipe = new Recipe();
-		this.recipe.materialQuantities.put(Material.WATER_BUCKET, 1);
-		this.recipe.materialQuantities.put(Material.DIAMOND, 1);
-		this.recipe.materialQuantities.put(Material.SUGAR, 20);
-		this.recipe.materialQuantities.put(Material.WHEAT, 20);
+		this.resources = MUtil.list(
+			new ItemStack(Material.WATER_BUCKET, 1),
+			new ItemStack(Material.DIAMOND, 1),
+			new ItemStack(Material.SUGAR, 20),
+			new ItemStack(Material.WHEAT, 20)
+		);
 	}
 	
 	@Override
-	public boolean worship(VPlayer vplayer, Player player)
+	public void use(VPlayer vplayer, Player player)
 	{
-		return Permission.ALTAR_LIGHT.has(player, true);
-	}
-
-	@Override
-	public boolean isPaymentRequired(VPlayer vplayer, Player player)
-	{
-		return vplayer.vampire();
-	}
-
-	@Override
-	public void effectFree(VPlayer vplayer, final Player player)
-	{
-		if (playerHoldsWaterBottle(player))
+		vplayer.msg("");
+		vplayer.msg(this.desc);
+		
+		if ( ! Permission.ALTAR_LIGHT.has(player, true)) return;
+		
+		if ( ! vplayer.vampire() && playerHoldsWaterBottle(player))
 		{
-			final int amount = player.getItemInHand().getAmount();
-			vplayer.msg(Lang.altarLightWater);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					player.setItemInHand(new ItemStack(Material.POTION, amount, Conf.holyWaterPotionValue));
-				}
-			});
+			if ( ! ResourceUtil.playerRemoveAttempt(player, Conf.holyWaterResources, Lang.altarLightWaterResourceSuccess, Lang.altarLightWaterResourceFail)) return;
+			ResourceUtil.playerAdd(player, new ItemStack(Material.POTION, 1, Conf.holyWaterPotionValue));
+			vplayer.msg(Lang.altarLightWaterResult);
+			vplayer.fxEnderBurstRun();
+			return;
+		}
+		
+		vplayer.msg(Lang.altarLightCommon);
+		vplayer.fxEnderRun();
+		
+		if (vplayer.vampire())
+		{
+			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarResourceSuccess, Lang.altarResourceFail)) return;
+			vplayer.msg(Lang.altarLightVampire);
+			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+			vplayer.fxEnderBurstRun();
+			vplayer.vampire(false);
+			return;
 		}
 		else if (vplayer.healthy())
 		{
-			vplayer.msg(Lang.altarLightFreeHealthy);
+			vplayer.msg(Lang.altarLightHealthy);
 		}
 		else if (vplayer.infected())
 		{
-			vplayer.msg(Lang.altarLightFreeInfected);
+			vplayer.msg(Lang.altarLightInfected);
 			vplayer.infection(0);
 			vplayer.fxEnderBurstRun();
 		}
-	}
-
-	@Override
-	public void effectPaid(VPlayer vplayer, Player player)
-	{
-		vplayer.msg(Lang.altarLightPaid);
-		player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-		vplayer.fxEnderBurstRun();
-		
-		vplayer.vampire(false);
-	}
-	
-	@Override
-	public void effectCommon(VPlayer vplayer, Player player)
-	{
-		vplayer.msg(Lang.altarLightCommon);
-		vplayer.fxEnderRun();
 	}
 	
 	protected static boolean playerHoldsWaterBottle(Player player)

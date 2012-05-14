@@ -20,7 +20,12 @@ public class Recipe
 	// GSON needs this noarg constructor;
 	public Recipe()
 	{
-		materialQuantities = new HashMap<Material, Integer>();
+		this(new HashMap<Material, Integer>());
+	}
+	
+	public Recipe(Map<Material, Integer> materialQuantities)
+	{
+		this.materialQuantities = materialQuantities;
 	}
 	
 	@SuppressWarnings("deprecation")

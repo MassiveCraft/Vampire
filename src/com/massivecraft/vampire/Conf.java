@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
+import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.mcore3.util.MUtil;
 import com.massivecraft.vampire.altar.AltarDark;
@@ -20,7 +21,7 @@ public class Conf
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
-	public final static transient int taskInterval = 10; // Defines how often the task runs.
+	public static int taskInterval = 10; // Defines how often the task runs.
 	
 	public static List<String> baseCommandAliases = MUtil.list("v");
 	
@@ -28,12 +29,12 @@ public class Conf
 	// FX
 	// -------------------------------------------- //
 	
-	public final static transient double fxSmokePerTick = 0.40D;
-	public final static transient double fxEnderPerTick = 0.10D;
-	public final static transient int fxEnderRandomMaxLen = 1;
-	public final static transient double fxSmokeBurstCount = 30D;
-	public final static transient double fxFlameBurstCount = 5D;
-	public final static transient double fxEnderBurstCount = 3D;
+	public static double fxSmokePerTick = 0.40D;
+	public static double fxEnderPerTick = 0.10D;
+	public static int fxEnderRandomMaxLen = 1;
+	public static double fxSmokeBurstCount = 30D;
+	public static double fxFlameBurstCount = 5D;
+	public static double fxEnderBurstCount = 3D;
 	
 	// -------------------------------------------- //
 	// SHRIEK
@@ -153,10 +154,10 @@ public class Conf
 	public static double combatDamageFactorWithoutBloodlust = 1.0;
 	public static double combatDamageFactorWithBloodlust = 1.2;
 	
-	private final static int damageDiamondSword = 7;
+	private final static transient int damageDiamondSword = 7;
 	public static int combatWoodDamage = 3*damageDiamondSword;
 	
-	public final static transient Set<Material> combatWoodMaterials = MUtil.set(
+	public static Set<Material> combatWoodMaterials = MUtil.set(
 		Material.WOOD_AXE,
 		Material.WOOD_HOE,
 		Material.WOOD_PICKAXE,
@@ -189,9 +190,9 @@ public class Conf
 	// TRADE
 	// -------------------------------------------- //
 	
-	public final static transient double tradeOfferMaxDistance = 2d;
-	public final static transient long tradeOfferToleranceMillis = 20 * 1000;
-	public final static transient double tradeVisualDistance = 7D;
+	public static double tradeOfferMaxDistance = 2d;
+	public static long tradeOfferToleranceMillis = 20 * 1000;
+	public static double tradeVisualDistance = 7D;
 
 	// -------------------------------------------- //
 	// FOOD
@@ -236,6 +237,11 @@ public class Conf
 	public static double holyWaterSplashRadius = 3D;
 	public static double holyWaterTemp = 0.7D;
 	
+	public static List<ItemStack> holyWaterResources = MUtil.list(
+		new ItemStack(Material.POTION, 1, (short)0),
+		new ItemStack(Material.INK_SACK, 1, (short)4)
+	);
+	
 	// -------------------------------------------- //
 	// SUN
 	// -------------------------------------------- //
@@ -262,8 +268,8 @@ public class Conf
 	//We assume opacity 1 for all materials not in this map
 	private final static transient Double AIR = 0D;
 	private final static transient Double GROUND = 0D;
-	private final static transient Double STAIRS = 0D;
-	private final static transient Double SLABS = 0D;
+	private final static transient Double STAIRS = 1D;
+	private final static transient Double SLABS = 1D;
 	private final static transient Double DOOR = 0D;
 	private final static transient Double THIN = 0D;
 	private final static transient Double STICK = 0.1D;
@@ -409,8 +415,8 @@ public class Conf
 	
 	
 	
-	public static AltarDark altarEvil = new AltarDark();
-	public static AltarLight altarGood = new AltarLight();	
+	public static AltarDark altarDark = new AltarDark();
+	public static AltarLight altarLight = new AltarLight();	
 	
 	// -------------------------------------------- //
 	// Persistance

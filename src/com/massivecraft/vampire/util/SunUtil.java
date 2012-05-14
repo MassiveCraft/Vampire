@@ -142,7 +142,7 @@ public class SunUtil
 		if (ret == 0) return 0;
 		
 		// Terrain
-		Block block = player.getLocation().getBlock();
+		Block block = player.getLocation().getBlock().getRelative(0, 1, 0);
 		double terrainOpacity = calcTerrainOpacity(block);
 		ret *= (1-terrainOpacity);
 		if (ret == 0) return 0;

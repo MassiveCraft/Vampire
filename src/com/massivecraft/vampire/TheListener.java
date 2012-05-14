@@ -544,8 +544,8 @@ public class TheListener implements Listener
 		if ( action != Action.RIGHT_CLICK_BLOCK) return;
 		
 		// ... run altar logic.
-		Conf.altarEvil.evalBlockUse(event.getClickedBlock(), event.getPlayer());
-		Conf.altarGood.evalBlockUse(event.getClickedBlock(), event.getPlayer());
+		Conf.altarDark.evalBlockUse(event.getClickedBlock(), event.getPlayer());
+		Conf.altarLight.evalBlockUse(event.getClickedBlock(), event.getPlayer());
 	}
 	
 }
