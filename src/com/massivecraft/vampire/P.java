@@ -41,7 +41,8 @@ public class P extends MPlugin
 		// Load Conf from disk
 		Conf.load();
 		Conf.save();
-		//Lang.load();
+		Lang.load();
+		Lang.save();
 		
 		// Add Base Commands
 		this.cmdBase = new CmdBase();

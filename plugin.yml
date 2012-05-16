@@ -35,7 +35,7 @@ permissions:
     default: false
     children:
       vampire.show.self: true
-      vampire.mode.other: true
+      vampire.show.other: true
   vampire.mode.*:
     default: false
     children:

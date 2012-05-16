@@ -72,7 +72,7 @@ public class Conf
 		"vampire.is.human", true
 	);
 
-	public static int updateRespawnFood = 2;
+	public static int updateRespawnFood = 20;
 	public static int updateRespawnHealth = 20;
 	
 	public static Boolean updateNameColor = false;
