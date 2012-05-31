@@ -98,10 +98,10 @@ public class Conf
 	public static double bloodlustSmokes = 1.5D;
 	
 	public static Double multGravityBloodlust = null;
-	public static Double multSwimmingBloodlust = 3D;
-	public static Double multWalkingBloodlust = 3D;
-	public static Double multJumpingBloodlust = 3D;
-	public static Double multAirSpeedBloodlust = 4D;
+	public static Double multSwimmingBloodlust = 2D;
+	public static Double multWalkingBloodlust = 2D;
+	public static Double multJumpingBloodlust = 2.5D;
+	public static Double multAirSpeedBloodlust = 2.5D;
 	
 	public static Double multGravityVamp = null;
 	public static Double multSwimmingVamp = 1D;
@@ -234,7 +234,7 @@ public class Conf
 	// -------------------------------------------- //
 	
 	public static short holyWaterPotionValue = 16430;
-	public static double holyWaterSplashRadius = 3D;
+	public static double holyWaterSplashRadius = 6D;
 	public static double holyWaterTemp = 0.7D;
 	
 	public static List<ItemStack> holyWaterResources = MUtil.list(
