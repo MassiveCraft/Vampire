@@ -26,6 +26,9 @@ import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
 import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.SunUtil;
+import net.h31ix.anticheat.api.AnticheatAPI;
+import net.h31ix.anticheat.manage.CheckType;
+import org.bukkit.Bukkit;
 
 /**
  * The VPlayer is a "skin" for a normal player.
@@ -368,10 +371,14 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (spoutuser && this.vampire())
 		{
 			P.p.noCheatExemptedPlayerNames.add(player.getName());
+                        if(Bukkit.getServer().getPluginManager().getPlugin("AntiCheat") != null && !(AnticheatAPI.isExempt(player, CheckType.SPEED)))
+                            AnticheatAPI.exemptPlayer(player, CheckType.SPEED);
 		}
 		else
 		{
 			P.p.noCheatExemptedPlayerNames.remove(player.getName());
+                        if(Bukkit.getServer().getPluginManager().getPlugin("AntiCheat") != null && AnticheatAPI.isExempt(player, CheckType.SPEED))
+                            AnticheatAPI.unexemptPlayer(player, CheckType.SPEED);
 		}
 		
 		Double multGravity = null;

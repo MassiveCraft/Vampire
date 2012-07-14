@@ -2,7 +2,7 @@ name: vampire
 version: 5.0.1
 main: com.massivecraft.vampire.P
 depend: [mcore3, Spout]
-softdepend: [NoCheatPlus]
+softdepend: [NoCheatPlus,AntiCheat]
 permissions:
 # -------------------------------------------- #
 # THE REAL NODES
