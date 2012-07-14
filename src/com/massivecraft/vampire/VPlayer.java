@@ -371,14 +371,18 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (spoutuser && this.vampire())
 		{
 			P.p.noCheatExemptedPlayerNames.add(player.getName());
-                        if(Bukkit.getServer().getPluginManager().getPlugin("AntiCheat") != null && !(AnticheatAPI.isExempt(player, CheckType.SPEED)))
+                        if(Bukkit.getServer().getPluginManager().getPlugin("AntiCheat") != null && !(AnticheatAPI.isExempt(player, CheckType.SPEED) && AnticheatAPI.isExempt(player, CheckType.FLY))) {
                             AnticheatAPI.exemptPlayer(player, CheckType.SPEED);
+                            AnticheatAPI.exemptPlayer(player, CheckType.FLY);
+                        }
 		}
 		else
 		{
 			P.p.noCheatExemptedPlayerNames.remove(player.getName());
-                        if(Bukkit.getServer().getPluginManager().getPlugin("AntiCheat") != null && AnticheatAPI.isExempt(player, CheckType.SPEED))
+                        if(Bukkit.getServer().getPluginManager().getPlugin("AntiCheat") != null && (AnticheatAPI.isExempt(player, CheckType.SPEED) && AnticheatAPI.isExempt(player, CheckType.FLY))) {
                             AnticheatAPI.unexemptPlayer(player, CheckType.SPEED);
+                            AnticheatAPI.unexemptPlayer(player, CheckType.FLY);
+                        }
 		}
 		
 		Double multGravity = null;
