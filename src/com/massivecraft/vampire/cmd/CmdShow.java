@@ -2,7 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore3.util.Txt;
+import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;

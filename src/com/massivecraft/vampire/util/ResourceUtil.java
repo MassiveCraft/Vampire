@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore3.util.Txt;
+import com.massivecraft.mcore4.util.Txt;
 
 public class ResourceUtil
 {

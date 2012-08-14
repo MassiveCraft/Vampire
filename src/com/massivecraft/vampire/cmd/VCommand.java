@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore3.cmd.MCommand;
+import com.massivecraft.mcore4.cmd.MCommand;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayers;

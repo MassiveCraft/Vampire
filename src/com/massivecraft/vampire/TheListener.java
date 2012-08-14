@@ -36,9 +36,9 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.massivecraft.mcore3.MCore;
-import com.massivecraft.mcore3.util.MUtil;
-import com.massivecraft.mcore3.util.PlayerUtil;
+import com.massivecraft.mcore4.MCore;
+import com.massivecraft.mcore4.util.MUtil;
+import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.vampire.event.SpoutCraftAuthenticationEvent;
 import com.massivecraft.vampire.util.FxUtil;
 

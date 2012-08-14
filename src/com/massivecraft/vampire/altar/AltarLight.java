@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore3.util.MUtil;
+import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;

@@ -1,7 +1,7 @@
 name: vampire
-version: 5.0.1
+version: 5.0.2
 main: com.massivecraft.vampire.P
-depend: [mcore3, Spout]
+depend: [mcore4, Spout]
 softdepend: [NoCheatPlus]
 permissions:
 # -------------------------------------------- #

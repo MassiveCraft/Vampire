@@ -2,7 +2,7 @@ package com.massivecraft.vampire.accumulator;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore3.util.PlayerUtil;
+import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.vampire.VPlayer;
 
 public class VPlayerHealthAccumulator extends VPlayerAccumulator

@@ -2,7 +2,7 @@ package com.massivecraft.vampire;
 
 import java.util.List;
 
-import com.massivecraft.mcore3.util.MUtil;
+import com.massivecraft.mcore4.util.MUtil;
 
 public class Lang
 {	

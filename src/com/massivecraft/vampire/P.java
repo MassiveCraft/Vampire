@@ -6,7 +6,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.mcore3.MPlugin;
+import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.vampire.cmd.CmdBase;
 import com.massivecraft.vampire.cmdarg.AHVPlayer;
 import com.massivecraft.vampire.keyboard.BloodlustToggle;
