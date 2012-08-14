@@ -72,7 +72,7 @@ public class P extends MPlugin
 		if (noCheatPlus.isEnabled() == false) return;
 		try
 		{
-			new NoCheatPlusListener(this);
+			new NoCheatPlusHook(this);
 		}
 		catch (Exception e)
 		{

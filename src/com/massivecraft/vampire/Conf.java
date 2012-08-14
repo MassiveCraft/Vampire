@@ -246,7 +246,7 @@ public class Conf
 	// SUN
 	// -------------------------------------------- //
 	
-	public static double opacityPerArmorPice = 0.125d;
+	public static double opacityPerArmorPiece = 0.125d;
 	public static double baseRad = -0.2d;
 	public static double tempPerRadAndTick = 1d / (10d * 20d); // it should take 10 seconds to reach max temp in maximum sunlight.
 	

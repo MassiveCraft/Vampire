@@ -116,7 +116,7 @@ public class SunUtil
 			if (itemStack == null) continue;
 			if (itemStack.getAmount() == 0) continue;
 			if (itemStack.getTypeId() == 0) continue;
-			ret += Conf.opacityPerArmorPice;
+			ret += Conf.opacityPerArmorPiece;
 		}
 		return ret;
 	}

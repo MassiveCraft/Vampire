@@ -26,7 +26,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -188,7 +188,7 @@ public class TheListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void updateNameColor(PlayerChatEvent event)
+	public void updateNameColor(AsyncPlayerChatEvent event)
 	{
 		updateNameColor(event.getPlayer());
 	}
