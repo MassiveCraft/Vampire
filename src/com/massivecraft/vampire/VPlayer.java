@@ -18,8 +18,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.cmd.MCommand;
-import com.massivecraft.mcore4.persist.IClassManager;
-import com.massivecraft.mcore4.persist.PlayerEntity;
+import com.massivecraft.mcore4.store.Coll;
+import com.massivecraft.mcore4.store.PlayerEntity;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
@@ -37,7 +37,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// META
 	// -------------------------------------------- //
 	
-	@Override public IClassManager<VPlayer> getManager() { return VPlayers.i; }
+	@Override public Coll<VPlayer, String> getColl() { return VPlayers.i; }
 	@Override protected VPlayer getThis() { return this; }
 	
 	// -------------------------------------------- //
@@ -53,7 +53,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.infection = 0;
 		if (this.vampire == val) return;
 		this.vampire = val;
-		this.save();
+		this.changed();
 		if (this.vampire)
 		{
 			this.msg(Lang.vampireTrue);
@@ -337,7 +337,10 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			this.permA.remove();
 		}
 		
-		this.permA = this.getPlayer().addAttachment(P.p);
+		Player player = this.getPlayer();
+		if (player == null) return;
+		
+		this.permA = player.addAttachment(P.p);
 		
 		if (this.vampire())
 		{
@@ -472,7 +475,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		this.msg(Lang.infectionFeeling.get(indexNew));
 		this.msg(Lang.infectionHint.get(MCore.random.nextInt(Lang.infectionHint.size())));
-		this.save();
+		this.changed();
 	}
 	public int infectionGetMessageIndex()
 	{

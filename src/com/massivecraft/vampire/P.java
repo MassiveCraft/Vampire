@@ -7,8 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore4.MPlugin;
+import com.massivecraft.mcore4.cmd.arg.AHPlayerWrapperNew;
 import com.massivecraft.vampire.cmd.CmdBase;
-import com.massivecraft.vampire.cmdarg.AHVPlayer;
 import com.massivecraft.vampire.keyboard.BloodlustToggle;
 import com.massivecraft.vampire.keyboard.Shriek;
 
@@ -35,19 +35,20 @@ public class P extends MPlugin
 	{
 		if ( ! preEnable()) return;
 		
-		// Create and load VPlayers
-		VPlayers.i.loadOldFormat();
-		
 		// Load Conf from disk
 		Conf.i.load();
 		Lang.i.load();
+		
+		// Initialize collections
+		VPlayers.i.init();
 		
 		// Add Base Commands
 		this.cmdBase = new CmdBase();
 		this.cmdBase.register();
 		
 		// Add Argument Handlers
-		this.cmd.setArgHandler(VPlayer.class, AHVPlayer.getInstance());
+		this.cmd.setArgHandler(VPlayer.class, new AHPlayerWrapperNew<VPlayer>(VPlayers.i));
+		// TODO: Do this automatically?
 		
 		// Start timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TheTask(), 0, Conf.taskInterval);

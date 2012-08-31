@@ -1,17 +1,12 @@
 package com.massivecraft.vampire;
 
-import java.io.File;
-import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.massivecraft.mcore4.Predictate;
-import com.massivecraft.mcore4.persist.gson.GsonPlayerEntityManager;
-import com.massivecraft.mcore4.util.DiscUtil;
-import com.massivecraft.mcore4.xlib.gson.reflect.TypeToken;
+import com.massivecraft.mcore4.store.MStore;
+import com.massivecraft.mcore4.store.PlayerColl;
 
-public class VPlayers extends GsonPlayerEntityManager<VPlayer>
+public class VPlayers extends PlayerColl<VPlayer>
 {
 	// -------------------------------------------- //
 	// META
@@ -20,23 +15,21 @@ public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 	
 	private VPlayers()
 	{
-		super(P.p.gson, new File(P.p.getDataFolder(), "player"), true, false);
-		P.p.persist.setManager(VPlayer.class, this);
-		P.p.persist.setSaveInterval(VPlayer.class, 1000*60*30);
+		super(MStore.getDb(Conf.dburi), P.p, "vampire_player", VPlayer.class);
 	}
-
-	@Override
-	public Class<VPlayer> getManagedClass() { return VPlayer.class; }
 	
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean shouldBeSaved(VPlayer entity)
+	public boolean isDefault(VPlayer entity)
 	{
-		return entity.vampire() || entity.infected();
+		if (entity.vampire()) return false;
+		if (entity.infected()) return false;
+		return true;
 	}
+	
 	
 	public Collection<VPlayer> getAllOnlineInfected()
 	{
@@ -60,6 +53,9 @@ public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 		});
 	}
 	
+	
+	
+	/*
 	public void loadOldFormat()
 	{
 		File file = new File(P.p.getDataFolder(), "player.json");
@@ -83,5 +79,5 @@ public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 		file.renameTo(new File(P.p.getDataFolder(), "player.json.old"));
 		
 		P.p.log("... done");
-	}
+	}*/
 }

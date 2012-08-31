@@ -22,6 +22,8 @@ public class Conf extends SimpleConfig
 	// META
 	// -------------------------------------------- //
 	
+	public static String dburi = "default";
+	
 	public static int taskInterval = 10; // Defines how often the task runs.
 	
 	public static List<String> baseCommandAliases = MUtil.list("v");
