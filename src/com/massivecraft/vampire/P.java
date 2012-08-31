@@ -39,10 +39,8 @@ public class P extends MPlugin
 		VPlayers.i.loadOldFormat();
 		
 		// Load Conf from disk
-		Conf.load();
-		Conf.save();
-		Lang.load();
-		Lang.save();
+		Conf.i.load();
+		Lang.i.load();
 		
 		// Add Base Commands
 		this.cmdBase = new CmdBase();

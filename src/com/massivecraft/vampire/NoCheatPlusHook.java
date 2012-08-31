@@ -38,6 +38,6 @@ public class NoCheatPlusHook extends AbstractNCPHook
 	@Override
 	public boolean onCheckFailure(CheckType checkType, Player player)
 	{
-		return p.noCheatExemptedPlayerNames.contains(player.getName());
+		return !p.noCheatExemptedPlayerNames.contains(player.getName());
 	}
 }

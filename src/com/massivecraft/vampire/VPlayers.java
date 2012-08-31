@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.google.gson.reflect.TypeToken;
 import com.massivecraft.mcore4.Predictate;
 import com.massivecraft.mcore4.persist.gson.GsonPlayerEntityManager;
 import com.massivecraft.mcore4.util.DiscUtil;
+import com.massivecraft.mcore4.xlib.gson.reflect.TypeToken;
 
 public class VPlayers extends GsonPlayerEntityManager<VPlayer>
 {

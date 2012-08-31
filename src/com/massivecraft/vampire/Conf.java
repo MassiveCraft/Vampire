@@ -11,16 +11,17 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.mcore4.SimpleConfig;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.vampire.altar.AltarDark;
 import com.massivecraft.vampire.altar.AltarLight;
 
-
-public class Conf
+public class Conf extends SimpleConfig
 {
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
+	
 	public static int taskInterval = 10; // Defines how often the task runs.
 	
 	public static List<String> baseCommandAliases = MUtil.list("v");
@@ -421,13 +422,9 @@ public class Conf
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
-	private static transient Conf i = new Conf();
-	public static void load()
+	public static transient Conf i = new Conf();
+	private Conf()
 	{
-		P.p.one.loadOrSaveDefault(i, Conf.class);
-	}
-	public static void save()
-	{
-		P.p.one.save(i);
+		super(P.p);
 	}
 }

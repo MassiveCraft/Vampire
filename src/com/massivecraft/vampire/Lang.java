@@ -2,9 +2,10 @@ package com.massivecraft.vampire;
 
 import java.util.List;
 
+import com.massivecraft.mcore4.SimpleConfig;
 import com.massivecraft.mcore4.util.MUtil;
 
-public class Lang
+public class Lang extends SimpleConfig
 {	
 	public static String consolePlayerArgRequired = "<b>You must specify player from console.";
 	public static String noSpoutWarnHuman = "";
@@ -113,14 +114,9 @@ public class Lang
 	// -------------------------------------------- //
 	// Persistance
 	// -------------------------------------------- //
-	
-	private static transient Lang i = new Lang();
-	public static void load()
+	public static transient Lang i = new Lang();
+	private Lang()
 	{
-		P.p.one.loadOrSaveDefault(i, Lang.class);
-	}
-	public static void save()
-	{
-		P.p.one.save(i, "lang");
+		super(P.p, "lang");
 	}
 }
