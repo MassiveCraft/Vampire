@@ -1,8 +1,11 @@
 package com.massivecraft.vampire;
 
+import java.io.File;
 import java.util.Collection;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.Predictate;
+import com.massivecraft.mcore4.store.DbGson;
 import com.massivecraft.mcore4.store.MStore;
 import com.massivecraft.mcore4.store.PlayerColl;
 
@@ -53,31 +56,24 @@ public class VPlayers extends PlayerColl<VPlayer>
 		});
 	}
 	
-	
-	
-	/*
-	public void loadOldFormat()
+	@Override
+	public void init()
 	{
-		File file = new File(P.p.getDataFolder(), "player.json");
-		if ( ! file.exists()) return;
+		this.migrateFromOldFormat();
+		super.init();
+	}
+	
+	protected void migrateFromOldFormat()
+	{
+		File oldPlayerCollDir = new File(P.p.getDataFolder(), "player");
+		if (!oldPlayerCollDir.isDirectory()) return;
 		
-		P.p.log("Converting "+this.getManagedClass().getSimpleName()+" to new file format...");
+		if (MCore.getDb().driver().name() != "gson") return;
+		DbGson dbGson = (DbGson) MCore.getDb();
+		File newPlayerCollDir = new File(dbGson.dir, this.name());
+		if (newPlayerCollDir.isDirectory()) return;
 		
-		Type type = new TypeToken<Map<String, VPlayer>>(){}.getType();
-		String json = DiscUtil.readCatch(file);
-		Map<String, VPlayer> id2entity = P.p.gson.fromJson(json, type);
-		
-		for (Entry<String, VPlayer> entry : id2entity.entrySet())
-		{
-			String id = entry.getKey();
-			VPlayer entity = entry.getValue();
-			i.attach(entity, id);
-		}
-		
-		i.saveAll();
-		
-		file.renameTo(new File(P.p.getDataFolder(), "player.json.old"));
-		
-		P.p.log("... done");
-	}*/
+		dbGson.dir.mkdirs();
+		oldPlayerCollDir.renameTo(newPlayerCollDir);
+	}
 }
