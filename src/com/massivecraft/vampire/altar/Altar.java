@@ -17,7 +17,7 @@ import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.VPlayers;
+import com.massivecraft.vampire.VPlayerColls;
 
 public abstract class Altar
 {	
@@ -30,7 +30,7 @@ public abstract class Altar
 	public void evalBlockUse(Block coreBlock, Player player)
 	{
 		if (coreBlock.getType() != coreMaterial) return;
-		VPlayer vplayer = VPlayers.i.get(player);
+		VPlayer vplayer = VPlayerColls.i.get2(player);
 		
 		// Make sure we include the coreBlock material in the wanted ones
 		if ( ! this.materialCounts.containsKey(this.coreMaterial))

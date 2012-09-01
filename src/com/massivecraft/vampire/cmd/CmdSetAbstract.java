@@ -23,6 +23,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 			msg(Lang.consolePlayerArgRequired);
 			return;
 		}
+		
 		VPlayer vplayer = this.argAs(1, VPlayer.class, "matchany", vme);
 		if (vplayer == null) return;
 		Player player = vplayer.getPlayer();

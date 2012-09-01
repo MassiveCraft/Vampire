@@ -18,7 +18,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.cmd.MCommand;
-import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.PlayerEntity;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.mcore4.util.Txt;
@@ -37,8 +36,11 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// META
 	// -------------------------------------------- //
 	
-	@Override public Coll<VPlayer, String> getColl() { return VPlayers.i; }
 	@Override protected VPlayer getThis() { return this; }
+	
+	private final static transient VPlayer defaultInstance = new VPlayer();
+	@Override public VPlayer getDefaultInstance() { return defaultInstance; }
+	@Override protected Class<VPlayer> getClazz() { return VPlayer.class; }
 	
 	// -------------------------------------------- //
 	// PERSISTENT FIELDS
@@ -128,7 +130,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	protected String makerId;
 	public String makerId() { return this.makerId; }
 	public void makerId(String val) { this.makerId = val; }
-	public VPlayer maker() { return VPlayers.i.get(this.makerId); }
+	public VPlayer maker() { return this.getColl().get(this.makerId); }
 	public void maker(VPlayer val) { this.makerId(val == null ? null : val.getId()); }
 	
 	// FIELD: intending - Vampires may choose their combat style. Do they intend to infect others in combat or do they not?

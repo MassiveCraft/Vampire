@@ -32,7 +32,8 @@ public class CmdList extends VCommand
 		List<String> infectedOnline = new ArrayList<String>();
 		List<String> infectedOffline = new ArrayList<String>();
 		
-		for (VPlayer vplayer : VPlayers.i.getAll())
+		// TODO: Will fail for console!
+		for (VPlayer vplayer : VPlayerColls.i.get(sender).getAll())
 		{
 			if (vplayer.vampire())
 			{

@@ -63,7 +63,7 @@ public class TheListener implements Listener
 	public void fxOnDeath(EntityDeathEvent event)
 	{
 		// If a vampire dies ...
-		VPlayer vplayer = VPlayers.i.get(event.getEntity());
+		VPlayer vplayer = VPlayerColls.i.get2(event.getEntity());
 		if (vplayer == null) return;
 		if (vplayer.vampire() == false) return;
 		
@@ -85,7 +85,7 @@ public class TheListener implements Listener
 		if ( ! Conf.blockDamageFrom.contains(event.getCause())) return;
 		
 		Player player = (Player)entity;
-		VPlayer vplayer = VPlayers.i.get(player);
+		VPlayer vplayer = VPlayerColls.i.get2(player);
 		
 		if (vplayer.vampire()) event.setCancelled(true);
 	}
@@ -98,7 +98,7 @@ public class TheListener implements Listener
 		if ( ! Conf.blockHealthFrom.contains(event.getRegainReason())) return;
 		
 		Player player = (Player) entity;		
-		VPlayer vplayer = VPlayers.i.get(player);
+		VPlayer vplayer = VPlayerColls.i.get2(player);
 		
 		if (vplayer.vampire()) event.setCancelled(true);
 	}
@@ -110,7 +110,7 @@ public class TheListener implements Listener
 		if ( ! (entity instanceof Player)) return;
 		
 		Player player = (Player) entity;		
-		VPlayer vplayer = VPlayers.i.get(player);
+		VPlayer vplayer = VPlayerColls.i.get2(player);
 		
 		if (vplayer.vampire())
 		{
@@ -128,7 +128,7 @@ public class TheListener implements Listener
 	{
 		final Player player = event.getPlayer();
 		final SpoutPlayer splayer = SpoutManager.getPlayer(player);
-		final VPlayer vplayer = VPlayers.i.get(player);
+		final VPlayer vplayer = VPlayerColls.i.get2(player);
 		
 		vplayer.updateVampPermission();
 		
@@ -138,7 +138,7 @@ public class TheListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void updateOnAuth(SpoutCraftAuthenticationEvent event)
 	{
-		VPlayer vplayer = VPlayers.i.get(event.splayer());
+		VPlayer vplayer = VPlayerColls.i.get2(event.splayer());
 		vplayer.updateSpoutMovement();
 	}
 	
@@ -146,7 +146,7 @@ public class TheListener implements Listener
 	public void updateOnDeath(EntityDeathEvent event)
 	{
 		// If a vampire dies ...
-		VPlayer vplayer = VPlayers.i.get(event.getEntity());
+		VPlayer vplayer = VPlayerColls.i.get2(event.getEntity());
 		if (vplayer == null) return;
 		if (vplayer.vampire() == false) return;
 		
@@ -160,7 +160,7 @@ public class TheListener implements Listener
 	public void updateOnRespawn(PlayerRespawnEvent event)
 	{
 		// If the player is a vampire ...
-		final VPlayer vplayer = VPlayers.i.get(event.getPlayer());
+		final VPlayer vplayer = VPlayerColls.i.get2(event.getPlayer());
 		if (vplayer == null) return;
 		if ( ! vplayer.vampire()) return;
 		
@@ -182,7 +182,7 @@ public class TheListener implements Listener
 	public void updateNameColor(Player player)
 	{
 		if (Conf.updateNameColor == false) return;
-		VPlayer vplayer = VPlayers.i.get(player);
+		VPlayer vplayer = VPlayerColls.i.get2(player);
 		if ( ! vplayer.vampire()) return;
 		player.setDisplayName(Conf.updateNameColorTo.toString()+ChatColor.stripColor(player.getDisplayName()));
 	}
@@ -237,7 +237,7 @@ public class TheListener implements Listener
 		if (from.equals(to)) return;
 		
 		// ... and that player is a vampire ...
-		VPlayer vplayer = VPlayers.i.get(player);
+		VPlayer vplayer = VPlayerColls.i.get2(player);
 		if (vplayer.human()) return;
 		
 		// ... that has bloodlust on ...
@@ -260,7 +260,7 @@ public class TheListener implements Listener
 		
 		// ... turn of bloodlust ...
 		Player player = event.getPlayer();
-		VPlayer vplayer = VPlayers.i.get(player);
+		VPlayer vplayer = VPlayerColls.i.get2(player);
 		vplayer.bloodlust(false);
 	}
 	
@@ -277,7 +277,7 @@ public class TheListener implements Listener
 		// ... by creature that cares about the truce with vampires ...
 		if ( ! (Conf.truceEntityTypes.contains(event.getEntity().getType()))) return;
 		
-		VPlayer vplayer = VPlayers.i.get((Player)event.getTarget());
+		VPlayer vplayer = VPlayerColls.i.get2((Player)event.getTarget());
 		
 		// ... and that player is a vampire ...
 		if ( ! vplayer.vampire()) return;
@@ -299,7 +299,7 @@ public class TheListener implements Listener
 		if ( ! (Conf.truceEntityTypes.contains(event.getEntity().getType()))) return;
 		
 		// ... and the liable damager is a vampire ...
-		VPlayer vpdamager = VPlayers.i.get(MUtil.getLiableDamager(event));
+		VPlayer vpdamager = VPlayerColls.i.get2(MUtil.getLiableDamager(event));
 		if (vpdamager == null) return;
 		if ( ! vpdamager.vampire()) return;
 		
@@ -315,7 +315,7 @@ public class TheListener implements Listener
 	public void regen(EntityDamageEvent event)
 	{
 		// If the damagee is a vampire ...
-		VPlayer vampire = VPlayers.i.get(event.getEntity());
+		VPlayer vampire = VPlayerColls.i.get2(event.getEntity());
 		if (vampire == null) return;
 		if ( ! vampire.vampire()) return;
 		
@@ -339,7 +339,7 @@ public class TheListener implements Listener
 		HumanEntity damager = (HumanEntity) damagerEntity;
 		
 		// ... and the damagee is a vampire ...
-		VPlayer vampire = VPlayers.i.get(event.getEntity());
+		VPlayer vampire = VPlayerColls.i.get2(event.getEntity());
 		if (vampire == null) return;
 		if ( ! vampire.vampire()) return;
 		
@@ -358,7 +358,7 @@ public class TheListener implements Listener
 		if ( ! MUtil.isCloseCombatEvent(event)) return;
 		
 		// ... and the liable damager is a vampire ...
-		VPlayer vampire = VPlayers.i.get(MUtil.getLiableDamager(event));
+		VPlayer vampire = VPlayerColls.i.get2(MUtil.getLiableDamager(event));
 		if (vampire == null) return;
 		if ( ! vampire.vampire()) return;
 		
@@ -379,9 +379,9 @@ public class TheListener implements Listener
 		if ( ! MUtil.isCloseCombatEvent(event)) return;
 		
 		// ... where there is one vampire and one non-vampire ...
-		VPlayer vpdamagee = VPlayers.i.get(event.getEntity());
+		VPlayer vpdamagee = VPlayerColls.i.get2(event.getEntity());
 		if (vpdamagee == null) return;
-		VPlayer vpdamager = VPlayers.i.get(MUtil.getLiableDamager(event));
+		VPlayer vpdamager = VPlayerColls.i.get2(MUtil.getLiableDamager(event));
 		if (vpdamager == null) return;
 		
 		VPlayer vampire = null;
@@ -435,7 +435,7 @@ public class TheListener implements Listener
 		if (event.getClickedBlock().getType() != Material.CAKE_BLOCK) return;
 		
 		// ... and the player is a vampire ...
-		VPlayer vplayer = VPlayers.i.get(event.getPlayer());
+		VPlayer vplayer = VPlayerColls.i.get2(event.getPlayer());
 		if ( ! vplayer.vampire()) return;
 		
 		// ... we deny!
@@ -462,7 +462,7 @@ public class TheListener implements Listener
 		if (damagee.isDead()) return;
 		
 		// ... and the liable damager is a vampire ...
-		VPlayer vampire = VPlayers.i.get(MUtil.getLiableDamager(event));
+		VPlayer vampire = VPlayerColls.i.get2(MUtil.getLiableDamager(event));
 		if (vampire == null) return;
 		if ( ! vampire.vampire()) return;
 		
@@ -504,7 +504,7 @@ public class TheListener implements Listener
 		for (Player player : splashLocation.getWorld().getPlayers())
 		{
 			if (player.getLocation().distance(splashLocation) > Conf.holyWaterSplashRadius) continue;
-			VPlayer vplayer = VPlayers.i.get(player);
+			VPlayer vplayer = VPlayerColls.i.get2(player);
 			vplayer.msg(Lang.holyWaterCommon, shooter.getDisplayName());
 			vplayer.fxEnderBurstRun();
 			

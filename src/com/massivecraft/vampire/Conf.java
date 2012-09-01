@@ -23,6 +23,7 @@ public class Conf extends SimpleConfig
 	// -------------------------------------------- //
 	
 	public static String dburi = "default";
+	public static String dbprefix = "vampire_";
 	
 	public static int taskInterval = 10; // Defines how often the task runs.
 	

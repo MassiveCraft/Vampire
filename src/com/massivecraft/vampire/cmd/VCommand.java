@@ -3,7 +3,7 @@ package com.massivecraft.vampire.cmd;
 import com.massivecraft.mcore4.cmd.MCommand;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.VPlayers;
+import com.massivecraft.vampire.VPlayerColls;
 
 public abstract class VCommand extends MCommand
 {
@@ -24,6 +24,6 @@ public abstract class VCommand extends MCommand
 	@Override
 	public void fixSenderVars()
 	{
-		this.vme = VPlayers.i.get(this.me);
+		this.vme = VPlayerColls.i.get2(this.me);
 	}
 }

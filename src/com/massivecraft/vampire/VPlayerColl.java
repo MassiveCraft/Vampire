@@ -9,16 +9,28 @@ import com.massivecraft.mcore4.store.DbGson;
 import com.massivecraft.mcore4.store.MStore;
 import com.massivecraft.mcore4.store.PlayerColl;
 
-public class VPlayers extends PlayerColl<VPlayer>
+public class VPlayerColl extends PlayerColl<VPlayer>
 {
 	// -------------------------------------------- //
-	// META
+	// CONSTRUCT
 	// -------------------------------------------- //
-	public static VPlayers i = new VPlayers();
 	
-	private VPlayers()
+	public VPlayerColl(String name)
 	{
-		super(MStore.getDb(Conf.dburi), P.p, "vampire_player", VPlayer.class);
+		super(MStore.getDb(Conf.dburi), P.p, name, VPlayer.class);
+	}
+	
+	@Override
+	public void copy(Object ofrom, Object oto)
+	{
+		VPlayer from = (VPlayer)ofrom;
+		VPlayer to = (VPlayer)oto;
+		
+		to.vampire = from.vampire;
+		to.infection = from.infection;
+		to.reason = from.reason;
+		to.intend = from.intend;
+		to.bloodlust = from.bloodlust;
 	}
 	
 	// -------------------------------------------- //

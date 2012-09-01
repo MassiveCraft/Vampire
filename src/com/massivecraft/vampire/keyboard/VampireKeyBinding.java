@@ -12,7 +12,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.VPlayers;
+import com.massivecraft.vampire.VPlayerColls;
 
 public abstract class VampireKeyBinding implements BindingExecutionDelegate 
 {
@@ -24,7 +24,7 @@ public abstract class VampireKeyBinding implements BindingExecutionDelegate
 	{
 		if ( ! this.allowed(event)) return;
 		SpoutPlayer splayer = event.getPlayer();
-		VPlayer vplayer = VPlayers.i.get(splayer);
+		VPlayer vplayer = VPlayerColls.i.get2(splayer);
 		this.pressed(event, splayer, vplayer);
 	}
 	
@@ -32,7 +32,7 @@ public abstract class VampireKeyBinding implements BindingExecutionDelegate
 	{
 		if ( ! this.allowed(event)) return;
 		SpoutPlayer splayer = event.getPlayer();
-		VPlayer vplayer = VPlayers.i.get(splayer);
+		VPlayer vplayer = VPlayerColls.i.get2(splayer);
 		this.released(event, splayer, vplayer);
 	}
 	

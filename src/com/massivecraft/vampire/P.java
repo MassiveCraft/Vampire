@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore4.MPlugin;
-import com.massivecraft.mcore4.cmd.arg.AHPlayerWrapperNew;
+import com.massivecraft.mcore4.cmd.arg.AHPlayerWrapperColls;
 import com.massivecraft.vampire.cmd.CmdBase;
 import com.massivecraft.vampire.keyboard.BloodlustToggle;
 import com.massivecraft.vampire.keyboard.Shriek;
@@ -40,14 +40,14 @@ public class P extends MPlugin
 		Lang.i.load();
 		
 		// Initialize collections
-		VPlayers.i.init();
+		// VPlayerColl.i.init();
 		
 		// Add Base Commands
 		this.cmdBase = new CmdBase();
 		this.cmdBase.register();
 		
 		// Add Argument Handlers
-		this.cmd.setArgHandler(VPlayer.class, new AHPlayerWrapperNew<VPlayer>(VPlayers.i));
+		this.cmd.setArgHandler(VPlayer.class, new AHPlayerWrapperColls<VPlayer>(VPlayerColls.i));
 		// TODO: Do this automatically?
 		
 		// Start timer
