@@ -82,8 +82,10 @@ public class TheListener implements Listener
 	public void blockEvents(EntityDamageEvent event)
 	{
 		Entity entity = event.getEntity();
+		Conf conf = Conf.get(entity);
+		
 		if ( ! (entity instanceof Player)) return;
-		if ( ! Conf.get(entity).blockDamageFrom.contains(event.getCause())) return;
+		if ( ! conf.blockDamageFrom.contains(event.getCause())) return;
 		
 		Player player = (Player)entity;
 		VPlayer vplayer = VPlayer.get(player);
@@ -95,8 +97,10 @@ public class TheListener implements Listener
 	public void blockEvents(EntityRegainHealthEvent event)
 	{
 		Entity entity = event.getEntity();
+		Conf conf = Conf.get(entity);
+		
 		if ( ! (entity instanceof Player)) return;
-		if ( ! Conf.get(entity).blockHealthFrom.contains(event.getRegainReason())) return;
+		if ( ! conf.blockHealthFrom.contains(event.getRegainReason())) return;
 		
 		Player player = (Player) entity;		
 		VPlayer vplayer = VPlayer.get(player);
@@ -136,6 +140,14 @@ public class TheListener implements Listener
 		new SpoutCraftAuthenticationEvent(splayer);
 	}
 	
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void updateOnTeleport(PlayerTeleportEvent event)
+	{
+		final Player player = event.getPlayer();
+		final VPlayer vplayer = VPlayer.get(player);
+		vplayer.updateVampPermission();
+	}
+	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void updateOnAuth(SpoutCraftAuthenticationEvent event)
 	{
@@ -172,8 +184,9 @@ public class TheListener implements Listener
 			public void run()
 			{
 				Player player = vplayer.getPlayer();
-				player.setFoodLevel(Conf.get(player).updateRespawnFood);
-				player.setHealth(Conf.get(player).updateRespawnHealth);
+				Conf conf = Conf.get(player);
+				player.setFoodLevel(conf.updateRespawnFood);
+				player.setHealth(conf.updateRespawnHealth);
 				PlayerUtil.sendHealthFoodUpdatePacket(player);
 				vplayer.updateSpoutMovement();
 			}
@@ -182,10 +195,11 @@ public class TheListener implements Listener
 	
 	public void updateNameColor(Player player)
 	{
-		if (Conf.get(player).updateNameColor == false) return;
+		Conf conf = Conf.get(player); 
+		if (conf.updateNameColor == false) return;
 		VPlayer vplayer = VPlayer.get(player);
 		if ( ! vplayer.vampire()) return;
-		player.setDisplayName(Conf.get(player).updateNameColorTo.toString()+ChatColor.stripColor(player.getDisplayName()));
+		player.setDisplayName(conf.updateNameColorTo.toString()+ChatColor.stripColor(player.getDisplayName()));
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -216,11 +230,12 @@ public class TheListener implements Listener
 	{
 		// If a non-creative player ...
 		Player player = event.getPlayer();
+		Conf conf = Conf.get(player);
 		if (player != null && player.getGameMode() == GameMode.CREATIVE) return;
 		
 		// ... broke a self-dropping block ...  
 		Material material = event.getBlock().getType();
-		if ( ! Conf.get(player).dropSelfMaterials.contains(material)) return;
+		if ( ! conf.dropSelfMaterials.contains(material)) return;
 		
 		// ... then we make it drop itself.	
 		event.setCancelled(true);
@@ -252,10 +267,11 @@ public class TheListener implements Listener
 		if ( ! vplayer.bloodlust()) return;
 		
 		// ... then spawn smoke trail.
+		Conf conf = Conf.get(player);
 		Location one = event.getFrom().clone();
 		Location two = one.clone().add(0, 1, 0);
-		long count1 = MUtil.probabilityRound(Conf.get(player).bloodlustSmokes);
-		long count2 = MUtil.probabilityRound(Conf.get(player).bloodlustSmokes);
+		long count1 = MUtil.probabilityRound(conf.bloodlustSmokes);
+		long count2 = MUtil.probabilityRound(conf.bloodlustSmokes);
 		for (long i = count1; i > 0; i--) FxUtil.smoke(one);
 		for (long i = count2; i > 0; i--) FxUtil.smoke(two);
 	}
@@ -283,9 +299,10 @@ public class TheListener implements Listener
 		if ( ! (event.getTarget() instanceof Player)) return;
 		
 		Player player = (Player)event.getTarget();
+		Conf conf = Conf.get(player);
 		
 		// ... by creature that cares about the truce with vampires ...
-		if ( ! (Conf.get(player).truceEntityTypes.contains(event.getEntity().getType()))) return;
+		if ( ! (conf.truceEntityTypes.contains(event.getEntity().getType()))) return;
 		
 		VPlayer vplayer = VPlayer.get(player);
 		
@@ -306,7 +323,9 @@ public class TheListener implements Listener
 		if ( ! MUtil.isCombatEvent(event)) return;		
 		
 		// ... to a creature that cares about the truce with vampires...
-		if ( ! (Conf.get(event.getEntity()).truceEntityTypes.contains(event.getEntity().getType()))) return;
+		Entity entity = event.getEntity();
+		Conf conf = Conf.get(entity);
+		if ( ! (conf.truceEntityTypes.contains(entity.getType()))) return;
 		
 		// ... and the liable damager is a vampire ...
 		VPlayer vpdamager = VPlayer.get(MUtil.getLiableDamager(event));
@@ -347,6 +366,7 @@ public class TheListener implements Listener
 		Entity damagerEntity = MUtil.getLiableDamager(event);
 		if ( ! (damagerEntity instanceof HumanEntity)) return;
 		HumanEntity damager = (HumanEntity) damagerEntity;
+		Conf conf = Conf.get(damager);
 		
 		// ... and the damagee is a vampire ...
 		VPlayer vampire = VPlayer.get(event.getEntity());
@@ -355,10 +375,10 @@ public class TheListener implements Listener
 		
 		// ... and a wooden item was used ...
 		Material itemMaterial = damager.getItemInHand().getType();
-		if ( ! Conf.get(damager).combatWoodMaterials.contains(itemMaterial)) return;
+		if ( ! conf.combatWoodMaterials.contains(itemMaterial)) return;
 		
 		// ... Then modify damage!
-		event.setDamage(Conf.get(damager).combatWoodDamage);
+		event.setDamage(conf.combatWoodDamage);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -438,9 +458,10 @@ public class TheListener implements Listener
 	public void foodCake(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();
+		Conf conf = Conf.get(player);
 		
 		// If cake eating is not allowed for vampires ...
-		if (Conf.get(player).foodCakeAllowed) return;
+		if (conf.foodCakeAllowed) return;
 		
 		// .. and the player right-clicks a cake block ...
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
@@ -464,9 +485,10 @@ public class TheListener implements Listener
 		// ... to a living entity ...
 		if ( ! (event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity damagee = (LivingEntity)event.getEntity();
+		Conf conf = Conf.get(damagee);
 		
 		// ... of a tasty type ...
-		Double fullFoodQuotient = Conf.get(damagee).entityTypeFullFoodQuotient.get(damagee.getType());
+		Double fullFoodQuotient = conf.entityTypeFullFoodQuotient.get(damagee.getType());
 		if (fullFoodQuotient == null || fullFoodQuotient == 0) return;
 		
 		// ... that has blood left ...
@@ -500,13 +522,14 @@ public class TheListener implements Listener
 	{
 		// If this projectile is a thrown potion ...
 		Projectile projectile = event.getEntity();
+		Conf conf = Conf.get(projectile);
 		if ( ! (projectile instanceof ThrownPotion)) return;
 		
 		// ... and the potion type is holy water ...
 		ThrownPotion potion = (ThrownPotion)projectile;
 		CraftThrownPotion cpotion = (CraftThrownPotion)potion;
 		int potionvalue = cpotion.getHandle().getPotionValue();
-		if (potionvalue != Conf.get(projectile).holyWaterPotionValue) return;
+		if (potionvalue != conf.holyWaterPotionValue) return;
 		
 		// ... who is the thrower and where did it splash? ...
 		Location splashLocation = potion.getLocation();
@@ -515,7 +538,7 @@ public class TheListener implements Listener
 		// ... then to all nearby players ...
 		for (Player player : splashLocation.getWorld().getPlayers())
 		{
-			if (player.getLocation().distance(splashLocation) > Conf.get(player).holyWaterSplashRadius) continue;
+			if (player.getLocation().distance(splashLocation) > conf.holyWaterSplashRadius) continue;
 			VPlayer vplayer = VPlayer.get(player);
 			vplayer.msg(Lang.holyWaterCommon, shooter.getDisplayName());
 			vplayer.fxEnderBurstRun();
@@ -538,7 +561,7 @@ public class TheListener implements Listener
 			else if (vplayer.vampire())
 			{
 				vplayer.msg(Lang.holyWaterVampire);
-				vplayer.tempAdd(Conf.get(player).holyWaterTemp);
+				vplayer.tempAdd(conf.holyWaterTemp);
 				vplayer.fxFlameBurstRun();
 			}
 		}
@@ -557,8 +580,10 @@ public class TheListener implements Listener
 		
 		// ... run altar logic.
 		Player player = event.getPlayer();
-		Conf.get(player).altarDark.evalBlockUse(event.getClickedBlock(), player);
-		Conf.get(player).altarLight.evalBlockUse(event.getClickedBlock(), player);
+		Conf conf = Conf.get(player);
+		
+		conf.altarDark.evalBlockUse(event.getClickedBlock(), player);
+		conf.altarLight.evalBlockUse(event.getClickedBlock(), player);
 	}
 	
 }

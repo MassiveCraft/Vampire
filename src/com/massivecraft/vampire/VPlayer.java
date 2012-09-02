@@ -46,13 +46,6 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		return VPlayerColls.i.get2(worldNameExtractable);
 	}
 	
-	public Conf conf() 
-	{
-		Player player = this.getPlayer();
-		if (player == null) return null;
-		return Conf.get(player);
-	}
-	
 	// -------------------------------------------- //
 	// PERSISTENT FIELDS
 	// -------------------------------------------- //
@@ -307,6 +300,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		// You must be online to shriek
 		Player player = this.getPlayer();
+		Conf conf = Conf.get(player);
 		if (player == null) return;
 		
 		// You must be a vampire to shriek
@@ -319,13 +313,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		long now = System.currentTimeMillis();
 		
 		long millisSinceLastShriekWaitMessage = now - this.lastShriekWaitMessageMillis;
-		if (millisSinceLastShriekWaitMessage < Conf.get(player).shriekWaitMessageCooldownMillis)
+		if (millisSinceLastShriekWaitMessage < conf.shriekWaitMessageCooldownMillis)
 		{
 			return;
 		}
 		
 		long millisSinceLastShriek = now - this.lastShriekMillis;
-		long millisToWait = Conf.get(player).shriekCooldownMillis - millisSinceLastShriek;
+		long millisToWait = conf.shriekCooldownMillis - millisSinceLastShriek;
 		
 		if (millisToWait > 0)
 		{
@@ -353,19 +347,20 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		Player player = this.getPlayer();
 		if (player == null) return;
+		Conf conf = Conf.get(player);
 		
 		this.permA = player.addAttachment(P.p);
 		
 		if (this.vampire())
 		{
-			for (Entry<String, Boolean> entry : Conf.get(player).updatePermsVampire.entrySet())
+			for (Entry<String, Boolean> entry : conf.updatePermsVampire.entrySet())
 			{
 				this.permA.setPermission(entry.getKey(), entry.getValue());
 			}
 		}
 		else
 		{
-			for (Entry<String, Boolean> entry : Conf.get(player).updatePermsHuman.entrySet())
+			for (Entry<String, Boolean> entry : conf.updatePermsHuman.entrySet())
 			{
 				this.permA.setPermission(entry.getKey(), entry.getValue());
 			}
