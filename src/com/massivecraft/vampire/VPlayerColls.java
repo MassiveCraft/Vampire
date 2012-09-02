@@ -15,8 +15,8 @@ public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
 	}
 
 	@Override
-	public String name()
+	public String getContext()
 	{
-		return Conf.dbprefix+"player";
+		return ConfServer.playerContext;
 	}
 }

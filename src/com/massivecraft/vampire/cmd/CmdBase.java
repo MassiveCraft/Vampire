@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.mcore4.cmd.HelpCommand;
-import com.massivecraft.vampire.Conf;
+import com.massivecraft.vampire.ConfServer;
 
 public class CmdBase extends VCommand
 {
@@ -18,7 +18,7 @@ public class CmdBase extends VCommand
 	public CmdBase()
 	{
 		super();
-		this.addAliases(Conf.baseCommandAliases);
+		this.addAliases(ConfServer.baseCommandAliases);
 		
 		this.addSubCommand(HelpCommand.getInstance());
 		this.addSubCommand(cmdShow);

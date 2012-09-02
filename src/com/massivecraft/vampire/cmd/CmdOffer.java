@@ -25,7 +25,7 @@ public class CmdOffer extends VCommand
 	{
 		Player you = this.argAs(0, Player.class, "match");
 		if (you == null) return;
-		VPlayer vyou = VPlayerColls.i.get2(you);
+		VPlayer vyou = VPlayer.get(you);
 		
 		Double unlimitedAmount = this.argAs(1, Double.class, 4D);
 		if (unlimitedAmount == null) return;

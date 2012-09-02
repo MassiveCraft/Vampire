@@ -11,8 +11,8 @@ public class TheTask implements Runnable
 		// Tick each online player
 		for (Player player: Bukkit.getOnlinePlayers())
 		{
-			VPlayer vplayer = VPlayerColls.i.get2(player);
-			vplayer.tick(Conf.taskInterval);
+			VPlayer vplayer = VPlayer.get(player);
+			vplayer.tick(ConfServer.taskInterval);
 		}
 	}
 }

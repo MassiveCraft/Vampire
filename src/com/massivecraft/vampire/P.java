@@ -36,7 +36,7 @@ public class P extends MPlugin
 		if ( ! preEnable()) return;
 		
 		// Load Conf from disk
-		Conf.i.load();
+		ConfServer.i.load();
 		Lang.i.load();
 		
 		// Initialize collections
@@ -51,7 +51,7 @@ public class P extends MPlugin
 		// TODO: Do this automatically?
 		
 		// Start timer
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TheTask(), 0, Conf.taskInterval);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TheTask(), 0, ConfServer.taskInterval);
 	
 		// Register events
 		new TheListener(this);

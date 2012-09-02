@@ -17,7 +17,6 @@ import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.VPlayerColls;
 
 public abstract class Altar
 {	
@@ -30,7 +29,8 @@ public abstract class Altar
 	public void evalBlockUse(Block coreBlock, Player player)
 	{
 		if (coreBlock.getType() != coreMaterial) return;
-		VPlayer vplayer = VPlayerColls.i.get2(player);
+		VPlayer vplayer = VPlayer.get(player);
+		Conf conf = Conf.get(player);
 		
 		// Make sure we include the coreBlock material in the wanted ones
 		if ( ! this.materialCounts.containsKey(this.coreMaterial))
@@ -38,14 +38,14 @@ public abstract class Altar
 			this.materialCounts.put(this.coreMaterial, 1);
 		}
 		
-		ArrayList<Block> blocks = getCubeBlocks(coreBlock, Conf.altarSearchRadius);
+		ArrayList<Block> blocks = getCubeBlocks(coreBlock, conf.altarSearchRadius);
 		Map<Material, Integer> nearbyMaterialCounts = countMaterials(blocks, this.materialCounts.keySet());
 		
 		int requiredMaterialCountSum = this.sumCollection(this.materialCounts.values());
 		int nearbyMaterialCountSum   = this.sumCollection(nearbyMaterialCounts.values());
 		
 		// If the blocks are to far from looking anything like an altar we will just skip.
-		if (nearbyMaterialCountSum < requiredMaterialCountSum * Conf.altarMinRatioForInfo) return;
+		if (nearbyMaterialCountSum < requiredMaterialCountSum * conf.altarMinRatioForInfo) return;
 		
 		// What alter blocks are missing?
 		Map<Material, Integer> missingMaterialCounts = this.getMissingMaterialCounts(nearbyMaterialCounts);

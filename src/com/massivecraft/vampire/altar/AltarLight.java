@@ -39,6 +39,7 @@ public class AltarLight extends Altar
 	@Override
 	public void use(VPlayer vplayer, Player player)
 	{
+		Conf conf = Conf.get(player);
 		vplayer.msg("");
 		vplayer.msg(this.desc);
 		
@@ -46,8 +47,8 @@ public class AltarLight extends Altar
 		
 		if ( ! vplayer.vampire() && playerHoldsWaterBottle(player))
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, Conf.holyWaterResources, Lang.altarLightWaterResourceSuccess, Lang.altarLightWaterResourceFail)) return;
-			ResourceUtil.playerAdd(player, new ItemStack(Material.POTION, 1, Conf.holyWaterPotionValue));
+			if ( ! ResourceUtil.playerRemoveAttempt(player, conf.holyWaterResources, Lang.altarLightWaterResourceSuccess, Lang.altarLightWaterResourceFail)) return;
+			ResourceUtil.playerAdd(player, new ItemStack(Material.POTION, 1, conf.holyWaterPotionValue));
 			vplayer.msg(Lang.altarLightWaterResult);
 			vplayer.fxEnderBurstRun();
 			return;

@@ -30,6 +30,7 @@ public class CmdShow extends VCommand
 		if (vplayer == null) return;
 		
 		Player player = vplayer.getPlayer();
+		Conf conf = Conf.get(player);
 		
 		boolean self = vplayer == vme;
 		
@@ -88,7 +89,7 @@ public class CmdShow extends VCommand
 			int sun = percent(SunUtil.calcSolarRad(player.getWorld()));
 			double terrain = 1d-SunUtil.calcTerrainOpacity(player.getLocation().getBlock());
 			double armor = 1d-SunUtil.calcArmorOpacity(player);
-			int base = percent(Conf.baseRad);
+			int base = percent(conf.baseRad);
 			msg("<k>Irradiation <v>X% <k>= <yellow>sun <lime>*terrain <blue>*armor <silver>-base");
 			msg("<k>Irradiation <v>%+d%% <k>= <yellow>%d <lime>*%.2f <blue>*%.2f <silver>%+d", rad, sun, terrain, armor, base);
 			

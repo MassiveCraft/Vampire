@@ -11,53 +11,57 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore4.SimpleConfig;
+import com.massivecraft.mcore4.store.Entity;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.vampire.altar.AltarDark;
 import com.massivecraft.vampire.altar.AltarLight;
 
-public class Conf extends SimpleConfig
+public class Conf extends Entity<Conf, String>
 {
+	public final static transient String INSTANCE = "instance";
+	public static Conf get(Object worldNameExtractable)
+	{
+		return ConfColls.i.get2(worldNameExtractable);
+	}
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
 	
-	public static String dburi = "default";
-	public static String dbprefix = "vampire_";
+	@Override protected Conf getThis() { return this; }
 	
-	public static int taskInterval = 10; // Defines how often the task runs.
-	
-	public static List<String> baseCommandAliases = MUtil.list("v");
+	private final static transient Conf defaultInstance = new Conf();
+	@Override public Conf getDefaultInstance(){ return defaultInstance; }
+	@Override protected Class<Conf> getClazz() { return Conf.class; }
 	
 	// -------------------------------------------- //
 	// FX
 	// -------------------------------------------- //
 	
-	public static double fxSmokePerTick = 0.40D;
-	public static double fxEnderPerTick = 0.10D;
-	public static int fxEnderRandomMaxLen = 1;
-	public static double fxSmokeBurstCount = 30D;
-	public static double fxFlameBurstCount = 5D;
-	public static double fxEnderBurstCount = 3D;
+	public double fxSmokePerTick = 0.40D;
+	public double fxEnderPerTick = 0.10D;
+	public int fxEnderRandomMaxLen = 1;
+	public double fxSmokeBurstCount = 30D;
+	public double fxFlameBurstCount = 5D;
+	public double fxEnderBurstCount = 3D;
 	
 	// -------------------------------------------- //
 	// SHRIEK
 	// -------------------------------------------- //
 	
-	public static long shriekWaitMessageCooldownMillis = 500;
-	public static long shriekCooldownMillis = 30 * 1000;
+	public long shriekWaitMessageCooldownMillis = 500;
+	public long shriekCooldownMillis = 30 * 1000;
 	
 	// -------------------------------------------- //
 	// MISC
 	// -------------------------------------------- //
 	
-	public static Set<DamageCause> blockDamageFrom = MUtil.set(
+	public Set<DamageCause> blockDamageFrom = MUtil.set(
 		DamageCause.DROWNING,
 		DamageCause.FALL,
 		DamageCause.STARVATION
 	);
 	
-	public static Set<RegainReason> blockHealthFrom = MUtil.set(
+	public Set<RegainReason> blockHealthFrom = MUtil.set(
 		RegainReason.SATIATED,
 		RegainReason.REGEN	
 	);
@@ -66,27 +70,27 @@ public class Conf extends SimpleConfig
 	// UPDATE
 	// -------------------------------------------- //
 	
-	public static Map<String,Boolean> updatePermsVampire = MUtil.map(
+	public Map<String,Boolean> updatePermsVampire = MUtil.map(
 		"vampire.is.vampire", true,
 		"vampire.is.human", false
 	);
 	
-	public static Map<String,Boolean> updatePermsHuman = MUtil.map(
+	public Map<String,Boolean> updatePermsHuman = MUtil.map(
 		"vampire.is.vampire", false,
 		"vampire.is.human", true
 	);
 
-	public static int updateRespawnFood = 20;
-	public static int updateRespawnHealth = 20;
+	public int updateRespawnFood = 20;
+	public int updateRespawnHealth = 20;
 	
-	public static Boolean updateNameColor = false;
-	public static ChatColor updateNameColorTo = ChatColor.RED;
+	public Boolean updateNameColor = false;
+	public ChatColor updateNameColorTo = ChatColor.RED;
 	
 	// -------------------------------------------- //
 	// DROP SELF
 	// -------------------------------------------- //
 	
-	public static Set<Material> dropSelfMaterials = MUtil.set(
+	public Set<Material> dropSelfMaterials = MUtil.set(
 		Material.WEB,
 		Material.GLOWSTONE,
 		Material.BOOKSHELF,
@@ -97,46 +101,46 @@ public class Conf extends SimpleConfig
 	// BLOODLUST
 	// -------------------------------------------- //
 	
-	public static double bloodlustMinFood = 2.5D;
-	public static double bloodlustFoodPerTick = -0.015D;
-	public static double bloodlustSmokes = 1.5D;
+	public double bloodlustMinFood = 2.5D;
+	public double bloodlustFoodPerTick = -0.015D;
+	public double bloodlustSmokes = 1.5D;
 	
-	public static Double multGravityBloodlust = null;
-	public static Double multSwimmingBloodlust = 2D;
-	public static Double multWalkingBloodlust = 2D;
-	public static Double multJumpingBloodlust = 2.5D;
-	public static Double multAirSpeedBloodlust = 2.5D;
+	public Double multGravityBloodlust = null;
+	public Double multSwimmingBloodlust = 2D;
+	public Double multWalkingBloodlust = 2D;
+	public Double multJumpingBloodlust = 2.5D;
+	public Double multAirSpeedBloodlust = 2.5D;
 	
-	public static Double multGravityVamp = null;
-	public static Double multSwimmingVamp = 1D;
-	public static Double multWalkingVamp = 1D;
-	public static Double multJumpingVamp = 1.5D;
-	public static Double multAirSpeedVamp = 1.5D;
+	public Double multGravityVamp = null;
+	public Double multSwimmingVamp = 1D;
+	public Double multWalkingVamp = 1D;
+	public Double multJumpingVamp = 1.5D;
+	public Double multAirSpeedVamp = 1.5D;
 	
-	public static Double multGravityHuman = null;
-	public static Double multSwimmingHuman = 1D;
-	public static Double multWalkingHuman = 1D;
-	public static Double multJumpingHuman = 1D;
-	public static Double multAirSpeedHuman = 1D;
+	public Double multGravityHuman = null;
+	public Double multSwimmingHuman = 1D;
+	public Double multWalkingHuman = 1D;
+	public Double multJumpingHuman = 1D;
+	public Double multAirSpeedHuman = 1D;
 	
 	// -------------------------------------------- //
 	// REGEN
 	// -------------------------------------------- //
 	
-	public static double regenMinFood = 2.5D;
-	public static int regenDelayMillis = 10*1000;
-	public static double regenFoodPerTick = 0.025D;
-	public static double regenHealthPerFood = 2D;
+	public double regenMinFood = 2.5D;
+	public int regenDelayMillis = 10*1000;
+	public double regenFoodPerTick = 0.025D;
+	public double regenHealthPerFood = 2D;
 	
 	// -------------------------------------------- //
 	// TRUCE
 	// -------------------------------------------- //
 	
 	// One minute
-	public static long truceBreakTicks = 60 * 20; 
+	public long truceBreakTicks = 60 * 20; 
 	
 	// These are the creature types that won't target vampires
-	public static Set<EntityType> truceEntityTypes = MUtil.set(
+	public Set<EntityType> truceEntityTypes = MUtil.set(
 		EntityType.BLAZE,
 		EntityType.CAVE_SPIDER,
 		EntityType.CREEPER,
@@ -155,13 +159,13 @@ public class Conf extends SimpleConfig
 	// COMBAT
 	// -------------------------------------------- //
 	
-	public static double combatDamageFactorWithoutBloodlust = 1.0;
-	public static double combatDamageFactorWithBloodlust = 1.2;
+	public double combatDamageFactorWithoutBloodlust = 1.0;
+	public double combatDamageFactorWithBloodlust = 1.2;
 	
 	private final static transient int damageDiamondSword = 7;
-	public static int combatWoodDamage = 3*damageDiamondSword;
+	public int combatWoodDamage = 3*damageDiamondSword;
 	
-	public static Set<Material> combatWoodMaterials = MUtil.set(
+	public Set<Material> combatWoodMaterials = MUtil.set(
 		Material.WOOD_AXE,
 		Material.WOOD_HOE,
 		Material.WOOD_PICKAXE,
@@ -182,29 +186,29 @@ public class Conf extends SimpleConfig
 	// -------------------------------------------- //
 	
 	// It will take you 1h to turn
-	public static double infectionPerTick = 1D / (20*60*60D);
+	public double infectionPerTick = 1D / (20*60*60D);
 	
-	public static int infectionProgressNauseaTicks = 12*20;
-	public static int infectionProgressDamage = 1;
+	public int infectionProgressNauseaTicks = 12*20;
+	public int infectionProgressDamage = 1;
 	
-	public static Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
-	public static Double infectionRiskAtCloseCombatWithIntent = 0.05;
+	public Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
+	public Double infectionRiskAtCloseCombatWithIntent = 0.05;
 	
 	// -------------------------------------------- //
 	// TRADE
 	// -------------------------------------------- //
 	
-	public static double tradeOfferMaxDistance = 2d;
-	public static long tradeOfferToleranceMillis = 20 * 1000;
-	public static double tradeVisualDistance = 7D;
+	public double tradeOfferMaxDistance = 2d;
+	public long tradeOfferToleranceMillis = 20 * 1000;
+	public double tradeVisualDistance = 7D;
 
 	// -------------------------------------------- //
 	// FOOD
 	// -------------------------------------------- //
 	
-	public static boolean foodCakeAllowed = true;
+	public boolean foodCakeAllowed = true;
 	
-	public static Map<EntityType, Double> entityTypeFullFoodQuotient = MUtil.map(
+	public Map<EntityType, Double> entityTypeFullFoodQuotient = MUtil.map(
 		EntityType.CREEPER,        0/20D,
 		EntityType.SKELETON,       0/20D,
 		EntityType.SPIDER,         3/20D,
@@ -237,11 +241,11 @@ public class Conf extends SimpleConfig
 	// HOLY WATER
 	// -------------------------------------------- //
 	
-	public static short holyWaterPotionValue = 16430;
-	public static double holyWaterSplashRadius = 6D;
-	public static double holyWaterTemp = 0.7D;
+	public short holyWaterPotionValue = 16430;
+	public double holyWaterSplashRadius = 6D;
+	public double holyWaterTemp = 0.7D;
 	
-	public static List<ItemStack> holyWaterResources = MUtil.list(
+	public List<ItemStack> holyWaterResources = MUtil.list(
 		new ItemStack(Material.POTION, 1, (short)0),
 		new ItemStack(Material.INK_SACK, 1, (short)4)
 	);
@@ -250,24 +254,24 @@ public class Conf extends SimpleConfig
 	// SUN
 	// -------------------------------------------- //
 	
-	public static double opacityPerArmorPiece = 0.125d;
-	public static double baseRad = -0.2d;
-	public static double tempPerRadAndTick = 1d / (10d * 20d); // it should take 10 seconds to reach max temp in maximum sunlight.
+	public double opacityPerArmorPiece = 0.125d;
+	public double baseRad = -0.2d;
+	public double tempPerRadAndTick = 1d / (10d * 20d); // it should take 10 seconds to reach max temp in maximum sunlight.
 	
-	public static double sunNauseaTemp = 0.20d;
-	public static double sunWeaknessTemp = 0.30d;
-	public static double sunSlowTemp = 0.50d;
-	public static double sunBlindnessTemp = 0.80d;
-	public static double sunBurnTemp = 0.90d;
+	public double sunNauseaTemp = 0.20d;
+	public double sunWeaknessTemp = 0.30d;
+	public double sunSlowTemp = 0.50d;
+	public double sunBlindnessTemp = 0.80d;
+	public double sunBurnTemp = 0.90d;
 	
-	public static int sunNauseaTicks = 10*20;
-	public static int sunWeaknessTicks = 10*20;
-	public static int sunSlowTicks = 10*20;
-	public static int sunBlindnessTicks = 10*20;
-	public static int sunBurnTicks = 3*20;	
+	public int sunNauseaTicks = 10*20;
+	public int sunWeaknessTicks = 10*20;
+	public int sunSlowTicks = 10*20;
+	public int sunBlindnessTicks = 10*20;
+	public int sunBurnTicks = 3*20;	
 	
-	public static double sunSmokesPerTempAndTick = 0.60d;
-	public static double sunFlamesPerTempAndTick = 0.02d;
+	public double sunSmokesPerTempAndTick = 0.60d;
+	public double sunFlamesPerTempAndTick = 0.02d;
 	
 	//We assume opacity 1 for all materials not in this map
 	private final static transient Double AIR = 0D;
@@ -282,7 +286,7 @@ public class Conf extends SimpleConfig
 	private final static transient Double FENCE = 0.4D;
 	private final static transient Double GLASS = 0.5D;
 	
-	public static Map<Integer,Double> typeIdOpacity = MUtil.map(
+	public Map<Integer,Double> typeIdOpacity = MUtil.map(
 		0, AIR, //AIR
 		//1, XD, //STONE
 		//2, XD, //GRASS
@@ -414,20 +418,10 @@ public class Conf extends SimpleConfig
 	// ALTARS
 	// -------------------------------------------- //
 	
-	public static int altarSearchRadius = 10;
-	public static double altarMinRatioForInfo = 0;
+	public int altarSearchRadius = 10;
+	public double altarMinRatioForInfo = 0;
 	
+	public AltarDark altarDark = new AltarDark();
+	public AltarLight altarLight = new AltarLight();	
 	
-	
-	public static AltarDark altarDark = new AltarDark();
-	public static AltarLight altarLight = new AltarLight();	
-	
-	// -------------------------------------------- //
-	// Persistance
-	// -------------------------------------------- //
-	public static transient Conf i = new Conf();
-	private Conf()
-	{
-		super(P.p);
-	}
 }

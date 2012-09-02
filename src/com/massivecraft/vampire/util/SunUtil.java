@@ -85,7 +85,7 @@ public class SunUtil
 		for (int y = block.getY(); y <= maxy && ret < 1d; y++)
 		{
 			int typeId = world.getBlockTypeIdAt(x, y, z);
-			Double opacity = Conf.typeIdOpacity.get(typeId);
+			Double opacity = Conf.get(block).typeIdOpacity.get(typeId);
 			if (opacity == null)
 			{
 				opacity = 1d; // Blocks not in that map have opacity 1;
@@ -116,7 +116,7 @@ public class SunUtil
 			if (itemStack == null) continue;
 			if (itemStack.getAmount() == 0) continue;
 			if (itemStack.getTypeId() == 0) continue;
-			ret += Conf.opacityPerArmorPiece;
+			ret += Conf.get(player).opacityPerArmorPiece;
 		}
 		return ret;
 	}

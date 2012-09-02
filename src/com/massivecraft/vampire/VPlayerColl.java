@@ -17,7 +17,7 @@ public class VPlayerColl extends PlayerColl<VPlayer>
 	
 	public VPlayerColl(String name)
 	{
-		super(MStore.getDb(Conf.dburi), P.p, name, VPlayer.class);
+		super(MStore.getDb(ConfServer.dburi), P.p, name, VPlayer.class);
 	}
 	
 	@Override
@@ -29,6 +29,7 @@ public class VPlayerColl extends PlayerColl<VPlayer>
 		to.vampire = from.vampire;
 		to.infection = from.infection;
 		to.reason = from.reason;
+		to.makerId = from.makerId;
 		to.intend = from.intend;
 		to.bloodlust = from.bloodlust;
 	}

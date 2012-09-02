@@ -6,14 +6,13 @@ import com.massivecraft.mcore4.cmd.MCommand;
 import com.massivecraft.mcore4.cmd.req.IReq;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.VPlayer;
-import com.massivecraft.vampire.VPlayerColls;
 
 public class ReqIsVampire implements IReq
 {
 	@Override
 	public boolean test(CommandSender sender, MCommand command)
 	{
-		VPlayer vplayer = VPlayerColls.i.get2(sender);
+		VPlayer vplayer = VPlayer.get(sender);
 		if (vplayer == null) return false; // Probably some kind of console user ^^
 		return vplayer.vampire();
 	}
