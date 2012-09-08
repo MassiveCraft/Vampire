@@ -8,9 +8,6 @@ import com.massivecraft.mcore4.util.MUtil;
 public class Lang extends SimpleConfig
 {	
 	public static String consolePlayerArgRequired = "<b>You must specify player from console.";
-	public static String noSpoutWarnHuman = "";
-	public static String noSpoutWarnVamp = "<b>Use SpoutCraft for improved vampire movement.\n<aqua>http://dev.bukkit.org/client-mods/spoutcraft/";
-	public static String noSpoutWarnBloodlust = "<b>Use SpoutCraft! Bloodlust will then grant you faster movement.<aqua>http://dev.bukkit.org/client-mods/spoutcraft/";
 	
 	public static String xIsAlreadyVamp = "<b>%s is already a vampire.";
 	public static String onlyVampsCanX = "<b>Only vampires can %s.";

@@ -2,6 +2,7 @@ package com.massivecraft.vampire;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Effect;
@@ -12,9 +13,8 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.cmd.MCommand;
@@ -76,11 +76,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			this.bloodlust(false);
 			this.intend(false);
 		}
-		this.updateVampPermission();
 		
-		// We do not change spout-features if we are in creative-mode.
-		if (this.isGameMode(GameMode.CREATIVE, true)) return;
-		this.updateSpoutMovement();
+		this.update();
 	}
 	
 	// FIELD: infection - 0 means no infection. If infection reaches 1 the player will turn to vampire.
@@ -183,7 +180,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		}
 		this.bloodlust = val;
 		this.msg(this.bloodlustMsg());
-		this.updateSpoutMovement();
+		this.update();
 	}
 	public String bloodlustMsg() { return Lang.boolIsY("Bloodlust", this.bloodlust()) + " " + Lang.quotaIsPercent("combat damage", this.combatDamageFactor()); }
 	
@@ -338,7 +335,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// UPDATE 
 	// -------------------------------------------- //
 	
-	public void updateVampPermission()
+	public void update()
+	{
+		this.updatePermissions();
+		this.updateMovement();
+	}
+	
+	public void updatePermissions()
 	{
 		if (this.permA != null)
 		{
@@ -365,20 +368,43 @@ public class VPlayer extends PlayerEntity<VPlayer>
 				this.permA.setPermission(entry.getKey(), entry.getValue());
 			}
 		}
-		
-		// Debug
-		//p.log(this.getId() + " had vamp permission updated to " + this.getPlayer().hasPermission(Permission.IS.node));
 	}
 	
-	public void updateSpoutMovement()
+	public void updateMovement()
 	{
+		// Find the player and their conf
 		Player player = this.getPlayer();
 		Conf conf = Conf.get(player);
 		if (player == null) return;
-		SpoutPlayer splayer = SpoutManager.getPlayer(player);
-		boolean spoutuser = splayer.isSpoutCraftEnabled();
 		
-		if (spoutuser && this.vampire())
+		// What effects should be applied?
+		Map<Integer, Integer> potionEffectStrengths = null;
+		if (this.vampire() && this.bloodlust())
+		{
+			potionEffectStrengths = conf.potionEffectStrengthBloodlust;
+		}
+		else if (this.vampire())
+		{
+			potionEffectStrengths = conf.potionEffectStrengthVamp;
+		}
+		else
+		{
+			potionEffectStrengths = conf.potionEffectStrengthHuman;
+		}
+		
+		// Was something enabled?
+		boolean somethingEnabled = false;
+		for (Entry<Integer, Integer> entry : potionEffectStrengths.entrySet())
+		{
+			Integer val = entry.getValue();
+			if (val != null && val > 0)
+			{
+				somethingEnabled = true;
+				break;
+			}
+		}
+		
+		if (somethingEnabled)
 		{
 			P.p.noCheatExemptedPlayerNames.add(player.getName());
 		}
@@ -387,48 +413,20 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			P.p.noCheatExemptedPlayerNames.remove(player.getName());
 		}
 		
-		Double multGravity = null;
-		Double multSwimming = null;
-		Double multWalking = null;
-		Double multJumping = null;
-		Double multAirSpeed = null;
-		String noSpoutWarn = null;		
-		
-		if (this.vampire() && this.bloodlust())
+		for (Entry<Integer, Integer> entry : potionEffectStrengths.entrySet())
 		{
-			multGravity = conf.multGravityBloodlust;
-			multSwimming = conf.multSwimmingBloodlust;
-			multWalking = conf.multWalkingBloodlust;
-			multJumping = conf.multJumpingBloodlust;
-			multAirSpeed = conf.multAirSpeedBloodlust;
-			noSpoutWarn = Lang.noSpoutWarnBloodlust;
+			PotionEffectType pet = PotionEffectType.getById(entry.getKey());
+			Integer strength = entry.getValue();
+			
+			if (strength == null || strength < 1)
+			{
+				player.removePotionEffect(pet);
+			}
+			else
+			{
+				PaketUtil.addPotionEffectNoGraphic(player, new PotionEffect(pet, 100000, strength));
+			}
 		}
-		else if (this.vampire())
-		{
-			multGravity = conf.multGravityVamp;
-			multSwimming = conf.multSwimmingVamp;
-			multWalking = conf.multWalkingVamp;
-			multJumping = conf.multJumpingVamp;
-			multAirSpeed = conf.multAirSpeedVamp;
-			noSpoutWarn = Lang.noSpoutWarnVamp;
-		}
-		else
-		{
-			multGravity = conf.multGravityHuman;
-			multSwimming = conf.multSwimmingHuman;
-			multWalking = conf.multWalkingHuman;
-			multJumping = conf.multJumpingHuman;
-			multAirSpeed = conf.multAirSpeedHuman;
-			noSpoutWarn = Lang.noSpoutWarnHuman;
-		}
-
-		if ( ! spoutuser && noSpoutWarn != null) this.msg(Txt.wrap(noSpoutWarn));
-		
-		if (multGravity != null) splayer.setGravityMultiplier(multGravity);
-		if (multSwimming != null) splayer.setSwimmingMultiplier(multSwimming);
-		if (multWalking != null) splayer.setWalkingMultiplier(multWalking);
-		if (multJumping != null) splayer.setJumpingMultiplier(multJumping);
-		if (multAirSpeed != null) splayer.setAirSpeedMultiplier(multAirSpeed);
 	}
 	
 	// -------------------------------------------- //

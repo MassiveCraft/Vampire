@@ -34,13 +34,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.mcore4.util.PlayerUtil;
-import com.massivecraft.vampire.event.SpoutCraftAuthenticationEvent;
 import com.massivecraft.vampire.util.FxUtil;
 
 public class TheListener implements Listener
@@ -132,27 +129,28 @@ public class TheListener implements Listener
 	public void updateOnJoin(PlayerJoinEvent event)
 	{
 		final Player player = event.getPlayer();
-		final SpoutPlayer splayer = SpoutManager.getPlayer(player);
 		final VPlayer vplayer = VPlayer.get(player);
-		
-		vplayer.updateVampPermission();
-		
-		new SpoutCraftAuthenticationEvent(splayer);
-	}
-	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void updateOnTeleport(PlayerTeleportEvent event)
-	{
-		final Player player = event.getPlayer();
-		final VPlayer vplayer = VPlayer.get(player);
-		vplayer.updateVampPermission();
+		vplayer.update();
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void updateOnAuth(SpoutCraftAuthenticationEvent event)
+	public void updateOnTeleport(PlayerTeleportEvent event)
 	{
-		VPlayer vplayer = VPlayer.get(event.splayer());
-		vplayer.updateSpoutMovement();
+		final Player player = event.getPlayer();
+		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				VPlayer vplayer = VPlayer.get(player);
+				Conf conf = Conf.get(player);
+				player.setFoodLevel(conf.updateRespawnFood);
+				player.setHealth(conf.updateRespawnHealth);
+				PlayerUtil.sendHealthFoodUpdatePacket(player);
+				vplayer.update();
+			}
+		});
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -188,7 +186,7 @@ public class TheListener implements Listener
 				player.setFoodLevel(conf.updateRespawnFood);
 				player.setHealth(conf.updateRespawnHealth);
 				PlayerUtil.sendHealthFoodUpdatePacket(player);
-				vplayer.updateSpoutMovement();
+				vplayer.update();
 			}
 		});
 	}

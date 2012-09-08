@@ -9,8 +9,6 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.cmd.arg.AHPlayerWrapperColls;
 import com.massivecraft.vampire.cmd.CmdBase;
-import com.massivecraft.vampire.keyboard.BloodlustToggle;
-import com.massivecraft.vampire.keyboard.Shriek;
 
 public class P extends MPlugin 
 {
@@ -58,10 +56,7 @@ public class P extends MPlugin
 		// Register events
 		new TheListener(this);
 		this.noCheatPlusSetup();
-		
-		// Register Key Bindings
-		BloodlustToggle.get().register();
-		Shriek.get().register();
+		this.spoutSetup();
 		
 		postEnable();
 	}
@@ -82,5 +77,23 @@ public class P extends MPlugin
 			return;
 		}
 		log("NoCheatPlus integration successful :)");
+	}
+	
+	protected void spoutSetup()
+	{
+		Plugin plugin = Bukkit.getPluginManager().getPlugin("Spout");
+		if (plugin == null) return;
+		if (plugin.isEnabled() == false) return;
+		try
+		{
+			new NoCheatPlusHook(this);
+		}
+		catch (Exception e)
+		{
+			log("Spout integration failed :( this Exception was raised:");
+			e.printStackTrace();
+			return;
+		}
+		log("Spout integration successful :)");
 	}
 }

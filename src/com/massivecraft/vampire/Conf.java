@@ -105,23 +105,20 @@ public class Conf extends Entity<Conf, String>
 	public double bloodlustFoodPerTick = -0.015D;
 	public double bloodlustSmokes = 1.5D;
 	
-	public Double multGravityBloodlust = null;
-	public Double multSwimmingBloodlust = 2D;
-	public Double multWalkingBloodlust = 2D;
-	public Double multJumpingBloodlust = 2.5D;
-	public Double multAirSpeedBloodlust = 2.5D;
+	public Map<Integer, Integer> potionEffectStrengthBloodlust = MUtil.map(
+		8, 4,
+		1, 4
+	);
 	
-	public Double multGravityVamp = null;
-	public Double multSwimmingVamp = 1D;
-	public Double multWalkingVamp = 1D;
-	public Double multJumpingVamp = 1.5D;
-	public Double multAirSpeedVamp = 1.5D;
+	public Map<Integer, Integer> potionEffectStrengthVamp = MUtil.map(
+		8, 0,
+		1, 0
+	);
 	
-	public Double multGravityHuman = null;
-	public Double multSwimmingHuman = 1D;
-	public Double multWalkingHuman = 1D;
-	public Double multJumpingHuman = 1D;
-	public Double multAirSpeedHuman = 1D;
+	public Map<Integer, Integer> potionEffectStrengthHuman = MUtil.map(
+		8, 0,
+		1, 0
+	);
 	
 	// -------------------------------------------- //
 	// REGEN
