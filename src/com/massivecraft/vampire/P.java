@@ -86,7 +86,7 @@ public class P extends MPlugin
 		if (plugin.isEnabled() == false) return;
 		try
 		{
-			new NoCheatPlusHook(this);
+			SpoutFeatures.setup();
 		}
 		catch (Exception e)
 		{
