@@ -418,14 +418,14 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			PotionEffectType pet = PotionEffectType.getById(entry.getKey());
 			Integer strength = entry.getValue();
 			
-			if (strength == null || strength < 1)
-			{
-				player.removePotionEffect(pet);
-			}
-			else
-			{
-				PaketUtil.addPotionEffectNoGraphic(player, new PotionEffect(pet, 100000, strength));
-			}
+			// Clear the effect always in order to allow a different strength.
+			player.removePotionEffect(pet);
+			
+			// Is it a reset?
+			if (strength == null || strength < 1) continue;
+			
+			// Was not a reset so add this in.
+			PaketUtil.addPotionEffectNoGraphic(player, new PotionEffect(pet, 100000, strength));
 		}
 	}
 	
