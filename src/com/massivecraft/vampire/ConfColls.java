@@ -1,10 +1,18 @@
 package com.massivecraft.vampire;
 
 import com.massivecraft.mcore4.store.Colls;
+import com.massivecraft.mcore4.store.Db;
+import com.massivecraft.mcore4.store.MStore;
 
 public class ConfColls extends Colls<ConfColl, Conf, String>
 {
 	public static ConfColls i = new ConfColls();
+	
+	@Override
+	public Db<?> getDb()
+	{
+		return MStore.getDb(ConfServer.dburi);
+	}
 	
 	@Override
 	public ConfColl createColl(String collName)

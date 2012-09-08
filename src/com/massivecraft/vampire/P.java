@@ -36,8 +36,10 @@ public class P extends MPlugin
 		if ( ! preEnable()) return;
 		
 		// Load Conf from disk
-		ConfServer.i.load();
 		Lang.i.load();
+		ConfServer.i.load();
+		ConfColls.i.init();
+		VPlayerColls.i.init();
 		
 		// Initialize collections
 		// VPlayerColl.i.init();
