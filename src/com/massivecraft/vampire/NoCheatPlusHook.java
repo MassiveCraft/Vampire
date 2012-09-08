@@ -16,7 +16,7 @@ public class NoCheatPlusHook extends AbstractNCPHook
 	public NoCheatPlusHook(P p)
 	{
 		this.p = p;
-		NCPHookManager.addHook(CheckType.MOVING, this);
+		NCPHookManager.addHook(CheckType.MOVING_SURVIVALFLY, this);
 	}
 	
 	// -------------------------------------------- //
@@ -38,6 +38,6 @@ public class NoCheatPlusHook extends AbstractNCPHook
 	@Override
 	public boolean onCheckFailure(CheckType checkType, Player player)
 	{
-		return !p.noCheatExemptedPlayerNames.contains(player.getName());
+		return p.noCheatExemptedPlayerNames.contains(player.getName());
 	}
 }
