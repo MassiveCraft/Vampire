@@ -111,7 +111,7 @@ public class Conf extends Entity<Conf, String>
 	);
 	
 	public Map<Integer, Integer> potionEffectStrengthVamp = MUtil.map(
-		8, 0,
+		8, 1,
 		1, 0
 	);
 	
