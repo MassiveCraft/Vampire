@@ -144,10 +144,6 @@ public class TheListener implements Listener
 			public void run()
 			{
 				VPlayer vplayer = VPlayer.get(player);
-				Conf conf = Conf.get(player);
-				player.setFoodLevel(conf.updateRespawnFood);
-				player.setHealth(conf.updateRespawnHealth);
-				PlayerUtil.sendHealthFoodUpdatePacket(player);
 				vplayer.update();
 			}
 		});

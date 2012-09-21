@@ -2,6 +2,8 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore4.cmd.arg.ARDouble;
+import com.massivecraft.mcore4.cmd.arg.AROnlinePlayerMatch;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore4.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore4.util.MUtil;
@@ -23,11 +25,11 @@ public class CmdOffer extends VCommand
 	@Override
 	public void perform()
 	{
-		Player you = this.argAs(0, Player.class, "match");
+		Player you = this.arg(0, AROnlinePlayerMatch.get());
 		if (you == null) return;
 		VPlayer vyou = VPlayer.get(you);
 		
-		Double unlimitedAmount = this.argAs(1, Double.class, 4D);
+		Double unlimitedAmount = this.arg(1, ARDouble.get(), 4D);
 		if (unlimitedAmount == null) return;
 		
 		double amount = MUtil.limitNumber(unlimitedAmount, 0D, 20D);

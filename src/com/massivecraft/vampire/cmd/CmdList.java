@@ -5,7 +5,9 @@ import java.util.*;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.mcore4.cmd.VisibilityMode;
+import com.massivecraft.mcore4.cmd.arg.ARInteger;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore4.usys.Multiverse;
 import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.vampire.*;
 
@@ -15,6 +17,7 @@ public class CmdList extends VCommand
 	{
 		this.addAliases("l", "list");
 		this.addOptionalArg("page", "1");
+		this.addOptionalArg("universe", "you");
 		
 		this.setVisibilityMode(VisibilityMode.SECRET);
 		
@@ -24,16 +27,19 @@ public class CmdList extends VCommand
 	@Override
 	public void perform()
 	{
-		Integer pageHumanBased = this.argAs(0, Integer.class, 1);
+		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
+		
+		Multiverse mv = p.playerAspect.multiverse();
+		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? Multiverse.DEFAULT : mv.getUniverse(me));
+		if (universe == null) return;
 		
 		List<String> vampiresOnline = new ArrayList<String>();
 		List<String> vampiresOffline = new ArrayList<String>();
 		List<String> infectedOnline = new ArrayList<String>();
 		List<String> infectedOffline = new ArrayList<String>();
 		
-		// TODO: Will fail for console!
-		for (VPlayer vplayer : VPlayerColls.i.get(sender).getAll())
+		for (VPlayer vplayer : VPlayerColls.i.getForUniverse(universe).getAll())
 		{
 			if (vplayer.vampire())
 			{
@@ -88,6 +94,6 @@ public class CmdList extends VCommand
 		
 		// Send them
 		lines = Txt.parseWrap(lines);
-		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Vampire Player List"));	
+		this.sendMessage(Txt.getPage(lines, pageHumanBased, Txt.upperCaseFirst(universe)+" Vampire Players"));	
 	}
 }

@@ -2,6 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore4.cmd.arg.ARInteger;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.vampire.*;
@@ -11,7 +12,7 @@ public class CmdSetFood extends CmdSetAbstract<Integer>
 	public CmdSetFood()
 	{
 		targetMustBeOnline = true;
-		classOfT = Integer.class;
+		argReader = ARInteger.get();
 		
 		this.addAliases("f");
 		this.addRequirements(ReqHasPerm.get(Permission.SET_FOOD.node));

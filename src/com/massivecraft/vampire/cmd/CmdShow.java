@@ -2,11 +2,15 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore4.cmd.arg.ArgReader;
+import com.massivecraft.mcore4.usys.Multiverse;
 import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.VPlayerColl;
+import com.massivecraft.vampire.VPlayerColls;
 import com.massivecraft.vampire.util.SunUtil;
 
 public class CmdShow extends VCommand
@@ -15,6 +19,7 @@ public class CmdShow extends VCommand
 	{
 		this.addAliases("s", "show");
 		this.addOptionalArg("player", "you");
+		this.addOptionalArg("univ", "you");
 		this.setDesc("Show player info");
 	}
 	
@@ -26,7 +31,14 @@ public class CmdShow extends VCommand
 			msg(Lang.consolePlayerArgRequired);
 			return;
 		}
-		VPlayer vplayer = this.argAs(0, VPlayer.class, "matchany", vme);
+		
+		Multiverse mv = p.playerAspect.multiverse();
+		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? Multiverse.DEFAULT : mv.getUniverse(me));
+		if (universe == null) return;
+		
+		VPlayerColl playerColl = VPlayerColls.i.getForUniverse(universe);
+		ArgReader<VPlayer> playerReader = playerColl.argReaderPlayerStart();
+		VPlayer vplayer = this.arg(0, playerReader, vme);
 		if (vplayer == null) return;
 		
 		Player player = vplayer.getPlayer();
@@ -54,7 +66,7 @@ public class CmdShow extends VCommand
 			are = "is";
 		}
 		
-		msg(Txt.titleize("Vampire info for "+vplayer.getId()));
+		msg(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+vplayer.getId()));
 		if (vplayer.vampire())
 		{
 			msg("<i>"+You+" "+are+" a vampire.");

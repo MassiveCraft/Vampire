@@ -1,6 +1,8 @@
-package com.massivecraft.vampire;
+package com.massivecraft.vampire.event.integration.nocheatplus;
 
 import org.bukkit.entity.Player;
+
+import com.massivecraft.vampire.P;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.AbstractNCPHook;

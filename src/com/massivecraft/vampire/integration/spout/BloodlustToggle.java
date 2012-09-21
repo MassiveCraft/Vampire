@@ -1,4 +1,4 @@
-package com.massivecraft.vampire.keyboard;
+package com.massivecraft.vampire.integration.spout;
 
 import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.keyboard.Keyboard;

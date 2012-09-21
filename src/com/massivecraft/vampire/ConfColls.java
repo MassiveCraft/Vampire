@@ -3,6 +3,7 @@ package com.massivecraft.vampire;
 import com.massivecraft.mcore4.store.Colls;
 import com.massivecraft.mcore4.store.Db;
 import com.massivecraft.mcore4.store.MStore;
+import com.massivecraft.mcore4.usys.Aspect;
 
 public class ConfColls extends Colls<ConfColl, Conf, String>
 {
@@ -23,9 +24,15 @@ public class ConfColls extends Colls<ConfColl, Conf, String>
 	}
 
 	@Override
-	public String getContext()
+	public Aspect aspect()
 	{
-		return ConfServer.configContext;
+		return P.p.configAspect;
+	}
+	
+	@Override
+	public String basename()
+	{
+		return ConfServer.configBasename;
 	}
 	
 	@Override
@@ -35,5 +42,7 @@ public class ConfColls extends Colls<ConfColl, Conf, String>
 		if (coll == null) return null;
 		return coll.get(Conf.INSTANCE);
 	}
+
+	
 }
 

@@ -3,6 +3,7 @@ package com.massivecraft.vampire;
 import com.massivecraft.mcore4.store.Colls;
 import com.massivecraft.mcore4.store.Db;
 import com.massivecraft.mcore4.store.MStore;
+import com.massivecraft.mcore4.usys.Aspect;
 
 public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
 {
@@ -23,8 +24,16 @@ public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
 	}
 
 	@Override
-	public String getContext()
+	public Aspect aspect()
 	{
-		return ConfServer.playerContext;
+		return P.p.playerAspect;
 	}
+
+	@Override
+	public String basename()
+	{
+		return ConfServer.playerBasename;
+	}
+	
+	
 }

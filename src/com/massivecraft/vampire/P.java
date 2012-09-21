@@ -4,11 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore4.MPlugin;
-import com.massivecraft.mcore4.cmd.arg.AHPlayerWrapperColls;
+import com.massivecraft.mcore4.usys.Aspect;
+import com.massivecraft.mcore4.usys.AspectColl;
 import com.massivecraft.vampire.cmd.CmdBase;
+import com.massivecraft.vampire.event.integration.nocheatplus.NoCheatPlusFeatures;
+import com.massivecraft.vampire.integration.spout.SpoutFeatures;
 
 public class P extends MPlugin 
 {
@@ -23,6 +25,11 @@ public class P extends MPlugin
 	// https://gist.github.com/2638309
 	public Set<String> noCheatExemptedPlayerNames = new HashSet<String>();
 	
+	// Aspects
+	
+	public Aspect playerAspect;
+	public Aspect configAspect;
+	
 	public P()
 	{
 		P.p = this;
@@ -32,6 +39,25 @@ public class P extends MPlugin
 	public void onEnable()
 	{
 		if ( ! preEnable()) return;
+		
+		// Init aspects
+		this.playerAspect = AspectColl.i.get(ConfServer.playerAspectId, true);
+		this.playerAspect.register();
+		this.playerAspect.desc(
+			"<i>Everything player related:", 
+			"<i>Is the player a vampire or not?",
+			"<i>What was the infection reason?",
+			"<i>Check <h>"+ConfServer.configAspectId+" <i>for rules and balancing."
+		);
+		
+		this.configAspect = AspectColl.i.get(ConfServer.configAspectId, true);
+		this.configAspect.register();
+		this.configAspect.desc(
+			"<i>Config options for balancing:", 
+			"<i>What is the splash potion radius for holy water?",
+			"<i>What items are considered wooden stakes?",
+			"<i>Check <h>"+ConfServer.playerAspectId+" <i>for player state."
+		);
 		
 		// Load Conf from disk
 		Lang.i.load();
@@ -46,54 +72,16 @@ public class P extends MPlugin
 		this.cmdBase = new CmdBase();
 		this.cmdBase.register();
 		
-		// Add Argument Handlers
-		this.cmd.setArgHandler(VPlayer.class, new AHPlayerWrapperColls<VPlayer>(VPlayerColls.i));
-		// TODO: Do this automatically?
-		
 		// Start timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TheTask(), 0, ConfServer.taskInterval);
 	
 		// Register events
 		new TheListener(this);
-		this.noCheatPlusSetup();
-		this.spoutSetup();
+		
+		// Integration
+		this.integrate(SpoutFeatures.get(), NoCheatPlusFeatures.get());
 		
 		postEnable();
 	}
 	
-	protected void noCheatPlusSetup()
-	{
-		Plugin noCheatPlus = Bukkit.getPluginManager().getPlugin("NoCheatPlus");
-		if (noCheatPlus == null) return;
-		if (noCheatPlus.isEnabled() == false) return;
-		try
-		{
-			new NoCheatPlusHook(this);
-		}
-		catch (Exception e)
-		{
-			log("NoCheatPlus integration failed :( this Exception was raised:");
-			e.printStackTrace();
-			return;
-		}
-		log("NoCheatPlus integration successful :)");
-	}
-	
-	protected void spoutSetup()
-	{
-		Plugin plugin = Bukkit.getPluginManager().getPlugin("Spout");
-		if (plugin == null) return;
-		if (plugin.isEnabled() == false) return;
-		try
-		{
-			SpoutFeatures.setup();
-		}
-		catch (Exception e)
-		{
-			log("Spout integration failed :( this Exception was raised:");
-			e.printStackTrace();
-			return;
-		}
-		log("Spout integration successful :)");
-	}
 }

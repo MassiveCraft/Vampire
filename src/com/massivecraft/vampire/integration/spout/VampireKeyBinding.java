@@ -1,4 +1,4 @@
-package com.massivecraft.vampire.keyboard;
+package com.massivecraft.vampire.integration.spout;
 
 import java.util.Set;
 

@@ -2,6 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore4.cmd.arg.ARDouble;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore4.util.MUtil;
 import com.massivecraft.vampire.*;
@@ -11,7 +12,7 @@ public class CmdSetInfection extends CmdSetAbstract<Double>
 	public CmdSetInfection()
 	{
 		targetMustBeOnline = false;
-		classOfT = Double.class;
+		argReader = ARDouble.get();
 		this.addAliases("i");
 		this.addRequirements(ReqHasPerm.get(Permission.SET_INFECTION.node));
 	}

@@ -2,17 +2,20 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore4.cmd.arg.ArgReader;
+import com.massivecraft.mcore4.usys.Multiverse;
 import com.massivecraft.vampire.*;
 
 public abstract class CmdSetAbstract<T> extends VCommand
 {
 	boolean targetMustBeOnline;
-	Class<T> classOfT;
+	ArgReader<T> argReader;
 	
 	public CmdSetAbstract()
 	{
 		this.addRequiredArg("val");
 		this.addOptionalArg("player", "you");
+		this.addOptionalArg("univ", "you");
 	}
 	
 	@Override
@@ -24,8 +27,15 @@ public abstract class CmdSetAbstract<T> extends VCommand
 			return;
 		}
 		
-		VPlayer vplayer = this.argAs(1, VPlayer.class, "matchany", vme);
+		Multiverse mv = p.playerAspect.multiverse();
+		String universe = this.arg(2, mv.argReaderUniverse(), senderIsConsole ? Multiverse.DEFAULT : mv.getUniverse(me));
+		if (universe == null) return;
+		
+		VPlayerColl playerColl = VPlayerColls.i.getForUniverse(universe);
+		ArgReader<VPlayer> playerReader = playerColl.argReaderPlayerStart();
+		VPlayer vplayer = this.arg(1, playerReader, vme);
 		if (vplayer == null) return;
+		
 		Player player = vplayer.getPlayer();
 		
 		if (targetMustBeOnline && player == null)
@@ -34,7 +44,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 			return;
 		}
 		
-		T val = this.argAs(0, classOfT);
+		T val = this.arg(0, argReader);
 		if (val == null) return;
 		
 		T res = this.set(vplayer, player, val);

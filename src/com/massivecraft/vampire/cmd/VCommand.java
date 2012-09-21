@@ -23,6 +23,7 @@ public abstract class VCommand extends MCommand
 	@Override
 	public void fixSenderVars()
 	{
+		if (senderIsConsole) return;
 		this.vme = VPlayer.get(this.me);
 	}
 }
