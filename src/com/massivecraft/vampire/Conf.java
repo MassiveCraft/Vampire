@@ -18,7 +18,6 @@ import com.massivecraft.vampire.altar.AltarLight;
 
 public class Conf extends Entity<Conf, String>
 {
-	public final static transient String INSTANCE = "instance";
 	public static Conf get(Object worldNameExtractable)
 	{
 		return ConfColls.i.get2(worldNameExtractable);

@@ -10,9 +10,7 @@ public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
 	@Override
 	public VPlayerColl createColl(String collName)
 	{
-		VPlayerColl ret = new VPlayerColl(collName);
-		ret.init();
-		return ret;
+		return new VPlayerColl(collName);
 	}
 
 	@Override

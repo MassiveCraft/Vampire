@@ -1,4 +1,4 @@
-package com.massivecraft.vampire.event.integration.nocheatplus;
+package com.massivecraft.vampire.integration.nocheatplus;
 
 import org.bukkit.entity.Player;
 

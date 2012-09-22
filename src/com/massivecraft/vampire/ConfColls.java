@@ -1,5 +1,6 @@
 package com.massivecraft.vampire;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.store.Colls;
 import com.massivecraft.mcore4.usys.Aspect;
 
@@ -10,9 +11,7 @@ public class ConfColls extends Colls<ConfColl, Conf, String>
 	@Override
 	public ConfColl createColl(String collName)
 	{
-		ConfColl ret = new ConfColl(collName);
-		ret.init();
-		return ret;
+		return new ConfColl(collName);
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class ConfColls extends Colls<ConfColl, Conf, String>
 	{
 		ConfColl coll = this.get(worldNameExtractable);
 		if (coll == null) return null;
-		return coll.get(Conf.INSTANCE);
+		return coll.get(MCore.INSTANCE);
 	}
 
 	

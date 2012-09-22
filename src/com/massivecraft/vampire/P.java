@@ -9,7 +9,7 @@ import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.usys.Aspect;
 import com.massivecraft.mcore4.usys.AspectColl;
 import com.massivecraft.vampire.cmd.CmdBase;
-import com.massivecraft.vampire.event.integration.nocheatplus.NoCheatPlusFeatures;
+import com.massivecraft.vampire.integration.nocheatplus.NoCheatPlusFeatures;
 import com.massivecraft.vampire.integration.spout.SpoutFeatures;
 
 public class P extends MPlugin 

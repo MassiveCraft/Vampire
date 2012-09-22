@@ -2,6 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.cmd.arg.ArgReader;
 import com.massivecraft.mcore4.usys.Multiverse;
 import com.massivecraft.vampire.*;
@@ -28,7 +29,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 		}
 		
 		Multiverse mv = p.playerAspect.multiverse();
-		String universe = this.arg(2, mv.argReaderUniverse(), senderIsConsole ? Multiverse.DEFAULT : mv.getUniverse(me));
+		String universe = this.arg(2, mv.argReaderUniverse(), senderIsConsole ? MCore.DEFAULT : mv.getUniverse(me));
 		if (universe == null) return;
 		
 		VPlayerColl playerColl = VPlayerColls.i.getForUniverse(universe);

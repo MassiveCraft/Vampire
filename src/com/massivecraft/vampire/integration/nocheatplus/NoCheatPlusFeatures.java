@@ -1,4 +1,4 @@
-package com.massivecraft.vampire.event.integration.nocheatplus;
+package com.massivecraft.vampire.integration.nocheatplus;
 
 import com.massivecraft.mcore4.integration.IntegrationFeaturesAbstract;
 import com.massivecraft.vampire.P;

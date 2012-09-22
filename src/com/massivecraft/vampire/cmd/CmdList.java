@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.cmd.VisibilityMode;
 import com.massivecraft.mcore4.cmd.arg.ARInteger;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
@@ -31,7 +32,7 @@ public class CmdList extends VCommand
 		if (pageHumanBased == null) return;
 		
 		Multiverse mv = p.playerAspect.multiverse();
-		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? Multiverse.DEFAULT : mv.getUniverse(me));
+		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MCore.DEFAULT : mv.getUniverse(me));
 		if (universe == null) return;
 		
 		List<String> vampiresOnline = new ArrayList<String>();
