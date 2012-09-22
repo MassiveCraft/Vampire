@@ -374,8 +374,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		// Find the player and their conf
 		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
 		if (player == null) return;
+		Conf conf = Conf.get(player);
 		
 		// What effects should be applied?
 		Map<Integer, Integer> potionEffectStrengths = null;
