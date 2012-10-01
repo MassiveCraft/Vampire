@@ -22,11 +22,11 @@ public class CmdSetVampire extends CmdSetAbstract<Boolean>
 		
 		if ( ! perm.has(sender, true)) return null;
 		
-		if (vplayer.vampire() == val) return val;
+		if (vplayer.isVampire() == val) return val;
 		
-		vplayer.reason(InfectionReason.OPERATOR);
-		vplayer.maker(null);
-		vplayer.vampire(val);
+		vplayer.setReason(InfectionReason.OPERATOR);
+		vplayer.setMaker(null);
+		vplayer.setVampire(val);
 		
 		return val;
 	}

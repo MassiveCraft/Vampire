@@ -63,12 +63,12 @@ public class TheListener implements Listener
 		// If a vampire dies ...
 		VPlayer vplayer = VPlayer.get(event.getEntity());
 		if (vplayer == null) return;
-		if (vplayer.vampire() == false) return;
+		if (vplayer.isVampire() == false) return;
 		
 		// ... burns up with a violent scream ;,,;
-		vplayer.fxShriekRun();
-		vplayer.fxFlameBurstRun();
-		vplayer.fxSmokeBurstRun();
+		vplayer.runFxShriek();
+		vplayer.runFxFlameBurst();
+		vplayer.runFxSmokeBurst();
 	}
 	
 	// -------------------------------------------- //
@@ -87,7 +87,7 @@ public class TheListener implements Listener
 		Player player = (Player)entity;
 		VPlayer vplayer = VPlayer.get(player);
 		
-		if (vplayer.vampire()) event.setCancelled(true);
+		if (vplayer.isVampire()) event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -102,7 +102,7 @@ public class TheListener implements Listener
 		Player player = (Player) entity;		
 		VPlayer vplayer = VPlayer.get(player);
 		
-		if (vplayer.vampire()) event.setCancelled(true);
+		if (vplayer.isVampire()) event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -114,7 +114,7 @@ public class TheListener implements Listener
 		Player player = (Player) entity;		
 		VPlayer vplayer = VPlayer.get(player);
 		
-		if (vplayer.vampire())
+		if (vplayer.isVampire())
 		{
 			event.setCancelled(true);
 			PlayerUtil.sendHealthFoodUpdatePacket(player);
@@ -155,12 +155,12 @@ public class TheListener implements Listener
 		// If a vampire dies ...
 		VPlayer vplayer = VPlayer.get(event.getEntity());
 		if (vplayer == null) return;
-		if (vplayer.vampire() == false) return;
+		if (vplayer.isVampire() == false) return;
 		
 		// Close down bloodlust.
-		vplayer.rad(0);
-		vplayer.temp(0);
-		vplayer.bloodlust(false);
+		vplayer.setRad(0);
+		vplayer.setTemp(0);
+		vplayer.setBloodlusting(false);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -169,7 +169,7 @@ public class TheListener implements Listener
 		// If the player is a vampire ...
 		final VPlayer vplayer = VPlayer.get(event.getPlayer());
 		if (vplayer == null) return;
-		if ( ! vplayer.vampire()) return;
+		if ( ! vplayer.isVampire()) return;
 		
 		// ... modify food and health levels and force another speed-update.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(p, new Runnable()
@@ -192,7 +192,7 @@ public class TheListener implements Listener
 		Conf conf = Conf.get(player); 
 		if (conf.updateNameColor == false) return;
 		VPlayer vplayer = VPlayer.get(player);
-		if ( ! vplayer.vampire()) return;
+		if ( ! vplayer.isVampire()) return;
 		player.setDisplayName(conf.updateNameColorTo.toString()+ChatColor.stripColor(player.getDisplayName()));
 	}
 	
@@ -255,10 +255,10 @@ public class TheListener implements Listener
 		
 		// ... and that player is a vampire ...
 		VPlayer vplayer = VPlayer.get(player);
-		if (vplayer.human()) return;
+		if (vplayer.isHuman()) return;
 		
 		// ... that has bloodlust on ...
-		if ( ! vplayer.bloodlust()) return;
+		if ( ! vplayer.isBloodlusting()) return;
 		
 		// ... then spawn smoke trail.
 		Conf conf = Conf.get(player);
@@ -279,7 +279,7 @@ public class TheListener implements Listener
 		// ... turn of bloodlust ...
 		Player player = event.getPlayer();
 		VPlayer vplayer = VPlayer.get(player);
-		vplayer.bloodlust(false);
+		vplayer.setBloodlusting(false);
 	}
 	
 	// -------------------------------------------- //
@@ -301,7 +301,7 @@ public class TheListener implements Listener
 		VPlayer vplayer = VPlayer.get(player);
 		
 		// ... and that player is a vampire ...
-		if ( ! vplayer.vampire()) return;
+		if ( ! vplayer.isVampire()) return;
 		
 		// ... that has not recently done something to break the truce...
 		if (vplayer.truceIsBroken()) return;
@@ -324,7 +324,7 @@ public class TheListener implements Listener
 		// ... and the liable damager is a vampire ...
 		VPlayer vpdamager = VPlayer.get(MUtil.getLiableDamager(event));
 		if (vpdamager == null) return;
-		if ( ! vpdamager.vampire()) return;
+		if ( ! vpdamager.isVampire()) return;
 		
 		// Then that vampire broke the truce.
 		vpdamager.truceBreak();
@@ -340,10 +340,10 @@ public class TheListener implements Listener
 		// If the damagee is a vampire ...
 		VPlayer vampire = VPlayer.get(event.getEntity());
 		if (vampire == null) return;
-		if ( ! vampire.vampire()) return;
+		if ( ! vampire.isVampire()) return;
 		
 		// ... mark now as lastDamageMillis
-		vampire.lastDamageMillis(System.currentTimeMillis());
+		vampire.setLastDamageMillis(System.currentTimeMillis());
 	}
 	
 	// -------------------------------------------- //
@@ -365,7 +365,7 @@ public class TheListener implements Listener
 		// ... and the damagee is a vampire ...
 		VPlayer vampire = VPlayer.get(event.getEntity());
 		if (vampire == null) return;
-		if ( ! vampire.vampire()) return;
+		if ( ! vampire.isVampire()) return;
 		
 		// ... and a wooden item was used ...
 		Material itemMaterial = damager.getItemInHand().getType();
@@ -384,7 +384,7 @@ public class TheListener implements Listener
 		// ... and the liable damager is a vampire ...
 		VPlayer vampire = VPlayer.get(MUtil.getLiableDamager(event));
 		if (vampire == null) return;
-		if ( ! vampire.vampire()) return;
+		if ( ! vampire.isVampire()) return;
 		
 		// ... Then modify damage!
 		double damage = event.getDamage();
@@ -411,7 +411,7 @@ public class TheListener implements Listener
 		VPlayer vampire = null;
 		VPlayer human = null;
 		
-		if (vpdamagee.vampire())
+		if (vpdamagee.isVampire())
 		{
 			vampire = vpdamagee;
 		}
@@ -420,7 +420,7 @@ public class TheListener implements Listener
 			human = vpdamagee;
 		}
 		
-		if (vpdamager.vampire())
+		if (vpdamager.isVampire())
 		{
 			vampire = vpdamager;
 		}
@@ -440,8 +440,8 @@ public class TheListener implements Listener
 		// ... Then there is a risk for infection ...
 		if (MCore.random.nextDouble() > vampire.combatInfectRisk()) return;
 		
-		InfectionReason reason = vampire.intend() ? InfectionReason.COMBAT_INTENDED : InfectionReason.COMBAT_MISTAKE;
-		human.infectionAdd(0.01D, reason, vampire);
+		InfectionReason reason = vampire.isIntending() ? InfectionReason.COMBAT_INTENDED : InfectionReason.COMBAT_MISTAKE;
+		human.addInfection(0.01D, reason, vampire);
 	}
 	
 	// -------------------------------------------- //
@@ -463,7 +463,7 @@ public class TheListener implements Listener
 		
 		// ... and the player is a vampire ...
 		VPlayer vplayer = VPlayer.get(player);
-		if ( ! vplayer.vampire()) return;
+		if ( ! vplayer.isVampire()) return;
 		
 		// ... we deny!
 		event.setCancelled(true);
@@ -492,14 +492,14 @@ public class TheListener implements Listener
 		// ... and the liable damager is a vampire ...
 		VPlayer vampire = VPlayer.get(MUtil.getLiableDamager(event));
 		if (vampire == null) return;
-		if ( ! vampire.vampire()) return;
+		if ( ! vampire.isVampire()) return;
 		
 		// ... drink blood! ;,,;
 		double damage = event.getDamage();
 		if (damagee.getHealth() < damage) damage = damagee.getHealth();
 		double food = damage / damagee.getMaxHealth() * fullFoodQuotient * vampire.getPlayer().getMaxHealth();
 		
-		vampire.food().add(food);
+		vampire.getFood().add(food);
 	}
 	
 	// -------------------------------------------- //
@@ -535,28 +535,28 @@ public class TheListener implements Listener
 			if (player.getLocation().distance(splashLocation) > conf.holyWaterSplashRadius) continue;
 			VPlayer vplayer = VPlayer.get(player);
 			vplayer.msg(Lang.holyWaterCommon, shooter.getDisplayName());
-			vplayer.fxEnderBurstRun();
+			vplayer.runFxEnderBurst();
 			
 			// Trigger a damage event so other plugins can cancel this.
 			EntityDamageByEntityEvent triggeredEvent = new EntityDamageByEntityEvent(projectile.getShooter(), player, DamageCause.CUSTOM, 1);
 			Bukkit.getPluginManager().callEvent(triggeredEvent);
 			if (triggeredEvent.isCancelled()) continue;
 			
-			if (vplayer.healthy())
+			if (vplayer.isHealthy())
 			{
 				vplayer.msg(Lang.holyWaterHealthy);
 			}
-			else if (vplayer.infected())
+			else if (vplayer.isInfected())
 			{
 				vplayer.msg(Lang.holyWaterInfected);
-				vplayer.infection(0);
-				vplayer.fxEnderRun();
+				vplayer.setInfection(0);
+				vplayer.runFxEnder();
 			}
-			else if (vplayer.vampire())
+			else if (vplayer.isVampire())
 			{
 				vplayer.msg(Lang.holyWaterVampire);
-				vplayer.tempAdd(conf.holyWaterTemp);
-				vplayer.fxFlameBurstRun();
+				vplayer.addTemp(conf.holyWaterTemp);
+				vplayer.runFxFlameBurst();
 			}
 		}
 	}	

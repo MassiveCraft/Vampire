@@ -14,7 +14,7 @@ public class ReqIsVampire implements IReq
 	{
 		VPlayer vplayer = VPlayer.get(sender);
 		if (vplayer == null) return false; // Probably some kind of console user ^^
-		return vplayer.vampire();
+		return vplayer.isVampire();
 	}
 
 	@Override

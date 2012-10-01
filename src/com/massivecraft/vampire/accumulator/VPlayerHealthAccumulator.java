@@ -10,8 +10,8 @@ public class VPlayerHealthAccumulator extends VPlayerAccumulator
 	public VPlayerHealthAccumulator(VPlayer vplayer)
 	{
 		super(vplayer);
-		this.min(0);
-		this.max(20);
+		this.setMin(0);
+		this.setMax(20);
 	}
 	
 	@Override

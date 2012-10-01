@@ -11,7 +11,7 @@ public class BloodlustToggle extends VampireKeyBinding
 	@Override
 	public void pressed(KeyBindingEvent event, SpoutPlayer splayer, VPlayer vplayer)
 	{
-		vplayer.bloodlust( ! vplayer.bloodlust());
+		vplayer.setBloodlusting( ! vplayer.isBloodlusting());
 	}
 	
 	// The Single Instance

@@ -1,5 +1,7 @@
 package com.massivecraft.vampire;
 
+import lombok.Getter;
+
 public enum InfectionReason
 {
 	ALTAR(true, false, "altar", "<i>You infected yourself using an <h>altar<i>.", "<i>%1$s was infected using an <h>altar<i>."),
@@ -10,29 +12,24 @@ public enum InfectionReason
 	UNKNOWN(true, false, "unknown", "<i>You were infected for <h>unknown <i>reasons.", "<i>%1$s was infected for <h>unknown <i>reasons."),
 	;
 	
-	// FIELD: notice - Would the victim notice this way of infection?
-	private final boolean notice;
-	public boolean notice() { return this.notice; }
+	// Would the victim notice this way of infection?
+	@Getter private final boolean noticeable;
 		
-	// FIELD: maker - Was another player the reason?
-	private final boolean maker;
-	public boolean maker() { return this.maker; }	
+	// Was another player the reason?
+	@Getter private final boolean maker;
 	
-	// FIELD: shortname - Short name for the reason.
-	private final String shortname;
-	public String shortname() { return this.shortname; }
+	// Short name for the reason.
+	@Getter private final String shortname;
 	
-	// FIELD: selfdesc - Desc when showing yourself.
-	private final String selfdesc;
-	public String selfdesc() { return this.selfdesc; }
+	// Desc when showing yourself.
+	@Getter private final String selfdesc;
 	
-	// FIELD: otherdesc - Desc when showing other player.
-	private final String otherdesc;
-	public String otherdesc() { return this.otherdesc; }
+	// Desc when showing other player.
+	@Getter private final String otherdesc;
 	
 	private InfectionReason(final boolean notice, final boolean player, final String shortname, final String selfdesc, final String otherdesc)
 	{
-		this.notice = notice;
+		this.noticeable = notice;
 		this.maker = player;
 		this.shortname = shortname;
 		this.selfdesc = selfdesc;

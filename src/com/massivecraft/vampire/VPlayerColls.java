@@ -22,8 +22,6 @@ public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
 	@Override
 	public String basename()
 	{
-		return ConfServer.playerBasename;
+		return Const.playerBasename;
 	}
-	
-	
 }

@@ -12,15 +12,7 @@ public class ConfServer extends SimpleConfig
 	// -------------------------------------------- //
 	
 	public static String dburi = "default";
-	
-	public final static transient String playerBasename = "vampire_player";
-	public final static transient String playerAspectId = "vampire_player";
-	
-	public final static transient String configBasename = "vampire_config";
-	public final static transient String configAspectId = "vampire_config";
-	
 	public static int taskInterval = 10; // Defines how often the task runs.
-	
 	public static List<String> baseCommandAliases = MUtil.list("v");
 	
 	// -------------------------------------------- //

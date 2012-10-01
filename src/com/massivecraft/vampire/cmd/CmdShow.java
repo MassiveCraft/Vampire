@@ -68,15 +68,15 @@ public class CmdShow extends VCommand
 		}
 		
 		msg(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+vplayer.getId()));
-		if (vplayer.vampire())
+		if (vplayer.isVampire())
 		{
 			msg("<i>"+You+" "+are+" a vampire.");
-			msg(vplayer.reasonDesc(self));
+			msg(vplayer.getReasonDesc(self));
 		}
-		else if (vplayer.infected())
+		else if (vplayer.isInfected())
 		{
-			msg("<i>"+You+" "+are+" infected at <h>%d%%<i>.", percent(vplayer.infection()));
-			msg(vplayer.reasonDesc(self));
+			msg("<i>"+You+" "+are+" infected at <h>%d%%<i>.", percent(vplayer.getInfection()));
+			msg(vplayer.getReasonDesc(self));
 			return;
 		}
 		else
@@ -91,14 +91,14 @@ public class CmdShow extends VCommand
 		this.msg(vplayer.bloodlustMsg());
 		this.msg(vplayer.intendMsg());
 		
-		msg("<k>Temperature <v>%d%%", (int)Math.round(vplayer.temp()*100));
+		msg("<k>Temperature <v>%d%%", (int)Math.round(vplayer.getTemp()*100));
 		if (player == null)
 		{
-			msg("<k>Irradiation <v>%d%%", percent(vplayer.rad()));
+			msg("<k>Irradiation <v>%d%%", percent(vplayer.getRad()));
 		}
 		else
 		{
-			int rad = percent(vplayer.rad());
+			int rad = percent(vplayer.getRad());
 			int sun = percent(SunUtil.calcSolarRad(player.getWorld()));
 			double terrain = 1d-SunUtil.calcTerrainOpacity(player.getLocation().getBlock());
 			double armor = 1d-SunUtil.calcArmorOpacity(player);

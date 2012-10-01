@@ -66,27 +66,6 @@ public abstract class Altar
 		
 		this.use(vplayer, player);
 		
-		/*// Watch the altar
-		this.watch(vplayer, player);
-		
-		// Attempt a worship
-		if (this.worship(vplayer, player) == false) return;
-		
-		// Can we worship for free?
-		if ( ! this.isPaymentRequired(vplayer, player))
-		{
-			this.effectCommon(vplayer, player);
-			this.effectFree(vplayer, player);
-			return;
-		}
-		
-		// Do we manage to make the payment?
-		if ( ! this.attemptTakePayment(vplayer, player)) return;
-		
-		// Apply paid effect
-		this.effectCommon(vplayer, player);
-		this.effectPaid(vplayer, player);
-		*/
 	}
 	
 	public abstract void use(VPlayer vplayer, Player player);
@@ -95,23 +74,6 @@ public abstract class Altar
 	{
 		vplayer.msg(this.desc);
 	}
-	
-	/*public abstract boolean worship(VPlayer vplayer, Player player);
-	
-	public abstract boolean isPaymentRequired(VPlayer vplayer, Player player);
-	
-	public boolean attemptTakePayment(VPlayer vplayer, Player player)
-	{
-		return ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarUseIngredientsSuccess, Lang.altarUseIngredientsFail);
-	}
-	
-	public abstract void effectFree(VPlayer vplayer, Player player);
-	
-	public abstract void effectPaid(VPlayer vplayer, Player player);
-	
-	public void effectCommon(VPlayer vplayer, Player player) { } ;
-	*/
-	
 	
 	// ------------------------------------------------------------ //
 	// Some calculation utilities

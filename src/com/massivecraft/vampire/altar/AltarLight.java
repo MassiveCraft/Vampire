@@ -45,36 +45,36 @@ public class AltarLight extends Altar
 		
 		if ( ! Permission.ALTAR_LIGHT.has(player, true)) return;
 		
-		if ( ! vplayer.vampire() && playerHoldsWaterBottle(player))
+		if ( ! vplayer.isVampire() && playerHoldsWaterBottle(player))
 		{
 			if ( ! ResourceUtil.playerRemoveAttempt(player, conf.holyWaterResources, Lang.altarLightWaterResourceSuccess, Lang.altarLightWaterResourceFail)) return;
 			ResourceUtil.playerAdd(player, new ItemStack(Material.POTION, 1, conf.holyWaterPotionValue));
 			vplayer.msg(Lang.altarLightWaterResult);
-			vplayer.fxEnderBurstRun();
+			vplayer.runFxEnderBurst();
 			return;
 		}
 		
 		vplayer.msg(Lang.altarLightCommon);
-		vplayer.fxEnderRun();
+		vplayer.runFxEnder();
 		
-		if (vplayer.vampire())
+		if (vplayer.isVampire())
 		{
 			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarResourceSuccess, Lang.altarResourceFail)) return;
 			vplayer.msg(Lang.altarLightVampire);
 			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-			vplayer.fxEnderBurstRun();
-			vplayer.vampire(false);
+			vplayer.runFxEnderBurst();
+			vplayer.setVampire(false);
 			return;
 		}
-		else if (vplayer.healthy())
+		else if (vplayer.isHealthy())
 		{
 			vplayer.msg(Lang.altarLightHealthy);
 		}
-		else if (vplayer.infected())
+		else if (vplayer.isInfected())
 		{
 			vplayer.msg(Lang.altarLightInfected);
-			vplayer.infection(0);
-			vplayer.fxEnderBurstRun();
+			vplayer.setInfection(0);
+			vplayer.runFxEnderBurst();
 		}
 	}
 	

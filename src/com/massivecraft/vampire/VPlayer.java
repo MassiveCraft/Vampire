@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -57,8 +60,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.infection = that.infection;
 		this.reason = that.reason;
 		this.makerId = that.makerId;
-		this.intend = that.intend;
-		this.bloodlust = that.bloodlust;
+		this.intending = that.intending;
+		this.bloodlusting = that.bloodlusting;
 		return this;
 	}
 	
@@ -66,11 +69,10 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// PERSISTENT FIELDS
 	// -------------------------------------------- //
 	
-	// FIELD: vampire - Is the player a vampire?
-	protected boolean vampire = false;
-	public boolean vampire() { return this.vampire; }
-	public boolean human() { return ! this.vampire(); } // Shortcut
-	public void vampire(boolean val)
+	// Is the player a vampire?
+	@Getter protected boolean vampire = false;
+	public boolean isHuman() { return ! this.isVampire(); } // Shortcut
+	public void setVampire(boolean val)
 	{
 		this.infection = 0;
 		if (this.vampire == val) return;
@@ -79,32 +81,31 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (this.vampire)
 		{
 			this.msg(Lang.vampireTrue);
-			this.fxShriekRun();
-			this.fxSmokeBurstRun();
-			this.fxSmokeRun();
+			this.runFxShriek();
+			this.runFxSmokeBurst();
+			this.runFxSmoke();
 		}
 		else
 		{
 			this.msg(Lang.vampireFalse);
-			this.fxEnderRun();
-			this.maker(null);
-			this.reason(null);
-			this.bloodlust(false);
-			this.intend(false);
+			this.runFxEnder();
+			this.setMaker(null);
+			this.setReason(null);
+			this.setBloodlusting(false);
+			this.setIntending(false);
 		}
 		
 		this.update();
 	}
 	
-	// FIELD: infection - 0 means no infection. If infection reaches 1 the player will turn to vampire.
-	protected double infection = 0; 
-	public double infection() { return this.infection; }
-	public boolean infected() { return this.infection > 0D; }
-	public void infection(double val)
+	// 0 means no infection. If infection reaches 1 the player will turn to vampire.
+	@Getter protected double infection = 0; 
+	public boolean isInfected() { return this.infection > 0D; }
+	public void setInfection(double val)
 	{
 		if (val >= 1D)
 		{
-			this.vampire(true);
+			this.setVampire(true);
 		}
 		else if (val <= 0D)
 		{
@@ -119,53 +120,48 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			this.infection = val;
 		}
 	}
-	public void infectionAdd(double val)
+	public void addInfection(double val)
 	{
-		this.infection(this.infection()+val);
+		this.setInfection(this.getInfection()+val);
 	}
-	public void infectionAdd(double val, InfectionReason reason, VPlayer maker)
+	public void addInfection(double val, InfectionReason reason, VPlayer maker)
 	{
 		if (vampire) return;
-		this.reason(reason);
-		this.makerId(maker == null ? null : maker.getId());
-		P.p.log(Txt.parse(this.reasonDesc(false)));
-		if (reason.notice()) this.msg(this.reasonDesc(true));
-		this.infectionAdd(val);
+		this.setReason(reason);
+		this.setMakerId(maker == null ? null : maker.getId());
+		P.p.log(Txt.parse(this.getReasonDesc(false)));
+		if (reason.isNoticeable()) this.msg(this.getReasonDesc(true));
+		this.addInfection(val);
 	}
 	
-	// FIELD: healthy and unhealthy - Fake field shortcuts
-	public boolean healthy() { return ! this.vampire() && ! this.infected(); }
-	public boolean unhealthy() { return ! this.healthy(); }
+	// healthy and unhealthy - Fake field shortcuts
+	public boolean isHealthy() { return ! this.isVampire() && ! this.isInfected(); }
+	public boolean isUnhealthy() { return ! this.isHealthy(); }
 	
-	// FIELD: reason - How come this player is infected?
-	protected InfectionReason reason;
-	public InfectionReason reason() { return reason == null ? InfectionReason.UNKNOWN : reason; }
-	public void reason(InfectionReason val) { this.reason = val; }
-	public String reasonDesc(boolean self) { return this.reason().getDesc(this, self); }
+	// How come this player is infected?
+	@Setter protected InfectionReason reason;
+	public InfectionReason getReason() { return reason == null ? InfectionReason.UNKNOWN : reason; }
+	public String getReasonDesc(boolean self) { return this.getReason().getDesc(this, self); }
 	
-	// FIELD: makerId - Who made this vampire?
-	protected String makerId;
-	public String makerId() { return this.makerId; }
-	public void makerId(String val) { this.makerId = val; }
-	public VPlayer maker() { return this.getColl().get(this.makerId); }
-	public void maker(VPlayer val) { this.makerId(val == null ? null : val.getId()); }
+	// Who made this vampire?
+	@Getter @Setter protected String makerId;
+	public VPlayer getMaker() { return this.getColl().get(this.makerId); }
+	public void setMaker(VPlayer val) { this.setMakerId(val == null ? null : val.getId()); }
 	
 	// FIELD: intending - Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
-	protected boolean intend = false;
-	public boolean intend() { return intend; }
-	public void intend(boolean val)
+	@Getter protected boolean intending = false;
+	public void setIntending(boolean val)
 	{
-		this.intend = val;
+		this.intending = val;
 		this.msg(this.intendMsg());
 	}
-	public String intendMsg() { return Lang.boolIsY("Infect intent", this.intend())+ " " + Lang.quotaIsPercent("Combat infect risk", this.combatInfectRisk()); }
+	public String intendMsg() { return Lang.boolIsY("Infect intent", this.isIntending())+ " " + Lang.quotaIsPercent("Combat infect risk", this.combatInfectRisk()); }
 	
 	// FIELD: bloodlust - Is bloodlust activated?
-	protected boolean bloodlust = false;
-	public boolean bloodlust() { return bloodlust; }
-	public void bloodlust(boolean val)
+	@Getter protected boolean bloodlusting = false;
+	public void setBloodlusting(boolean val)
 	{
-		if (this.bloodlust == val)
+		if (this.bloodlusting == val)
 		{
 			// No real change - just view the info.
 			this.msg(Lang.boolIsY("Bloodlust", val));
@@ -176,13 +172,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (val && player != null)
 		{
 			// There are a few rules to when you can turn it on:
-			if ( ! this.vampire())
+			if ( ! this.isVampire())
 			{
 				msg(Lang.onlyVampsCanX, "use bloodlust");
 				return;
 			}
 			
-			if (this.food().get() < Conf.get(player).bloodlustMinFood)
+			if (this.getFood().get() < Conf.get(player).bloodlustMinFood)
 			{
 				msg("<b>Your food is to low for bloodlust.");
 				return;
@@ -194,49 +190,38 @@ public class VPlayer extends PlayerEntity<VPlayer>
 				return;
 			}
 		}
-		this.bloodlust = val;
+		this.bloodlusting = val;
 		this.msg(this.bloodlustMsg());
 		this.update();
 	}
-	public String bloodlustMsg() { return Lang.boolIsY("Bloodlust", this.bloodlust()) + " " + Lang.quotaIsPercent("combat damage", this.combatDamageFactor()); }
+	public String bloodlustMsg() { return Lang.boolIsY("Bloodlust", this.isBloodlusting()) + " " + Lang.quotaIsPercent("combat damage", this.combatDamageFactor()); }
 	
 	// -------------------------------------------- //
 	// TRANSIENT FIELDS
 	// -------------------------------------------- //
 	
 	// FIELD: rad - The irradiation for the player.
-	protected transient double rad = 0;
-	public double rad() { return this.rad; }
-	public void rad(double val) { this.rad = val; }
+	@Getter @Setter protected transient double rad = 0;
 	
 	// FIELD: temp - The temperature of the player. a double between 0 and 1.
-	protected transient double temp = 0;
-	public double temp() { return this.temp; }
-	public void temp(double val) { this.temp = MUtil.limitNumber(val, 0D, 1D); }
-	public void tempAdd(double val) { this.temp(this.temp()+val); }
+	@Getter protected transient double temp = 0;
+	public void setTemp(double val) { this.temp = MUtil.limitNumber(val, 0D, 1D); }
+	public void addTemp(double val) { this.setTemp(this.getTemp()+val); }
 	
 	// FIELD: food - the food accumulator
-	protected transient VPlayerFoodAccumulator food = new VPlayerFoodAccumulator(this);
-	public VPlayerFoodAccumulator food() { return this.food; }
+	@Getter protected transient VPlayerFoodAccumulator food = new VPlayerFoodAccumulator(this);
 	
 	// FIELD: health - the health accumulator
-	protected transient VPlayerHealthAccumulator health = new VPlayerHealthAccumulator(this);
-	public VPlayerHealthAccumulator health() { return this.health; }
+	@Getter protected transient VPlayerHealthAccumulator health = new VPlayerHealthAccumulator(this);
 	
 	// FIELD: lastDamageMillis - for the regen
-	protected transient long lastDamageMillis = 0;
-	public long lastDamageMillis() { return this.lastDamageMillis; }
-	public void lastDamageMillis(long val) { this.lastDamageMillis = val; }
+	@Getter @Setter protected transient long lastDamageMillis = 0;
 	
 	// FIELD: lastShriekMillis - for the shriek ability
-	protected transient long lastShriekMillis = 0;
-	public long lastShriekMillis() { return this.lastShriekMillis; }
-	public void lastShriekMillis(long val) { this.lastShriekMillis = val; }
+	@Getter @Setter protected transient long lastShriekMillis = 0;
 	
 	// FIELD: lastShriekMessageMillis - Anti pwnage
-	protected transient long lastShriekWaitMessageMillis = 0;
-	public long lastShriekMessageMillis() { return this.lastShriekWaitMessageMillis; }
-	public void lastShriekMessageMillis(long val) { this.lastShriekWaitMessageMillis = val; }
+	@Getter @Setter protected transient long lastShriekWaitMessageMillis = 0;
 	
 	// FIELD: truceBreakTicksLeft - How many milliseconds more will the monsters be hostile?
 	protected transient long truceBreakTicksLeft = 0;
@@ -254,19 +239,15 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// -------------------------------------------- //
 	
 	// FX: Smoke
-	protected transient int fxSmokeTicks = 0;
-	public int fxSmokeTicks() { return this.fxSmokeTicks; }
-	public void fxSmokeTicks(int val) { this.fxSmokeTicks = val; }
-	public void fxSmokeRun() { this.fxSmokeTicks = 20 * 20; }
+	@Getter @Setter protected transient int fxSmokeTicks = 0;
+	public void runFxSmoke() { this.fxSmokeTicks = 20 * 20; }
 	
 	// FX: Ender
-	protected transient int fxEnderTicks = 0;
-	public int fxEnderTicks() { return this.fxEnderTicks; }
-	public void fxEnderTicks(int val) { this.fxEnderTicks = val; }
-	public void fxEnderRun() { this.fxEnderTicks = 10 * 20; }
+	@Getter @Setter protected transient int fxEnderTicks = 0;
+	public void runFxEnder() { this.fxEnderTicks = 10 * 20; }
 	
 	// FX: Shriek
-	public void fxShriekRun()
+	public void runFxShriek()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
@@ -276,7 +257,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	
 	// FX: SmokeBurst
-	public void fxSmokeBurstRun()
+	public void runFxSmokeBurst()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
@@ -286,7 +267,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	
 	// FX: EnderBurst
-	public void fxEnderBurstRun()
+	public void runFxEnderBurst()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
@@ -296,7 +277,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	
 	// FX: FlameBurst
-	public void fxFlameBurstRun()
+	public void runFxFlameBurst()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
@@ -317,7 +298,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (player == null) return;
 		
 		// You must be a vampire to shriek
-		if ( ! this.vampire())
+		if ( ! this.isVampire())
 		{
 			msg(Lang.onlyVampsCanX, "shriek");
 			return;
@@ -342,8 +323,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			return;
 		}
 		
-		this.fxShriekRun();
-		this.fxSmokeBurstRun();
+		this.runFxShriek();
+		this.runFxSmokeBurst();
 		this.lastShriekMillis = now;
 	}
 	
@@ -370,7 +351,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		this.permA = player.addAttachment(P.p);
 		
-		if (this.vampire())
+		if (this.isVampire())
 		{
 			for (Entry<String, Boolean> entry : conf.updatePermsVampire.entrySet())
 			{
@@ -395,11 +376,11 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		// What effects should be applied?
 		Map<Integer, Integer> potionEffectStrengths = null;
-		if (this.vampire() && this.bloodlust())
+		if (this.isVampire() && this.isBloodlusting())
 		{
 			potionEffectStrengths = conf.potionEffectStrengthBloodlust;
 		}
-		else if (this.vampire())
+		else if (this.isVampire())
 		{
 			potionEffectStrengths = conf.potionEffectStrengthVamp;
 		}
@@ -465,11 +446,11 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		Conf conf = Conf.get(player);
 		
 		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
-		if (survival && this.vampire() && ! player.isDead())
+		if (survival && this.isVampire() && ! player.isDead())
 		{
 			this.rad = conf.baseRad + SunUtil.calcPlayerIrradiation(player);
 			Double tempDelta = conf.tempPerRadAndTick * this.rad * ticks;
-			this.tempAdd(tempDelta);
+			this.addTemp(tempDelta);
 		}
 		else
 		{
@@ -483,7 +464,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	
 	public void tickInfection(long ticks)
 	{
-		if ( ! this.infected()) return;
+		if ( ! this.isInfected()) return;
 		
 		Player player = this.getPlayer();
 		Conf conf = Conf.get(player);
@@ -492,10 +473,10 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if ( ! survival) return;
 		
 		int indexOld = this.infectionGetMessageIndex();
-		this.infectionAdd(ticks * conf.infectionPerTick);
+		this.addInfection(ticks * conf.infectionPerTick);
 		int indexNew = this.infectionGetMessageIndex();
 		
-		if (this.vampire()) return;
+		if (this.isVampire()) return;
 		if (indexOld == indexNew) return;
 		
 		if (conf.infectionProgressDamage != 0) player.damage(conf.infectionProgressDamage);
@@ -507,39 +488,39 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	public int infectionGetMessageIndex()
 	{
-		return (int)((Lang.infectionFeeling.size()+1) * this.infection() / 1D) - 1;
+		return (int)((Lang.infectionFeeling.size()+1) * this.getInfection() / 1D) - 1;
 	}
 	
 	public void tickRegen(long ticks)
 	{
-		if ( ! this.vampire()) return;
+		if ( ! this.isVampire()) return;
 		Player player = this.getPlayer();
 		Conf conf = Conf.get(player);
 		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
 		if ( ! survival) return;
 		if (player.isDead()) return;
 		if (player.getHealth() >= 20) return;
-		if (this.food().get() < conf.regenMinFood) return;
+		if (this.getFood().get() < conf.regenMinFood) return;
 		
 		long millisSinceLastDamage = System.currentTimeMillis() - this.lastDamageMillis;
 		if (millisSinceLastDamage < conf.regenDelayMillis) return;
 		
-		double foodDiff = this.food().add(-conf.regenFoodPerTick * ticks);
-		this.health().add(-foodDiff * conf.regenHealthPerFood);
+		double foodDiff = this.getFood().add(-conf.regenFoodPerTick * ticks);
+		this.getHealth().add(-foodDiff * conf.regenHealthPerFood);
 	}
 	
 	public void tickBloodlust(long ticks)
 	{
-		if ( ! this.vampire()) return;
-		if ( ! this.bloodlust()) return;
+		if ( ! this.isVampire()) return;
+		if ( ! this.isBloodlusting()) return;
 		Player player = this.getPlayer();
 		Conf conf = Conf.get(player);
 		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
 		if ( ! survival) return;
 		if (player.isDead()) return;
 		
-		this.food().add(ticks * conf.bloodlustFoodPerTick);
-		if (this.food().get() < conf.bloodlustMinFood) this.bloodlust(false);
+		this.getFood().add(ticks * conf.bloodlustFoodPerTick);
+		if (this.getFood().get() < conf.bloodlustMinFood) this.setBloodlusting(false);
 	}
 	
 	public void tickEffects(long ticks)
@@ -571,14 +552,14 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		}
 		
 		// Vampire sun reactions
-		if (survival && this.vampire())
+		if (survival && this.isVampire())
 		{
 			// Buffs
-			if (this.temp() > conf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, player, conf.sunNauseaTicks);
-			if (this.temp() > conf.sunWeaknessTemp)  FxUtil.ensure(PotionEffectType.WEAKNESS, player, conf.sunWeaknessTicks);
-			if (this.temp() > conf.sunSlowTemp)      FxUtil.ensure(PotionEffectType.SLOW, player, conf.sunSlowTicks);
-			if (this.temp() > conf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, player, conf.sunBlindnessTicks);
-			if (this.temp() > conf.sunBurnTemp)      FxUtil.ensureBurn(player, conf.sunBurnTicks);
+			if (this.getTemp() > conf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, player, conf.sunNauseaTicks);
+			if (this.getTemp() > conf.sunWeaknessTemp)  FxUtil.ensure(PotionEffectType.WEAKNESS, player, conf.sunWeaknessTicks);
+			if (this.getTemp() > conf.sunSlowTemp)      FxUtil.ensure(PotionEffectType.SLOW, player, conf.sunSlowTicks);
+			if (this.getTemp() > conf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, player, conf.sunBlindnessTicks);
+			if (this.getTemp() > conf.sunBurnTemp)      FxUtil.ensureBurn(player, conf.sunBurnTicks);
 			
 			// Fx
 			double dsmokes = conf.sunSmokesPerTempAndTick * this.temp * ticks;
@@ -620,7 +601,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		double amount = this.tradeOfferedAmount;
 		
 		// Enough blood?
-		if (this.tradeOfferedAmount > vyou.food().get())
+		if (this.tradeOfferedAmount > vyou.getFood().get())
 		{
 			vyou.msg(Lang.tradeLackingOut);
 			this.msg(Lang.tradeLackingIn, you.getDisplayName());
@@ -628,13 +609,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		}
 		
 		// Transfer food level
-		vyou.food().add(-amount);
-		this.food().add(amount);
+		vyou.getFood().add(-amount);
+		this.getFood().add(amount);
 		
 		// Risk infection
 		if (MCore.random.nextDouble()*20 < amount)
 		{
-			this.infectionAdd(0.05D, InfectionReason.TRADE, vyou);
+			this.addInfection(0.05D, InfectionReason.TRADE, vyou);
 		}
 		
 		// Trader Messages
@@ -713,7 +694,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// -------------------------------------------- //
 	public void tickTruce(long ticks)
 	{
-		if ( ! this.vampire()) return;
+		if ( ! this.isVampire()) return;
 		if ( ! this.truceIsBroken()) return;
 		
 		this.truceBreakTicksLeftAlter(-ticks);
@@ -805,7 +786,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		Player player = this.getPlayer();
 		Conf conf = Conf.get(player);
 		
-		if (this.bloodlust()) return conf.combatDamageFactorWithBloodlust;
+		if (this.isBloodlusting()) return conf.combatDamageFactorWithBloodlust;
 		return conf.combatDamageFactorWithoutBloodlust;
 	}
 	
@@ -814,8 +795,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		Player player = this.getPlayer();
 		Conf conf = Conf.get(player);
 		
-		if (this.human()) return 0D;
-		if (this.intend()) return conf.infectionRiskAtCloseCombatWithIntent;
+		if (this.isHuman()) return 0D;
+		if (this.isIntending()) return conf.infectionRiskAtCloseCombatWithIntent;
 		return conf.infectionRiskAtCloseCombatWithoutIntent;
 	}
 }

@@ -48,21 +48,21 @@ public class AltarDark extends Altar
 		
 		vplayer.msg(Lang.altarDarkCommon);
 		FxUtil.ensure(PotionEffectType.BLINDNESS, player, 12*20);
-		vplayer.fxSmokeRun();
+		vplayer.runFxSmoke();
 		
-		if (vplayer.healthy())
+		if (vplayer.isHealthy())
 		{
 			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarResourceSuccess, Lang.altarResourceFail)) return;
 			vplayer.msg(Lang.altarDarkHealthy);
 			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-			vplayer.fxSmokeBurstRun();
-			vplayer.infectionAdd(0.01D, InfectionReason.ALTAR, null);
+			vplayer.runFxSmokeBurst();
+			vplayer.addInfection(0.01D, InfectionReason.ALTAR, null);
 		}
-		else if (vplayer.vampire())
+		else if (vplayer.isVampire())
 		{
 			vplayer.msg(Lang.altarDarkVampire);
 		}
-		else if (vplayer.infected())
+		else if (vplayer.isInfected())
 		{
 			vplayer.msg(Lang.altarDarkInfected);
 		}

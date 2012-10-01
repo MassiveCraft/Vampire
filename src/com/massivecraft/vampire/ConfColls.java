@@ -23,7 +23,7 @@ public class ConfColls extends Colls<ConfColl, Conf, String>
 	@Override
 	public String basename()
 	{
-		return ConfServer.configBasename;
+		return Const.configBasename;
 	}
 	
 	@Override

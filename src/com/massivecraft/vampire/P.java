@@ -41,22 +41,22 @@ public class P extends MPlugin
 		if ( ! preEnable()) return;
 		
 		// Init aspects
-		this.playerAspect = AspectColl.i.get(ConfServer.playerAspectId, true);
+		this.playerAspect = AspectColl.i.get(Const.playerAspectId, true);
 		this.playerAspect.register();
 		this.playerAspect.desc(
 			"<i>Everything player related:", 
 			"<i>Is the player a vampire or not?",
 			"<i>What was the infection reason?",
-			"<i>Check <h>"+ConfServer.configAspectId+" <i>for rules and balancing."
+			"<i>Check <h>"+Const.configAspectId+" <i>for rules and balancing."
 		);
 		
-		this.configAspect = AspectColl.i.get(ConfServer.configAspectId, true);
+		this.configAspect = AspectColl.i.get(Const.configAspectId, true);
 		this.configAspect.register();
 		this.configAspect.desc(
 			"<i>Config options for balancing:", 
 			"<i>What is the splash potion radius for holy water?",
 			"<i>What items are considered wooden stakes?",
-			"<i>Check <h>"+ConfServer.playerAspectId+" <i>for player state."
+			"<i>Check <h>"+Const.playerAspectId+" <i>for player state."
 		);
 		
 		// Load Conf from disk

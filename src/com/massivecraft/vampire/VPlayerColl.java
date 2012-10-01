@@ -27,8 +27,8 @@ public class VPlayerColl extends PlayerColl<VPlayer>
 	@Override
 	public boolean isDefault(VPlayer entity)
 	{
-		if (entity.vampire()) return false;
-		if (entity.infected()) return false;
+		if (entity.isVampire()) return false;
+		if (entity.isInfected()) return false;
 		return true;
 	}
 	
@@ -39,7 +39,7 @@ public class VPlayerColl extends PlayerColl<VPlayer>
 		{
 			public boolean apply(VPlayer entity)
 			{
-				return entity.isOnline() && entity.infected();
+				return entity.isOnline() && entity.isInfected();
 			}
 		});
 	}
@@ -50,7 +50,7 @@ public class VPlayerColl extends PlayerColl<VPlayer>
 		{
 			public boolean apply(VPlayer entity)
 			{
-				return entity.isOnline() && entity.vampire();
+				return entity.isOnline() && entity.isVampire();
 			}
 		});
 	}

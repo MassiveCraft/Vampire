@@ -13,11 +13,11 @@ public class CmdModeIntend extends CmdModeAbstract
 	
 	protected void set(boolean val)
 	{
-		vme.intend(val);
+		vme.setIntending(val);
 	}
 	
 	protected boolean get()
 	{
-		return vme.intend();
+		return vme.isIntending();
 	}
 }

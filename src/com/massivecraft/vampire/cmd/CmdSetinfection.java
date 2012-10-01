@@ -21,16 +21,16 @@ public class CmdSetInfection extends CmdSetAbstract<Double>
 	public Double set(VPlayer vplayer, Player player, Double val)
 	{
 		Double res = MUtil.limitNumber(val, 0D, 100D);
-		if (vplayer.vampire())
+		if (vplayer.isVampire())
 		{
 			msg(Lang.xIsAlreadyVamp, vplayer.getId());
 			return null;
 		}
 		
-		vplayer.reason(InfectionReason.OPERATOR);
-		vplayer.maker(null);
-		vplayer.infection(res);
-		vplayer.infectionAdd(0, InfectionReason.OPERATOR, null);
+		vplayer.setReason(InfectionReason.OPERATOR);
+		vplayer.setMaker(null);
+		vplayer.setInfection(res);
+		vplayer.addInfection(0, InfectionReason.OPERATOR, null);
 		return res;
 	}
 }

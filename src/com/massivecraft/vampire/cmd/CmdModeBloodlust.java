@@ -13,11 +13,11 @@ public class CmdModeBloodlust extends CmdModeAbstract
 	
 	protected void set(boolean val)
 	{
-		vme.bloodlust(val);
+		vme.setBloodlusting(val);
 	}
 	
 	protected boolean get()
 	{
-		return vme.bloodlust();
+		return vme.isBloodlusting();
 	}
 }

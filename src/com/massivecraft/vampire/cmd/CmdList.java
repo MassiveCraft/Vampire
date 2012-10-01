@@ -42,7 +42,7 @@ public class CmdList extends VCommand
 		
 		for (VPlayer vplayer : VPlayerColls.i.getForUniverse(universe).getAll())
 		{
-			if (vplayer.vampire())
+			if (vplayer.isVampire())
 			{
 				if (vplayer.isOnline())
 				{
@@ -53,7 +53,7 @@ public class CmdList extends VCommand
 					vampiresOffline.add(ChatColor.WHITE.toString() + vplayer.getId());
 				}
 			}
-			else if (vplayer.infected())
+			else if (vplayer.isInfected())
 			{
 				if (vplayer.isOnline())
 				{
