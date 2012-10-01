@@ -47,6 +47,22 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	}
 	
 	// -------------------------------------------- //
+	// LOAD
+	// -------------------------------------------- //
+	
+	@Override
+	public VPlayer load(VPlayer that)
+	{
+		this.vampire = that.vampire;
+		this.infection = that.infection;
+		this.reason = that.reason;
+		this.makerId = that.makerId;
+		this.intend = that.intend;
+		this.bloodlust = that.bloodlust;
+		return this;
+	}
+	
+	// -------------------------------------------- //
 	// PERSISTENT FIELDS
 	// -------------------------------------------- //
 	

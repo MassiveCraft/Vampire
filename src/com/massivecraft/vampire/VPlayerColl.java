@@ -20,20 +20,6 @@ public class VPlayerColl extends PlayerColl<VPlayer>
 		super(MStore.getDb(ConfServer.dburi), P.p, name, VPlayer.class);
 	}
 	
-	@Override
-	public void copy(Object ofrom, Object oto)
-	{
-		VPlayer from = (VPlayer)ofrom;
-		VPlayer to = (VPlayer)oto;
-		
-		to.vampire = from.vampire;
-		to.infection = from.infection;
-		to.reason = from.reason;
-		to.makerId = from.makerId;
-		to.intend = from.intend;
-		to.bloodlust = from.bloodlust;
-	}
-	
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
