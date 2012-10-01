@@ -109,11 +109,8 @@ public class Lang extends SimpleConfig
 	public static String altarLightVampire = "<i>...a bright light purge you of all darkness.";
 	
 	// -------------------------------------------- //
-	// Persistance
+	// Persistence
 	// -------------------------------------------- //
 	public static transient Lang i = new Lang();
-	private Lang()
-	{
-		super(P.p, "lang");
-	}
+	public Lang() { super(P.p, "lang"); }
 }

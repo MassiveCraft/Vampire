@@ -24,11 +24,8 @@ public class ConfServer extends SimpleConfig
 	public static List<String> baseCommandAliases = MUtil.list("v");
 	
 	// -------------------------------------------- //
-	// Persistance
+	// Persistence
 	// -------------------------------------------- //
 	public static transient ConfServer i = new ConfServer();
-	private ConfServer()
-	{
-		super(P.p);
-	}
+	public ConfServer() { super(P.p); }
 }
