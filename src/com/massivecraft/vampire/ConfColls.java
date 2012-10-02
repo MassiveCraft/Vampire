@@ -15,13 +15,13 @@ public class ConfColls extends Colls<ConfColl, Conf, String>
 	}
 
 	@Override
-	public Aspect aspect()
+	public Aspect getAspect()
 	{
 		return P.p.configAspect;
 	}
 	
 	@Override
-	public String basename()
+	public String getBasename()
 	{
 		return Const.configBasename;
 	}

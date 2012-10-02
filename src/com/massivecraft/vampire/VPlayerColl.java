@@ -67,9 +67,9 @@ public class VPlayerColl extends PlayerColl<VPlayer>
 		File oldPlayerCollDir = new File(P.p.getDataFolder(), "player");
 		if (!oldPlayerCollDir.isDirectory()) return;
 		
-		if (MCore.getDb().driver().name() != "gson") return;
+		if (MCore.getDb().getDriver().getName() != "gson") return;
 		DbGson dbGson = (DbGson) MCore.getDb();
-		File newPlayerCollDir = new File(dbGson.dir, this.name());
+		File newPlayerCollDir = new File(dbGson.dir, this.getName());
 		if (newPlayerCollDir.isDirectory()) return;
 		
 		dbGson.dir.mkdirs();

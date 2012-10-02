@@ -43,7 +43,7 @@ public class P extends MPlugin
 		// Init aspects
 		this.playerAspect = AspectColl.i.get(Const.playerAspectId, true);
 		this.playerAspect.register();
-		this.playerAspect.desc(
+		this.playerAspect.setDesc(
 			"<i>Everything player related:", 
 			"<i>Is the player a vampire or not?",
 			"<i>What was the infection reason?",
@@ -52,7 +52,7 @@ public class P extends MPlugin
 		
 		this.configAspect = AspectColl.i.get(Const.configAspectId, true);
 		this.configAspect.register();
-		this.configAspect.desc(
+		this.configAspect.setDesc(
 			"<i>Config options for balancing:", 
 			"<i>What is the splash potion radius for holy water?",
 			"<i>What items are considered wooden stakes?",

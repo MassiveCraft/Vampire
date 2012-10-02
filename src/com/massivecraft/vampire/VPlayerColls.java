@@ -14,13 +14,13 @@ public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
 	}
 
 	@Override
-	public Aspect aspect()
+	public Aspect getAspect()
 	{
 		return P.p.playerAspect;
 	}
 
 	@Override
-	public String basename()
+	public String getBasename()
 	{
 		return Const.playerBasename;
 	}
