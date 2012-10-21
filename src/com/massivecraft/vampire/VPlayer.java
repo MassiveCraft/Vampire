@@ -180,13 +180,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			
 			if (this.getFood().get() < Conf.get(player).bloodlustMinFood)
 			{
-				msg("<b>Your food is to low for bloodlust.");
+				msg("<b>Your food is too low for bloodlust.");
 				return;
 			}
 			
 			if (this.isGameMode(GameMode.CREATIVE, true))
 			{
-				msg("<b>You cant use bloodlust while in creativemode."); // or offline :P but offline players wont see the message
+				msg("<b>You can't use bloodlust while in Creative Mode."); // or offline :P but offline players wont see the message
 				return;
 			}
 		}
@@ -612,12 +612,15 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		vyou.getFood().add(-amount);
 		this.getFood().add(amount);
 		
-		// Risk infection
-		if (MCore.random.nextDouble()*20 < amount)
-		{
-			this.addInfection(0.05D, InfectionReason.TRADE, vyou);
+		// Risk infection/boost infection
+		if(!this.isVampire()){
+			if(this.isInfected()){
+					this.addInfection(0.01D);
+			}else if (MCore.random.nextDouble()*20 < amount)
+			{
+					this.addInfection(0.05D, InfectionReason.TRADE, vyou);
+			}
 		}
-		
 		// Trader Messages
 		vyou.msg(Lang.tradeTransferOut, me.getDisplayName(), amount);
 		this.msg(Lang.tradeTransferIn, amount, you.getDisplayName());
