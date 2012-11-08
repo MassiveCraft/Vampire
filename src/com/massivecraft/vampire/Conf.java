@@ -237,7 +237,7 @@ public class Conf extends Entity<Conf, String>
 	// HOLY WATER
 	// -------------------------------------------- //
 	
-	public short holyWaterPotionValue = 16430;
+	public short holyWaterPotionValue = 16431;
 	public double holyWaterSplashRadius = 6D;
 	public double holyWaterTemp = 0.7D;
 	
