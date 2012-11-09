@@ -13,6 +13,7 @@ public enum Permission
 	SHRIEK("shriek"),
 	MODE_BLOODLUST("mode.bloodlust"),
 	MODE_INTENT("mode.intent"),
+	MODE_NIGHTVISION("mode.nightvision"),
 	ALTAR_DARK("altar.dark"),
 	ALTAR_LIGHT("altar.light"),
 	TRADE_OFFER("trade.offer"),

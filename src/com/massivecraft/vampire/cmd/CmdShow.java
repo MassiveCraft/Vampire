@@ -90,6 +90,7 @@ public class CmdShow extends VCommand
 		
 		this.msg(vplayer.bloodlustMsg());
 		this.msg(vplayer.intendMsg());
+		this.msg(vplayer.usingNightVisionMsg());
 		
 		msg("<k>Temperature <v>%d%%", (int)Math.round(vplayer.getTemp()*100));
 		if (player == null)

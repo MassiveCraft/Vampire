@@ -13,6 +13,7 @@ permissions:
   vampire.shriek:            {description: shriek, default: false}
   vampire.mode.bloodlust:    {description: use bloodlust, default: false}
   vampire.mode.intent:       {description: use intent to infect, default: false}
+  vampire.mode.nightvision:  {description: use nightvision, default: false}
   vampire.altar.dark:        {description: use an altar of darkness, default: false}
   vampire.altar.light:       {description: use an altar of light, default: false}
   vampire.trade.offer:       {description: offer blood to someone, default: false}
@@ -40,6 +41,7 @@ permissions:
     children:
       vampire.mode.bloodlust: true
       vampire.mode.intent: true
+      vampire.mode.nightvision: true
   vampire.altar.*:
     default: false
     children:
@@ -76,6 +78,7 @@ permissions:
     children:
       vampire.show.self: true
       vampire.mode.bloodlust: true
+      vampire.mode.nightvision: true
       vampire.altar.light: true
       vampire.trade.accept: true
   vampire.kit.fullplayer:

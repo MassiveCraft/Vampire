@@ -120,6 +120,13 @@ public class Conf extends Entity<Conf, String>
 	);
 	
 	// -------------------------------------------- //
+	// NIGHTVISION
+	// -------------------------------------------- //
+	
+	public boolean nightvisionCanBeUsed = true;
+	public int nightvisionPulseTicks = 420;
+	
+	// -------------------------------------------- //
 	// REGEN
 	// -------------------------------------------- //
 	

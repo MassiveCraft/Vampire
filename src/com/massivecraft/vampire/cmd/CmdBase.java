@@ -8,6 +8,7 @@ public class CmdBase extends VCommand
 	public CmdShow cmdShow = new CmdShow();
 	public CmdModeBloodlust cmdModeBloodlust = new CmdModeBloodlust();
 	public CmdModeIntend cmdModeIntend = new CmdModeIntend();
+	public CmdModeNightvision cmdModeNightvision = new CmdModeNightvision();
 	public CmdOffer cmdOffer = new CmdOffer();
 	public CmdAccept cmdAccept = new CmdAccept();
 	public CmdShriek cmdShriek = new CmdShriek();
@@ -24,6 +25,7 @@ public class CmdBase extends VCommand
 		this.addSubCommand(cmdShow);
 		this.addSubCommand(cmdModeBloodlust);
 		this.addSubCommand(cmdModeIntend);
+		this.addSubCommand(cmdModeNightvision);
 		this.addSubCommand(cmdOffer);
 		this.addSubCommand(cmdAccept);
 		this.addSubCommand(cmdShriek);

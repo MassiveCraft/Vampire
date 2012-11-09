@@ -62,6 +62,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.makerId = that.makerId;
 		this.intending = that.intending;
 		this.bloodlusting = that.bloodlusting;
+		this.usingNightVision = that.usingNightVision;
 		return this;
 	}
 	
@@ -195,6 +196,15 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.update();
 	}
 	public String bloodlustMsg() { return Lang.boolIsY("Bloodlust", this.isBloodlusting()) + " " + Lang.quotaIsPercent("combat damage", this.combatDamageFactor()); }
+	
+	// FIELD: usingNightVision - Vampires can use nightvision anytime they want.
+	@Getter protected boolean usingNightVision = false;
+	public void setUsingNightVision(boolean val)
+	{
+		this.usingNightVision = val;
+		this.msg(this.usingNightVisionMsg());
+	}
+	public String usingNightVisionMsg() { return Lang.boolIsY("Nightvision", this.isUsingNightVision()); }
 	
 	// -------------------------------------------- //
 	// TRANSIENT FIELDS
@@ -435,6 +445,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.tickInfection(ticks);
 		this.tickRegen(ticks);
 		this.tickBloodlust(ticks);
+		this.tickNightvision(ticks);
 		this.tickEffects(ticks);
 		this.tickTruce(ticks);
 	}
@@ -521,6 +532,25 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		this.getFood().add(ticks * conf.bloodlustFoodPerTick);
 		if (this.getFood().get() < conf.bloodlustMinFood) this.setBloodlusting(false);
+	}
+	
+	public void tickNightvision(long ticks)
+	{
+		if ( ! this.isVampire()) return;
+		
+		Player player = this.getPlayer();
+		Conf conf = Conf.get(player);
+		if (!conf.nightvisionCanBeUsed) return;
+		if (player.isDead()) return;
+		
+		if (this.isUsingNightVision())
+		{
+			PaketUtil.addPotionEffectNoGraphic(player, new PotionEffect(PotionEffectType.NIGHT_VISION, conf.nightvisionPulseTicks, 1));
+		}
+		else
+		{
+			PaketUtil.removePotionEffectNoGraphic(player, PotionEffectType.NIGHT_VISION);
+		}
 	}
 	
 	public void tickEffects(long ticks)
