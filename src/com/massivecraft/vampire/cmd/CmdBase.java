@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore4.cmd.HelpCommand;
+import com.massivecraft.mcore5.cmd.HelpCommand;
 import com.massivecraft.vampire.ConfServer;
 
 public class CmdBase extends VCommand

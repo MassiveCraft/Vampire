@@ -2,7 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore4.cmd.arg.ARBoolean;
+import com.massivecraft.mcore5.cmd.arg.ARBoolean;
 import com.massivecraft.vampire.*;
 
 public class CmdSetVampire extends CmdSetAbstract<Boolean>

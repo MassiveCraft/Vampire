@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore4.cmd.arg.ARBoolean;
+import com.massivecraft.mcore5.cmd.arg.ARBoolean;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 
 public abstract class CmdModeAbstract extends VCommand

@@ -5,9 +5,9 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 
-import com.massivecraft.mcore4.MPlugin;
-import com.massivecraft.mcore4.usys.Aspect;
-import com.massivecraft.mcore4.usys.AspectColl;
+import com.massivecraft.mcore5.MPlugin;
+import com.massivecraft.mcore5.usys.Aspect;
+import com.massivecraft.mcore5.usys.AspectColl;
 import com.massivecraft.vampire.cmd.CmdBase;
 import com.massivecraft.vampire.integration.nocheatplus.NoCheatPlusFeatures;
 import com.massivecraft.vampire.integration.spout.SpoutFeatures;

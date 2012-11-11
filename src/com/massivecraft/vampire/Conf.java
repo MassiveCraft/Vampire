@@ -11,8 +11,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore4.store.Entity;
-import com.massivecraft.mcore4.util.MUtil;
+import com.massivecraft.mcore5.store.Entity;
+import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.vampire.altar.AltarDark;
 import com.massivecraft.vampire.altar.AltarLight;
 

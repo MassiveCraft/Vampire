@@ -1,8 +1,8 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore4.cmd.HelpCommand;
-import com.massivecraft.mcore4.cmd.VisibilityMode;
-import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore5.cmd.HelpCommand;
+import com.massivecraft.mcore5.cmd.VisibilityMode;
+import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.Permission;
 
 public class CmdSet extends VCommand

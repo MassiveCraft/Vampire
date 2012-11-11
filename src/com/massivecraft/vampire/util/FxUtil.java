@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore4.MCore;
+import com.massivecraft.mcore5.MCore;
 
 public class FxUtil
 {

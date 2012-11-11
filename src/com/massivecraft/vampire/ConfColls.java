@@ -1,8 +1,8 @@
 package com.massivecraft.vampire;
 
-import com.massivecraft.mcore4.MCore;
-import com.massivecraft.mcore4.store.Colls;
-import com.massivecraft.mcore4.usys.Aspect;
+import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.store.Colls;
+import com.massivecraft.mcore5.usys.Aspect;
 
 public class ConfColls extends Colls<ConfColl, Conf, String>
 {

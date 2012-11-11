@@ -19,11 +19,11 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore4.MCore;
-import com.massivecraft.mcore4.cmd.MCommand;
-import com.massivecraft.mcore4.store.PlayerEntity;
-import com.massivecraft.mcore4.util.MUtil;
-import com.massivecraft.mcore4.util.Txt;
+import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.cmd.MCommand;
+import com.massivecraft.mcore5.store.PlayerEntity;
+import com.massivecraft.mcore5.util.MUtil;
+import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
 import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
 import com.massivecraft.vampire.util.FxUtil;

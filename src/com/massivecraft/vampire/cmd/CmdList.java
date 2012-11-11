@@ -4,12 +4,12 @@ import java.util.*;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.mcore4.MCore;
-import com.massivecraft.mcore4.cmd.VisibilityMode;
-import com.massivecraft.mcore4.cmd.arg.ARInteger;
-import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore4.usys.Multiverse;
-import com.massivecraft.mcore4.util.Txt;
+import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.cmd.VisibilityMode;
+import com.massivecraft.mcore5.cmd.arg.ARInteger;
+import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore5.usys.Multiverse;
+import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.*;
 
 public class CmdList extends VCommand

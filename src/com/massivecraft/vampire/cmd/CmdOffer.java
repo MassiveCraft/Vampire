@@ -2,11 +2,11 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore4.cmd.arg.ARDouble;
-import com.massivecraft.mcore4.cmd.arg.AROnlinePlayerMatch;
-import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore4.cmd.req.ReqIsPlayer;
-import com.massivecraft.mcore4.util.MUtil;
+import com.massivecraft.mcore5.cmd.arg.ARDouble;
+import com.massivecraft.mcore5.cmd.arg.AROnlinePlayerMatch;
+import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore5.cmd.req.ReqIsPlayer;
+import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.vampire.*;
 
 public class CmdOffer extends VCommand

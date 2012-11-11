@@ -2,10 +2,10 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore4.MCore;
-import com.massivecraft.mcore4.cmd.arg.ArgReader;
-import com.massivecraft.mcore4.usys.Multiverse;
-import com.massivecraft.mcore4.util.Txt;
+import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.cmd.arg.ArgReader;
+import com.massivecraft.mcore5.usys.Multiverse;
+import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;

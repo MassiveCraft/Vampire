@@ -2,8 +2,8 @@ package com.massivecraft.vampire;
 
 import java.util.List;
 
-import com.massivecraft.mcore4.SimpleConfig;
-import com.massivecraft.mcore4.util.MUtil;
+import com.massivecraft.mcore5.SimpleConfig;
+import com.massivecraft.mcore5.util.MUtil;
 
 public class ConfServer extends SimpleConfig
 {

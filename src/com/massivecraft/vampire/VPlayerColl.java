@@ -3,11 +3,11 @@ package com.massivecraft.vampire;
 import java.io.File;
 import java.util.Collection;
 
-import com.massivecraft.mcore4.MCore;
-import com.massivecraft.mcore4.Predictate;
-import com.massivecraft.mcore4.store.DbGson;
-import com.massivecraft.mcore4.store.MStore;
-import com.massivecraft.mcore4.store.PlayerColl;
+import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.Predictate;
+import com.massivecraft.mcore5.store.DbGson;
+import com.massivecraft.mcore5.store.MStore;
+import com.massivecraft.mcore5.store.PlayerColl;
 
 public class VPlayerColl extends PlayerColl<VPlayer>
 {
