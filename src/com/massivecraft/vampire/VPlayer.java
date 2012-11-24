@@ -26,6 +26,8 @@ import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
 import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
+import com.massivecraft.vampire.event.VampirePlayerInfectionChangeEvent;
+import com.massivecraft.vampire.event.VampirePlayerVampireChangeEvent;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.SunUtil;
 
@@ -76,7 +78,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void setVampire(boolean val)
 	{
 		this.infection = 0;
+		
 		if (this.vampire == val) return;
+		
+		VampirePlayerVampireChangeEvent event = new VampirePlayerVampireChangeEvent(val, this);
+		event.run();
+		if (event.isCancelled()) return;
+		
 		this.vampire = val;
 		this.changed();
 		if (this.vampire)
@@ -104,6 +112,14 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public boolean isInfected() { return this.infection > 0D; }
 	public void setInfection(double val)
 	{
+		if (this.infection == val) return;
+		
+		// Call event
+		VampirePlayerInfectionChangeEvent event = new VampirePlayerInfectionChangeEvent(val, this);
+		event.run();
+		if (event.isCancelled()) return;
+		val = event.getInfection();
+		
 		if (val >= 1D)
 		{
 			this.setVampire(true);
