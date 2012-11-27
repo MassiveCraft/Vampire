@@ -81,7 +81,7 @@ public class CmdShow extends VCommand
 		}
 		else
 		{
-			msg("<i>"+You+" "+are+" a normal human.");
+			msg("<i>"+You+" "+are+" neither vampire nor infected with the dark disease.");
 			return;
 		}
 		
