@@ -6,8 +6,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.entity.CraftThrownPotion;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -38,6 +38,7 @@ import org.bukkit.inventory.ItemStack;
 import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.mcore5.util.PlayerUtil;
+import com.massivecraft.mcore5.util.ThrownPotionUtil;
 import com.massivecraft.vampire.util.FxUtil;
 
 public class TheListener implements Listener
@@ -296,7 +297,7 @@ public class TheListener implements Listener
 		Conf conf = Conf.get(player);
 		
 		// ... by creature that cares about the truce with vampires ...
-		if ( ! (conf.truceEntityTypes.contains(event.getEntity().getType()))) return;
+		if ( ! (conf.truceEntityTypes.contains(event.getEntityType()))) return;
 		
 		VPlayer vplayer = VPlayer.get(player);
 		
@@ -306,7 +307,14 @@ public class TheListener implements Listener
 		// ... that has not recently done something to break the truce...
 		if (vplayer.truceIsBroken()) return;
 		
-		// Then the creature will not attack.
+		// ... then if the player is a ghast target nothing ...
+		if (event.getEntityType() == EntityType.GHAST)
+		{
+			event.setTarget(null);
+			return;
+		}
+		
+		// ... otherwise cancel the event.
 		event.setCancelled(true);
 	}
 	
@@ -518,11 +526,10 @@ public class TheListener implements Listener
 		Projectile projectile = event.getEntity();
 		Conf conf = Conf.get(projectile);
 		if ( ! (projectile instanceof ThrownPotion)) return;
+		ThrownPotion potion = (ThrownPotion)projectile;
 		
 		// ... and the potion type is holy water ...
-		ThrownPotion potion = (ThrownPotion)projectile;
-		CraftThrownPotion cpotion = (CraftThrownPotion)potion;
-		int potionvalue = cpotion.getHandle().getPotionValue();
+		int potionvalue = ThrownPotionUtil.getPotionValue(potion);
 		if (potionvalue != conf.holyWaterPotionValue) return;
 		
 		// ... who is the thrower and where did it splash? ...

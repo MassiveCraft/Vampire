@@ -13,6 +13,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -23,6 +24,7 @@ import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.store.PlayerEntity;
 import com.massivecraft.mcore5.util.MUtil;
+import com.massivecraft.mcore5.util.PotionPaketUtil;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
 import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
@@ -448,7 +450,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			if (strength == null || strength < 1) continue;
 			
 			// Was not a reset so add this in.
-			PaketUtil.addPotionEffectNoGraphic(player, new PotionEffect(pet, 100000, strength));
+			PotionPaketUtil.add(player, pet, strength, 100000);
 		}
 	}
 	
@@ -561,11 +563,11 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		if (this.isUsingNightVision())
 		{
-			PaketUtil.addPotionEffectNoGraphic(player, new PotionEffect(PotionEffectType.NIGHT_VISION, conf.nightvisionPulseTicks, 1));
+			PotionPaketUtil.add(player, new PotionEffect(PotionEffectType.NIGHT_VISION, conf.nightvisionPulseTicks, 1));
 		}
 		else
 		{
-			PaketUtil.removePotionEffectNoGraphic(player, PotionEffectType.NIGHT_VISION);
+			PotionPaketUtil.remove(player, PotionEffectType.NIGHT_VISION);
 		}
 	}
 	
@@ -783,22 +785,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		// Untarget the player.
 		for (LivingEntity entity : this.getPlayer().getWorld().getLivingEntities())
 		{
-			if ( ! (entity instanceof Creature))
-			{
-				continue;
-			}
+			if ( ! conf.truceEntityTypes.contains(entity.getType())) continue;
 			
-			if ( ! conf.truceEntityTypes.contains(entity.getType()))
-			{
-				continue;
-			}
-			
+			if ( ! (entity instanceof Creature)) continue;
 			Creature creature = (Creature)entity;
-			LivingEntity target = creature.getTarget();
-			if ( ! me.equals(target))
-			{
-				continue;
-			}
+			
+			Entity target = creature.getTarget();
+			if ( ! me.equals(target)) continue;
 			
 			creature.setTarget(null);
 		}
