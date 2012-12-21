@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.vampire.Conf;
+import com.massivecraft.vampire.HolyWaterUtil;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.Permission;
 import com.massivecraft.vampire.VPlayer;
@@ -48,7 +49,7 @@ public class AltarLight extends Altar
 		if ( ! vplayer.isVampire() && playerHoldsWaterBottle(player))
 		{
 			if ( ! ResourceUtil.playerRemoveAttempt(player, conf.holyWaterResources, Lang.altarLightWaterResourceSuccess, Lang.altarLightWaterResourceFail)) return;
-			ResourceUtil.playerAdd(player, new ItemStack(Material.POTION, 1, conf.holyWaterPotionValue));
+			ResourceUtil.playerAdd(player, HolyWaterUtil.createItemStack());
 			vplayer.msg(Lang.altarLightWaterResult);
 			vplayer.runFxEnderBurst();
 			return;

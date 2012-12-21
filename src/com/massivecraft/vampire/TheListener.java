@@ -38,7 +38,6 @@ import org.bukkit.inventory.ItemStack;
 import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.mcore5.util.PlayerUtil;
-import com.massivecraft.mcore5.util.ThrownPotionUtil;
 import com.massivecraft.vampire.util.FxUtil;
 
 public class TheListener implements Listener
@@ -526,14 +525,13 @@ public class TheListener implements Listener
 		Projectile projectile = event.getEntity();
 		Conf conf = Conf.get(projectile);
 		if ( ! (projectile instanceof ThrownPotion)) return;
-		ThrownPotion potion = (ThrownPotion)projectile;
+		ThrownPotion thrownPotion = (ThrownPotion)projectile;
 		
 		// ... and the potion type is holy water ...
-		int potionvalue = ThrownPotionUtil.getPotionValue(potion);
-		if (potionvalue != conf.holyWaterPotionValue) return;
+		if ( ! HolyWaterUtil.isHolyWater(thrownPotion)) return;
 		
 		// ... who is the thrower and where did it splash? ...
-		Location splashLocation = potion.getLocation();
+		Location splashLocation = thrownPotion.getLocation();
 		Player shooter = (Player)projectile.getShooter();
 		
 		// ... then to all nearby players ...
