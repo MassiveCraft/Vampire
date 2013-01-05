@@ -10,7 +10,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.Permission;
+import com.massivecraft.vampire.VPerm;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.ResourceUtil;
@@ -44,7 +44,7 @@ public class AltarDark extends Altar
 		vplayer.msg("");
 		vplayer.msg(this.desc);
 		
-		if ( ! Permission.ALTAR_DARK.has(player, true)) return;
+		if ( ! VPerm.ALTAR_DARK.has(player, true)) return;
 		
 		vplayer.msg(Lang.altarDarkCommon);
 		FxUtil.ensure(PotionEffectType.BLINDNESS, player, 12*20);

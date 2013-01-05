@@ -18,7 +18,7 @@ public class CmdOffer extends VCommand
 		this.addRequiredArg("playername");
 		this.addOptionalArg("amount", "4.0");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.TRADE_OFFER.node));
+		this.addRequirements(ReqHasPerm.get(VPerm.TRADE_OFFER.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	

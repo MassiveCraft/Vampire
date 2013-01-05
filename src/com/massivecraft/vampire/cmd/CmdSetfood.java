@@ -15,7 +15,7 @@ public class CmdSetFood extends CmdSetAbstract<Integer>
 		argReader = ARInteger.get();
 		
 		this.addAliases("f");
-		this.addRequirements(ReqHasPerm.get(Permission.SET_FOOD.node));
+		this.addRequirements(ReqHasPerm.get(VPerm.SET_FOOD.node));
 	}
 
 	@Override

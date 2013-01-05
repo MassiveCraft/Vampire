@@ -4,7 +4,7 @@ import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.massivecraft.vampire.Permission;
+import com.massivecraft.vampire.VPerm;
 import com.massivecraft.vampire.VPlayer;
 
 public class Shriek extends VampireKeyBinding 
@@ -12,7 +12,7 @@ public class Shriek extends VampireKeyBinding
 	@Override
 	public void pressed(KeyBindingEvent event, SpoutPlayer splayer, VPlayer vplayer)
 	{
-		if ( ! Permission.SHRIEK.has(splayer, true)) return;
+		if ( ! VPerm.SHRIEK.has(splayer, true)) return;
 		vplayer.shriek();
 	}
 

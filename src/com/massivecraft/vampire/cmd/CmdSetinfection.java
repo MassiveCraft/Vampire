@@ -14,7 +14,7 @@ public class CmdSetInfection extends CmdSetAbstract<Double>
 		targetMustBeOnline = false;
 		argReader = ARDouble.get();
 		this.addAliases("i");
-		this.addRequirements(ReqHasPerm.get(Permission.SET_INFECTION.node));
+		this.addRequirements(ReqHasPerm.get(VPerm.SET_INFECTION.node));
 	}
 
 	@Override

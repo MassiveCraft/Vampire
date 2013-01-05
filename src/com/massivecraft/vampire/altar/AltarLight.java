@@ -10,7 +10,7 @@ import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.HolyWaterUtil;
 import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.Permission;
+import com.massivecraft.vampire.VPerm;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.util.ResourceUtil;
 
@@ -44,7 +44,7 @@ public class AltarLight extends Altar
 		vplayer.msg("");
 		vplayer.msg(this.desc);
 		
-		if ( ! Permission.ALTAR_LIGHT.has(player, true)) return;
+		if ( ! VPerm.ALTAR_LIGHT.has(player, true)) return;
 		
 		if ( ! vplayer.isVampire() && playerHoldsWaterBottle(player))
 		{

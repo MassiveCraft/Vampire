@@ -8,7 +8,7 @@ public class CmdModeNightvision extends CmdModeAbstract
 	public CmdModeNightvision()
 	{
 		this.addAliases("n", "nightvision");
-		this.addRequirements(new ReqHasPerm(Permission.MODE_NIGHTVISION.node));
+		this.addRequirements(new ReqHasPerm(VPerm.MODE_NIGHTVISION.node));
 	}
 	
 	protected void set(boolean val)

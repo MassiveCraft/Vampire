@@ -18,7 +18,7 @@ public class CmdSetVampire extends CmdSetAbstract<Boolean>
 	@Override
 	public Boolean set(VPlayer vplayer, Player player, Boolean val)
 	{
-		Permission perm = val ? Permission.SET_VAMPIRE_TRUE : Permission.SET_VAMPIRE_FALSE;
+		VPerm perm = val ? VPerm.SET_VAMPIRE_TRUE : VPerm.SET_VAMPIRE_FALSE;
 		
 		if ( ! perm.has(sender, true)) return null;
 		

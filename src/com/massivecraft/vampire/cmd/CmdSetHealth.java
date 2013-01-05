@@ -14,7 +14,7 @@ public class CmdSetHealth extends CmdSetAbstract<Integer>
 		targetMustBeOnline = true;
 		argReader = ARInteger.get();
 		this.addAliases("h");
-		this.addRequirements(ReqHasPerm.get(Permission.SET_HEALTH.node));
+		this.addRequirements(ReqHasPerm.get(VPerm.SET_HEALTH.node));
 	}
 
 	@Override

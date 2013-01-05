@@ -8,7 +8,7 @@ public class CmdModeBloodlust extends CmdModeAbstract
 	public CmdModeBloodlust()
 	{
 		this.addAliases("b", "bloodlust");
-		this.addRequirements(new ReqHasPerm(Permission.MODE_BLOODLUST.node));
+		this.addRequirements(new ReqHasPerm(VPerm.MODE_BLOODLUST.node));
 	}
 	
 	protected void set(boolean val)

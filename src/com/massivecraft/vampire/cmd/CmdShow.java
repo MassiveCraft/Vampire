@@ -8,7 +8,7 @@ import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.Permission;
+import com.massivecraft.vampire.VPerm;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayerColl;
 import com.massivecraft.vampire.VPlayerColls;
@@ -50,11 +50,11 @@ public class CmdShow extends VCommand
 		// Test permissions
 		if (self)
 		{
-			if ( ! Permission.SHOW_SELF.has(sender, true)) return;
+			if ( ! VPerm.SHOW_SELF.has(sender, true)) return;
 		}
 		else
 		{
-			if ( ! Permission.SHOW_OTHER.has(sender, true)) return;
+			if ( ! VPerm.SHOW_OTHER.has(sender, true)) return;
 		}
 		
 		String You = "You";

@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore5.util.Perm;
 
-public enum Permission
+public enum VPerm
 {
 	IS_VAMPIRE("is.vampire"),
 	IS_HUMAN("is.human"),
@@ -32,7 +32,7 @@ public enum Permission
 	
 	public final String node;
 	
-	Permission(final String permissionNode)
+	VPerm(final String permissionNode)
 	{
 		this.node = "vampire."+permissionNode;
     }

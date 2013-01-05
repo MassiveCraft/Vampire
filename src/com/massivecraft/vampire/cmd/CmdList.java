@@ -22,7 +22,7 @@ public class CmdList extends VCommand
 		
 		this.setVisibilityMode(VisibilityMode.SECRET);
 		
-		this.addRequirements(ReqHasPerm.get(Permission.LIST.node));
+		this.addRequirements(ReqHasPerm.get(VPerm.LIST.node));
 	}
 	
 	@Override

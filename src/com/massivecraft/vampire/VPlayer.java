@@ -16,7 +16,9 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -24,6 +26,7 @@ import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.store.PlayerEntity;
 import com.massivecraft.mcore5.util.MUtil;
+import com.massivecraft.mcore5.util.Perm;
 import com.massivecraft.mcore5.util.PotionPaketUtil;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
@@ -366,33 +369,37 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.updateMovement();
 	}
 	
+	public Permission getPermission()
+	{
+		return Perm.getCreative("vampire.player."+this.getId(), PermissionDefault.FALSE);
+	}
+	
 	public void updatePermissions()
 	{
-		if (this.permA != null)
-		{
-			this.permA.remove();
-		}
-		
 		Player player = this.getPlayer();
 		if (player == null) return;
 		Conf conf = Conf.get(player);
 		
-		this.permA = player.addAttachment(P.p);
+		Permission permission = this.getPermission();
+		Perm.ensureHas(player, permission);
 		
+		Map<String, Boolean> children = permission.getChildren();
+		
+		Map<String, Boolean> targetChildren;
 		if (this.isVampire())
 		{
-			for (Entry<String, Boolean> entry : conf.updatePermsVampire.entrySet())
-			{
-				this.permA.setPermission(entry.getKey(), entry.getValue());
-			}
+			targetChildren = conf.updatePermsVampire;
 		}
 		else
 		{
-			for (Entry<String, Boolean> entry : conf.updatePermsHuman.entrySet())
-			{
-				this.permA.setPermission(entry.getKey(), entry.getValue());
-			}
+			targetChildren = conf.updatePermsHuman;
 		}
+		
+		if (children.equals(targetChildren)) return;
+		
+		children.clear();
+		children.putAll(targetChildren);
+		permission.recalculatePermissibles();
 	}
 	
 	public void updateMovement()

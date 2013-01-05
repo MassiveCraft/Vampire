@@ -439,10 +439,10 @@ public class TheListener implements Listener
 		if ( vampire == null || human == null) return;
 		
 		// ... and the vampire is allowed to infect through combat ...
-		if ( ! Permission.COMBAT_INFECT.has(vampire.getPlayer())) return;
+		if ( ! VPerm.COMBAT_INFECT.has(vampire.getPlayer())) return;
 		
 		// ... and the human is allowed to contract through combat ...
-		if ( ! Permission.COMBAT_CONTRACT.has(human.getPlayer())) return;
+		if ( ! VPerm.COMBAT_CONTRACT.has(human.getPlayer())) return;
 		
 		// ... Then there is a risk for infection ...
 		if (MCore.random.nextDouble() > vampire.combatInfectRisk()) return;

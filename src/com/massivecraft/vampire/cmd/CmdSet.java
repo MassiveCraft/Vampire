@@ -3,7 +3,7 @@ package com.massivecraft.vampire.cmd;
 import com.massivecraft.mcore5.cmd.HelpCommand;
 import com.massivecraft.mcore5.cmd.VisibilityMode;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
-import com.massivecraft.vampire.Permission;
+import com.massivecraft.vampire.VPerm;
 
 public class CmdSet extends VCommand
 {
@@ -24,7 +24,7 @@ public class CmdSet extends VCommand
 		this.addSubCommand(cmdSetHealth);
 		
 		this.setVisibilityMode(VisibilityMode.SECRET);
-		this.addRequirements(ReqHasPerm.get(Permission.SET.node));
+		this.addRequirements(ReqHasPerm.get(VPerm.SET.node));
 	}
 	
 	@Override
