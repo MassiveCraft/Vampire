@@ -277,9 +277,9 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// FX: Shriek
 	public void runFxShriek()
 	{
-		Player player = this.getPlayer();
-		if (player == null) return;
-		Location location = player.getLocation();
+		Player me = this.getPlayer();
+		if (me == null) return;
+		Location location = me.getLocation();
 		World world = location.getWorld();
 		world.playEffect(location, Effect.GHAST_SHRIEK, 0);
 	}
@@ -287,31 +287,31 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// FX: SmokeBurst
 	public void runFxSmokeBurst()
 	{
-		Player player = this.getPlayer();
-		if (player == null) return;
-		double dcount = Conf.get(player).fxSmokeBurstCount;
+		Player me = this.getPlayer();
+		if (me == null) return;
+		double dcount = Conf.get(me).fxSmokeBurstCount;
 		long lcount = MUtil.probabilityRound(dcount);
-		for (long i = lcount; i > 0; i--) FxUtil.smoke(player);
+		for (long i = lcount; i > 0; i--) FxUtil.smoke(me);
 	}
 	
 	// FX: EnderBurst
 	public void runFxEnderBurst()
 	{
-		Player player = this.getPlayer();
-		if (player == null) return;
-		double dcount = Conf.get(player).fxEnderBurstCount;
+		Player me = this.getPlayer();
+		if (me == null) return;
+		double dcount = Conf.get(me).fxEnderBurstCount;
 		long lcount = MUtil.probabilityRound(dcount);
-		for (long i = lcount; i > 0; i--) FxUtil.ender(player, 0);
+		for (long i = lcount; i > 0; i--) FxUtil.ender(me, 0);
 	}
 	
 	// FX: FlameBurst
 	public void runFxFlameBurst()
 	{
-		Player player = this.getPlayer();
-		if (player == null) return;
-		double dcount = Conf.get(player).fxFlameBurstCount;
+		Player me = this.getPlayer();
+		if (me == null) return;
+		double dcount = Conf.get(me).fxFlameBurstCount;
 		long lcount = MUtil.probabilityRound(dcount);
-		for (long i = lcount; i > 0; i--) FxUtil.flame(player);
+		for (long i = lcount; i > 0; i--) FxUtil.flame(me);
 	}
 	
 	// -------------------------------------------- //
@@ -321,9 +321,9 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void shriek()
 	{
 		// You must be online to shriek
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
-		if (player == null) return;
+		Player me = this.getPlayer();
+		if (me == null) return;
+		Conf conf = Conf.get(me);
 		
 		// You must be a vampire to shriek
 		if ( ! this.isVampire())
@@ -471,13 +471,14 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void tickRadTemp(long ticks)
 	{
 		// Update rad and temp
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
+		Player me = this.getPlayer();
+		if (me == null) return;
+		Conf conf = Conf.get(me);
 		
-		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
-		if (survival && this.isVampire() && ! player.isDead())
+		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
+		if (survival && this.isVampire() && ! me.isDead())
 		{
-			this.rad = conf.baseRad + SunUtil.calcPlayerIrradiation(player);
+			this.rad = conf.baseRad + SunUtil.calcPlayerIrradiation(me);
 			Double tempDelta = conf.tempPerRadAndTick * this.rad * ticks;
 			this.addTemp(tempDelta);
 		}
@@ -495,10 +496,11 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		if ( ! this.isInfected()) return;
 		
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
+		Player me = this.getPlayer();
+		if (me == null) return;
+		Conf conf = Conf.get(me);
 		
-		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
 		if ( ! survival) return;
 		
 		int indexOld = this.infectionGetMessageIndex();
@@ -508,8 +510,8 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		if (this.isVampire()) return;
 		if (indexOld == indexNew) return;
 		
-		if (conf.infectionProgressDamage != 0) player.damage(conf.infectionProgressDamage);
-		if (conf.infectionProgressNauseaTicks > 0) FxUtil.ensure(PotionEffectType.CONFUSION, player, conf.infectionProgressNauseaTicks);
+		if (conf.infectionProgressDamage != 0) me.damage(conf.infectionProgressDamage);
+		if (conf.infectionProgressNauseaTicks > 0) FxUtil.ensure(PotionEffectType.CONFUSION, me, conf.infectionProgressNauseaTicks);
 		
 		this.msg(Lang.infectionFeeling.get(indexNew));
 		this.msg(Lang.infectionHint.get(MCore.random.nextInt(Lang.infectionHint.size())));
@@ -523,12 +525,13 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void tickRegen(long ticks)
 	{
 		if ( ! this.isVampire()) return;
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
-		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		Player me = this.getPlayer();
+		if (me == null) return;
+		Conf conf = Conf.get(me);
+		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
 		if ( ! survival) return;
-		if (player.isDead()) return;
-		if (player.getHealth() >= 20) return;
+		if (me.isDead()) return;
+		if (me.getHealth() >= 20) return;
 		if (this.getFood().get() < conf.regenMinFood) return;
 		
 		long millisSinceLastDamage = System.currentTimeMillis() - this.lastDamageMillis;
@@ -542,11 +545,12 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		if ( ! this.isVampire()) return;
 		if ( ! this.isBloodlusting()) return;
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
-		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		Player me = this.getPlayer();
+		if (me == null) return;
+		Conf conf = Conf.get(me);
+		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
 		if ( ! survival) return;
-		if (player.isDead()) return;
+		if (me.isDead()) return;
 		
 		this.getFood().add(ticks * conf.bloodlustFoodPerTick);
 		if (this.getFood().get() < conf.bloodlustMinFood) this.setBloodlusting(false);
@@ -556,29 +560,30 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	{
 		if ( ! this.isVampire()) return;
 		
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
+		Player me = this.getPlayer();
+		if (me == null) return;
+		Conf conf = Conf.get(me);
 		if (!conf.nightvisionCanBeUsed) return;
-		if (player.isDead()) return;
+		if (me.isDead()) return;
 		
 		if (this.isUsingNightVision())
 		{
-			PotionPaketUtil.add(player, new PotionEffect(PotionEffectType.NIGHT_VISION, conf.nightvisionPulseTicks, 1));
+			PotionPaketUtil.add(me, new PotionEffect(PotionEffectType.NIGHT_VISION, conf.nightvisionPulseTicks, 1));
 		}
 		else
 		{
-			PotionPaketUtil.remove(player, PotionEffectType.NIGHT_VISION);
+			PotionPaketUtil.remove(me, PotionEffectType.NIGHT_VISION);
 		}
 	}
 	
 	public void tickEffects(long ticks)
 	{
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
-		if ( ! player.isOnline()) return;
-		if (player.isDead()) return;
+		Player me = this.getPlayer();
+		if (me == null) return;
+		if (me.isDead()) return;
+		Conf conf = Conf.get(me);
 		
-		boolean survival = player.getGameMode() == GameMode.SURVIVAL;
+		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
 		if ( ! survival) return;
 
 		// FX: Smoke
@@ -587,7 +592,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			this.fxSmokeTicks -= ticks;
 			double dcount = conf.fxSmokePerTick * ticks;
 			long lcount = MUtil.probabilityRound(dcount);
-			for (long i = lcount; i > 0; i--) FxUtil.smoke(player);
+			for (long i = lcount; i > 0; i--) FxUtil.smoke(me);
 		}
 		
 		// FX: Ender
@@ -596,27 +601,27 @@ public class VPlayer extends PlayerEntity<VPlayer>
 			this.fxEnderTicks -= ticks;
 			double dcount = conf.fxEnderPerTick * ticks;
 			long lcount = MUtil.probabilityRound(dcount);
-			for (long i = lcount; i > 0; i--) FxUtil.ender(player, conf.fxEnderRandomMaxLen);
+			for (long i = lcount; i > 0; i--) FxUtil.ender(me, conf.fxEnderRandomMaxLen);
 		}
 		
 		// Vampire sun reactions
 		if (survival && this.isVampire())
 		{
 			// Buffs
-			if (this.getTemp() > conf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, player, conf.sunNauseaTicks);
-			if (this.getTemp() > conf.sunWeaknessTemp)  FxUtil.ensure(PotionEffectType.WEAKNESS, player, conf.sunWeaknessTicks);
-			if (this.getTemp() > conf.sunSlowTemp)      FxUtil.ensure(PotionEffectType.SLOW, player, conf.sunSlowTicks);
-			if (this.getTemp() > conf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, player, conf.sunBlindnessTicks);
-			if (this.getTemp() > conf.sunBurnTemp)      FxUtil.ensureBurn(player, conf.sunBurnTicks);
+			if (this.getTemp() > conf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, me, conf.sunNauseaTicks);
+			if (this.getTemp() > conf.sunWeaknessTemp)  FxUtil.ensure(PotionEffectType.WEAKNESS, me, conf.sunWeaknessTicks);
+			if (this.getTemp() > conf.sunSlowTemp)      FxUtil.ensure(PotionEffectType.SLOW, me, conf.sunSlowTicks);
+			if (this.getTemp() > conf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, me, conf.sunBlindnessTicks);
+			if (this.getTemp() > conf.sunBurnTemp)      FxUtil.ensureBurn(me, conf.sunBurnTicks);
 			
 			// Fx
 			double dsmokes = conf.sunSmokesPerTempAndTick * this.temp * ticks;
 			long lsmokes = MUtil.probabilityRound(dsmokes);
-			for (long i = lsmokes; i > 0; i--) FxUtil.smoke(player);
+			for (long i = lsmokes; i > 0; i--) FxUtil.smoke(me);
 			
 			double dflames = conf.sunFlamesPerTempAndTick * this.temp * ticks;
 			long lflames = MUtil.probabilityRound(dflames);
-			for (long i = lflames; i > 0; i--) FxUtil.flame(player);
+			for (long i = lflames; i > 0; i--) FxUtil.flame(me);
 		}
 	}
 	
@@ -697,6 +702,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	public void tradeOffer(VPlayer vyou, double amount)
 	{
 		Player you = vyou.getPlayer();
+		if (you == null) return;
 		Player me = this.getPlayer();
 		if (me == null) return;
 		Conf conf = Conf.get(me);
@@ -780,10 +786,11 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.truceBreakTicksLeftSet(0);
 		
 		Player me = this.getPlayer();
+		if (me == null) return;
 		Conf conf = Conf.get(me);
 		
 		// Untarget the player.
-		for (LivingEntity entity : this.getPlayer().getWorld().getLivingEntities())
+		for (LivingEntity entity : me.getWorld().getLivingEntities())
 		{
 			if ( ! conf.truceEntityTypes.contains(entity.getType())) continue;
 			
@@ -825,8 +832,9 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	
 	public double combatDamageFactor()
 	{
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
+		Player me = this.getPlayer();
+		if (me == null) return 0D;
+		Conf conf = Conf.get(me);
 		
 		if (this.isBloodlusting()) return conf.combatDamageFactorWithBloodlust;
 		return conf.combatDamageFactorWithoutBloodlust;
@@ -834,8 +842,9 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	
 	public double combatInfectRisk()
 	{
-		Player player = this.getPlayer();
-		Conf conf = Conf.get(player);
+		Player me = this.getPlayer();
+		if (me == null) return 0D;
+		Conf conf = Conf.get(me);
 		
 		if (this.isHuman()) return 0D;
 		if (this.isIntending()) return conf.infectionRiskAtCloseCombatWithIntent;
