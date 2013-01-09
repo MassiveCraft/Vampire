@@ -18,19 +18,15 @@ import com.massivecraft.vampire.altar.AltarLight;
 
 public class Conf extends Entity<Conf, String>
 {
-	public static Conf get(Object worldNameExtractable)
-	{
-		return ConfColls.i.get2(worldNameExtractable);
-	}
+	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
 	
-	@Override protected Conf getThis() { return this; }
-	
-	private final static transient Conf defaultInstance = new Conf();
-	@Override public Conf getDefaultInstance(){ return defaultInstance; }
-	@Override protected Class<Conf> getClazz() { return Conf.class; }
+	public static Conf get(Object worldNameExtractable)
+	{
+		return ConfColls.i.get2(worldNameExtractable);
+	}
 	
 	// -------------------------------------------- //
 	// FX

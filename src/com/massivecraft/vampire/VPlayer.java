@@ -45,11 +45,6 @@ public class VPlayer extends PlayerEntity<VPlayer>
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
-	@Override protected VPlayer getThis() { return this; }
-	
-	private final static transient VPlayer defaultInstance = new VPlayer();
-	@Override public VPlayer getDefaultInstance() { return defaultInstance; }
-	@Override protected Class<VPlayer> getClazz() { return VPlayer.class; }
 	
 	public static VPlayer get(Object worldNameExtractable)
 	{

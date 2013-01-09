@@ -95,6 +95,6 @@ public class CmdList extends VCommand
 		
 		// Send them
 		lines = Txt.parseWrap(lines);
-		this.sendMessage(Txt.getPage(lines, pageHumanBased, Txt.upperCaseFirst(universe)+" Vampire Players"));	
+		this.sendMessage(Txt.getPage(lines, pageHumanBased, Txt.upperCaseFirst(universe)+" Vampire Players", sender));	
 	}
 }
