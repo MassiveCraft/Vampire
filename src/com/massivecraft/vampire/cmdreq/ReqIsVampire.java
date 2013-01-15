@@ -23,9 +23,10 @@ public class ReqIsVampire implements IReq
 		return String.format(Lang.onlyVampsCanX, command.getDesc());
 	}
 	
-	protected static ReqIsVampire instance = new ReqIsVampire();
-	public static ReqIsVampire get()
-	{
-		return instance;
-	}
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	protected static ReqIsVampire i = new ReqIsVampire();
+	public static ReqIsVampire get() { return i; }
 }

@@ -26,7 +26,7 @@ import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.store.PlayerEntity;
 import com.massivecraft.mcore5.util.MUtil;
-import com.massivecraft.mcore5.util.Perm;
+import com.massivecraft.mcore5.util.PermUtil;
 import com.massivecraft.mcore5.util.PotionPaketUtil;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
@@ -364,37 +364,60 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		this.updateMovement();
 	}
 	
-	public Permission getPermission()
+	public String getPermissionName()
 	{
-		return Perm.getCreative("vampire.player."+this.getId(), PermissionDefault.FALSE);
+		return "vampire.player."+this.getId();
+	}
+	
+	// This method will always return a permission.
+	// It may however be an empty one (no children) if the player is offline.
+	public Permission getPermission(boolean update)
+	{
+		Map<String, Boolean> targetChildren = null;
+		
+		if (update)
+		{
+			// This one will return null if the player is offline
+			targetChildren = this.getPermissionTargetChildren();
+		}
+		
+		if (targetChildren == null)
+		{
+			return PermUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE);
+		}
+		else
+		{
+			return PermUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE, targetChildren);
+		}
+	}
+	
+	public Map<String, Boolean> getPermissionTargetChildren()
+	{
+		Player player = this.getPlayer();
+		if (player == null) return null;
+		Conf conf = Conf.get(player);
+		
+		Map<String, Boolean> ret;
+		if (this.isVampire())
+		{
+			ret = conf.updatePermsVampire;
+		}
+		else
+		{
+			ret = conf.updatePermsHuman;
+		}
+		
+		return ret;
 	}
 	
 	public void updatePermissions()
 	{
+		Permission permission = this.getPermission(true);
+		
 		Player player = this.getPlayer();
 		if (player == null) return;
-		Conf conf = Conf.get(player);
 		
-		Permission permission = this.getPermission();
-		Perm.ensureHas(player, permission);
-		
-		Map<String, Boolean> children = permission.getChildren();
-		
-		Map<String, Boolean> targetChildren;
-		if (this.isVampire())
-		{
-			targetChildren = conf.updatePermsVampire;
-		}
-		else
-		{
-			targetChildren = conf.updatePermsHuman;
-		}
-		
-		if (children.equals(targetChildren)) return;
-		
-		children.clear();
-		children.putAll(targetChildren);
-		permission.recalculatePermissibles();
+		PermUtil.ensureHas(player, permission);
 	}
 	
 	public void updateMovement()
