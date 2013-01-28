@@ -28,7 +28,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 			return;
 		}
 		
-		Multiverse mv = p.playerAspect.multiverse();
+		Multiverse mv = P.p.playerAspect.multiverse();
 		String universe = this.arg(2, mv.argReaderUniverse(), senderIsConsole ? MCore.DEFAULT : mv.getUniverse(me));
 		if (universe == null) return;
 		

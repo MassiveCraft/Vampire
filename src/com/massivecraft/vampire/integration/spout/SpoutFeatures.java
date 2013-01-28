@@ -16,7 +16,7 @@ public class SpoutFeatures extends IntegrationFeaturesAbstract
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	private SpoutFeatures() {}
-	private static SpoutFeatures instance = new SpoutFeatures();
-	public static SpoutFeatures get() { return instance; }
+	private SpoutFeatures() { super("Spout"); }
+	private static SpoutFeatures i = new SpoutFeatures();
+	public static SpoutFeatures get() { return i; }
 }

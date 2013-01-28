@@ -15,7 +15,7 @@ public class NoCheatPlusFeatures extends IntegrationFeaturesAbstract
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	private NoCheatPlusFeatures() {}
-	private static NoCheatPlusFeatures instance = new NoCheatPlusFeatures();
-	public static NoCheatPlusFeatures get() { return instance; }
+	private NoCheatPlusFeatures() { super("NoCheatPlus"); }
+	private static NoCheatPlusFeatures i = new NoCheatPlusFeatures();
+	public static NoCheatPlusFeatures get() { return i; }
 }

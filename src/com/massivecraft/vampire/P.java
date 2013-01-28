@@ -14,26 +14,33 @@ import com.massivecraft.vampire.integration.spout.SpoutFeatures;
 
 public class P extends MPlugin 
 {
-	// Our single plugin instance
-	public static P p;
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
-	// Command
-	public CmdBase cmdBase;
+	public static P p;
+	public static P get() { return p; }
+	public P() { P.p = this; }
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
 	// noCheatExemptedPlayerNames
 	// http://dev.bukkit.org/server-mods/nocheatplus/
 	// https://gist.github.com/2638309
 	public Set<String> noCheatExemptedPlayerNames = new HashSet<String>();
 	
-	// Aspects
+	// Commands
+	public CmdBase cmdBase;
 	
+	// Aspects
 	public Aspect playerAspect;
 	public Aspect configAspect;
 	
-	public P()
-	{
-		P.p = this;
-	}
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 
 	@Override
 	public void onEnable()
@@ -70,7 +77,7 @@ public class P extends MPlugin
 		
 		// Add Base Commands
 		this.cmdBase = new CmdBase();
-		this.cmdBase.register();
+		this.cmdBase.register(this);
 		
 		// Start timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TheTask(), 0, ConfServer.taskInterval);

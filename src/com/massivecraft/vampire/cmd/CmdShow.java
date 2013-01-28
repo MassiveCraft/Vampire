@@ -8,6 +8,7 @@ import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;
+import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPerm;
 import com.massivecraft.vampire.VPlayer;
 import com.massivecraft.vampire.VPlayerColl;
@@ -33,7 +34,7 @@ public class CmdShow extends VCommand
 			return;
 		}
 		
-		Multiverse mv = p.playerAspect.multiverse();
+		Multiverse mv = P.p.playerAspect.multiverse();
 		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MCore.DEFAULT : mv.getUniverse(me));
 		if (universe == null) return;
 		
