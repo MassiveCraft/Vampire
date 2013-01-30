@@ -23,7 +23,7 @@ public class CmdSetInfection extends CmdSetAbstract<Double>
 		Double res = MUtil.limitNumber(val, 0D, 100D);
 		if (vplayer.isVampire())
 		{
-			msg(Lang.xIsAlreadyVamp, vplayer.getId());
+			msg(Lang.xIsAlreadyVamp, vplayer.getDisplayName());
 			return null;
 		}
 		

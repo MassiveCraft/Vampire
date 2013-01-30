@@ -7,9 +7,9 @@ import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.Predictate;
 import com.massivecraft.mcore5.store.DbGson;
 import com.massivecraft.mcore5.store.MStore;
-import com.massivecraft.mcore5.store.PlayerColl;
+import com.massivecraft.mcore5.store.SenderColl;
 
-public class VPlayerColl extends PlayerColl<VPlayer>
+public class VPlayerColl extends SenderColl<VPlayer>
 {
 	// -------------------------------------------- //
 	// CONSTRUCT

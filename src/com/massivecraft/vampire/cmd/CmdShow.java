@@ -3,6 +3,7 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.cmd.arg.ARSenderEntity;
 import com.massivecraft.mcore5.cmd.arg.ArgReader;
 import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.mcore5.util.Txt;
@@ -39,7 +40,7 @@ public class CmdShow extends VCommand
 		if (universe == null) return;
 		
 		VPlayerColl playerColl = VPlayerColls.i.getForUniverse(universe);
-		ArgReader<VPlayer> playerReader = playerColl.argReaderPlayerStart();
+		ArgReader<VPlayer> playerReader = ARSenderEntity.getStartAny(playerColl);
 		VPlayer vplayer = this.arg(0, playerReader, vme);
 		if (vplayer == null) return;
 		
@@ -63,15 +64,15 @@ public class CmdShow extends VCommand
 		String are = "are";
 		if ( ! self)
 		{
-			You = vplayer.getId();
+			You = vplayer.getDisplayName();
 			//you = vplayer.getId();
 			are = "is";
 		}
 		
-		msg(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+vplayer.getId()));
+		msg(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+vplayer.getDisplayName()));
 		if (vplayer.isVampire())
 		{
-			msg("<i>"+You+" "+are+" a vampire.");
+			msg("<i>"+You+" <i>"+are+" a vampire.");
 			msg(vplayer.getReasonDesc(self));
 		}
 		else if (vplayer.isInfected())

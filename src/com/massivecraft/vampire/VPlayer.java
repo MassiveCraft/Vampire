@@ -24,7 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.cmd.MCommand;
-import com.massivecraft.mcore5.store.PlayerEntity;
+import com.massivecraft.mcore5.store.SenderEntity;
 import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.mcore5.util.PermUtil;
 import com.massivecraft.mcore5.util.PotionPaketUtil;
@@ -40,7 +40,7 @@ import com.massivecraft.vampire.util.SunUtil;
  * The VPlayer is a "skin" for a normal player.
  * Through this skin we can reach the player plus extra plugin specific data and functionality.
  */
-public class VPlayer extends PlayerEntity<VPlayer>
+public class VPlayer extends SenderEntity<VPlayer>
 {
 	// -------------------------------------------- //
 	// META
@@ -671,7 +671,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		// Standing close enough?
 		if ( ! this.withinDistanceOf(vyou, conf.tradeOfferMaxDistance))
 		{
-			this.msg(Lang.tradeNotClose, vyou.getId());
+			this.msg(Lang.tradeNotClose, vyou.getDisplayName());
 			return;
 		}
 		
@@ -734,7 +734,7 @@ public class VPlayer extends PlayerEntity<VPlayer>
 		
 		if ( ! this.withinDistanceOf(vyou, conf.tradeOfferMaxDistance))
 		{
-			this.msg(Lang.tradeNotClose, vyou.getId());
+			this.msg(Lang.tradeNotClose, vyou.getDisplayName());
 			return;
 		}
 		

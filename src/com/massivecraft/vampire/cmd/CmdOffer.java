@@ -3,7 +3,7 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore5.cmd.arg.ARDouble;
-import com.massivecraft.mcore5.cmd.arg.AROnlinePlayerMatch;
+import com.massivecraft.mcore5.cmd.arg.ARPlayer;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.cmd.req.ReqIsPlayer;
 import com.massivecraft.mcore5.util.MUtil;
@@ -25,7 +25,7 @@ public class CmdOffer extends VCommand
 	@Override
 	public void perform()
 	{
-		Player you = this.arg(0, AROnlinePlayerMatch.get());
+		Player you = this.arg(0, ARPlayer.getStart());
 		if (you == null) return;
 		VPlayer vyou = VPlayer.get(you);
 		

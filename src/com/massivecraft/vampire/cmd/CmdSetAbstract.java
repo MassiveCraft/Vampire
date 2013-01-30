@@ -3,6 +3,7 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.cmd.arg.ARSenderEntity;
 import com.massivecraft.mcore5.cmd.arg.ArgReader;
 import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.vampire.*;
@@ -33,7 +34,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 		if (universe == null) return;
 		
 		VPlayerColl playerColl = VPlayerColls.i.getForUniverse(universe);
-		ArgReader<VPlayer> playerReader = playerColl.argReaderPlayerStart();
+		ArgReader<VPlayer> playerReader = ARSenderEntity.getStartAny(playerColl);
 		VPlayer vplayer = this.arg(1, playerReader, vme);
 		if (vplayer == null) return;
 		
@@ -41,7 +42,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 		
 		if (targetMustBeOnline && player == null)
 		{
-			msg("<b>%s is not online.", vplayer.getId());
+			msg("<h>%s <b>is not online.", vplayer.getDisplayName());
 			return;
 		}
 		
@@ -52,7 +53,7 @@ public abstract class CmdSetAbstract<T> extends VCommand
 		
 		if (res == null) return;
 		
-		msg("<i>%s now has %s = %s.", vplayer.getId(), this.aliases.get(0), res.toString());
+		msg("<i>%s <i>now has %s = %s.", vplayer.getDisplayName(), this.aliases.get(0), res.toString());
 	}
 	
 	public abstract T set(VPlayer vplayer, Player player, T val);

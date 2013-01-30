@@ -9,7 +9,7 @@ public class Lang extends SimpleConfig
 {	
 	public static String consolePlayerArgRequired = "<b>You must specify player from console.";
 	
-	public static String xIsAlreadyVamp = "<b>%s is already a vampire.";
+	public static String xIsAlreadyVamp = "<b>%s <b>is already a vampire.";
 	public static String onlyVampsCanX = "<b>Only vampires can %s.";
 	
 	public static String xIsY = "<k>%s: <v>%s";

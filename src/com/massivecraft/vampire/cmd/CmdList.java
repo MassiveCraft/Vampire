@@ -46,22 +46,22 @@ public class CmdList extends VCommand
 			{
 				if (vplayer.isOnline())
 				{
-					vampiresOnline.add(ChatColor.WHITE.toString() + vplayer.getPlayer().getDisplayName());
+					vampiresOnline.add(ChatColor.WHITE.toString() + vplayer.getDisplayName());
 				}
 				else
 				{
-					vampiresOffline.add(ChatColor.WHITE.toString() + vplayer.getId());
+					vampiresOffline.add(ChatColor.WHITE.toString() + vplayer.getDisplayName());
 				}
 			}
 			else if (vplayer.isInfected())
 			{
 				if (vplayer.isOnline())
 				{
-					infectedOnline.add(ChatColor.WHITE.toString() + vplayer.getPlayer().getDisplayName());
+					infectedOnline.add(ChatColor.WHITE.toString() + vplayer.getDisplayName());
 				}
 				else
 				{
-					infectedOffline.add(ChatColor.WHITE.toString() + vplayer.getId());
+					infectedOffline.add(ChatColor.WHITE.toString() + vplayer.getDisplayName());
 				}
 			}
 		}

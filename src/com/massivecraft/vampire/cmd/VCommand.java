@@ -6,13 +6,10 @@ import com.massivecraft.vampire.VPlayer;
 public abstract class VCommand extends MCommand
 {
 	public VPlayer vme;
+	
 	@Override
 	public void fixSenderVars()
 	{
-		this.vme = null;
-		if (me != null)
-		{
-			this.vme = VPlayer.get(this.me);
-		}
+		this.vme = VPlayer.get(this.sender);
 	}
 }

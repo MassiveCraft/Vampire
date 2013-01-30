@@ -40,11 +40,11 @@ public enum InfectionReason
 	{
 		if (self)
 		{
-			return String.format(this.selfdesc, vplayer.getId(), vplayer.makerId);
+			return String.format(this.selfdesc, vplayer.getDisplayName(), vplayer.makerId);
 		}
 		else
 		{
-			return String.format(this.otherdesc, vplayer.getId(), vplayer.makerId);
+			return String.format(this.otherdesc, vplayer.getDisplayName(), vplayer.makerId);
 		}
 	}
 }
