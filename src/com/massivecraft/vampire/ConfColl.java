@@ -1,7 +1,7 @@
 package com.massivecraft.vampire;
 
-import com.massivecraft.mcore5.store.Coll;
-import com.massivecraft.mcore5.store.MStore;
+import com.massivecraft.mcore.store.Coll;
+import com.massivecraft.mcore.store.MStore;
 
 public class ConfColl extends Coll<Conf, String>
 {

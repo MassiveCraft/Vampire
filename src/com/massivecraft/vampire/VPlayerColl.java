@@ -3,11 +3,11 @@ package com.massivecraft.vampire;
 import java.io.File;
 import java.util.Collection;
 
-import com.massivecraft.mcore5.MCore;
-import com.massivecraft.mcore5.Predictate;
-import com.massivecraft.mcore5.store.DbGson;
-import com.massivecraft.mcore5.store.MStore;
-import com.massivecraft.mcore5.store.SenderColl;
+import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.Predictate;
+import com.massivecraft.mcore.store.DbGson;
+import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.mcore.store.SenderColl;
 
 public class VPlayerColl extends SenderColl<VPlayer>
 {

@@ -1,7 +1,7 @@
 package com.massivecraft.vampire;
 
-import com.massivecraft.mcore5.store.Colls;
-import com.massivecraft.mcore5.usys.Aspect;
+import com.massivecraft.mcore.store.Colls;
+import com.massivecraft.mcore.usys.Aspect;
 
 public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
 {

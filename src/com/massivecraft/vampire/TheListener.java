@@ -35,9 +35,9 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore5.MCore;
-import com.massivecraft.mcore5.util.MUtil;
-import com.massivecraft.mcore5.util.PlayerUtil;
+import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.vampire.util.FxUtil;
 
 public class TheListener implements Listener

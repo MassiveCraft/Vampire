@@ -2,9 +2,9 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore5.cmd.arg.ARDouble;
-import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore5.util.MUtil;
+import com.massivecraft.mcore.cmd.arg.ARDouble;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.vampire.*;
 
 public class CmdSetInfection extends CmdSetAbstract<Double>

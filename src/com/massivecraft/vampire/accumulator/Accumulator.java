@@ -3,7 +3,7 @@ package com.massivecraft.vampire.accumulator;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.massivecraft.mcore5.util.MUtil;
+import com.massivecraft.mcore.util.MUtil;
 
 public abstract class Accumulator
 {

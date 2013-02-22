@@ -9,7 +9,7 @@ import org.getspout.spoutapi.keyboard.BindingExecutionDelegate;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.massivecraft.mcore5.util.MUtil;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.vampire.P;
 import com.massivecraft.vampire.VPlayer;
 

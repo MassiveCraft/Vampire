@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore5.util.MUtil;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Lang;
 import com.massivecraft.vampire.VPerm;

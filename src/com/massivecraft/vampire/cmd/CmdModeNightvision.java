@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;
 
 public class CmdModeNightvision extends CmdModeAbstract

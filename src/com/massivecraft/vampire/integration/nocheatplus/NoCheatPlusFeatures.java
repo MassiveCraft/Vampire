@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.integration.nocheatplus;
 
-import com.massivecraft.mcore5.integration.IntegrationFeaturesAbstract;
+import com.massivecraft.mcore.integration.IntegrationFeaturesAbstract;
 import com.massivecraft.vampire.P;
 
 public class NoCheatPlusFeatures extends IntegrationFeaturesAbstract 

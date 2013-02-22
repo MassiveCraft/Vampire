@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.integration.spout;
 
-import com.massivecraft.mcore5.integration.IntegrationFeaturesAbstract;
+import com.massivecraft.mcore.integration.IntegrationFeaturesAbstract;
 
 public class SpoutFeatures extends IntegrationFeaturesAbstract 
 {
