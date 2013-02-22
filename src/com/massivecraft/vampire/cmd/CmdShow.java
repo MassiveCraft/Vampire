@@ -77,13 +77,13 @@ public class CmdShow extends VCommand
 		}
 		else if (vplayer.isInfected())
 		{
-			msg("<i>"+You+" "+are+" infected at <h>%d%%<i>.", percent(vplayer.getInfection()));
+			msg("<i>"+You+" <i>"+are+" infected at <h>%d%%<i>.", percent(vplayer.getInfection()));
 			msg(vplayer.getReasonDesc(self));
 			return;
 		}
 		else
 		{
-			msg("<i>"+You+" "+are+" neither vampire nor infected with the dark disease.");
+			msg("<i>"+You+" <i>"+are+" neither vampire nor infected with the dark disease.");
 			return;
 		}
 		

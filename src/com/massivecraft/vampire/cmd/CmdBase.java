@@ -21,7 +21,7 @@ public class CmdBase extends VCommand
 		super();
 		this.addAliases(ConfServer.baseCommandAliases);
 		
-		this.addSubCommand(HelpCommand.getInstance());
+		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(cmdShow);
 		this.addSubCommand(cmdModeBloodlust);
 		this.addSubCommand(cmdModeIntend);
