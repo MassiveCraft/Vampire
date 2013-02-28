@@ -1,12 +1,10 @@
 package com.massivecraft.vampire;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -27,7 +25,6 @@ import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.PermUtil;
-import com.massivecraft.mcore.util.PotionPaketUtil;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
 import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
@@ -73,7 +70,8 @@ public class VPlayer extends SenderEntity<VPlayer>
 	// -------------------------------------------- //
 	
 	// Is the player a vampire?
-	@Getter protected boolean vampire = false;
+	protected boolean vampire = false;
+	public boolean isVampire() { return this.vampire; }
 	public boolean isHuman() { return ! this.isVampire(); } // Shortcut
 	public void setVampire(boolean val)
 	{
@@ -108,7 +106,8 @@ public class VPlayer extends SenderEntity<VPlayer>
 	}
 	
 	// 0 means no infection. If infection reaches 1 the player will turn to vampire.
-	@Getter protected double infection = 0; 
+	protected double infection = 0;
+	public double getInfection() { return this.infection; }
 	public boolean isInfected() { return this.infection > 0D; }
 	public void setInfection(double val)
 	{
@@ -156,17 +155,21 @@ public class VPlayer extends SenderEntity<VPlayer>
 	public boolean isUnhealthy() { return ! this.isHealthy(); }
 	
 	// How come this player is infected?
-	@Setter protected InfectionReason reason;
+	protected InfectionReason reason;
 	public InfectionReason getReason() { return reason == null ? InfectionReason.UNKNOWN : reason; }
+	public void setReason(InfectionReason reason) {this.reason = reason; }
 	public String getReasonDesc(boolean self) { return this.getReason().getDesc(this, self); }
 	
 	// Who made this vampire?
-	@Getter @Setter protected String makerId;
+	protected String makerId;
+	public String getMakerId() { return this.makerId; }
+	public void setMakerId(String makerId) { this.makerId = makerId; }
 	public VPlayer getMaker() { return this.getColl().get(this.makerId); }
 	public void setMaker(VPlayer val) { this.setMakerId(val == null ? null : val.getId()); }
 	
 	// FIELD: intending - Vampires may choose their combat style. Do they intend to infect others in combat or do they not?
-	@Getter protected boolean intending = false;
+	protected boolean intending = false;
+	public boolean isIntending() { return this.intending; }
 	public void setIntending(boolean val)
 	{
 		this.intending = val;
@@ -175,7 +178,8 @@ public class VPlayer extends SenderEntity<VPlayer>
 	public String intendMsg() { return Lang.boolIsY("Infect intent", this.isIntending())+ " " + Lang.quotaIsPercent("Combat infect risk", this.combatInfectRisk()); }
 	
 	// FIELD: bloodlust - Is bloodlust activated?
-	@Getter protected boolean bloodlusting = false;
+	protected boolean bloodlusting = false;
+	public boolean isBloodlusting() { return this.bloodlusting; }
 	public void setBloodlusting(boolean val)
 	{
 		if (this.bloodlusting == val)
@@ -214,7 +218,8 @@ public class VPlayer extends SenderEntity<VPlayer>
 	public String bloodlustMsg() { return Lang.boolIsY("Bloodlust", this.isBloodlusting()) + " " + Lang.quotaIsPercent("combat damage", this.combatDamageFactor()); }
 	
 	// FIELD: usingNightVision - Vampires can use nightvision anytime they want.
-	@Getter protected boolean usingNightVision = false;
+	protected boolean usingNightVision = false;
+	public boolean isUsingNightVision() { return this.usingNightVision; }
 	public void setUsingNightVision(boolean val)
 	{
 		this.usingNightVision = val;
@@ -227,27 +232,38 @@ public class VPlayer extends SenderEntity<VPlayer>
 	// -------------------------------------------- //
 	
 	// FIELD: rad - The irradiation for the player.
-	@Getter @Setter protected transient double rad = 0;
+	protected transient double rad = 0;
+	public double getRad() { return this.rad; }
+	public void setRad(double rad) { this.rad = rad; }
 	
 	// FIELD: temp - The temperature of the player. a double between 0 and 1.
-	@Getter protected transient double temp = 0;
+	protected transient double temp = 0;
+	public double getTemp() { return this.temp; }
 	public void setTemp(double val) { this.temp = MUtil.limitNumber(val, 0D, 1D); }
 	public void addTemp(double val) { this.setTemp(this.getTemp()+val); }
 	
 	// FIELD: food - the food accumulator
-	@Getter protected transient VPlayerFoodAccumulator food = new VPlayerFoodAccumulator(this);
+	protected transient VPlayerFoodAccumulator food = new VPlayerFoodAccumulator(this);
+	public VPlayerFoodAccumulator getFood() { return this.food; }
 	
 	// FIELD: health - the health accumulator
-	@Getter protected transient VPlayerHealthAccumulator health = new VPlayerHealthAccumulator(this);
+	protected transient VPlayerHealthAccumulator health = new VPlayerHealthAccumulator(this);
+	public VPlayerHealthAccumulator getHealth() { return this.health; }
 	
 	// FIELD: lastDamageMillis - for the regen
-	@Getter @Setter protected transient long lastDamageMillis = 0;
+	protected transient long lastDamageMillis = 0;
+	public long getLastDamageMillis() { return this.lastDamageMillis; }
+	public void setLastDamageMillis(long lastDamageMillis) { this.lastDamageMillis = lastDamageMillis; }
 	
 	// FIELD: lastShriekMillis - for the shriek ability
-	@Getter @Setter protected transient long lastShriekMillis = 0;
+	protected transient long lastShriekMillis = 0;
+	public long getLastShriekMillis() { return this.lastShriekMillis; }
+	public void setLastShriekMillis(long lastShriekMillis) { this.lastShriekMillis = lastShriekMillis; }
 	
 	// FIELD: lastShriekMessageMillis - Anti pwnage
-	@Getter @Setter protected transient long lastShriekWaitMessageMillis = 0;
+	protected transient long lastShriekWaitMessageMillis = 0;
+	public long getLastShriekWaitMessageMillis() { return this.lastShriekWaitMessageMillis; }
+	public void setLastShriekWaitMessageMillis(long lastShriekWaitMessageMillis) { this.lastShriekWaitMessageMillis = lastShriekWaitMessageMillis; }
 	
 	// FIELD: truceBreakTicksLeft - How many milliseconds more will the monsters be hostile?
 	protected transient long truceBreakTicksLeft = 0;
@@ -265,11 +281,15 @@ public class VPlayer extends SenderEntity<VPlayer>
 	// -------------------------------------------- //
 	
 	// FX: Smoke
-	@Getter @Setter protected transient int fxSmokeTicks = 0;
+	protected transient int fxSmokeTicks = 0;
+	public int getFxSmokeTicks() { return this.fxSmokeTicks; }
+	public void setFxSmokeTicks(int fxSmokeTicks) { this.fxSmokeTicks = fxSmokeTicks; }
 	public void runFxSmoke() { this.fxSmokeTicks = 20 * 20; }
 	
 	// FX: Ender
-	@Getter @Setter protected transient int fxEnderTicks = 0;
+	protected transient int fxEnderTicks = 0;
+	public int getFxEnderTicks() { return this.fxEnderTicks; }
+	public void getFxEnderTicks(int fxEnderTicks) { this.fxEnderTicks = fxEnderTicks; }
 	public void runFxEnder() { this.fxEnderTicks = 10 * 20; }
 	
 	// FX: Shriek
@@ -361,7 +381,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 	public void update()
 	{
 		this.updatePermissions();
-		this.updateMovement();
+		this.updatePotionEffects();
 	}
 	
 	public String getPermissionName()
@@ -420,75 +440,74 @@ public class VPlayer extends SenderEntity<VPlayer>
 		PermUtil.ensureHas(player, permission);
 	}
 	
-	public void updateMovement()
+	public void updatePotionEffects()
 	{
+		final int minduration = 200;
+		final int setduration = 400;
+		
 		// Find the player and their conf
 		Player player = this.getPlayer();
 		if (player == null) return;
+		if (player.isDead()) return;
 		Conf conf = Conf.get(player);
 		
 		// What effects should be applied?
-		Map<Integer, Integer> potionEffectStrengths = null;
-		if (this.isVampire() && this.isBloodlusting())
+		Map<Integer, Integer> effectToStrength = new HashMap<Integer, Integer>();
+		
+		if (this.isHuman())
 		{
-			potionEffectStrengths = conf.potionEffectStrengthBloodlust;
+			effectToStrength.putAll(conf.humanEffectConf.effectToStrength);
 		}
-		else if (this.isVampire())
+		if (this.isInfected())
 		{
-			potionEffectStrengths = conf.potionEffectStrengthVamp;
+			effectToStrength.putAll(conf.infectedEffectConf.effectToStrength);
 		}
-		else
+		if (this.isVampire())
 		{
-			potionEffectStrengths = conf.potionEffectStrengthHuman;
+			effectToStrength.putAll(conf.vampireEffectConf.effectToStrength);
+		}
+		if (this.isUsingNightVision() && this.isVampire() && conf.nightvisionCanBeUsed)
+		{
+			effectToStrength.putAll(conf.nightvisionEffectConf.effectToStrength);
+		}
+		if (this.isBloodlusting())
+		{
+			effectToStrength.putAll(conf.bloodlustEffectConf.effectToStrength);
 		}
 		
-		// Was something enabled?
-		boolean somethingEnabled = false;
-		for (Entry<Integer, Integer> entry : potionEffectStrengths.entrySet())
+		for (PotionEffect activePotionEffect : player.getActivePotionEffects())
 		{
-			Integer val = entry.getValue();
-			if (val != null && val > 0)
-			{
-				somethingEnabled = true;
-				break;
-			}
+			if (activePotionEffect.getDuration() >= minduration) continue;
+			effectToStrength.remove(activePotionEffect.getType().getId());
 		}
 		
-		if (somethingEnabled)
-		{
-			P.p.noCheatExemptedPlayerNames.add(player.getName());
-		}
-		else
-		{
-			P.p.noCheatExemptedPlayerNames.remove(player.getName());
-		}
-		
-		for (Entry<Integer, Integer> entry : potionEffectStrengths.entrySet())
+		for (Entry<Integer, Integer> entry : effectToStrength.entrySet())
 		{
 			PotionEffectType pet = PotionEffectType.getById(entry.getKey());
 			Integer strength = entry.getValue();
 			
-			// Clear the effect always in order to allow a different strength.
-			player.removePotionEffect(pet);
-			
-			// Is it a reset?
-			if (strength == null || strength < 1) continue;
-			
-			// Was not a reset so add this in.
-			PotionPaketUtil.add(player, pet, strength, 100000);
+			if (strength == null || strength < 1)
+			{
+				player.removePotionEffect(pet);
+			}
+			else
+			{
+				player.addPotionEffect(new PotionEffect(pet, setduration, strength), true);
+			}
 		}
 	}
 	
 	// -------------------------------------------- //
 	// TICK
 	// -------------------------------------------- //
+	
 	public void tick(long ticks)
 	{
 		this.tickRadTemp(ticks);
 		this.tickInfection(ticks);
 		this.tickRegen(ticks);
 		this.tickBloodlust(ticks);
-		this.tickNightvision(ticks);
+		this.tickPotionEffects(ticks);
 		this.tickEffects(ticks);
 		this.tickTruce(ticks);
 	}
@@ -581,24 +600,10 @@ public class VPlayer extends SenderEntity<VPlayer>
 		if (this.getFood().get() < conf.bloodlustMinFood) this.setBloodlusting(false);
 	}
 	
-	public void tickNightvision(long ticks)
+	public void tickPotionEffects(long ticks)
 	{
-		if ( ! this.isVampire()) return;
-		
-		Player me = this.getPlayer();
-		if (me == null) return;
-		Conf conf = Conf.get(me);
-		if (!conf.nightvisionCanBeUsed) return;
-		if (me.isDead()) return;
-		
-		if (this.isUsingNightVision())
-		{
-			PotionPaketUtil.add(me, new PotionEffect(PotionEffectType.NIGHT_VISION, conf.nightvisionPulseTicks, 1));
-		}
-		else
-		{
-			PotionPaketUtil.remove(me, PotionEffectType.NIGHT_VISION);
-		}
+		// TODO: Will update to often!?
+		this.updatePotionEffects();
 	}
 	
 	public void tickEffects(long ticks)
@@ -653,6 +658,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 	// -------------------------------------------- //
 	// TRADE
 	// -------------------------------------------- //
+	
 	public void tradeAccept()
 	{
 		Player me = this.getPlayer();

@@ -1,8 +1,5 @@
 package com.massivecraft.vampire.accumulator;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.massivecraft.mcore.util.MUtil;
 
 public abstract class Accumulator
@@ -10,9 +7,13 @@ public abstract class Accumulator
 	protected abstract int real();
 	protected abstract void real(int val);
 	
-	@Getter @Setter protected Integer min = null;
+	protected Integer min = null;
+	public Integer getMin() { return this.min; }
+	public void setMin(Integer min) { this.min = min; }
 	
-	@Getter @Setter protected Integer max = null;
+	protected Integer max = null;
+	public Integer getMax() { return this.max; }
+	public void setMax(Integer max) { this.max = max; }
 	
 	protected double diff = 0;
 	protected void update()

@@ -1,5 +1,6 @@
 package com.massivecraft.vampire;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
@@ -100,27 +102,34 @@ public class Conf extends Entity<Conf, String>
 	public double bloodlustFoodPerTick = -0.015D;
 	public double bloodlustSmokes = 1.5D;
 	
-	public Map<Integer, Integer> potionEffectStrengthBloodlust = MUtil.map(
-		8, 4,
-		1, 4
-	);
-	
-	public Map<Integer, Integer> potionEffectStrengthVamp = MUtil.map(
-		8, 1,
-		1, 0
-	);
-	
-	public Map<Integer, Integer> potionEffectStrengthHuman = MUtil.map(
-		8, 0,
-		1, 0
-	);
-	
 	// -------------------------------------------- //
 	// NIGHTVISION
 	// -------------------------------------------- //
 	
 	public boolean nightvisionCanBeUsed = true;
-	public int nightvisionPulseTicks = 420;
+	
+	// -------------------------------------------- //
+	// POTION EFFECTS
+	// -------------------------------------------- //
+	
+	
+	public PotionEffectConf bloodlustEffectConf = new PotionEffectConf(EventPriority.HIGHEST, true, 0x1f1f23, MUtil.map(
+		8, 4,
+		1, 4
+	));
+
+	public PotionEffectConf nightvisionEffectConf = new PotionEffectConf(EventPriority.HIGH, true, 0, MUtil.map(
+		16, 1
+	));
+
+	public PotionEffectConf vampireEffectConf = new PotionEffectConf(EventPriority.NORMAL, true, 0, MUtil.map(
+		8, 1
+	));
+	
+	public PotionEffectConf infectedEffectConf = new PotionEffectConf(EventPriority.NORMAL, true, 0x587653, new HashMap<Integer, Integer>());
+	
+	public PotionEffectConf humanEffectConf = new PotionEffectConf(EventPriority.NORMAL, false, 0, new HashMap<Integer, Integer>());
+
 	
 	// -------------------------------------------- //
 	// REGEN

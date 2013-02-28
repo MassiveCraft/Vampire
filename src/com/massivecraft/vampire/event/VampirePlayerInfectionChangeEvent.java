@@ -1,8 +1,5 @@
 package com.massivecraft.vampire.event;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.bukkit.event.HandlerList;
 
 import com.massivecraft.vampire.VPlayer;
@@ -21,8 +18,12 @@ public class VampirePlayerInfectionChangeEvent extends CancellableVampireEvent
 	// FIELD
 	// -------------------------------------------- //
 	
-	@Getter @Setter protected double infection;
-	@Getter protected final VPlayer vplayer;
+	protected double infection;
+	public double getInfection() { return this.infection; }
+	public void setInfection(double infection) { this.infection = infection; }
+	
+	protected final VPlayer vplayer;
+	public VPlayer getVPlayer() { return this.vplayer; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

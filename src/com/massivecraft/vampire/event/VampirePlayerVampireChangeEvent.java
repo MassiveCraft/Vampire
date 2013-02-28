@@ -1,7 +1,5 @@
 package com.massivecraft.vampire.event;
 
-import lombok.Getter;
-
 import org.bukkit.event.HandlerList;
 
 import com.massivecraft.vampire.VPlayer;
@@ -20,8 +18,11 @@ public class VampirePlayerVampireChangeEvent extends CancellableVampireEvent
 	// FIELD
 	// -------------------------------------------- //
 	
-	@Getter protected final boolean vampire;
-	@Getter protected final VPlayer vplayer;
+	protected final boolean vampire;
+	public boolean isVampire() { return this.vampire; }
+	
+	protected final VPlayer vplayer;
+	public VPlayer getVPlayer() { return this.vplayer; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

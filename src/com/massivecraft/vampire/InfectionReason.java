@@ -1,7 +1,5 @@
 package com.massivecraft.vampire;
 
-import lombok.Getter;
-
 public enum InfectionReason
 {
 	ALTAR(true, false, "altar", "<i>You infected yourself using an <h>altar<i>.", "<i>%1$s was infected using an <h>altar<i>."),
@@ -13,19 +11,24 @@ public enum InfectionReason
 	;
 	
 	// Would the victim notice this way of infection?
-	@Getter private final boolean noticeable;
+	private final boolean noticeable;
+	public boolean isNoticeable() { return this.noticeable; }
 		
 	// Was another player the reason?
-	@Getter private final boolean maker;
+	private final boolean maker;
+	public boolean isMaker() { return this.maker; }
 	
 	// Short name for the reason.
-	@Getter private final String shortname;
+	private final String shortname;
+	public String getShortname() { return this.shortname; }
 	
 	// Desc when showing yourself.
-	@Getter private final String selfdesc;
+	private final String selfdesc;
+	public String getSelfdesc() { return this.selfdesc; }
 	
 	// Desc when showing other player.
-	@Getter private final String otherdesc;
+	private final String otherdesc;
+	public String getOtherdesc() { return this.otherdesc; }
 	
 	private InfectionReason(final boolean notice, final boolean player, final String shortname, final String selfdesc, final String otherdesc)
 	{

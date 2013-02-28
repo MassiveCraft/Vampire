@@ -1,15 +1,11 @@
 package com.massivecraft.vampire;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Bukkit;
 
 import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.usys.AspectColl;
 import com.massivecraft.vampire.cmd.CmdBase;
-import com.massivecraft.vampire.integration.nocheatplus.NoCheatPlusFeatures;
 import com.massivecraft.vampire.integration.spout.SpoutFeatures;
 
 public class P extends MPlugin 
@@ -25,11 +21,6 @@ public class P extends MPlugin
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
-	// noCheatExemptedPlayerNames
-	// http://dev.bukkit.org/server-mods/nocheatplus/
-	// https://gist.github.com/2638309
-	public Set<String> noCheatExemptedPlayerNames = new HashSet<String>();
 	
 	// Commands
 	public CmdBase cmdBase;
@@ -86,7 +77,7 @@ public class P extends MPlugin
 		new TheListener(this);
 		
 		// Integration
-		this.integrate(SpoutFeatures.get(), NoCheatPlusFeatures.get());
+		this.integrate(SpoutFeatures.get());
 		
 		postEnable();
 	}
