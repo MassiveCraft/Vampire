@@ -1,10 +1,8 @@
 package com.massivecraft.vampire;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -17,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.mcore.MCore;
@@ -75,7 +72,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 	public boolean isHuman() { return ! this.isVampire(); } // Shortcut
 	public void setVampire(boolean val)
 	{
-		this.infection = 0;
+		this.setInfection(0);
 		
 		if (this.vampire == val) return;
 		
@@ -91,6 +88,13 @@ public class VPlayer extends SenderEntity<VPlayer>
 			this.runFxShriek();
 			this.runFxSmokeBurst();
 			this.runFxSmoke();
+			
+			Player player = this.getPlayer();
+			if (player != null)
+			{
+				Conf conf = Conf.get(player);
+				conf.effectConfHuman.removePotionEffects(player);
+			}
 		}
 		else
 		{
@@ -100,6 +104,14 @@ public class VPlayer extends SenderEntity<VPlayer>
 			this.setReason(null);
 			this.setBloodlusting(false);
 			this.setIntending(false);
+			this.setUsingNightVision(false);
+			
+			Player player = this.getPlayer();
+			if (player != null)
+			{
+				Conf conf = Conf.get(player);
+				conf.effectConfVampire.removePotionEffects(player);
+			}
 		}
 		
 		this.update();
@@ -125,16 +137,25 @@ public class VPlayer extends SenderEntity<VPlayer>
 		}
 		else if (val <= 0D)
 		{
-			if (this.infection > 0D)
+			if (this.infection > 0D && ! this.isVampire())
 			{
 				this.msg(Lang.infectionCured);
 			}
 			this.infection = 0D;
+			
+			Player player = this.getPlayer();
+			if (player != null)
+			{
+				Conf conf = Conf.get(player);
+				conf.effectConfInfected.removePotionEffects(player);
+			}
 		}
 		else
 		{
 			this.infection = val;
 		}
+		
+		this.updatePotionEffects();
 	}
 	public void addInfection(double val)
 	{
@@ -189,28 +210,37 @@ public class VPlayer extends SenderEntity<VPlayer>
 			return;
 		}
 		
-		Player player = this.getPlayer();
-		if (val && player != null)
+		Player me = this.getPlayer();
+		if (me != null)
 		{
-			// There are a few rules to when you can turn it on:
-			if ( ! this.isVampire())
+			if (val)
 			{
-				msg(Lang.onlyVampsCanX, "use bloodlust");
-				return;
+				// There are a few rules to when you can turn it on:
+				if ( ! this.isVampire())
+				{
+					msg(Lang.onlyVampsCanX, "use bloodlust");
+					return;
+				}
+				
+				if (this.getFood().get() < Conf.get(me).bloodlustMinFood)
+				{
+					msg("<b>Your food is too low for bloodlust.");
+					return;
+				}
+				
+				if (this.isGameMode(GameMode.CREATIVE, true))
+				{
+					msg("<b>You can't use bloodlust while in Creative Mode."); // or offline :P but offline players wont see the message
+					return;
+				}
 			}
-			
-			if (this.getFood().get() < Conf.get(player).bloodlustMinFood)
+			else
 			{
-				msg("<b>Your food is too low for bloodlust.");
-				return;
-			}
-			
-			if (this.isGameMode(GameMode.CREATIVE, true))
-			{
-				msg("<b>You can't use bloodlust while in Creative Mode."); // or offline :P but offline players wont see the message
-				return;
+				Conf conf = Conf.get(me);
+				conf.effectConfBloodlust.removePotionEffects(me);
 			}
 		}
+		
 		this.bloodlusting = val;
 		this.msg(this.bloodlustMsg());
 		this.update();
@@ -222,7 +252,26 @@ public class VPlayer extends SenderEntity<VPlayer>
 	public boolean isUsingNightVision() { return this.usingNightVision; }
 	public void setUsingNightVision(boolean val)
 	{
+		// If an actual change is being made ...
+		if (this.usingNightVision == val) return;
+		
+		// ... do change stuff ...
 		this.usingNightVision = val;
+		
+		// ... mstore mark (not required but is good practice) ...
+		this.changed();
+		
+		// ... remove the nightvision potion effects ...
+		Player me = this.getPlayer();
+		if (me != null)
+		{
+			Conf conf = Conf.get(me);
+			conf.effectConfNightvision.removePotionEffects(me);
+		}
+		
+		// ... trigger a potion effect update ...
+		this.updatePotionEffects();
+		
 		this.msg(this.usingNightVisionMsg());
 	}
 	public String usingNightVisionMsg() { return Lang.boolIsY("Nightvision", this.isUsingNightVision()); }
@@ -442,8 +491,8 @@ public class VPlayer extends SenderEntity<VPlayer>
 	
 	public void updatePotionEffects()
 	{
-		final int minduration = 200;
-		final int setduration = 400;
+		final int okDuration = 300;
+		final int targetDuration = okDuration*2;
 		
 		// Find the player and their conf
 		Player player = this.getPlayer();
@@ -451,49 +500,35 @@ public class VPlayer extends SenderEntity<VPlayer>
 		if (player.isDead()) return;
 		Conf conf = Conf.get(player);
 		
-		// What effects should be applied?
-		Map<Integer, Integer> effectToStrength = new HashMap<Integer, Integer>();
-		
+		// Add effects based their		
 		if (this.isHuman())
 		{
-			effectToStrength.putAll(conf.humanEffectConf.effectToStrength);
+			System.out.println("adding human to "+player.getName());
+			conf.effectConfHuman.addPotionEffects(player, targetDuration, okDuration);
 		}
+		
 		if (this.isInfected())
 		{
-			effectToStrength.putAll(conf.infectedEffectConf.effectToStrength);
+			System.out.println("adding infected to "+player.getName());
+			conf.effectConfInfected.addPotionEffects(player, targetDuration, okDuration);
 		}
+		
 		if (this.isVampire())
 		{
-			effectToStrength.putAll(conf.vampireEffectConf.effectToStrength);
-		}
-		if (this.isUsingNightVision() && this.isVampire() && conf.nightvisionCanBeUsed)
-		{
-			effectToStrength.putAll(conf.nightvisionEffectConf.effectToStrength);
-		}
-		if (this.isBloodlusting())
-		{
-			effectToStrength.putAll(conf.bloodlustEffectConf.effectToStrength);
+			System.out.println("adding vampire to "+player.getName());
+			conf.effectConfVampire.addPotionEffects(player, targetDuration, okDuration);
 		}
 		
-		for (PotionEffect activePotionEffect : player.getActivePotionEffects())
+		if (this.isVampire() && conf.nightvisionCanBeUsed && this.isUsingNightVision())
 		{
-			if (activePotionEffect.getDuration() >= minduration) continue;
-			effectToStrength.remove(activePotionEffect.getType().getId());
+			System.out.println("adding nightvision to "+player.getName());
+			conf.effectConfNightvision.addPotionEffects(player, targetDuration, okDuration);
 		}
 		
-		for (Entry<Integer, Integer> entry : effectToStrength.entrySet())
+		if (this.isVampire() && this.isBloodlusting())
 		{
-			PotionEffectType pet = PotionEffectType.getById(entry.getKey());
-			Integer strength = entry.getValue();
-			
-			if (strength == null || strength < 1)
-			{
-				player.removePotionEffect(pet);
-			}
-			else
-			{
-				player.addPotionEffect(new PotionEffect(pet, setduration, strength), true);
-			}
+			System.out.println("adding bloodlust to "+player.getName());
+			conf.effectConfBloodlust.addPotionEffects(player, targetDuration, okDuration);
 		}
 	}
 	

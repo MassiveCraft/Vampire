@@ -113,22 +113,22 @@ public class Conf extends Entity<Conf, String>
 	// -------------------------------------------- //
 	
 	
-	public PotionEffectConf bloodlustEffectConf = new PotionEffectConf(EventPriority.HIGHEST, true, 0x1f1f23, MUtil.map(
+	public PotionEffectConf effectConfBloodlust = new PotionEffectConf(EventPriority.HIGHEST, true, 0x1f1f23, MUtil.map(
 		8, 4,
 		1, 4
 	));
 
-	public PotionEffectConf nightvisionEffectConf = new PotionEffectConf(EventPriority.HIGH, true, 0, MUtil.map(
+	public PotionEffectConf effectConfNightvision = new PotionEffectConf(EventPriority.HIGH, true, 0, MUtil.map(
 		16, 1
 	));
 
-	public PotionEffectConf vampireEffectConf = new PotionEffectConf(EventPriority.NORMAL, true, 0, MUtil.map(
+	public PotionEffectConf effectConfVampire = new PotionEffectConf(EventPriority.NORMAL, true, 0, MUtil.map(
 		8, 1
 	));
 	
-	public PotionEffectConf infectedEffectConf = new PotionEffectConf(EventPriority.NORMAL, true, 0x587653, new HashMap<Integer, Integer>());
+	public PotionEffectConf effectConfInfected = new PotionEffectConf(EventPriority.NORMAL, true, 0x587653, new HashMap<Integer, Integer>());
 	
-	public PotionEffectConf humanEffectConf = new PotionEffectConf(EventPriority.NORMAL, false, 0, new HashMap<Integer, Integer>());
+	public PotionEffectConf effectConfHuman = new PotionEffectConf(EventPriority.NORMAL, false, 0, new HashMap<Integer, Integer>());
 
 	
 	// -------------------------------------------- //

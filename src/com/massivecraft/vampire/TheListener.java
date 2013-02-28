@@ -69,23 +69,27 @@ public class TheListener implements Listener
 		
 		if (vplayer.isHuman())
 		{
-			conf.humanEffectConf.applyFor(event, eventPriority);
+			conf.effectConfHuman.applyFor(event, eventPriority);
 		}
+		
 		if (vplayer.isInfected())
 		{
-			conf.infectedEffectConf.applyFor(event, eventPriority);
+			conf.effectConfInfected.applyFor(event, eventPriority);
 		}
+		
 		if (vplayer.isVampire())
 		{
-			conf.vampireEffectConf.applyFor(event, eventPriority);
+			conf.effectConfVampire.applyFor(event, eventPriority);
 		}
-		if (vplayer.isUsingNightVision() && vplayer.isVampire() && conf.nightvisionCanBeUsed)
+		
+		if (vplayer.isVampire() && conf.nightvisionCanBeUsed && vplayer.isUsingNightVision())
 		{
-			conf.nightvisionEffectConf.applyFor(event, eventPriority);
+			conf.effectConfNightvision.applyFor(event, eventPriority);
 		}
-		if (vplayer.isBloodlusting())
+		
+		if (vplayer.isVampire() && vplayer.isBloodlusting())
 		{
-			conf.bloodlustEffectConf.applyFor(event, eventPriority);
+			conf.effectConfBloodlust.applyFor(event, eventPriority);
 		}
 	}
 	

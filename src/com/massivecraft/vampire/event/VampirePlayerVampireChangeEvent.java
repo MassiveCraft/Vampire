@@ -22,7 +22,7 @@ public class VampirePlayerVampireChangeEvent extends CancellableVampireEvent
 	public boolean isVampire() { return this.vampire; }
 	
 	protected final VPlayer vplayer;
-	public VPlayer getVPlayer() { return this.vplayer; }
+	public VPlayer getVplayer() { return this.vplayer; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

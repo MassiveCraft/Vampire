@@ -23,7 +23,7 @@ public class VampirePlayerInfectionChangeEvent extends CancellableVampireEvent
 	public void setInfection(double infection) { this.infection = infection; }
 	
 	protected final VPlayer vplayer;
-	public VPlayer getVPlayer() { return this.vplayer; }
+	public VPlayer getVplayer() { return this.vplayer; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
