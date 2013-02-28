@@ -503,31 +503,26 @@ public class VPlayer extends SenderEntity<VPlayer>
 		// Add effects based their		
 		if (this.isHuman())
 		{
-			System.out.println("adding human to "+player.getName());
 			conf.effectConfHuman.addPotionEffects(player, targetDuration, okDuration);
 		}
 		
 		if (this.isInfected())
 		{
-			System.out.println("adding infected to "+player.getName());
 			conf.effectConfInfected.addPotionEffects(player, targetDuration, okDuration);
 		}
 		
 		if (this.isVampire())
 		{
-			System.out.println("adding vampire to "+player.getName());
 			conf.effectConfVampire.addPotionEffects(player, targetDuration, okDuration);
 		}
 		
 		if (this.isVampire() && conf.nightvisionCanBeUsed && this.isUsingNightVision())
 		{
-			System.out.println("adding nightvision to "+player.getName());
 			conf.effectConfNightvision.addPotionEffects(player, targetDuration, okDuration);
 		}
 		
 		if (this.isVampire() && this.isBloodlusting())
 		{
-			System.out.println("adding bloodlust to "+player.getName());
 			conf.effectConfBloodlust.addPotionEffects(player, targetDuration, okDuration);
 		}
 	}

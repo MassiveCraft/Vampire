@@ -80,8 +80,6 @@ public class PotionEffectConf
 			effectIdToStrength.remove(id);
 		}
 		
-		System.out.println("adding "+effectIdToStrength.size()+" effect.");
-		
 		for (Entry<Integer, Integer> entry : effectIdToStrength.entrySet())
 		{
 			PotionEffectType pet = PotionEffectType.getById(entry.getKey());
@@ -111,8 +109,6 @@ public class PotionEffectConf
 			if (activeIds.contains(id)) continue;
 			iter.remove();
 		}
-				
-		System.out.println("removing "+ids.size()+" effect.");
 		
 		// Perform the remove
 		for (Integer id : ids)
