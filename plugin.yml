@@ -1,5 +1,5 @@
 name: vampire
-version: 5.2
+version: 5.2.0
 main: com.massivecraft.vampire.P
 depend: [mcore]
 permissions:
