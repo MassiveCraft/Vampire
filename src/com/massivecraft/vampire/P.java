@@ -39,7 +39,7 @@ public class P extends MPlugin
 		if ( ! preEnable()) return;
 		
 		// Init aspects
-		this.playerAspect = AspectColl.i.get(Const.playerAspectId, true);
+		this.playerAspect = AspectColl.get().get(Const.playerAspectId, true);
 		this.playerAspect.register();
 		this.playerAspect.setDesc(
 			"<i>Everything player related:", 
@@ -48,7 +48,7 @@ public class P extends MPlugin
 			"<i>Check <h>"+Const.configAspectId+" <i>for rules and balancing."
 		);
 		
-		this.configAspect = AspectColl.i.get(Const.configAspectId, true);
+		this.configAspect = AspectColl.get().get(Const.configAspectId, true);
 		this.configAspect.register();
 		this.configAspect.setDesc(
 			"<i>Config options for balancing:", 
@@ -68,7 +68,7 @@ public class P extends MPlugin
 		
 		// Add Base Commands
 		this.cmdBase = new CmdBase();
-		this.cmdBase.register(this);
+		this.cmdBase.register(this, true);
 		
 		// Start timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TheTask(), 0, ConfServer.taskInterval);

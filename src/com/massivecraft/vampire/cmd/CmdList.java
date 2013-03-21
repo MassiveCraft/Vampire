@@ -31,7 +31,7 @@ public class CmdList extends VCommand
 		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
 		
-		Multiverse mv = P.p.playerAspect.multiverse();
+		Multiverse mv = P.p.playerAspect.getMultiverse();
 		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MCore.DEFAULT : mv.getUniverse(me));
 		if (universe == null) return;
 		

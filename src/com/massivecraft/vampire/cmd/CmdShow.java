@@ -35,7 +35,7 @@ public class CmdShow extends VCommand
 			return;
 		}
 		
-		Multiverse mv = P.p.playerAspect.multiverse();
+		Multiverse mv = P.p.playerAspect.getMultiverse();
 		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MCore.DEFAULT : mv.getUniverse(me));
 		if (universe == null) return;
 		
