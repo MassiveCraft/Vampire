@@ -10,7 +10,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.ThrownPotionUtil;
 
 public class HolyWaterUtil
 {
@@ -34,7 +33,7 @@ public class HolyWaterUtil
 	
 	public static boolean isHolyWater(ThrownPotion thrownPotion)
 	{
-		return isHolyWater(ThrownPotionUtil.getPotionValue(thrownPotion));
+		return isHolyWater(thrownPotion.getItem());
 	}
 	
 	public static boolean isHolyWater(ItemStack itemStack)
