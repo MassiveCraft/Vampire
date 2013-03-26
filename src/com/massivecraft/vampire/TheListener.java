@@ -248,6 +248,7 @@ public class TheListener implements Listener
 			public void run()
 			{
 				Player player = vplayer.getPlayer();
+				if (player == null) return;
 				Conf conf = Conf.get(player);
 				player.setFoodLevel(conf.updateRespawnFood);
 				player.setHealth(conf.updateRespawnHealth);
@@ -571,10 +572,14 @@ public class TheListener implements Listener
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
 		
+		// ... and the player is still retrievable ...
+		Player player = vampire.getPlayer();
+		if (player == null) return;
+		
 		// ... drink blood! ;,,;
 		double damage = event.getDamage();
 		if (damagee.getHealth() < damage) damage = damagee.getHealth();
-		double food = damage / damagee.getMaxHealth() * fullFoodQuotient * vampire.getPlayer().getMaxHealth();
+		double food = damage / damagee.getMaxHealth() * fullFoodQuotient * player.getMaxHealth();
 		
 		vampire.getFood().add(food);
 	}
