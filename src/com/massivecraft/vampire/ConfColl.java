@@ -3,7 +3,7 @@ package com.massivecraft.vampire;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
 
-public class ConfColl extends Coll<Conf, String>
+public class ConfColl extends Coll<Conf>
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -11,7 +11,7 @@ public class ConfColl extends Coll<Conf, String>
 	
 	public ConfColl(String name)
 	{
-		super(MStore.getDb(ConfServer.dburi), P.p, "ai", name, Conf.class, String.class, true);
+		super(name, Conf.class, MStore.getDb(ConfServer.dburi), P.p, true, false);
 	}
 	
 	// -------------------------------------------- //

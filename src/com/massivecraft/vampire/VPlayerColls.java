@@ -3,7 +3,7 @@ package com.massivecraft.vampire;
 import com.massivecraft.mcore.store.Colls;
 import com.massivecraft.mcore.usys.Aspect;
 
-public class VPlayerColls extends Colls<VPlayerColl, VPlayer, String>
+public class VPlayerColls extends Colls<VPlayerColl, VPlayer>
 {
 	public static VPlayerColls i = new VPlayerColls();
 	

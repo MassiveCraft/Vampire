@@ -17,7 +17,7 @@ public class VPlayerColl extends SenderColl<VPlayer>
 	
 	public VPlayerColl(String name)
 	{
-		super(MStore.getDb(ConfServer.dburi), P.p, name, VPlayer.class);
+		super(name, VPlayer.class, MStore.getDb(ConfServer.dburi), P.p);
 	}
 	
 	// -------------------------------------------- //

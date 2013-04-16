@@ -18,7 +18,7 @@ import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.vampire.altar.AltarDark;
 import com.massivecraft.vampire.altar.AltarLight;
 
-public class Conf extends Entity<Conf, String>
+public class Conf extends Entity<Conf>
 {
 	
 	// -------------------------------------------- //

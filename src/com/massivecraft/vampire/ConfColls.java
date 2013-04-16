@@ -4,7 +4,7 @@ import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Colls;
 import com.massivecraft.mcore.usys.Aspect;
 
-public class ConfColls extends Colls<ConfColl, Conf, String>
+public class ConfColls extends Colls<ConfColl, Conf>
 {
 	public static ConfColls i = new ConfColls();
 	
