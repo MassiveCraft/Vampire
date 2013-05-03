@@ -2,9 +2,9 @@ package com.massivecraft.vampire;
 
 import org.bukkit.Bukkit;
 
+import com.massivecraft.mcore.Aspect;
+import com.massivecraft.mcore.AspectColl;
 import com.massivecraft.mcore.MPlugin;
-import com.massivecraft.mcore.usys.Aspect;
-import com.massivecraft.mcore.usys.AspectColl;
 import com.massivecraft.vampire.cmd.CmdBase;
 import com.massivecraft.vampire.integration.spout.SpoutFeatures;
 

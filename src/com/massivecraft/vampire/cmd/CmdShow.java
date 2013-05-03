@@ -3,9 +3,9 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.cmd.arg.ARSenderEntity;
 import com.massivecraft.mcore.cmd.arg.ArgReader;
-import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.Lang;

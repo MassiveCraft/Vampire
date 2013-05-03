@@ -5,10 +5,10 @@ import java.util.*;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.cmd.VisibilityMode;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.vampire.*;
 

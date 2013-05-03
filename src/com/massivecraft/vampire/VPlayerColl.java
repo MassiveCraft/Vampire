@@ -1,11 +1,8 @@
 package com.massivecraft.vampire;
 
-import java.io.File;
 import java.util.Collection;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.Predictate;
-import com.massivecraft.mcore.store.DbGson;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.store.SenderColl;
 
@@ -55,24 +52,4 @@ public class VPlayerColl extends SenderColl<VPlayer>
 		});
 	}
 	
-	@Override
-	public void init()
-	{
-		this.migrateFromOldFormat();
-		super.init();
-	}
-	
-	protected void migrateFromOldFormat()
-	{
-		File oldPlayerCollDir = new File(P.p.getDataFolder(), "player");
-		if (!oldPlayerCollDir.isDirectory()) return;
-		
-		if (MCore.getDb().getDriver().getName() != "gson") return;
-		DbGson dbGson = (DbGson) MCore.getDb();
-		File newPlayerCollDir = new File(dbGson.dir, this.getName());
-		if (newPlayerCollDir.isDirectory()) return;
-		
-		dbGson.dir.mkdirs();
-		oldPlayerCollDir.renameTo(newPlayerCollDir);
-	}
 }
