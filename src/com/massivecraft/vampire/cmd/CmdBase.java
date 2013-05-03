@@ -1,7 +1,10 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.mcore.cmd.HelpCommand;
+import com.massivecraft.mcore.cmd.VersionCommand;
 import com.massivecraft.vampire.ConfServer;
+import com.massivecraft.vampire.P;
+import com.massivecraft.vampire.VPerm;
 
 public class CmdBase extends VCommand
 {
@@ -12,13 +15,12 @@ public class CmdBase extends VCommand
 	public CmdOffer cmdOffer = new CmdOffer();
 	public CmdAccept cmdAccept = new CmdAccept();
 	public CmdShriek cmdShriek = new CmdShriek();
-	public CmdVersion cmdVersion = new CmdVersion();
 	public CmdList cmdList = new CmdList();
 	public CmdSet cmdSet = new CmdSet();
+	public VersionCommand cmdVersion = new VersionCommand(P.get(), VPerm.VERSION.node, "v", "version");
 	
 	public CmdBase()
 	{
-		super();
 		this.addAliases(ConfServer.baseCommandAliases);
 		
 		this.addSubCommand(HelpCommand.get());
