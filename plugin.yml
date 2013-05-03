@@ -84,6 +84,7 @@ permissions:
       vampire.mode.nightvision: true
       vampire.altar.light: true
       vampire.trade.accept: true
+      vampire.version: true
   vampire.kit.fullplayer:
     description: This is the suggested kit for normal players on the server.
     default: false
@@ -101,7 +102,6 @@ permissions:
     children:
       vampire.kit.fullplayer: true
       vampire.show.other: true
-      vampire.version: true
       vampire.list: true
   vampire.kit.mod:
     description: Can do everything but setting food and health.
