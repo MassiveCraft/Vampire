@@ -34,86 +34,71 @@ permissions:
 # -------------------------------------------- #
 # STAR NOTATION
 # -------------------------------------------- #
-  vampire.show.*:
-    default: false
+  vampire.*:
     children:
       vampire.show.self: true
       vampire.show.other: true
-  vampire.mode.*:
-    default: false
-    children:
+      vampire.shriek: true
       vampire.mode.bloodlust: true
       vampire.mode.intent: true
       vampire.mode.nightvision: true
-  vampire.altar.*:
-    default: false
-    children:
       vampire.altar.dark: true
       vampire.altar.light: true
-  vampire.trade.*:
-    default: false
-    children:
       vampire.trade.offer: true
       vampire.trade.accept: true
-  vampire.combat.*:
-    default: false
-    children:
       vampire.combat.infect: true
       vampire.combat.contract: true
-  vampire.set.vampire.*:
-    default: false
-    children:
+      vampire.version: true
+      vampire.list: true
+      vampire.set: true
       vampire.set.vampire.true: true
       vampire.set.vampire.false: true
-  vampire.set.*:
-    default: false
-    children:
-      vampire.set.vampire.*: true
       vampire.set.infection: true
       vampire.set.food: true
       vampire.set.health: true
 # -------------------------------------------- #
 # KITS
 # -------------------------------------------- #
-  vampire.kit.miniplayer:
-    description: Can only contract using trade and can't infect.
-    default: false
-    children:
-      vampire.show.self: true
-      vampire.mode.bloodlust: true
-      vampire.mode.nightvision: true
-      vampire.altar.light: true
-      vampire.trade.accept: true
-      vampire.version: true
-  vampire.kit.fullplayer:
-    description: This is the suggested kit for normal players on the server.
-    default: false
-    children:
-      vampire.kit.miniplayer: true
-      vampire.show.self: true
-      vampire.shriek: true
-      vampire.mode.*: true
-      vampire.altar.*: true
-      vampire.trade.*: true
-      vampire.combat.*: true
-  vampire.kit.halfmod:
-    description: Can list and inspect others and show plugin version.
-    default: false
-    children:
-      vampire.kit.fullplayer: true
-      vampire.show.other: true
-      vampire.list: true
-  vampire.kit.mod:
-    description: Can do everything but setting food and health.
-    default: false
-    children:
-      vampire.kit.halfmod: true
-      vampire.set: true
-      vampire.set.vampire.*: true
-      vampire.set.infection: true
-  vampire.kit.admin:
-    description: Can do everything.
+  vampire.kit.op:
     default: op
     children:
-      vampire.kit.mod: true
-      vampire.set.*: true
+      vampire.*: true
+  vampire.kit.rank3:
+    default: false
+    children:
+      vampire.kit.rank2: true
+  vampire.kit.rank2:
+    default: false
+    children:
+      vampire.kit.rank1: true
+      vampire.set: true
+      vampire.set.vampire.true: true
+      vampire.set.vampire.false: true
+      vampire.set.infection: true
+      vampire.set.food: true
+      vampire.set.health: true
+  vampire.kit.rank1:
+    default: false
+    children:
+      vampire.kit.rank0: true
+      vampire.show.other: true
+      vampire.mode.bloodlust: true
+      vampire.list: true
+  vampire.kit.rank0:
+    default: false
+    children:
+      vampire.show.self: true
+      vampire.shriek: true
+      vampire.mode.intent: true
+      vampire.mode.nightvision: true
+      vampire.altar.dark: true
+      vampire.altar.light: true
+      vampire.trade.offer: true
+      vampire.trade.accept: true
+      vampire.combat.infect: true
+      vampire.combat.contract: true
+      vampire.version: true
+  vampire.kit.default:
+    default: true
+    children:
+      vampire.kit.rank0: true
