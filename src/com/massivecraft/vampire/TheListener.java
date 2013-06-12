@@ -315,9 +315,9 @@ public class TheListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void bloodlustSmokeTrail(PlayerMoveEvent event)
 	{
-		// If a survivalmode player ...
+		// If a noncreative player ...
 		Player player = event.getPlayer();
-		if (player.getGameMode() != GameMode.SURVIVAL) return;
+		if (player.getGameMode() == GameMode.CREATIVE) return;
 		
 		// ... moved between two blocks ...
 		Block from = event.getFrom().getBlock();

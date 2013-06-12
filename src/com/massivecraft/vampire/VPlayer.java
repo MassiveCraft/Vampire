@@ -549,8 +549,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 		if (me == null) return;
 		Conf conf = Conf.get(me);
 		
-		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
-		if (survival && this.isVampire() && ! me.isDead())
+		if (me.getGameMode() != GameMode.CREATIVE && this.isVampire() && ! me.isDead())
 		{
 			this.rad = conf.baseRad + SunUtil.calcPlayerIrradiation(me);
 			Double tempDelta = conf.tempPerRadAndTick * this.rad * ticks;
@@ -574,8 +573,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 		if (me == null) return;
 		Conf conf = Conf.get(me);
 		
-		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
-		if ( ! survival) return;
+		if (me.getGameMode() == GameMode.CREATIVE) return;
 		
 		int indexOld = this.infectionGetMessageIndex();
 		this.addInfection(ticks * conf.infectionPerTick);
@@ -602,8 +600,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 		Player me = this.getPlayer();
 		if (me == null) return;
 		Conf conf = Conf.get(me);
-		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
-		if ( ! survival) return;
+		if (me.getGameMode() == GameMode.CREATIVE) return;
 		if (me.isDead()) return;
 		if (me.getHealth() >= 20) return;
 		if (this.getFood().get() < conf.regenMinFood) return;
@@ -622,8 +619,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 		Player me = this.getPlayer();
 		if (me == null) return;
 		Conf conf = Conf.get(me);
-		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
-		if ( ! survival) return;
+		if (me.getGameMode() == GameMode.CREATIVE) return;
 		if (me.isDead()) return;
 		
 		this.getFood().add(ticks * conf.bloodlustFoodPerTick);
@@ -643,8 +639,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 		if (me.isDead()) return;
 		Conf conf = Conf.get(me);
 		
-		boolean survival = me.getGameMode() == GameMode.SURVIVAL;
-		if ( ! survival) return;
+		if (me.getGameMode() == GameMode.CREATIVE) return;
 
 		// FX: Smoke
 		if (this.fxSmokeTicks > 0)
@@ -665,7 +660,8 @@ public class VPlayer extends SenderEntity<VPlayer>
 		}
 		
 		// Vampire sun reactions
-		if (survival && this.isVampire())
+		
+		if (this.isVampire())
 		{
 			// Buffs
 			if (this.getTemp() > conf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, me, conf.sunNauseaTicks);
