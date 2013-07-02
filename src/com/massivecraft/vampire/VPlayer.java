@@ -24,7 +24,6 @@ import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.PermUtil;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.vampire.accumulator.VPlayerFoodAccumulator;
-import com.massivecraft.vampire.accumulator.VPlayerHealthAccumulator;
 import com.massivecraft.vampire.event.VampirePlayerInfectionChangeEvent;
 import com.massivecraft.vampire.event.VampirePlayerVampireChangeEvent;
 import com.massivecraft.vampire.util.FxUtil;
@@ -294,10 +293,6 @@ public class VPlayer extends SenderEntity<VPlayer>
 	// FIELD: food - the food accumulator
 	protected transient VPlayerFoodAccumulator food = new VPlayerFoodAccumulator(this);
 	public VPlayerFoodAccumulator getFood() { return this.food; }
-	
-	// FIELD: health - the health accumulator
-	protected transient VPlayerHealthAccumulator health = new VPlayerHealthAccumulator(this);
-	public VPlayerHealthAccumulator getHealth() { return this.health; }
 	
 	// FIELD: lastDamageMillis - for the regen
 	protected transient long lastDamageMillis = 0;
@@ -609,7 +604,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 		if (millisSinceLastDamage < conf.regenDelayMillis) return;
 		
 		double foodDiff = this.getFood().add(-conf.regenFoodPerTick * ticks);
-		this.getHealth().add(-foodDiff * conf.regenHealthPerFood);
+		me.setHealth(me.getHealth() - foodDiff * conf.regenHealthPerFood);
 	}
 	
 	public void tickBloodlust(long ticks)

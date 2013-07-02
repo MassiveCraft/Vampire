@@ -618,7 +618,7 @@ public class TheListener implements Listener
 			vplayer.runFxEnderBurst();
 			
 			// Trigger a damage event so other plugins can cancel this.
-			EntityDamageByEntityEvent triggeredEvent = new EntityDamageByEntityEvent(projectile.getShooter(), player, DamageCause.CUSTOM, 1);
+			EntityDamageByEntityEvent triggeredEvent = new EntityDamageByEntityEvent(projectile.getShooter(), player, DamageCause.CUSTOM, 1D);
 			Bukkit.getPluginManager().callEvent(triggeredEvent);
 			if (triggeredEvent.isCancelled()) continue;
 			
