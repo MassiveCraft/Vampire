@@ -604,7 +604,12 @@ public class VPlayer extends SenderEntity<VPlayer>
 		if (millisSinceLastDamage < conf.regenDelayMillis) return;
 		
 		double foodDiff = this.getFood().add(-conf.regenFoodPerTick * ticks);
-		me.setHealth(me.getHealth() - foodDiff * conf.regenHealthPerFood);
+		
+		double healthTarget = me.getHealth() - foodDiff * conf.regenHealthPerFood;
+		healthTarget = Math.min(healthTarget, me.getMaxHealth());
+		healthTarget = Math.max(healthTarget, 0D);
+		
+		me.setHealth(healthTarget);
 	}
 	
 	public void tickBloodlust(long ticks)
