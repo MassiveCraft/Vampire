@@ -487,7 +487,11 @@ public class VPlayer extends SenderEntity<VPlayer>
 	public void updatePotionEffects()
 	{
 		final int okDuration = 300;
-		final int targetDuration = okDuration*2;
+		
+		// TODO: I made this dirty fix for lower tps.
+		// TODO: The real solution is to tick based on millis and not ticks.
+		//final int targetDuration = okDuration*2; 
+		final int targetDuration = okDuration*4;
 		
 		// Find the player and their conf
 		Player player = this.getPlayer();
