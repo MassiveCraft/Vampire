@@ -14,6 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.mcore.integration.protocollib.MCoreEntityPotionColorEvent;
 
+@SuppressWarnings("deprecation")
 public class PotionEffectConf
 {
 	// -------------------------------------------- //

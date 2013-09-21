@@ -689,6 +689,7 @@ public class VPlayer extends SenderEntity<VPlayer>
 	// TRADE
 	// -------------------------------------------- //
 	
+	@SuppressWarnings("deprecation")
 	public void tradeAccept()
 	{
 		Player me = this.getPlayer();

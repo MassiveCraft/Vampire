@@ -14,7 +14,7 @@ public class ResourceUtil
 {
 	public static boolean playerHas(Player player, ItemStack stack)
 	{
-		int requiredTypeId = stack.getTypeId();
+		Material requiredType = stack.getType();
 		short requiredDamage = stack.getDurability();
 		int requiredAmount = stack.getAmount();
 		
@@ -22,7 +22,7 @@ public class ResourceUtil
 		for (ItemStack pstack : player.getInventory().getContents())
 		{
 			if (pstack == null) continue;
-			if (pstack.getTypeId() != requiredTypeId) continue;
+			if (pstack.getType() != requiredType) continue;
 			if (pstack.getDurability() != requiredDamage) continue;
 			actualAmount += pstack.getAmount();
 		}

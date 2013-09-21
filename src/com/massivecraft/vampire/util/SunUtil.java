@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.util;
 
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
@@ -73,6 +74,7 @@ public class SunUtil
 	/**
 	 * The sum of the opacity above and including the block.
 	 */
+	@SuppressWarnings("deprecation")
 	public static double calcTerrainOpacity(Block block)
 	{
 		double ret = 0;
@@ -115,7 +117,7 @@ public class SunUtil
 		{
 			if (itemStack == null) continue;
 			if (itemStack.getAmount() == 0) continue;
-			if (itemStack.getTypeId() == 0) continue;
+			if (itemStack.getType() == Material.AIR) continue;
 			ret += Conf.get(player).opacityPerArmorPiece;
 		}
 		return ret;
