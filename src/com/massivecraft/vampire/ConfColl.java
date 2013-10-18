@@ -11,7 +11,7 @@ public class ConfColl extends Coll<Conf>
 	
 	public ConfColl(String name)
 	{
-		super(name, Conf.class, MStore.getDb(ConfServer.dburi), P.p, true, false);
+		super(name, Conf.class, MStore.getDb(ConfServer.dburi), P.p, false, true, false);
 	}
 	
 	// -------------------------------------------- //
