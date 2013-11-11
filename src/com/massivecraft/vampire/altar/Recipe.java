@@ -72,4 +72,5 @@ public class Recipe
 		}
 		return Txt.implode(lines, Txt.parse("<i>, "));
 	}
+	
 }

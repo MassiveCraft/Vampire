@@ -9,9 +9,9 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
-import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.VPerm;
-import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MLang;
+import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.ResourceUtil;
 
@@ -19,8 +19,8 @@ public class AltarDark extends Altar
 {
 	public AltarDark()
 	{
-		this.name = Lang.altarDarkName;
-		this.desc = Lang.altarDarkDesc;
+		this.name = MLang.get().altarDarkName;
+		this.desc = MLang.get().altarDarkDesc;
 		
 		this.coreMaterial = Material.GOLD_BLOCK;
 		
@@ -39,32 +39,33 @@ public class AltarDark extends Altar
 	}
 	
 	@Override
-	public void use(VPlayer vplayer, Player player)
+	public void use(UPlayer uplayer, Player player)
 	{
-		vplayer.msg("");
-		vplayer.msg(this.desc);
+		uplayer.msg("");
+		uplayer.msg(this.desc);
 		
-		if ( ! VPerm.ALTAR_DARK.has(player, true)) return;
+		if ( ! Perm.ALTAR_DARK.has(player, true)) return;
 		
-		vplayer.msg(Lang.altarDarkCommon);
+		uplayer.msg(MLang.get().altarDarkCommon);
 		FxUtil.ensure(PotionEffectType.BLINDNESS, player, 12*20);
-		vplayer.runFxSmoke();
+		uplayer.runFxSmoke();
 		
-		if (vplayer.isHealthy())
+		if (uplayer.isHealthy())
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarResourceSuccess, Lang.altarResourceFail)) return;
-			vplayer.msg(Lang.altarDarkHealthy);
+			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return;
+			uplayer.msg(MLang.get().altarDarkHealthy);
 			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-			vplayer.runFxSmokeBurst();
-			vplayer.addInfection(0.01D, InfectionReason.ALTAR, null);
+			uplayer.runFxSmokeBurst();
+			uplayer.addInfection(0.01D, InfectionReason.ALTAR, null);
 		}
-		else if (vplayer.isVampire())
+		else if (uplayer.isVampire())
 		{
-			vplayer.msg(Lang.altarDarkVampire);
+			uplayer.msg(MLang.get().altarDarkVampire);
 		}
-		else if (vplayer.isInfected())
+		else if (uplayer.isInfected())
 		{
-			vplayer.msg(Lang.altarDarkInfected);
+			uplayer.msg(MLang.get().altarDarkInfected);
 		}
 	}
+	
 }

@@ -7,19 +7,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.vampire.Conf;
 import com.massivecraft.vampire.HolyWaterUtil;
-import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.VPerm;
-import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MLang;
+import com.massivecraft.vampire.entity.UConf;
+import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.util.ResourceUtil;
 
 public class AltarLight extends Altar
 {
 	public AltarLight()
 	{
-		this.name = Lang.altarLightName;
-		this.desc = Lang.altarLightDesc;
+		this.name = MLang.get().altarLightName;
+		this.desc = MLang.get().altarLightDesc;
 		
 		this.coreMaterial = Material.LAPIS_BLOCK;
 		
@@ -38,44 +38,44 @@ public class AltarLight extends Altar
 	}
 	
 	@Override
-	public void use(VPlayer vplayer, Player player)
+	public void use(UPlayer uplayer, Player player)
 	{
-		Conf conf = Conf.get(player);
-		vplayer.msg("");
-		vplayer.msg(this.desc);
+		UConf uconf = UConf.get(player);
+		uplayer.msg("");
+		uplayer.msg(this.desc);
 		
-		if ( ! VPerm.ALTAR_LIGHT.has(player, true)) return;
+		if ( ! Perm.ALTAR_LIGHT.has(player, true)) return;
 		
-		if ( ! vplayer.isVampire() && playerHoldsWaterBottle(player))
+		if ( ! uplayer.isVampire() && playerHoldsWaterBottle(player))
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, conf.holyWaterResources, Lang.altarLightWaterResourceSuccess, Lang.altarLightWaterResourceFail)) return;
+			if ( ! ResourceUtil.playerRemoveAttempt(player, uconf.holyWaterResources, MLang.get().altarLightWaterResourceSuccess, MLang.get().altarLightWaterResourceFail)) return;
 			ResourceUtil.playerAdd(player, HolyWaterUtil.createItemStack());
-			vplayer.msg(Lang.altarLightWaterResult);
-			vplayer.runFxEnderBurst();
+			uplayer.msg(MLang.get().altarLightWaterResult);
+			uplayer.runFxEnderBurst();
 			return;
 		}
 		
-		vplayer.msg(Lang.altarLightCommon);
-		vplayer.runFxEnder();
+		uplayer.msg(MLang.get().altarLightCommon);
+		uplayer.runFxEnder();
 		
-		if (vplayer.isVampire())
+		if (uplayer.isVampire())
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, Lang.altarResourceSuccess, Lang.altarResourceFail)) return;
-			vplayer.msg(Lang.altarLightVampire);
+			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return;
+			uplayer.msg(MLang.get().altarLightVampire);
 			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-			vplayer.runFxEnderBurst();
-			vplayer.setVampire(false);
+			uplayer.runFxEnderBurst();
+			uplayer.setVampire(false);
 			return;
 		}
-		else if (vplayer.isHealthy())
+		else if (uplayer.isHealthy())
 		{
-			vplayer.msg(Lang.altarLightHealthy);
+			uplayer.msg(MLang.get().altarLightHealthy);
 		}
-		else if (vplayer.isInfected())
+		else if (uplayer.isInfected())
 		{
-			vplayer.msg(Lang.altarLightInfected);
-			vplayer.setInfection(0);
-			vplayer.runFxEnderBurst();
+			uplayer.msg(MLang.get().altarLightInfected);
+			uplayer.setInfection(0);
+			uplayer.runFxEnderBurst();
 		}
 	}
 	
@@ -84,4 +84,5 @@ public class AltarLight extends Altar
 		if (player.getItemInHand().getType() != Material.POTION) return false;
 		return player.getItemInHand().getDurability() == 0;
 	}
+	
 }

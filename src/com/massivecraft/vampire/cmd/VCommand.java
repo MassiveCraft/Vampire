@@ -1,15 +1,24 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.mcore.cmd.MCommand;
-import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.entity.UPlayer;
 
 public abstract class VCommand extends MCommand
 {
-	public VPlayer vme;
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	public UPlayer vme;
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void fixSenderVars()
 	{
-		this.vme = VPlayer.get(this.sender);
+		this.vme = UPlayer.get(this.sender);
 	}
+	
 }

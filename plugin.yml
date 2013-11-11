@@ -1,6 +1,6 @@
-main: com.massivecraft.vampire.P
+main: com.massivecraft.vampire.Vampire
 name: vampire
-version: 5.2.9
+version: 5.3.0
 website: http://massivecraft.com/vampire
 authors: [Cayorion]
 description: §eAnyone can become a vampire, but do you want to? During daytime vampires cower from sunlight. During the night the humans reach for their holy water and wooden stakes as the vampires roam the lands with inhuman strength, speed and levitation-powers. Driven by their endless bloodlust, they devour all living in their way. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttp://massivecraft.com
@@ -9,46 +9,47 @@ permissions:
 # -------------------------------------------- #
 # THE REAL NODES
 # -------------------------------------------- #
-  vampire.is.vampire:        {description: An example permission. See the config., default: false}
-  vampire.is.human:          {description: An example permission. See the config., default: false}
-  vampire.show.self:         {description: show info on yourself, default: false}
-  vampire.show.other:        {description: show info on others, default: false}
+# COMMANDS
+  vampire.basecommand:       {description: use the vampire base command, default: false}
+  vampire.show:              {description: show player info, default: false}
+  vampire.show.other:        {description: show other player info, default: false}
   vampire.shriek:            {description: shriek, default: false}
   vampire.mode.bloodlust:    {description: use bloodlust, default: false}
   vampire.mode.intent:       {description: use intent to infect, default: false}
   vampire.mode.nightvision:  {description: use nightvision, default: false}
-  vampire.altar.dark:        {description: use an altar of darkness, default: false}
-  vampire.altar.light:       {description: use an altar of light, default: false}
   vampire.trade.offer:       {description: offer blood to someone, default: false}
   vampire.trade.accept:      {description: accept blood offer, default: false}
   vampire.combat.infect:     {description: be infectious in combat, default: false}
   vampire.combat.contract:   {description: contract infection in combat, default: false}
-  vampire.version:           {description: see plugin version, default: false}
   vampire.list:              {description: list vampires and infected, default: false}
   vampire.set:               {description: set player attributes, default: false}
-  vampire.set.vampire.true:  {description: instantly turn player, default: false}
+  vampire.set.vampire.true:  {description: instantly turn a player, default: false}
   vampire.set.vampire.false: {description: instantly cure a vampire, default: false}
   vampire.set.infection:     {description: set infection (0 to 1), default: false}
   vampire.set.food:          {description: set food (0 to 20), default: false}
   vampire.set.health:        {description: set health (0 to 20), default: false}
+  vampire.version:           {description: see plugin version, default: false}
+# OTHER
+  vampire.altar.dark:        {description: use an altar of darkness, default: false}
+  vampire.altar.light:       {description: use an altar of light, default: false}
+  vampire.is.vampire:        {description: indicator the player is a vampire - see the uconf, default: false}
+  vampire.is.human:          {description: indicator the player is a human - see the uconf, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
 # -------------------------------------------- #
   vampire.*:
     children:
-      vampire.show.self: true
+      vampire.basecommand: true
+      vampire.show: true
       vampire.show.other: true
       vampire.shriek: true
       vampire.mode.bloodlust: true
       vampire.mode.intent: true
       vampire.mode.nightvision: true
-      vampire.altar.dark: true
-      vampire.altar.light: true
       vampire.trade.offer: true
       vampire.trade.accept: true
       vampire.combat.infect: true
       vampire.combat.contract: true
-      vampire.version: true
       vampire.list: true
       vampire.set: true
       vampire.set.vampire.true: true
@@ -56,6 +57,9 @@ permissions:
       vampire.set.infection: true
       vampire.set.food: true
       vampire.set.health: true
+      vampire.version: true
+      vampire.altar.dark: true
+      vampire.altar.light: true
 # -------------------------------------------- #
 # KITS
 # -------------------------------------------- #
@@ -87,17 +91,18 @@ permissions:
   vampire.kit.rank0:
     default: false
     children:
-      vampire.show.self: true
+      vampire.basecommand: true
+      vampire.show: true
       vampire.shriek: true
       vampire.mode.intent: true
       vampire.mode.nightvision: true
-      vampire.altar.dark: true
-      vampire.altar.light: true
       vampire.trade.offer: true
       vampire.trade.accept: true
       vampire.combat.infect: true
       vampire.combat.contract: true
       vampire.version: true
+      vampire.altar.dark: true
+      vampire.altar.light: true
   vampire.kit.default:
     default: true
     children:

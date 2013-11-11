@@ -2,9 +2,10 @@ package com.massivecraft.vampire.event;
 
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.mcore.event.MCoreEvent;
+import com.massivecraft.vampire.entity.UPlayer;
 
-public class VampirePlayerVampireChangeEvent extends CancellableVampireEvent
+public class VampirePlayerVampireChangeEvent extends MCoreEvent
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -21,16 +22,17 @@ public class VampirePlayerVampireChangeEvent extends CancellableVampireEvent
 	protected final boolean vampire;
 	public boolean isVampire() { return this.vampire; }
 	
-	protected final VPlayer vplayer;
-	public VPlayer getVplayer() { return this.vplayer; }
+	protected final UPlayer uplayer;
+	public UPlayer getUplayer() { return this.uplayer; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public VampirePlayerVampireChangeEvent(boolean vampire, VPlayer vplayer)
+	public VampirePlayerVampireChangeEvent(boolean vampire, UPlayer uplayer)
 	{
 		this.vampire = vampire;
-		this.vplayer = vplayer;
+		this.uplayer = uplayer;
 	}
+	
 }

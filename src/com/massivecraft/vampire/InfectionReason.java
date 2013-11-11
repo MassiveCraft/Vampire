@@ -1,5 +1,7 @@
 package com.massivecraft.vampire;
 
+import com.massivecraft.vampire.entity.UPlayer;
+
 public enum InfectionReason
 {
 	ALTAR(true, false, "altar", "<i>You infected yourself using an <h>altar<i>.", "<i>%1$s was infected using an <h>altar<i>."),
@@ -39,15 +41,9 @@ public enum InfectionReason
 		this.otherdesc = otherdesc;
 	}
 	
-	public String getDesc(VPlayer vplayer, boolean self)
+	public String getDesc(UPlayer uplayer, boolean self)
 	{
-		if (self)
-		{
-			return String.format(this.selfdesc, vplayer.getDisplayName(), vplayer.makerId);
-		}
-		else
-		{
-			return String.format(this.otherdesc, vplayer.getDisplayName(), vplayer.makerId);
-		}
+		return String.format(self ? this.selfdesc : this.otherdesc, uplayer.getDisplayName(), uplayer.getMakerId());
 	}
+	
 }

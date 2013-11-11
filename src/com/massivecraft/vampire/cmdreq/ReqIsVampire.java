@@ -4,11 +4,15 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqAbstract;
-import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.entity.MLang;
+import com.massivecraft.vampire.entity.UPlayer;
 
 public class ReqIsVampire extends ReqAbstract
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
 	private static final long serialVersionUID = 1L;
 	
 	// -------------------------------------------- //
@@ -25,15 +29,15 @@ public class ReqIsVampire extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MCommand command)
 	{
-		VPlayer vplayer = VPlayer.get(sender);
-		if (vplayer == null) return false;
-		return vplayer.isVampire();
+		UPlayer uplayer = UPlayer.get(sender);
+		if (uplayer == null) return false;
+		return uplayer.isVampire();
 	}
 	
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return String.format(Lang.onlyVampsCanX, (command == null ? "do that" : command.getDesc()));
+		return String.format(MLang.get().onlyVampsCanX, (command == null ? "do that" : command.getDesc()));
 	}
 	
 }

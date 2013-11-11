@@ -7,7 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.vampire.Conf;
+import com.massivecraft.vampire.entity.UConf;
 
 public class SunUtil
 {
@@ -87,7 +87,7 @@ public class SunUtil
 		for (int y = block.getY(); y <= maxy && ret < 1d; y++)
 		{
 			int typeId = world.getBlockTypeIdAt(x, y, z);
-			Double opacity = Conf.get(block).typeIdOpacity.get(typeId);
+			Double opacity = UConf.get(block).typeIdOpacity.get(typeId);
 			if (opacity == null)
 			{
 				opacity = 1d; // Blocks not in that map have opacity 1;
@@ -118,7 +118,7 @@ public class SunUtil
 			if (itemStack == null) continue;
 			if (itemStack.getAmount() == 0) continue;
 			if (itemStack.getType() == Material.AIR) continue;
-			ret += Conf.get(player).opacityPerArmorPiece;
+			ret += UConf.get(player).opacityPerArmorPiece;
 		}
 		return ret;
 	}
@@ -156,4 +156,5 @@ public class SunUtil
 		//P.p.log("calcPlayerIrradiation",ret);
 		return ret;
 	}
+	
 }

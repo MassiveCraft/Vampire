@@ -14,9 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.mcore.util.Txt;
-import com.massivecraft.vampire.Conf;
-import com.massivecraft.vampire.Lang;
-import com.massivecraft.vampire.VPlayer;
+import com.massivecraft.vampire.entity.MLang;
+import com.massivecraft.vampire.entity.UConf;
+import com.massivecraft.vampire.entity.UPlayer;
 
 public abstract class Altar
 {	
@@ -29,8 +29,8 @@ public abstract class Altar
 	public void evalBlockUse(Block coreBlock, Player player)
 	{
 		if (coreBlock.getType() != coreMaterial) return;
-		VPlayer vplayer = VPlayer.get(player);
-		Conf conf = Conf.get(player);
+		UPlayer uplayer = UPlayer.get(player);
+		UConf uconf = UConf.get(player);
 		
 		// Make sure we include the coreBlock material in the wanted ones
 		if ( ! this.materialCounts.containsKey(this.coreMaterial))
@@ -38,14 +38,14 @@ public abstract class Altar
 			this.materialCounts.put(this.coreMaterial, 1);
 		}
 		
-		ArrayList<Block> blocks = getCubeBlocks(coreBlock, conf.altarSearchRadius);
+		ArrayList<Block> blocks = getCubeBlocks(coreBlock, uconf.altarSearchRadius);
 		Map<Material, Integer> nearbyMaterialCounts = countMaterials(blocks, this.materialCounts.keySet());
 		
 		int requiredMaterialCountSum = this.sumCollection(this.materialCounts.values());
 		int nearbyMaterialCountSum   = this.sumCollection(nearbyMaterialCounts.values());
 		
 		// If the blocks are to far from looking anything like an altar we will just skip.
-		if (nearbyMaterialCountSum < requiredMaterialCountSum * conf.altarMinRatioForInfo) return;
+		if (nearbyMaterialCountSum < requiredMaterialCountSum * uconf.altarMinRatioForInfo) return;
 		
 		// What alter blocks are missing?
 		Map<Material, Integer> missingMaterialCounts = this.getMissingMaterialCounts(nearbyMaterialCounts);
@@ -54,7 +54,7 @@ public abstract class Altar
 		if (this.sumCollection(missingMaterialCounts.values()) > 0)
 		{
 			// Send info on what to do to finish the altar 
-			player.sendMessage(Txt.parse(Lang.altarIncomplete, this.name));
+			player.sendMessage(Txt.parse(MLang.get().altarIncomplete, this.name));
 			for (Entry<Material, Integer> entry : missingMaterialCounts.entrySet())
 			{
 				Material material = entry.getKey();
@@ -64,15 +64,15 @@ public abstract class Altar
 			return;
 		}
 		
-		this.use(vplayer, player);
+		this.use(uplayer, player);
 		
 	}
 	
-	public abstract void use(VPlayer vplayer, Player player);
+	public abstract void use(UPlayer uplayer, Player player);
 	
-	public void watch (VPlayer vplayer, Player player)
+	public void watch (UPlayer uplayer, Player player)
 	{
-		vplayer.msg(this.desc);
+		uplayer.msg(this.desc);
 	}
 	
 	// ------------------------------------------------------------ //
@@ -135,5 +135,6 @@ public abstract class Altar
 		}
 		return blocks;
 	}
+	
 }
 

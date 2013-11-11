@@ -111,4 +111,5 @@ public class FxUtil
 	{
 		return MCore.random.nextInt(randomMaxLen*2+1) - randomMaxLen;
 	}
+	
 }
