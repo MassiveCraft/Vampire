@@ -599,7 +599,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		UConf uconf = UConf.get(me);
 		if (me.getGameMode() == GameMode.CREATIVE) return;
 		if (me.isDead()) return;
-		if (me.getHealth() >= 20) return;
+		if (me.getHealth() >= me.getMaxHealth()) return;
 		if (this.getFood().get() < uconf.regenMinFood) return;
 		
 		long millisSinceLastDamage = System.currentTimeMillis() - this.lastDamageMillis;

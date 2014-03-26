@@ -35,6 +35,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.integration.protocollib.MCoreEntityPotionColorEvent;
@@ -622,7 +623,10 @@ public class ListenerMain implements Listener
 		
 		// ... who is the thrower and where did it splash? ...
 		Location splashLocation = thrownPotion.getLocation();
-		Player shooter = (Player)projectile.getShooter();
+		
+		ProjectileSource projectileShooter = projectile.getShooter();
+		if (!(projectileShooter instanceof Player)) return;
+		Player shooter = (Player)projectileShooter;
 		
 		// ... then to all nearby players ...
 		for (Player player : splashLocation.getWorld().getPlayers())
@@ -633,7 +637,7 @@ public class ListenerMain implements Listener
 			uplayer.runFxEnderBurst();
 			
 			// Trigger a damage event so other plugins can cancel this.
-			EntityDamageByEntityEvent triggeredEvent = new EntityDamageByEntityEvent(projectile.getShooter(), player, DamageCause.CUSTOM, 1D);
+			EntityDamageByEntityEvent triggeredEvent = new EntityDamageByEntityEvent(shooter, player, DamageCause.CUSTOM, 1D);
 			Bukkit.getPluginManager().callEvent(triggeredEvent);
 			if (triggeredEvent.isCancelled()) continue;
 			

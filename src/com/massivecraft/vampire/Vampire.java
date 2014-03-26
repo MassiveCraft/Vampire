@@ -69,7 +69,7 @@ public class Vampire extends MPlugin
 		this.cmdBase.register();
 		
 		// Tasks
-		TheTask.get().schedule(this);
+		TheTask.get().activate(this);
 	
 		// Listeners
 		ListenerMain.get().activate();
