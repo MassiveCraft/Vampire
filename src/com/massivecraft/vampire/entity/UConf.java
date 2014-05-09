@@ -233,6 +233,7 @@ public class UConf extends Entity<UConf>
 		EntityType.PIG,            5/20D,
 		EntityType.SHEEP,          5/20D,
 		EntityType.COW,            7/20D,
+		EntityType.HORSE,          8/20D,
 		EntityType.CHICKEN,        2/20D,
 		EntityType.SQUID,          4/20D,
 		EntityType.WOLF,           5/20D,

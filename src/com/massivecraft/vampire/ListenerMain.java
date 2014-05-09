@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -537,7 +539,7 @@ public class ListenerMain implements Listener
 		InfectionReason reason = vampire.isIntending() ? InfectionReason.COMBAT_INTENDED : InfectionReason.COMBAT_MISTAKE;
 		human.addInfection(0.01D, reason, vampire);
 	}
-	
+
 	// -------------------------------------------- //
 	// FOOD
 	// -------------------------------------------- //
@@ -582,6 +584,11 @@ public class ListenerMain implements Listener
 		// ... that has blood left ...
 		if (damagee.getHealth() < 0) return;
 		if (damagee.isDead()) return;
+		if (damagee instanceof Horse)
+		{
+			Horse horse = (Horse) damagee;
+			if(horse.getVariant() == Variant.SKELETON_HORSE || horse.getVariant() == Variant.UNDEAD_HORSE) return;
+		}
 		
 		// ... and the liable damager is a vampire ...
 		UPlayer vampire = UPlayer.get(MUtil.getLiableDamager(event));
