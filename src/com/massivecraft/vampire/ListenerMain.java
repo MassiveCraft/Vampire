@@ -489,7 +489,7 @@ public class ListenerMain implements Listener
 	}
 	
 	// -------------------------------------------- //
-	// INFECTION
+	// INFECT PLAYERS
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -538,6 +538,57 @@ public class ListenerMain implements Listener
 		
 		InfectionReason reason = vampire.isIntending() ? InfectionReason.COMBAT_INTENDED : InfectionReason.COMBAT_MISTAKE;
 		human.addInfection(0.01D, reason, vampire);
+	}
+
+	// -------------------------------------------- //
+	// INFECT HORSES
+	// -------------------------------------------- //
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void infectHorse(EntityDamageByEntityEvent event)
+	{
+		Player player = (Player) event.getDamager();
+		if(player == null) return;
+		UConf uconf = UConf.get(player);
+
+		// if horses can be infected
+		if(!uconf.canInfectHorses) return;
+		
+		// ... and this is a close combat event ...
+		if ( ! MUtil.isCloseCombatEvent(event)) return;
+		
+		// ... where there is one vampire ... 
+		UPlayer vpdamager = UPlayer.get(MUtil.getLiableDamager(event));
+		if (vpdamager == null) return;
+		if (!vpdamager.isVampire()) return;
+		UPlayer vampire = vpdamager;
+
+		// ... and one is a living horse ...
+		Entity damagee = event.getEntity();
+		Horse horse = null;
+		if (damagee instanceof Horse)
+		{
+			horse = (Horse)damagee;
+			// only horses, no mules donkeys or undead ones
+			if(horse.getVariant() != Variant.HORSE) return;
+		}
+		
+		if ( vampire == null || horse == null) return;
+		
+		// ... and the vampire is allowed to infect through combat ...
+		if ( ! Perm.COMBAT_INFECT.has(vampire.getPlayer())) return;
+		
+		// ... Then there is a risk for infection ...
+		if (MCore.random.nextDouble() > vampire.combatInfectRisk()) return;
+		
+		// if its wearing armor remove it (otherwise it turns invisible and can crash people)
+		ItemStack horseArmor = horse.getInventory().getArmor();
+		if(horseArmor != null)
+		{
+			horse.getWorld().dropItem(horse.getLocation(), horseArmor);
+			horse.getInventory().setArmor(null);
+		}
+		horse.setVariant(MCore.random.nextDouble() > 0.5 ? Variant.SKELETON_HORSE : Variant.UNDEAD_HORSE);
 	}
 
 	// -------------------------------------------- //

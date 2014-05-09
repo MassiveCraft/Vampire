@@ -109,6 +109,12 @@ public class UConf extends Entity<UConf>
 	public boolean nightvisionCanBeUsed = true;
 	
 	// -------------------------------------------- //
+	// UNDEAD HORSES
+	// -------------------------------------------- //
+	
+	public boolean canInfectHorses = true;
+ 
+	// -------------------------------------------- //
 	// POTION EFFECTS
 	// -------------------------------------------- //
 	
