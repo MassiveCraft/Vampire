@@ -214,6 +214,7 @@ public class UConf extends Entity<UConf>
 	public double tradeOfferMaxDistance = 2d;
 	public long tradeOfferToleranceMillis = 20 * 1000;
 	public double tradeVisualDistance = 7D;
+	public double tradePercentage = 1d;
 
 	// -------------------------------------------- //
 	// FOOD

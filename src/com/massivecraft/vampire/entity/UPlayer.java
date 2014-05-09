@@ -721,7 +721,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		// Transfer food level
 		vyou.getFood().add(-amount);
-		this.getFood().add(amount);
+		this.getFood().add(amount * uconf.tradePercentage);
 		
 		// Risk infection/boost infection
 		if(!this.isVampire()){
