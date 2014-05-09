@@ -545,16 +545,9 @@ public class ListenerMain implements Listener
 	// -------------------------------------------- //
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void infectHorse(EntityDamageByEntityEvent event)
+	public void infectHorse(EntityDamageEvent event)
 	{
-		Player player = (Player) event.getDamager();
-		if(player == null) return;
-		UConf uconf = UConf.get(player);
-
-		// if horses can be infected
-		if(!uconf.canInfectHorses) return;
-		
-		// ... and this is a close combat event ...
+		// If this is a close combat event ...
 		if ( ! MUtil.isCloseCombatEvent(event)) return;
 		
 		// ... where there is one vampire ... 
@@ -562,7 +555,7 @@ public class ListenerMain implements Listener
 		if (vpdamager == null) return;
 		if (!vpdamager.isVampire()) return;
 		UPlayer vampire = vpdamager;
-
+		
 		// ... and one is a living horse ...
 		Entity damagee = event.getEntity();
 		Horse horse = null;
@@ -574,6 +567,10 @@ public class ListenerMain implements Listener
 		}
 		
 		if ( vampire == null || horse == null) return;
+
+		// ... and the vampire can infect horses
+		UConf uconf = UConf.get(vampire.getPlayer());
+		if(!uconf.canInfectHorses) return;
 		
 		// ... and the vampire is allowed to infect through combat ...
 		if ( ! Perm.COMBAT_INFECT.has(vampire.getPlayer())) return;
