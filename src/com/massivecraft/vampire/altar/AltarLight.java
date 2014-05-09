@@ -51,15 +51,15 @@ public class AltarLight extends Altar
 		if ( ! uplayer.isVampire() && playerHoldsWaterBottle(player))
 		{
 			if ( ! ResourceUtil.playerRemoveAttempt(player, uconf.holyWaterResources, MLang.get().altarLightWaterResourceSuccess, MLang.get().altarLightWaterResourceFail)) return false;
-    		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
-    		{
-    			public void run() {
-    				ResourceUtil.playerAdd(player, HolyWaterUtil.createItemStack());
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
+			{
+				public void run() {
+					ResourceUtil.playerAdd(player, HolyWaterUtil.createItemStack());
 					uplayer.msg(MLang.get().altarLightWaterResult);
 					uplayer.runFxEnderBurst();
-    			}
-    		}, 1);
-    		return true;
+				}
+			}, 1);
+			return true;
 		}
 		
 		uplayer.msg(MLang.get().altarLightCommon);
@@ -68,16 +68,16 @@ public class AltarLight extends Altar
 		if (uplayer.isVampire())
 		{
 			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return false;
-    		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
-    		{
-    			public void run() {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
+			{
+				public void run() {
 					uplayer.msg(MLang.get().altarLightVampire);
 					player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
 					uplayer.runFxEnderBurst();
 					uplayer.setVampire(false);
-    			}
-    		}, 1);
-    		return true;
+				}
+			}, 1);
+			return true;
 		}
 		else if (uplayer.isHealthy())
 		{

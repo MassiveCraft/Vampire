@@ -55,16 +55,16 @@ public class AltarDark extends Altar
 		if (uplayer.isHealthy())
 		{
 			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return false;
-    		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
-    		{
-    			public void run() {
-    				uplayer.msg(MLang.get().altarDarkHealthy);
-    				player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-    				uplayer.runFxSmokeBurst();
-    				uplayer.addInfection(0.01D, InfectionReason.ALTAR, null);
-    			}
-    		}, 1);
-    		return true;
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
+			{
+				public void run() {
+					uplayer.msg(MLang.get().altarDarkHealthy);
+					player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+					uplayer.runFxSmokeBurst();
+					uplayer.addInfection(0.01D, InfectionReason.ALTAR, null);
+				}
+			}, 1);
+			return true;
 
 		}
 		else if (uplayer.isVampire())
