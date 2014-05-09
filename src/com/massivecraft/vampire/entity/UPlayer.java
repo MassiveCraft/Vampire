@@ -712,15 +712,33 @@ public class UPlayer extends SenderEntity<UPlayer>
 		double amount = this.tradeOfferedAmount;
 		
 		// Enough blood?
-		if (this.tradeOfferedAmount > vyou.getFood().get())
+		double enough = 0;
+		if(vyou.isVampire())
+		{
+			// blood is only food for vampires
+			enough = vyou.getFood().get();
+		}
+		else
+		{
+			// but blood is health for humans
+			enough = vyou.getPlayer().getHealth();
+		}
+		if (this.tradeOfferedAmount > enough)
 		{
 			vyou.msg(MLang.get().tradeLackingOut);
 			this.msg(MLang.get().tradeLackingIn, you.getDisplayName());
 			return;
 		}
 		
-		// Transfer food level
-		vyou.getFood().add(-amount);
+		// Transfer blood (food for vampires, life for humans)
+		if(vyou.isVampire())
+		{
+			vyou.getFood().add(-amount);
+		}
+		else
+		{
+			vyou.getPlayer().damage(amount);
+		}
 		this.getFood().add(amount * uconf.tradePercentage);
 		
 		// Risk infection/boost infection
