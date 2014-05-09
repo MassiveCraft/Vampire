@@ -2,6 +2,7 @@ package com.massivecraft.vampire.altar;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.vampire.HolyWaterUtil;
 import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
@@ -38,21 +40,26 @@ public class AltarLight extends Altar
 	}
 	
 	@Override
-	public void use(UPlayer uplayer, Player player)
+	public boolean use(final UPlayer uplayer, final Player player)
 	{
 		UConf uconf = UConf.get(player);
 		uplayer.msg("");
 		uplayer.msg(this.desc);
 		
-		if ( ! Perm.ALTAR_LIGHT.has(player, true)) return;
+		if ( ! Perm.ALTAR_LIGHT.has(player, true)) return false;
 		
 		if ( ! uplayer.isVampire() && playerHoldsWaterBottle(player))
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, uconf.holyWaterResources, MLang.get().altarLightWaterResourceSuccess, MLang.get().altarLightWaterResourceFail)) return;
-			ResourceUtil.playerAdd(player, HolyWaterUtil.createItemStack());
-			uplayer.msg(MLang.get().altarLightWaterResult);
-			uplayer.runFxEnderBurst();
-			return;
+			if ( ! ResourceUtil.playerRemoveAttempt(player, uconf.holyWaterResources, MLang.get().altarLightWaterResourceSuccess, MLang.get().altarLightWaterResourceFail)) return false;
+    		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
+    		{
+    			public void run() {
+    				ResourceUtil.playerAdd(player, HolyWaterUtil.createItemStack());
+					uplayer.msg(MLang.get().altarLightWaterResult);
+					uplayer.runFxEnderBurst();
+    			}
+    		}, 1);
+    		return true;
 		}
 		
 		uplayer.msg(MLang.get().altarLightCommon);
@@ -60,12 +67,17 @@ public class AltarLight extends Altar
 		
 		if (uplayer.isVampire())
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return;
-			uplayer.msg(MLang.get().altarLightVampire);
-			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-			uplayer.runFxEnderBurst();
-			uplayer.setVampire(false);
-			return;
+			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return false;
+    		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
+    		{
+    			public void run() {
+					uplayer.msg(MLang.get().altarLightVampire);
+					player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+					uplayer.runFxEnderBurst();
+					uplayer.setVampire(false);
+    			}
+    		}, 1);
+    		return true;
 		}
 		else if (uplayer.isHealthy())
 		{
@@ -77,6 +89,7 @@ public class AltarLight extends Altar
 			uplayer.setInfection(0);
 			uplayer.runFxEnderBurst();
 		}
+		return false;
 	}
 	
 	protected static boolean playerHoldsWaterBottle(Player player)

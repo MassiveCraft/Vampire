@@ -2,6 +2,7 @@ package com.massivecraft.vampire.altar;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.util.FxUtil;
@@ -39,12 +41,12 @@ public class AltarDark extends Altar
 	}
 	
 	@Override
-	public void use(UPlayer uplayer, Player player)
+	public boolean use(final UPlayer uplayer, final Player player)
 	{
 		uplayer.msg("");
 		uplayer.msg(this.desc);
 		
-		if ( ! Perm.ALTAR_DARK.has(player, true)) return;
+		if ( ! Perm.ALTAR_DARK.has(player, true)) return false;
 		
 		uplayer.msg(MLang.get().altarDarkCommon);
 		FxUtil.ensure(PotionEffectType.BLINDNESS, player, 12*20);
@@ -52,11 +54,18 @@ public class AltarDark extends Altar
 		
 		if (uplayer.isHealthy())
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return;
-			uplayer.msg(MLang.get().altarDarkHealthy);
-			player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
-			uplayer.runFxSmokeBurst();
-			uplayer.addInfection(0.01D, InfectionReason.ALTAR, null);
+			if ( ! ResourceUtil.playerRemoveAttempt(player, this.resources, MLang.get().altarResourceSuccess, MLang.get().altarResourceFail)) return false;
+    		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
+    		{
+    			public void run() {
+    				uplayer.msg(MLang.get().altarDarkHealthy);
+    				player.getWorld().strikeLightningEffect(player.getLocation().add(0, 3, 0));
+    				uplayer.runFxSmokeBurst();
+    				uplayer.addInfection(0.01D, InfectionReason.ALTAR, null);
+    			}
+    		}, 1);
+    		return true;
+
 		}
 		else if (uplayer.isVampire())
 		{
@@ -66,6 +75,7 @@ public class AltarDark extends Altar
 		{
 			uplayer.msg(MLang.get().altarDarkInfected);
 		}
+		return false;
 	}
 	
 }

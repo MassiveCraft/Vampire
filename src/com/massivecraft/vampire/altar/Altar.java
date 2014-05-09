@@ -26,9 +26,9 @@ public abstract class Altar
 	public Map<Material, Integer> materialCounts;
 	public List<ItemStack> resources;
 	
-	public void evalBlockUse(Block coreBlock, Player player)
+	public boolean evalBlockUse(Block coreBlock, Player player)
 	{
-		if (coreBlock.getType() != coreMaterial) return;
+		if (coreBlock.getType() != coreMaterial) return false;
 		UPlayer uplayer = UPlayer.get(player);
 		UConf uconf = UConf.get(player);
 		
@@ -45,7 +45,7 @@ public abstract class Altar
 		int nearbyMaterialCountSum   = this.sumCollection(nearbyMaterialCounts.values());
 		
 		// If the blocks are to far from looking anything like an altar we will just skip.
-		if (nearbyMaterialCountSum < requiredMaterialCountSum * uconf.altarMinRatioForInfo) return;
+		if (nearbyMaterialCountSum < requiredMaterialCountSum * uconf.altarMinRatioForInfo) return false;
 		
 		// What alter blocks are missing?
 		Map<Material, Integer> missingMaterialCounts = this.getMissingMaterialCounts(nearbyMaterialCounts);
@@ -61,14 +61,14 @@ public abstract class Altar
 				int count = entry.getValue();
 				player.sendMessage(Txt.parse("<h>%d <p>%s", count, Txt.getMaterialName(material)));
 			}
-			return;
+			return false;
 		}
 		
-		this.use(uplayer, player);
+		return this.use(uplayer, player);
 		
 	}
 	
-	public abstract void use(UPlayer uplayer, Player player);
+	public abstract boolean use(UPlayer uplayer, Player player);
 	
 	public void watch (UPlayer uplayer, Player player)
 	{

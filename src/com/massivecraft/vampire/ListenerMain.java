@@ -733,8 +733,10 @@ public class ListenerMain implements Listener
 		Player player = event.getPlayer();
 		UConf uconf = UConf.get(player);
 		
-		uconf.altarDark.evalBlockUse(event.getClickedBlock(), player);
-		uconf.altarLight.evalBlockUse(event.getClickedBlock(), player);
+		if(uconf.altarDark.evalBlockUse(event.getClickedBlock(), player) || uconf.altarLight.evalBlockUse(event.getClickedBlock(), player))
+		{
+			event.setCancelled(true);
+		}
 	}
 	
 }
