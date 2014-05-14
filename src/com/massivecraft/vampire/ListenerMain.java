@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -487,7 +489,7 @@ public class ListenerMain implements Listener
 	}
 	
 	// -------------------------------------------- //
-	// INFECTION
+	// INFECT PLAYERS
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -537,7 +539,55 @@ public class ListenerMain implements Listener
 		InfectionReason reason = vampire.isIntending() ? InfectionReason.COMBAT_INTENDED : InfectionReason.COMBAT_MISTAKE;
 		human.addInfection(0.01D, reason, vampire);
 	}
-	
+
+	// -------------------------------------------- //
+	// INFECT HORSES
+	// -------------------------------------------- //
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void infectHorse(EntityDamageEvent event)
+	{
+		// If this is a close combat event ...
+		if ( ! MUtil.isCloseCombatEvent(event)) return;
+		
+		// ... where there is one vampire ... 
+		UPlayer vpdamager = UPlayer.get(MUtil.getLiableDamager(event));
+		if (vpdamager == null) return;
+		if (!vpdamager.isVampire()) return;
+		UPlayer vampire = vpdamager;
+		
+		// ... and one is a living horse ...
+		Entity damagee = event.getEntity();
+		Horse horse = null;
+		if (damagee instanceof Horse)
+		{
+			horse = (Horse)damagee;
+			// only horses, no mules donkeys or undead ones
+			if(horse.getVariant() != Variant.HORSE) return;
+		}
+		
+		if ( vampire == null || horse == null) return;
+
+		// ... and the vampire can infect horses
+		UConf uconf = UConf.get(vampire.getPlayer());
+		if(!uconf.canInfectHorses) return;
+		
+		// ... and the vampire is allowed to infect through combat ...
+		if ( ! Perm.COMBAT_INFECT.has(vampire.getPlayer())) return;
+		
+		// ... Then there is a risk for infection ...
+		if (MCore.random.nextDouble() > vampire.combatInfectRisk()) return;
+		
+		// if its wearing armor remove it (otherwise it turns invisible and can crash people)
+		ItemStack horseArmor = horse.getInventory().getArmor();
+		if(horseArmor != null)
+		{
+			horse.getWorld().dropItem(horse.getLocation(), horseArmor);
+			horse.getInventory().setArmor(null);
+		}
+		horse.setVariant(MCore.random.nextDouble() > 0.5 ? Variant.SKELETON_HORSE : Variant.UNDEAD_HORSE);
+	}
+
 	// -------------------------------------------- //
 	// FOOD
 	// -------------------------------------------- //
@@ -582,6 +632,11 @@ public class ListenerMain implements Listener
 		// ... that has blood left ...
 		if (damagee.getHealth() < 0) return;
 		if (damagee.isDead()) return;
+		if (damagee instanceof Horse)
+		{
+			Horse horse = (Horse) damagee;
+			if(horse.getVariant() == Variant.SKELETON_HORSE || horse.getVariant() == Variant.UNDEAD_HORSE) return;
+		}
 		
 		// ... and the liable damager is a vampire ...
 		UPlayer vampire = UPlayer.get(MUtil.getLiableDamager(event));
@@ -675,8 +730,10 @@ public class ListenerMain implements Listener
 		Player player = event.getPlayer();
 		UConf uconf = UConf.get(player);
 		
-		uconf.altarDark.evalBlockUse(event.getClickedBlock(), player);
-		uconf.altarLight.evalBlockUse(event.getClickedBlock(), player);
+		if(uconf.altarDark.evalBlockUse(event.getClickedBlock(), player) || uconf.altarLight.evalBlockUse(event.getClickedBlock(), player))
+		{
+			event.setCancelled(true);
+		}
 	}
 	
 }

@@ -109,6 +109,12 @@ public class UConf extends Entity<UConf>
 	public boolean nightvisionCanBeUsed = true;
 	
 	// -------------------------------------------- //
+	// UNDEAD HORSES
+	// -------------------------------------------- //
+	
+	public boolean canInfectHorses = true;
+ 
+	// -------------------------------------------- //
 	// POTION EFFECTS
 	// -------------------------------------------- //
 	
@@ -208,6 +214,7 @@ public class UConf extends Entity<UConf>
 	public double tradeOfferMaxDistance = 2d;
 	public long tradeOfferToleranceMillis = 20 * 1000;
 	public double tradeVisualDistance = 7D;
+	public double tradePercentage = 1d;
 
 	// -------------------------------------------- //
 	// FOOD
@@ -233,6 +240,7 @@ public class UConf extends Entity<UConf>
 		EntityType.PIG,            5/20D,
 		EntityType.SHEEP,          5/20D,
 		EntityType.COW,            7/20D,
+		EntityType.HORSE,          8/20D,
 		EntityType.CHICKEN,        2/20D,
 		EntityType.SQUID,          4/20D,
 		EntityType.WOLF,           5/20D,
