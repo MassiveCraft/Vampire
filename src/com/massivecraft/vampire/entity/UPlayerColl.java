@@ -21,7 +21,7 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
-	
+
 	@Override
 	public boolean isDefault(UPlayer entity)
 	{

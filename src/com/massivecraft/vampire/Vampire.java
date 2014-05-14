@@ -59,6 +59,7 @@ public class Vampire extends MPlugin
 		);
 		
 		// Database
+		EngineIdUpdate.get().activate();
 		MConfColl.get().init();
 		MLangColl.get().init();
 		UConfColls.get().init();
