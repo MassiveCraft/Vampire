@@ -80,6 +80,7 @@ public class ResourceUtil
 	{
 		if (type == Material.POTION && damage == 0) return "Water Bottle";
 		if (type == Material.INK_SACK && damage == 4 ) return "Lapis Lazuli Dye";
+		if (type == Material.COAL && damage == 1 ) return "Charcoal";
 		
 		return Txt.getMaterialName(type);
 	}
