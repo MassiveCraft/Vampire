@@ -26,8 +26,8 @@ import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.accumulator.UPlayerFoodAccumulator;
-import com.massivecraft.vampire.event.VampirePlayerInfectionChangeEvent;
-import com.massivecraft.vampire.event.VampirePlayerVampireChangeEvent;
+import com.massivecraft.vampire.event.EventVampirePlayerInfectionChange;
+import com.massivecraft.vampire.event.EventVampirePlayerVampireChange;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.SunUtil;
 
@@ -73,7 +73,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		if (this.vampire == val) return;
 		
-		VampirePlayerVampireChangeEvent event = new VampirePlayerVampireChangeEvent(val, this);
+		EventVampirePlayerVampireChange event = new EventVampirePlayerVampireChange(val, this);
 		event.run();
 		if (event.isCancelled()) return;
 		
@@ -123,7 +123,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if (this.infection == val) return;
 		
 		// Call event
-		VampirePlayerInfectionChangeEvent event = new VampirePlayerInfectionChangeEvent(val, this);
+		EventVampirePlayerInfectionChange event = new EventVampirePlayerInfectionChange(val, this);
 		event.run();
 		if (event.isCancelled()) return;
 		val = event.getInfection();

@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 import com.massivecraft.massivecore.event.EventMassiveCore;
 import com.massivecraft.vampire.entity.UPlayer;
 
-public class VampirePlayerVampireChangeEvent extends EventMassiveCore
+public class EventVampirePlayerInfectionChange extends EventMassiveCore
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -19,8 +19,9 @@ public class VampirePlayerVampireChangeEvent extends EventMassiveCore
 	// FIELD
 	// -------------------------------------------- //
 	
-	protected final boolean vampire;
-	public boolean isVampire() { return this.vampire; }
+	protected double infection;
+	public double getInfection() { return this.infection; }
+	public void setInfection(double infection) { this.infection = infection; }
 	
 	protected final UPlayer uplayer;
 	public UPlayer getUplayer() { return this.uplayer; }
@@ -29,9 +30,9 @@ public class VampirePlayerVampireChangeEvent extends EventMassiveCore
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public VampirePlayerVampireChangeEvent(boolean vampire, UPlayer uplayer)
+	public EventVampirePlayerInfectionChange(double infection, UPlayer uplayer)
 	{
-		this.vampire = vampire;
+		this.infection = infection;
 		this.uplayer = uplayer;
 	}
 	
