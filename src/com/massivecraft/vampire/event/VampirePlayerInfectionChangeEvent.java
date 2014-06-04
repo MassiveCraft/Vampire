@@ -2,10 +2,10 @@ package com.massivecraft.vampire.event;
 
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.mcore.event.MCoreEvent;
+import com.massivecraft.massivecore.event.EventMassiveCore;
 import com.massivecraft.vampire.entity.UPlayer;
 
-public class VampirePlayerInfectionChangeEvent extends MCoreEvent
+public class VampirePlayerInfectionChangeEvent extends EventMassiveCore
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE

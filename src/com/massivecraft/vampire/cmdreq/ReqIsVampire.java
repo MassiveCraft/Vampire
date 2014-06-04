@@ -2,8 +2,8 @@ package com.massivecraft.vampire.cmdreq;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore.cmd.MCommand;
-import com.massivecraft.mcore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.req.ReqAbstract;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 
@@ -27,7 +27,7 @@ public class ReqIsVampire extends ReqAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean apply(CommandSender sender, MCommand command)
+	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
 		UPlayer uplayer = UPlayer.get(sender);
 		if (uplayer == null) return false;
@@ -35,7 +35,7 @@ public class ReqIsVampire extends ReqAbstract
 	}
 	
 	@Override
-	public String createErrorMessage(CommandSender sender, MCommand command)
+	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
 		return String.format(MLang.get().onlyVampsCanX, (command == null ? "do that" : command.getDesc()));
 	}

@@ -2,7 +2,7 @@ package com.massivecraft.vampire.accumulator;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.util.PlayerUtil;
+import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.vampire.entity.UPlayer;
 
 public class UPlayerFoodAccumulator extends UPlayerAccumulator

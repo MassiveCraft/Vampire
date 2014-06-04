@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 

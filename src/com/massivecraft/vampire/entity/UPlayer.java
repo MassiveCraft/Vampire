@@ -17,12 +17,12 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.cmd.MCommand;
-import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.PermUtil;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.store.SenderEntity;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.accumulator.UPlayerFoodAccumulator;
@@ -583,7 +583,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if (uconf.infectionProgressNauseaTicks > 0) FxUtil.ensure(PotionEffectType.CONFUSION, me, uconf.infectionProgressNauseaTicks);
 		
 		this.msg(MLang.get().infectionFeeling.get(indexNew));
-		this.msg(MLang.get().infectionHint.get(MCore.random.nextInt(MLang.get().infectionHint.size())));
+		this.msg(MLang.get().infectionHint.get(MassiveCore.random.nextInt(MLang.get().infectionHint.size())));
 		this.changed();
 	}
 	public int infectionGetMessageIndex()
@@ -745,7 +745,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if(!this.isVampire()){
 			if(this.isInfected()){
 					this.addInfection(0.01D);
-			}else if (MCore.random.nextDouble()*20 < amount)
+			}else if (MassiveCore.random.nextDouble()*20 < amount)
 			{
 					this.addInfection(0.05D, InfectionReason.TRADE, vyou);
 			}
@@ -802,7 +802,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		this.msg(MLang.get().tradeOfferOut, amount, you.getDisplayName());
 		vyou.msg(MLang.get().tradeOfferIn, me.getDisplayName(), amount);
-		List<MCommand> cmdc = new ArrayList<MCommand>();
+		List<MassiveCommand> cmdc = new ArrayList<MassiveCommand>();
 		cmdc.add(Vampire.get().cmdBase);
 		vyou.msg(MLang.get().tradeAcceptHelp, Vampire.get().cmdBase.cmdVampireAccept.getUseageTemplate(cmdc, false));
 	}

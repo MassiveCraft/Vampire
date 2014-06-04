@@ -3,7 +3,7 @@ package com.massivecraft.vampire;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.ModuloRepeatTask;
+import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
 

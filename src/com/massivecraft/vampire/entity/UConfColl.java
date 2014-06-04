@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.entity;
 
-import com.massivecraft.mcore.store.Coll;
-import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.vampire.Vampire;
 
 public class UConfColl extends Coll<UConf>

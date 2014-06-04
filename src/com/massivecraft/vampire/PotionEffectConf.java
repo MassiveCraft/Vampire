@@ -12,7 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore.integration.protocollib.MCoreEntityPotionColorEvent;
+import com.massivecraft.massivecore.integration.protocollib.EventMassiveCoreEntityPotionColor;
 
 @SuppressWarnings("deprecation")
 public class PotionEffectConf
@@ -51,7 +51,7 @@ public class PotionEffectConf
 	// UTIL
 	// -------------------------------------------- //
 	
-	public void applyFor(MCoreEntityPotionColorEvent event, EventPriority eventPriority)
+	public void applyFor(EventMassiveCoreEntityPotionColor event, EventPriority eventPriority)
 	{
 		if (this.colorSet == false) return;
 		if (this.priority != eventPriority) return;

@@ -1,9 +1,9 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.mcore.cmd.MCommand;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.vampire.entity.UPlayer;
 
-public abstract class VCommand extends MCommand
+public abstract class VCommand extends MassiveCommand
 {
 	// -------------------------------------------- //
 	// FIELDS

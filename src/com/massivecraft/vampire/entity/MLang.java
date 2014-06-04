@@ -2,8 +2,8 @@ package com.massivecraft.vampire.entity;
 
 import java.util.List;
 
-import com.massivecraft.mcore.store.Entity;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class MLang extends Entity<MLang>
 {

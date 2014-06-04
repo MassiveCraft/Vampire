@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore.MCore;
+import com.massivecraft.massivecore.MassiveCore;
 
 public class FxUtil
 {
@@ -40,7 +40,7 @@ public class FxUtil
 	
 	public static void smoke(Location location)
 	{
-		smoke(location, MCore.random.nextInt(9));
+		smoke(location, MassiveCore.random.nextInt(9));
 	}
 	
 	public static void smoke(Player player)
@@ -84,7 +84,7 @@ public class FxUtil
 
 	public static Location getRandomPlayerLocation(Player player)
 	{
-		if (MCore.random.nextBoolean())
+		if (MassiveCore.random.nextBoolean())
 		{
 			return player.getLocation();
 		}
@@ -109,7 +109,7 @@ public class FxUtil
 	
 	public static int getRandomDelta(int randomMaxLen)
 	{
-		return MCore.random.nextInt(randomMaxLen*2+1) - randomMaxLen;
+		return MassiveCore.random.nextInt(randomMaxLen*2+1) - randomMaxLen;
 	}
 	
 }

@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.entity;
 
-import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.store.Colls;
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.store.Colls;
 import com.massivecraft.vampire.Const;
 import com.massivecraft.vampire.Vampire;
 
