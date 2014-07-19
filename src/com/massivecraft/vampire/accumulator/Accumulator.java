@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.accumulator;
 
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public abstract class Accumulator
 {

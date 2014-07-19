@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class HolyWaterUtil
 {

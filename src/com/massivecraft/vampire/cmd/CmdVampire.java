@@ -2,9 +2,9 @@ package com.massivecraft.vampire.cmd;
 
 import java.util.List;
 
-import com.massivecraft.mcore.cmd.HelpCommand;
-import com.massivecraft.mcore.cmd.VersionCommand;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.HelpCommand;
+import com.massivecraft.massivecore.cmd.VersionCommand;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.MConf;

@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.HolyWaterUtil;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;

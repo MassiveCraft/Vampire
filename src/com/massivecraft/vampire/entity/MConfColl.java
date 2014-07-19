@@ -1,8 +1,8 @@
 package com.massivecraft.vampire.entity;
 
-import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.store.Coll;
-import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.vampire.Const;
 import com.massivecraft.vampire.Vampire;
 
@@ -27,7 +27,7 @@ public class MConfColl extends Coll<MConf>
 	public void init()
 	{
 		super.init();
-		MConf.i = this.get(MCore.INSTANCE, true);
+		MConf.i = this.get(MassiveCore.INSTANCE, true);
 	}
 	
 }

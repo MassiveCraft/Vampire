@@ -2,9 +2,9 @@ package com.massivecraft.vampire.entity;
 
 import java.util.Collection;
 
-import com.massivecraft.mcore.Predictate;
-import com.massivecraft.mcore.store.MStore;
-import com.massivecraft.mcore.store.SenderColl;
+import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.store.MStore;
+import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.vampire.Vampire;
 
 public class UPlayerColl extends SenderColl<UPlayer>
@@ -21,7 +21,7 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
-	
+
 	@Override
 	public boolean isDefault(UPlayer entity)
 	{

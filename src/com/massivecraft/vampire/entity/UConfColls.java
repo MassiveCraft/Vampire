@@ -1,8 +1,8 @@
 package com.massivecraft.vampire.entity;
 
-import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.store.Colls;
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.store.Colls;
 import com.massivecraft.vampire.Const;
 import com.massivecraft.vampire.Vampire;
 
@@ -42,7 +42,7 @@ public class UConfColls extends Colls<UConfColl, UConf>
 	{
 		UConfColl coll = this.get(worldNameExtractable);
 		if (coll == null) return null;
-		return coll.get(MCore.INSTANCE);
+		return coll.get(MassiveCore.INSTANCE);
 	}
 	
 }

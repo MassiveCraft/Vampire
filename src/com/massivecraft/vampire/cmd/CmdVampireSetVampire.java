@@ -2,7 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.cmd.arg.ARBoolean;
+import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.entity.UPlayer;
 

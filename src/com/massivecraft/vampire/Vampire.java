@@ -1,15 +1,15 @@
 package com.massivecraft.vampire;
 
-import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.AspectColl;
-import com.massivecraft.mcore.MPlugin;
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.AspectColl;
+import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.vampire.cmd.CmdVampire;
 import com.massivecraft.vampire.entity.MConfColl;
 import com.massivecraft.vampire.entity.MLangColl;
 import com.massivecraft.vampire.entity.UConfColls;
 import com.massivecraft.vampire.entity.UPlayerColls;
 
-public class Vampire extends MPlugin 
+public class Vampire extends MassivePlugin 
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -59,6 +59,7 @@ public class Vampire extends MPlugin
 		);
 		
 		// Database
+		EngineIdUpdate.get().activate();
 		MConfColl.get().init();
 		MLangColl.get().init();
 		UConfColls.get().init();

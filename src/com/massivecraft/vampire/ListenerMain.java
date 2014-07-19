@@ -39,10 +39,10 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.integration.protocollib.MCoreEntityPotionColorEvent;
-import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.PlayerUtil;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.integration.protocollib.EventMassiveCoreEntityPotionColor;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
@@ -76,7 +76,7 @@ public class ListenerMain implements Listener
 	// ENTITY POTION COLOR
 	// -------------------------------------------- //
 	
-	public void entityPotionColor(MCoreEntityPotionColorEvent event, EventPriority eventPriority)
+	public void entityPotionColor(EventMassiveCoreEntityPotionColor event, EventPriority eventPriority)
 	{
 		Entity entity = event.getEntity();
 		if (!(entity instanceof Player)) return;
@@ -112,31 +112,31 @@ public class ListenerMain implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void entityPotionColorLowest(MCoreEntityPotionColorEvent event)
+	public void entityPotionColorLowest(EventMassiveCoreEntityPotionColor event)
 	{
 		this.entityPotionColor(event, EventPriority.LOWEST);
 	}
 	
 	@EventHandler(priority = EventPriority.LOW)
-	public void entityPotionColorLow(MCoreEntityPotionColorEvent event)
+	public void entityPotionColorLow(EventMassiveCoreEntityPotionColor event)
 	{
 		this.entityPotionColor(event, EventPriority.LOW);
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void entityPotionColorNormal(MCoreEntityPotionColorEvent event)
+	public void entityPotionColorNormal(EventMassiveCoreEntityPotionColor event)
 	{
 		this.entityPotionColor(event, EventPriority.NORMAL);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void entityPotionColorHigh(MCoreEntityPotionColorEvent event)
+	public void entityPotionColorHigh(EventMassiveCoreEntityPotionColor event)
 	{
 		this.entityPotionColor(event, EventPriority.HIGH);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void entityPotionColorHighest(MCoreEntityPotionColorEvent event)
+	public void entityPotionColorHighest(EventMassiveCoreEntityPotionColor event)
 	{
 		this.entityPotionColor(event, EventPriority.HIGHEST);
 	}
@@ -534,7 +534,7 @@ public class ListenerMain implements Listener
 		if ( ! Perm.COMBAT_CONTRACT.has(human.getPlayer())) return;
 		
 		// ... Then there is a risk for infection ...
-		if (MCore.random.nextDouble() > vampire.combatInfectRisk()) return;
+		if (MassiveCore.random.nextDouble() > vampire.combatInfectRisk()) return;
 		
 		InfectionReason reason = vampire.isIntending() ? InfectionReason.COMBAT_INTENDED : InfectionReason.COMBAT_MISTAKE;
 		human.addInfection(0.01D, reason, vampire);
@@ -576,7 +576,7 @@ public class ListenerMain implements Listener
 		if ( ! Perm.COMBAT_INFECT.has(vampire.getPlayer())) return;
 		
 		// ... Then there is a risk for infection ...
-		if (MCore.random.nextDouble() > vampire.combatInfectRisk()) return;
+		if (MassiveCore.random.nextDouble() > vampire.combatInfectRisk()) return;
 		
 		// if its wearing armor remove it (otherwise it turns invisible and can crash people)
 		ItemStack horseArmor = horse.getInventory().getArmor();
@@ -585,7 +585,7 @@ public class ListenerMain implements Listener
 			horse.getWorld().dropItem(horse.getLocation(), horseArmor);
 			horse.getInventory().setArmor(null);
 		}
-		horse.setVariant(MCore.random.nextDouble() > 0.5 ? Variant.SKELETON_HORSE : Variant.UNDEAD_HORSE);
+		horse.setVariant(MassiveCore.random.nextDouble() > 0.5 ? Variant.SKELETON_HORSE : Variant.UNDEAD_HORSE);
 	}
 
 	// -------------------------------------------- //
@@ -713,7 +713,7 @@ public class ListenerMain implements Listener
 				uplayer.runFxFlameBurst();
 			}
 		}
-	}	
+	}
 	
 	// -------------------------------------------- //
 	// ALTARS

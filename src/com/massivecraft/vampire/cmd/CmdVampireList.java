@@ -4,12 +4,12 @@ import java.util.*;
 
 import org.bukkit.ChatColor;
 
-import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.Multiverse;
-import com.massivecraft.mcore.cmd.VisibilityMode;
-import com.massivecraft.mcore.cmd.arg.ARInteger;
-import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.Txt;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.cmd.VisibilityMode;
+import com.massivecraft.massivecore.cmd.arg.ARInteger;
+import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColls;
@@ -46,7 +46,7 @@ public class CmdVampireList extends VCommand
 		if (pageHumanBased == null) return;
 		
 		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
-		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MCore.DEFAULT : mv.getUniverse(me));
+		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
 		if (universe == null) return;
 		
 		List<String> vampiresOnline = new ArrayList<String>();
