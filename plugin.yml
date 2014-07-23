@@ -1,6 +1,6 @@
 main: com.massivecraft.vampire.Vampire
 name: Vampire
-version: 5.5.0
+version: 5.6.0
 website: http://massivecraft.com/vampire
 authors: [Cayorion]
 description: §eAnyone can become a vampire, but do you want to? During daytime vampires cower from sunlight. During the night the humans reach for their holy water and wooden stakes as the vampires roam the lands with inhuman strength, speed and levitation-powers. Driven by their endless bloodlust, they devour all living in their way. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttp://massivecraft.com
@@ -86,7 +86,6 @@ permissions:
     children:
       vampire.kit.rank0: true
       vampire.show.other: true
-      vampire.mode.bloodlust: true
       vampire.list: true
   vampire.kit.rank0:
     default: false
@@ -96,6 +95,7 @@ permissions:
       vampire.shriek: true
       vampire.mode.intent: true
       vampire.mode.nightvision: true
+      vampire.mode.bloodlust: true
       vampire.trade.offer: true
       vampire.trade.accept: true
       vampire.combat.infect: true
