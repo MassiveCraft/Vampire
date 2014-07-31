@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.arg.ARSenderEntity;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.entity.MLang;
@@ -53,7 +52,7 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 		if (universe == null) return;
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
-		ArgReader<UPlayer> playerReader = ARSenderEntity.getStartAny(playerColl);
+		ArgReader<UPlayer> playerReader = playerColl.getAREntity();
 		UPlayer uplayer = this.arg(1, playerReader, vme);
 		if (uplayer == null) return;
 		
