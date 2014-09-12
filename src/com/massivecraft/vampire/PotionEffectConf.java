@@ -12,8 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.massivecore.integration.protocollib.EventMassiveCoreEntityPotionColor;
-
 @SuppressWarnings("deprecation")
 public class PotionEffectConf
 {
@@ -51,13 +49,6 @@ public class PotionEffectConf
 	// UTIL
 	// -------------------------------------------- //
 	
-	public void applyFor(EventMassiveCoreEntityPotionColor event, EventPriority eventPriority)
-	{
-		if (this.colorSet == false) return;
-		if (this.priority != eventPriority) return;
-		event.setColor(this.colorValue);
-	}
-	
 	public void addPotionEffects(LivingEntity entity, int targetDuration, int okDuration)
 	{
 		Map<Integer, Integer> effectIdToStrength = new HashMap<Integer, Integer>(this.effectIdToStrength);
@@ -86,7 +77,7 @@ public class PotionEffectConf
 			PotionEffectType pet = PotionEffectType.getById(entry.getKey());
 			Integer strength = entry.getValue();
 			
-			entity.addPotionEffect(new PotionEffect(pet, targetDuration, strength), true);
+			entity.addPotionEffect(new PotionEffect(pet, targetDuration, strength, true), true);
 		}
 	}
 	
