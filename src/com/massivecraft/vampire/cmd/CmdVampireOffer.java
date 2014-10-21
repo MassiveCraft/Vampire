@@ -37,7 +37,7 @@ public class CmdVampireOffer extends VCommand
 	@Override
 	public void perform()
 	{
-		Player you = this.arg(0, ARPlayer.getStart());
+		Player you = this.arg(0, ARPlayer.get());
 		if (you == null) return;
 		UPlayer vyou = UPlayer.get(you);
 		

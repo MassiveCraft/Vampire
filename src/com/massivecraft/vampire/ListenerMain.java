@@ -40,7 +40,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.integration.protocollib.EventMassiveCoreEntityPotionColor;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.vampire.entity.MLang;
@@ -70,75 +69,6 @@ public class ListenerMain implements Listener
 	public void deactivate()
 	{
 		HandlerList.unregisterAll(this);
-	}
-	
-	// -------------------------------------------- //
-	// ENTITY POTION COLOR
-	// -------------------------------------------- //
-	
-	public void entityPotionColor(EventMassiveCoreEntityPotionColor event, EventPriority eventPriority)
-	{
-		Entity entity = event.getEntity();
-		if (!(entity instanceof Player)) return;
-		
-		Player player = (Player)entity;
-		UPlayer uplayer = UPlayer.get(player);
-		UConf uconf = UConf.get(player);
-		
-		if (uplayer.isHuman())
-		{
-			uconf.effectConfHuman.applyFor(event, eventPriority);
-		}
-		
-		if (uplayer.isInfected())
-		{
-			uconf.effectConfInfected.applyFor(event, eventPriority);
-		}
-		
-		if (uplayer.isVampire())
-		{
-			uconf.effectConfVampire.applyFor(event, eventPriority);
-		}
-		
-		if (uplayer.isVampire() && uconf.nightvisionCanBeUsed && uplayer.isUsingNightVision())
-		{
-			uconf.effectConfNightvision.applyFor(event, eventPriority);
-		}
-		
-		if (uplayer.isVampire() && uplayer.isBloodlusting())
-		{
-			uconf.effectConfBloodlust.applyFor(event, eventPriority);
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void entityPotionColorLowest(EventMassiveCoreEntityPotionColor event)
-	{
-		this.entityPotionColor(event, EventPriority.LOWEST);
-	}
-	
-	@EventHandler(priority = EventPriority.LOW)
-	public void entityPotionColorLow(EventMassiveCoreEntityPotionColor event)
-	{
-		this.entityPotionColor(event, EventPriority.LOW);
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void entityPotionColorNormal(EventMassiveCoreEntityPotionColor event)
-	{
-		this.entityPotionColor(event, EventPriority.NORMAL);
-	}
-	
-	@EventHandler(priority = EventPriority.HIGH)
-	public void entityPotionColorHigh(EventMassiveCoreEntityPotionColor event)
-	{
-		this.entityPotionColor(event, EventPriority.HIGH);
-	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void entityPotionColorHighest(EventMassiveCoreEntityPotionColor event)
-	{
-		this.entityPotionColor(event, EventPriority.HIGHEST);
 	}
 	
 	// -------------------------------------------- //

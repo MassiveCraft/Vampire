@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.arg.ARSenderEntity;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -54,7 +53,7 @@ public class CmdVampireShow extends VCommand
 		if (universe == null) return;
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
-		ArgReader<UPlayer> playerReader = ARSenderEntity.getStartAny(playerColl);
+		ArgReader<UPlayer> playerReader = playerColl.getAREntity();
 		UPlayer uplayer = this.arg(0, playerReader, vme);
 		if (uplayer == null) return;
 		

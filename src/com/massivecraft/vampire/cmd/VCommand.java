@@ -21,4 +21,10 @@ public abstract class VCommand extends MassiveCommand
 		this.vme = UPlayer.get(this.sender);
 	}
 	
+	@Override
+	public void unsetSenderVars()
+	{
+		this.vme = null;
+	}
+	
 }
