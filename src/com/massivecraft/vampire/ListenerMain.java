@@ -199,7 +199,7 @@ public class ListenerMain implements Listener
 				if (player == null) return;
 				UConf uconf = UConf.get(player);
 				player.setFoodLevel(uconf.updateRespawnFood);
-				player.setHealth(uconf.updateRespawnHealth);
+				player.setHealth((double)uconf.updateRespawnHealth);
 				PlayerUtil.sendHealthFoodUpdatePacket(player);
 				uplayer.update();
 			}
@@ -398,7 +398,7 @@ public class ListenerMain implements Listener
 		if ( ! uconf.combatWoodMaterials.contains(itemMaterial)) return;
 		
 		// ... Then modify damage!
-		event.setDamage(uconf.combatWoodDamage);
+		event.setDamage((double)uconf.combatWoodDamage);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -415,7 +415,7 @@ public class ListenerMain implements Listener
 		// ... Then modify damage!
 		double damage = event.getDamage();
 		damage *= vampire.combatDamageFactor();
-		event.setDamage((int) MUtil.probabilityRound(damage));
+		event.setDamage(MUtil.probabilityRound(damage));
 	}
 	
 	// -------------------------------------------- //
