@@ -1,9 +1,9 @@
 package com.massivecraft.vampire;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.ModuloRepeatTask;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
 
@@ -38,7 +38,7 @@ public class TheTask extends ModuloRepeatTask
 	public void invoke(long now)
 	{
 		// Tick each online player
-		for (Player player: Bukkit.getOnlinePlayers())
+		for (Player player: MUtil.getOnlinePlayers())
 		{
 			UPlayer uplayer = UPlayer.get(player);
 			uplayer.tick(now - this.getPreviousMillis());
