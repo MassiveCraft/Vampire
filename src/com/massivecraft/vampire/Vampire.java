@@ -67,7 +67,7 @@ public class Vampire extends MassivePlugin
 		
 		// Commands
 		this.cmdBase = new CmdVampire();
-		this.cmdBase.register();
+		this.cmdBase.register(this);
 		
 		// Tasks
 		TheTask.get().activate(this);
