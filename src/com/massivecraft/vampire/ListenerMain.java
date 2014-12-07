@@ -398,7 +398,7 @@ public class ListenerMain implements Listener
 		if ( ! uconf.combatWoodMaterials.contains(itemMaterial)) return;
 		
 		// ... Then modify damage!
-		event.setDamage(uconf.combatWoodDamage);
+		event.setDamage(uconf.combatWoodDamageFactor * event.getDamage());
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

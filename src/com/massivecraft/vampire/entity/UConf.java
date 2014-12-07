@@ -175,8 +175,7 @@ public class UConf extends Entity<UConf>
 	public double combatDamageFactorWithoutBloodlust = 1.0;
 	public double combatDamageFactorWithBloodlust = 1.2;
 	
-	private final static transient int damageDiamondSword = 7;
-	public int combatWoodDamage = 3*damageDiamondSword;
+	public int combatWoodDamageFactor= 3;
 	
 	public Set<Material> combatWoodMaterials = MUtil.set(
 		Material.WOOD_AXE,
