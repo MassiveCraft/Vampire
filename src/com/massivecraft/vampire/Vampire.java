@@ -70,7 +70,7 @@ public class Vampire extends MassivePlugin
 		this.cmdBase.register(this);
 		
 		// Tasks
-		TheTask.get().activate(this);
+		TheTask.get().activate();
 	
 		// Listeners
 		ListenerMain.get().activate();

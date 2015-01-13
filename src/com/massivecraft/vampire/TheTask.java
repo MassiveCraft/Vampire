@@ -1,6 +1,7 @@
 package com.massivecraft.vampire;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.util.MUtil;
@@ -20,6 +21,12 @@ public class TheTask extends ModuloRepeatTask
 	// -------------------------------------------- //
 	// OVERRIDE: MODULO REPEAT TASK
 	// -------------------------------------------- //
+	
+	@Override
+	public Plugin getPlugin()
+	{
+		return Vampire.get();
+	}
 	
 	@Override
 	public long getDelayMillis()
