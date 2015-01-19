@@ -398,7 +398,7 @@ public class ListenerMain implements Listener
 		if ( ! uconf.combatWoodMaterials.contains(itemMaterial)) return;
 		
 		// ... Then modify damage!
-		event.setDamage((double)uconf.combatWoodDamage);
+		MUtil.setDamage(event, uconf.combatWoodDamage);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -413,9 +413,7 @@ public class ListenerMain implements Listener
 		if ( ! vampire.isVampire()) return;
 		
 		// ... Then modify damage!
-		double damage = event.getDamage();
-		damage *= vampire.combatDamageFactor();
-		event.setDamage(damage);
+		MUtil.scaleDamage(event, vampire.combatDamageFactor());
 	}
 	
 	// -------------------------------------------- //
