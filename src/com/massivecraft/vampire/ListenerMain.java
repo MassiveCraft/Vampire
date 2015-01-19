@@ -340,7 +340,7 @@ public class ListenerMain implements Listener
 	public void truceDamage(EntityDamageEvent event)
 	{
 		// If this is a combat event ...
-		if ( ! MUtil.isCombatEvent(event)) return;		
+		if ( ! MUtil.isCombatEvent(event)) return;
 		
 		// ... to a creature that cares about the truce with vampires...
 		Entity entity = event.getEntity();
@@ -415,7 +415,7 @@ public class ListenerMain implements Listener
 		// ... Then modify damage!
 		double damage = event.getDamage();
 		damage *= vampire.combatDamageFactor();
-		event.setDamage(MUtil.probabilityRound(damage));
+		event.setDamage(damage);
 	}
 	
 	// -------------------------------------------- //
