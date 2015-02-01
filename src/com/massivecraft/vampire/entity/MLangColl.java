@@ -18,6 +18,16 @@ public class MLangColl extends Coll<MLang>
 	{
 		super(Const.COLLECTION_MLANG, MLang.class, MStore.getDb(), Vampire.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

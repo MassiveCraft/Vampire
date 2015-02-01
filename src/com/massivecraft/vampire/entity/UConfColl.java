@@ -14,9 +14,15 @@ public class UConfColl extends Coll<UConf>
 	{
 		super(name, UConf.class, MStore.getDb(), Vampire.get(), false, true, false);
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
 	
-	// -------------------------------------------- //
-	// EXTRAS
-	// -------------------------------------------- //
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 }
