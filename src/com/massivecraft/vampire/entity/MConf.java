@@ -21,5 +21,8 @@ public class MConf extends Entity<MConf>
 	public List<String> aliasesV = MUtil.list("v");
 	
 	public long taskDelayMillis = 500L; // Half a second 
+	
+	// Should the vampire strength be allowed together with skull splitter.
+	public boolean combatDamageFactorWithMcmmoAbilities = false;
 
 }

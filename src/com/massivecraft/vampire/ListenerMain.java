@@ -42,6 +42,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
@@ -411,6 +412,9 @@ public class ListenerMain implements Listener
 		UPlayer vampire = UPlayer.get(MUtil.getLiableDamager(event));
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
+		
+		// ... and this event isn't a forbidden mcmmo one ...
+		if ( ! MConf.get().combatDamageFactorWithMcmmoAbilities && event.getClass().getName().equals("com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent")) return;
 		
 		// ... Then modify damage!
 		MUtil.scaleDamage(event, vampire.combatDamageFactor());

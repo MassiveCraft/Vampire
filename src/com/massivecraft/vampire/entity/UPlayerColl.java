@@ -17,6 +17,16 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	{
 		super(name, UPlayer.class, MStore.getDb(), Vampire.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// EXTRAS
