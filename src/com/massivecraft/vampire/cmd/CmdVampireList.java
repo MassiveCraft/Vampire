@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.VisibilityMode;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -40,14 +41,12 @@ public class CmdVampireList extends VCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
-		if (pageHumanBased == null) return;
 		
 		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
 		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
-		if (universe == null) return;
 		
 		List<String> vampiresOnline = new ArrayList<String>();
 		List<String> vampiresOffline = new ArrayList<String>();

@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 
@@ -23,11 +24,9 @@ public abstract class CmdVampireModeAbstract extends VCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Boolean val = this.arg(0, ARBoolean.get(), ! this.get());
-		if (val == null) return;
-			
 		this.set(val);
 	}
 	

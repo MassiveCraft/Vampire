@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.entity.MLang;
@@ -39,7 +40,7 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		if ( vme == null && ! this.argIsSet(1))
 		{
@@ -49,13 +50,11 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 		
 		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
 		String universe = this.arg(2, mv.argReaderUniverse(), senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
-		if (universe == null) return;
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
 		ArgReader<UPlayer> playerReader = playerColl.getAREntity();
 		UPlayer uplayer = this.arg(1, playerReader, vme);
-		if (uplayer == null) return;
-		
+				
 		Player player = uplayer.getPlayer();
 		
 		if (targetMustBeOnline && player == null)
@@ -65,7 +64,6 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 		}
 		
 		T val = this.arg(0, argReader);
-		if (val == null) return;
 		
 		T res = this.set(uplayer, player, val);
 		

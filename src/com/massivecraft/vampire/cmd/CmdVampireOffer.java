@@ -2,6 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.arg.ARPlayer;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -35,14 +36,12 @@ public class CmdVampireOffer extends VCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Player you = this.arg(0, ARPlayer.get());
-		if (you == null) return;
 		UPlayer vyou = UPlayer.get(you);
 		
 		Double unlimitedAmount = this.arg(1, ARDouble.get(), 4D);
-		if (unlimitedAmount == null) return;
 		
 		double amount = MUtil.limitNumber(unlimitedAmount, 0D, 20D);
 		if (amount != unlimitedAmount)
