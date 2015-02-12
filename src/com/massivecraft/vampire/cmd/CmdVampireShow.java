@@ -3,8 +3,8 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -41,7 +41,7 @@ public class CmdVampireShow extends VCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		if ( vme == null && ! this.argIsSet(0))
 		{
