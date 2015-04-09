@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.arg.ArgReader;
-import com.massivecraft.vampire.*;
+import com.massivecraft.massivecore.cmd.arg.AR;
+import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
@@ -19,7 +19,7 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 	// -------------------------------------------- //
 	
 	public boolean targetMustBeOnline;
-	public ArgReader<T> argReader;
+	public AR<T> argReader;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -52,7 +52,7 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 		String universe = this.arg(2, mv.argReaderUniverse(), senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
-		ArgReader<UPlayer> playerReader = playerColl.getAREntity();
+		AR<UPlayer> playerReader = playerColl.getAREntity();
 		UPlayer uplayer = this.arg(1, playerReader, vme);
 				
 		Player player = uplayer.getPlayer();
