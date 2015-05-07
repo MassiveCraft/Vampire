@@ -5,7 +5,8 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.InfectionReason;
+import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 
@@ -17,8 +18,7 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 	
 	public CmdVampireSetInfection()
 	{
-		targetMustBeOnline = false;
-		argReader = ARDouble.get();
+		super(false, ARDouble.get());
 		
 		// Aliases
 		this.addAliases("i");
@@ -37,7 +37,7 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 		Double res = MUtil.limitNumber(val, 0D, 100D);
 		if (uplayer.isVampire())
 		{
-			msg(MLang.get().xIsAlreadyVamp, uplayer.getDisplayName());
+			msg(MLang.get().xIsAlreadyVamp, uplayer.getDisplayName(sender));
 			return null;
 		}
 		

@@ -16,8 +16,7 @@ public class CmdVampireSetFood extends CmdVampireSetAbstract<Integer>
 	
 	public CmdVampireSetFood()
 	{
-		targetMustBeOnline = true;
-		argReader = ARInteger.get();
+		super(true, ARInteger.get());
 		
 		// Aliases
 		this.addAliases("f");

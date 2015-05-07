@@ -4,10 +4,9 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.arg.AR;
 import com.massivecraft.vampire.Vampire;
-import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
 import com.massivecraft.vampire.entity.UPlayerColls;
@@ -21,18 +20,22 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 	public boolean targetMustBeOnline;
 	public AR<T> argReader;
 	
+	private ArgSetting playerReaderSetting = ArgSetting.of(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getAREntity(), true, "player", "you");
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdVampireSetAbstract()
+	public CmdVampireSetAbstract(boolean targetMustBeOnline, AR<T> argReader)
 	{
-		// Aliases
-		this.addRequiredArg("val");
+		// Seup fields
+		this.targetMustBeOnline = targetMustBeOnline;
+		this.argReader = argReader;
 		
 		// Args
-		this.addOptionalArg("player", "you");
-		this.addOptionalArg("univ", "you");
+		this.addArg(argReader, "val");
+		this.addArg(playerReaderSetting);
+		this.addArg(Vampire.get().playerAspect.getMultiverse().argReaderUniverse(), "univ", "you");
 	}
 	
 	// -------------------------------------------- //
@@ -42,34 +45,29 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		if ( vme == null && ! this.argIsSet(1))
-		{
-			msg(MLang.get().consolePlayerArgRequired);
-			return;
-		}
-		
-		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
-		String universe = this.arg(2, mv.argReaderUniverse(), senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
+		String universe = this.readArgAt(2, senderIsConsole ? MassiveCore.DEFAULT : Vampire.get().playerAspect.getMultiverse().getUniverse(me));
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
 		AR<UPlayer> playerReader = playerColl.getAREntity();
-		UPlayer uplayer = this.arg(1, playerReader, vme);
+		this.playerReaderSetting.setReader(playerReader);
+		
+		UPlayer uplayer = this.readArgAt(1, vme);
 				
 		Player player = uplayer.getPlayer();
 		
 		if (targetMustBeOnline && player == null)
 		{
-			msg("<h>%s <b>is not online.", uplayer.getDisplayName());
+			msg("<h>%s <b>is not online.", uplayer.getDisplayName(sender));
 			return;
 		}
 		
-		T val = this.arg(0, argReader);
+		T val = this.readArgAt(0);
 		
 		T res = this.set(uplayer, player, val);
 		
 		if (res == null) return;
 		
-		msg("<i>%s <i>now has %s = %s.", uplayer.getDisplayName(), this.getAliases().get(0), res.toString());
+		msg("<i>%s <i>now has %s = %s.", uplayer.getDisplayName(sender), this.getAliases().get(0), res.toString());
 	}
 	
 	// -------------------------------------------- //

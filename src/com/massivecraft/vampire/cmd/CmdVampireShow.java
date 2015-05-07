@@ -5,12 +5,12 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.arg.AR;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
-import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
@@ -19,6 +19,12 @@ import com.massivecraft.vampire.util.SunUtil;
 
 public class CmdVampireShow extends VCommand
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private ArgSetting playerReaderSetting = ArgSetting.of(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getAREntity(), true, "player", "you");
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -29,8 +35,8 @@ public class CmdVampireShow extends VCommand
 		this.addAliases("s", "show");
 		
 		// Args
-		this.addOptionalArg("player", "you");
-		this.addOptionalArg("univ", "you");
+		this.addArg(playerReaderSetting);
+		this.addArg(Vampire.get().playerAspect.getMultiverse().argReaderUniverse(), "univ", "you");
 		
 		// Requirements
 		this.addRequirements(new ReqHasPerm(Perm.SHOW.node));
@@ -43,18 +49,14 @@ public class CmdVampireShow extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		if ( vme == null && ! this.argIsSet(0))
-		{
-			msg(MLang.get().consolePlayerArgRequired);
-			return;
-		}
-		
 		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
-		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
+		String universe = this.readArgAt(1, senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
 		AR<UPlayer> playerReader = playerColl.getAREntity();
-		UPlayer uplayer = this.arg(0, playerReader, vme);
+		this.playerReaderSetting.setReader(playerReader);
+		
+		UPlayer uplayer = this.readArgAt(0, vme);
 		
 		Player player = uplayer.getPlayer();
 		UConf uconf = UConf.get(player);
@@ -69,12 +71,12 @@ public class CmdVampireShow extends VCommand
 		String are = "are";
 		if ( ! self)
 		{
-			You = uplayer.getDisplayName();
+			You = uplayer.getDisplayName(sender);
 			//you = uplayer.getId();
 			are = "is";
 		}
 		
-		msg(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+uplayer.getDisplayName()));
+		msg(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+uplayer.getDisplayName(sender)));
 		if (uplayer.isVampire())
 		{
 			msg("<i>"+You+" <i>"+are+" a vampire.");

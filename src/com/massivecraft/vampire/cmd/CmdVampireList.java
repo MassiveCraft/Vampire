@@ -1,17 +1,19 @@
 package com.massivecraft.vampire.cmd;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.VisibilityMode;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
-import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColls;
 
@@ -27,8 +29,8 @@ public class CmdVampireList extends VCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addOptionalArg("page", "1");
-		this.addOptionalArg("universe", "you");
+		this.addArg(ArgSetting.getPager());
+		this.addArg(Vampire.get().playerAspect.getMultiverse().argReaderUniverse(), "universe", "you");
 		
 		this.setVisibilityMode(VisibilityMode.SECRET);
 		
@@ -43,10 +45,10 @@ public class CmdVampireList extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
+		int pageHumanBased = this.readArg(1);
 		
 		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
-		String universe = this.arg(1, mv.argReaderUniverse(), senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
+		String universe = this.readArg(senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
 		
 		List<String> vampiresOnline = new ArrayList<String>();
 		List<String> vampiresOffline = new ArrayList<String>();
@@ -59,22 +61,22 @@ public class CmdVampireList extends VCommand
 			{
 				if (uplayer.isOnline())
 				{
-					vampiresOnline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName());
+					vampiresOnline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName(sender));
 				}
 				else
 				{
-					vampiresOffline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName());
+					vampiresOffline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName(sender));
 				}
 			}
 			else if (uplayer.isInfected())
 			{
 				if (uplayer.isOnline())
 				{
-					infectedOnline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName());
+					infectedOnline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName(sender));
 				}
 				else
 				{
-					infectedOffline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName());
+					infectedOffline.add(ChatColor.WHITE.toString() + uplayer.getDisplayName(sender));
 				}
 			}
 		}

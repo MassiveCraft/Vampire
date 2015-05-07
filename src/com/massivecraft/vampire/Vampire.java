@@ -65,15 +65,15 @@ public class Vampire extends MassivePlugin
 		UConfColls.get().init();
 		UPlayerColls.get().init();
 		
-		// Commands
-		this.cmdBase = new CmdVampire();
-		this.cmdBase.register(this);
-		
 		// Tasks
 		TheTask.get().activate();
 	
 		// Listeners
 		ListenerMain.get().activate();
+		
+		// Commands
+		this.cmdBase = new CmdVampire();
+		this.cmdBase.register(this);
 		
 		postEnable();
 	}

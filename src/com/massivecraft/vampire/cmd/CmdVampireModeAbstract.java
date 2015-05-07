@@ -13,7 +13,7 @@ public abstract class CmdVampireModeAbstract extends VCommand
 	public CmdVampireModeAbstract()
 	{
 		// Args
-		this.addOptionalArg("bool", "flip");
+		this.addArg(ARBoolean.get(), "yes/no", "toggle");
 		
 		// Requirements
 		this.addRequirements(ReqIsVampire.get());
@@ -26,7 +26,7 @@ public abstract class CmdVampireModeAbstract extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Boolean val = this.arg(0, ARBoolean.get(), ! this.get());
+		boolean val = this.readArg(! this.get());
 		this.set(val);
 	}
 	

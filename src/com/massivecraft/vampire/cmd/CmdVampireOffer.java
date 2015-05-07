@@ -23,8 +23,8 @@ public class CmdVampireOffer extends VCommand
 		this.addAliases("o", "offer");
 		
 		// Args
-		this.addRequiredArg("playername");
-		this.addOptionalArg("amount", "4.0");
+		this.addArg(ARPlayer.get(), "player");
+		this.addArg(ARDouble.get(), "amount", "4.0");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.TRADE_OFFER.node));
@@ -38,10 +38,10 @@ public class CmdVampireOffer extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Player you = this.arg(0, ARPlayer.get());
+		Player you = this.readArg();
 		UPlayer vyou = UPlayer.get(you);
 		
-		Double unlimitedAmount = this.arg(1, ARDouble.get(), 4D);
+		double unlimitedAmount = this.readArg(4D);
 		
 		double amount = MUtil.limitNumber(unlimitedAmount, 0D, 20D);
 		if (amount != unlimitedAmount)

@@ -3,7 +3,8 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.cmd.arg.ARBoolean;
-import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.InfectionReason;
+import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.UPlayer;
 
 public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
@@ -14,8 +15,7 @@ public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
 	
 	public CmdVampireSetVampire()
 	{
-		targetMustBeOnline = false;
-		argReader = ARBoolean.get();
+		super(false, ARBoolean.get());
 		
 		// Aliases
 		this.addAliases("v");

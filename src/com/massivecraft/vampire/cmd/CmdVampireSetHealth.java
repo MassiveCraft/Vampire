@@ -16,8 +16,7 @@ public class CmdVampireSetHealth extends CmdVampireSetAbstract<Integer>
 	
 	public CmdVampireSetHealth()
 	{
-		targetMustBeOnline = true;
-		argReader = ARInteger.get();
+		super(true, ARInteger.get());
 		
 		// Aliases
 		this.addAliases("h");
