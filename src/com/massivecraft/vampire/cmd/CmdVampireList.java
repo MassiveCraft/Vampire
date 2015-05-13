@@ -29,7 +29,7 @@ public class CmdVampireList extends VCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addArg(ArgSetting.getPager());
+		this.addArg(ArgSetting.getPage());
 		this.addArg(Vampire.get().playerAspect.getMultiverse().argReaderUniverse(), "universe", "you");
 		
 		this.setVisibilityMode(VisibilityMode.SECRET);
@@ -45,7 +45,7 @@ public class CmdVampireList extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		int pageHumanBased = this.readArg(1);
+		int page = this.readArg();
 		
 		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
 		String universe = this.readArg(senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
@@ -110,7 +110,7 @@ public class CmdVampireList extends VCommand
 		
 		// Send them
 		lines = Txt.parseWrap(lines);
-		this.sendMessage(Txt.getPage(lines, pageHumanBased, Txt.upperCaseFirst(universe)+" Vampire Players", sender));	
+		this.sendMessage(Txt.getPage(lines, page, Txt.upperCaseFirst(universe)+" Vampire Players", sender));	
 	}
 	
 }
