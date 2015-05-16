@@ -40,6 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.vampire.entity.MConf;
@@ -80,8 +81,13 @@ public class ListenerMain implements Listener
 	public void fxOnDeath(EntityDeathEvent event)
 	{
 		// If a vampire dies ...
-		UPlayer uplayer = UPlayer.get(event.getEntity());
+		Player player = IdUtil.getAsPlayer(event.getEntity());
+		if (player == null) return;
+		if (MUtil.isNpc(player)) return;
+		
+		UPlayer uplayer = UPlayer.get(player);
 		if (uplayer == null) return;
+		
 		if (uplayer.isVampire() == false) return;
 		
 		// ... burns up with a violent scream ;,,;
