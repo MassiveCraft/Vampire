@@ -82,8 +82,7 @@ public class ListenerMain implements Listener
 	{
 		// If a vampire dies ...
 		Player player = IdUtil.getAsPlayer(event.getEntity());
-		if (player == null) return;
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		UPlayer uplayer = UPlayer.get(player);
 		if (uplayer == null) return;
@@ -105,10 +104,9 @@ public class ListenerMain implements Listener
 	{
 		Entity entity = event.getEntity();
 		UConf uconf = UConf.get(entity);
-		
-		if ( ! (entity instanceof Player)) return;
 		if ( ! uconf.blockDamageFrom.contains(event.getCause())) return;
 		
+		if (MUtil.isntPlayer(entity)) return;
 		Player player = (Player)entity;
 		UPlayer uplayer = UPlayer.get(player);
 		
@@ -120,10 +118,9 @@ public class ListenerMain implements Listener
 	{
 		Entity entity = event.getEntity();
 		UConf uconf = UConf.get(entity);
-		
-		if ( ! (entity instanceof Player)) return;
 		if ( ! uconf.blockHealthFrom.contains(event.getRegainReason())) return;
 		
+		if (MUtil.isntPlayer(entity)) return;
 		Player player = (Player) entity;		
 		UPlayer uplayer = UPlayer.get(player);
 		
@@ -134,7 +131,7 @@ public class ListenerMain implements Listener
 	public void blockEvents(FoodLevelChangeEvent event)
 	{
 		Entity entity = event.getEntity();
-		if ( ! (entity instanceof Player)) return;
+		if (MUtil.isntPlayer(entity)) return;
 		
 		Player player = (Player) entity;		
 		UPlayer uplayer = UPlayer.get(player);
@@ -154,7 +151,7 @@ public class ListenerMain implements Listener
 	public void updateOnJoin(PlayerJoinEvent event)
 	{
 		final Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		UPlayer uplayer = UPlayer.get(player);
 		uplayer.update();
@@ -164,7 +161,7 @@ public class ListenerMain implements Listener
 	public void updateOnTeleport(PlayerTeleportEvent event)
 	{
 		final Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
 		{
@@ -196,7 +193,7 @@ public class ListenerMain implements Listener
 	{
 		// If the player is a vampire ...
 		final Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		final UPlayer uplayer = UPlayer.get(player);
 		if (uplayer == null) return;
@@ -219,7 +216,7 @@ public class ListenerMain implements Listener
 	
 	public void updateNameColor(Player player)
 	{
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		UConf uconf = UConf.get(player); 
 		if (uconf.updateNameColor == false) return;
 		UPlayer uplayer = UPlayer.get(player);
@@ -277,7 +274,7 @@ public class ListenerMain implements Listener
 	{
 		// If a noncreative player ...
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		if (player.getGameMode() == GameMode.CREATIVE) return;
 		
 		// ... moved between two blocks ...
@@ -310,7 +307,7 @@ public class ListenerMain implements Listener
 		
 		// ... turn of bloodlust ...
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		UPlayer uplayer = UPlayer.get(player);
 		uplayer.setBloodlusting(false);
 	}
@@ -323,8 +320,7 @@ public class ListenerMain implements Listener
 	public void truceTarget(EntityTargetEvent event)
 	{
 		// If a player is targeted...
-		if ( ! (event.getTarget() instanceof Player)) return;
-		
+		if (MUtil.isntPlayer(event.getTarget())) return;
 		Player player = (Player)event.getTarget();
 		UConf uconf = UConf.get(player);
 		
@@ -541,7 +537,7 @@ public class ListenerMain implements Listener
 	public void foodCake(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		UConf uconf = UConf.get(player);
 		
 		// If cake eating is not allowed for vampires ...
@@ -626,7 +622,7 @@ public class ListenerMain implements Listener
 		Location splashLocation = thrownPotion.getLocation();
 		
 		ProjectileSource projectileShooter = projectile.getShooter();
-		if (!(projectileShooter instanceof Player)) return;
+		if (MUtil.isntPlayer(projectileShooter)) return;
 		Player shooter = (Player)projectileShooter;
 		
 		// ... then to all nearby players ...
@@ -674,7 +670,7 @@ public class ListenerMain implements Listener
 		
 		// ... run altar logic.
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		UConf uconf = UConf.get(player);
 		
 		if(uconf.altarDark.evalBlockUse(event.getClickedBlock(), player) || uconf.altarLight.evalBlockUse(event.getClickedBlock(), player))
