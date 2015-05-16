@@ -178,7 +178,9 @@ public class ListenerMain implements Listener
 	public void updateOnDeath(EntityDeathEvent event)
 	{
 		// If a vampire dies ...
-		UPlayer uplayer = UPlayer.get(event.getEntity());
+		LivingEntity entity = event.getEntity();
+		if (MUtil.isntPlayer(entity)) return;
+		UPlayer uplayer = UPlayer.get(entity);
 		if (uplayer == null) return;
 		if (uplayer.isVampire() == false) return;
 		
@@ -358,7 +360,9 @@ public class ListenerMain implements Listener
 		if ( ! (uconf.truceEntityTypes.contains(entity.getType()))) return;
 		
 		// ... and the liable damager is a vampire ...
-		UPlayer vpdamager = UPlayer.get(MUtil.getLiableDamager(event));
+		Entity damager = MUtil.getLiableDamager(event);
+		if (MUtil.isntPlayer(damager)) return;
+		UPlayer vpdamager = UPlayer.get(damager);
 		if (vpdamager == null) return;
 		if ( ! vpdamager.isVampire()) return;
 		
@@ -374,7 +378,9 @@ public class ListenerMain implements Listener
 	public void regen(EntityDamageEvent event)
 	{
 		// If the damagee is a vampire ...
-		UPlayer vampire = UPlayer.get(event.getEntity());
+		Entity entity = event.getEntity();
+		if (MUtil.isntPlayer(entity)) return;
+		UPlayer vampire = UPlayer.get(entity);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
 		
@@ -399,7 +405,9 @@ public class ListenerMain implements Listener
 		UConf uconf = UConf.get(damager);
 		
 		// ... and the damagee is a vampire ...
-		UPlayer vampire = UPlayer.get(event.getEntity());
+		Entity entity = event.getEntity();
+		if (MUtil.isntPlayer(entity)) return;
+		UPlayer vampire = UPlayer.get(entity);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
 		
@@ -418,7 +426,9 @@ public class ListenerMain implements Listener
 		if ( ! MUtil.isCloseCombatEvent(event)) return;
 		
 		// ... and the liable damager is a vampire ...
-		UPlayer vampire = UPlayer.get(MUtil.getLiableDamager(event));
+		Entity damager = MUtil.getLiableDamager(event);
+		if (MUtil.isntPlayer(damager)) return;
+		UPlayer vampire = UPlayer.get(damager);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
 		
@@ -440,9 +450,13 @@ public class ListenerMain implements Listener
 		if ( ! MUtil.isCloseCombatEvent(event)) return;
 		
 		// ... where there is one vampire and one non-vampire ...
-		UPlayer vpdamagee = UPlayer.get(event.getEntity());
+		Entity damagee = event.getEntity();
+		if (MUtil.isntPlayer(damagee)) return;
+		UPlayer vpdamagee = UPlayer.get(damagee);
 		if (vpdamagee == null) return;
-		UPlayer vpdamager = UPlayer.get(MUtil.getLiableDamager(event));
+		Entity damager = MUtil.getLiableDamager(event);
+		if (MUtil.isntPlayer(damager)) return;
+		UPlayer vpdamager = UPlayer.get(damager);
 		if (vpdamager == null) return;
 		
 		UPlayer vampire = null;
@@ -492,7 +506,9 @@ public class ListenerMain implements Listener
 		if ( ! MUtil.isCloseCombatEvent(event)) return;
 		
 		// ... where there is one vampire ... 
-		UPlayer vpdamager = UPlayer.get(MUtil.getLiableDamager(event));
+		Entity damager = MUtil.getLiableDamager(event);
+		if (MUtil.isntPlayer(damager)) return;
+		UPlayer vpdamager = UPlayer.get(damager);
 		if (vpdamager == null) return;
 		if (!vpdamager.isVampire()) return;
 		UPlayer vampire = vpdamager;
@@ -581,7 +597,9 @@ public class ListenerMain implements Listener
 		}
 		
 		// ... and the liable damager is a vampire ...
-		UPlayer vampire = UPlayer.get(MUtil.getLiableDamager(event));
+		Entity damager = MUtil.getLiableDamager(event);
+		if (MUtil.isntPlayer(damager)) return;
+		UPlayer vampire = UPlayer.get(damager);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
 		
@@ -628,6 +646,7 @@ public class ListenerMain implements Listener
 		// ... then to all nearby players ...
 		for (Player player : splashLocation.getWorld().getPlayers())
 		{
+			if (MUtil.isntPlayer(player)) continue;
 			if (player.getLocation().distance(splashLocation) > uconf.holyWaterSplashRadius) continue;
 			UPlayer uplayer = UPlayer.get(player);
 			uplayer.msg(MLang.get().holyWaterCommon, shooter.getDisplayName());

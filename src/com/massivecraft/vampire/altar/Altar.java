@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UConf;
@@ -28,6 +29,8 @@ public abstract class Altar
 	
 	public boolean evalBlockUse(Block coreBlock, Player player)
 	{
+		if (MUtil.isntPlayer(player)) return false;
+		
 		if (coreBlock.getType() != coreMaterial) return false;
 		UPlayer uplayer = UPlayer.get(player);
 		UConf uconf = UConf.get(player);

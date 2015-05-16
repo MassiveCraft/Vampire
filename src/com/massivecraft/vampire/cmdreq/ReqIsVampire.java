@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 
@@ -29,6 +30,7 @@ public class ReqIsVampire extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
+		if (MUtil.isntSender(sender)) return false;
 		UPlayer uplayer = UPlayer.get(sender);
 		if (uplayer == null) return false;
 		return uplayer.isVampire();

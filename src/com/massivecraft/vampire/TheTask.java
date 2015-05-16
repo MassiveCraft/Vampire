@@ -45,8 +45,10 @@ public class TheTask extends ModuloRepeatTask
 	public void invoke(long now)
 	{
 		// Tick each online player
-		for (Player player: MUtil.getOnlinePlayers())
+		for (Player player : MUtil.getOnlinePlayers())
 		{
+			if (MUtil.isntPlayer(player)) continue;
+			
 			UPlayer uplayer = UPlayer.get(player);
 			uplayer.tick(now - this.getPreviousMillis());
 		}
