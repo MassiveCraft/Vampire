@@ -59,7 +59,6 @@ public class Vampire extends MassivePlugin
 		);
 		
 		// Database
-		EngineIdUpdate.get().activate();
 		MConfColl.get().init();
 		MLangColl.get().init();
 		UConfColls.get().init();

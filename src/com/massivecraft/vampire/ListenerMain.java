@@ -148,7 +148,9 @@ public class ListenerMain implements Listener
 	public void updateOnJoin(PlayerJoinEvent event)
 	{
 		final Player player = event.getPlayer();
-		final UPlayer uplayer = UPlayer.get(player);
+		if (MUtil.isNpc(player)) return;
+		
+		UPlayer uplayer = UPlayer.get(player);
 		uplayer.update();
 	}
 	
@@ -156,6 +158,7 @@ public class ListenerMain implements Listener
 	public void updateOnTeleport(PlayerTeleportEvent event)
 	{
 		final Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
 		{
@@ -186,7 +189,10 @@ public class ListenerMain implements Listener
 	public void updateOnRespawn(PlayerRespawnEvent event)
 	{
 		// If the player is a vampire ...
-		final UPlayer uplayer = UPlayer.get(event.getPlayer());
+		final Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
+		final UPlayer uplayer = UPlayer.get(player);
 		if (uplayer == null) return;
 		if ( ! uplayer.isVampire()) return;
 		
@@ -196,8 +202,6 @@ public class ListenerMain implements Listener
 			@Override
 			public void run()
 			{
-				Player player = uplayer.getPlayer();
-				if (player == null) return;
 				UConf uconf = UConf.get(player);
 				player.setFoodLevel(uconf.updateRespawnFood);
 				player.setHealth((double)uconf.updateRespawnHealth);
@@ -209,6 +213,7 @@ public class ListenerMain implements Listener
 	
 	public void updateNameColor(Player player)
 	{
+		if (MUtil.isNpc(player)) return;
 		UConf uconf = UConf.get(player); 
 		if (uconf.updateNameColor == false) return;
 		UPlayer uplayer = UPlayer.get(player);
@@ -266,6 +271,7 @@ public class ListenerMain implements Listener
 	{
 		// If a noncreative player ...
 		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		if (player.getGameMode() == GameMode.CREATIVE) return;
 		
 		// ... moved between two blocks ...
@@ -298,6 +304,7 @@ public class ListenerMain implements Listener
 		
 		// ... turn of bloodlust ...
 		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		UPlayer uplayer = UPlayer.get(player);
 		uplayer.setBloodlusting(false);
 	}
@@ -528,6 +535,7 @@ public class ListenerMain implements Listener
 	public void foodCake(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		UConf uconf = UConf.get(player);
 		
 		// If cake eating is not allowed for vampires ...
@@ -660,6 +668,7 @@ public class ListenerMain implements Listener
 		
 		// ... run altar logic.
 		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
 		UConf uconf = UConf.get(player);
 		
 		if(uconf.altarDark.evalBlockUse(event.getClickedBlock(), player) || uconf.altarLight.evalBlockUse(event.getClickedBlock(), player))
