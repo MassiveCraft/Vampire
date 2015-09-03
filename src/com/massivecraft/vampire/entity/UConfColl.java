@@ -12,7 +12,7 @@ public class UConfColl extends Coll<UConf>
 	
 	public UConfColl(String name)
 	{
-		super(name, UConf.class, MStore.getDb(), Vampire.get(), true, false);
+		super(name, UConf.class, MStore.getDb(), Vampire.get(), true, false, false);
 	}
 
 	// -------------------------------------------- //
