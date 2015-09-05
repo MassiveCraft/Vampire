@@ -110,7 +110,7 @@ public class CmdVampireList extends VCommand
 		
 		// Send them
 		lines = Txt.parseWrap(lines);
-		this.message(Txt.getPage(lines, page, Txt.upperCaseFirst(universe)+" Vampire Players", sender));	
+		this.message(Txt.getPage(lines, page, Txt.upperCaseFirst(universe)+" Vampire Players", this));	
 	}
 	
 }
