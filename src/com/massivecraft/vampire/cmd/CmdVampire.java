@@ -2,7 +2,6 @@ package com.massivecraft.vampire.cmd;
 
 import java.util.List;
 
-import com.massivecraft.massivecore.cmd.HelpCommand;
 import com.massivecraft.massivecore.cmd.VersionCommand;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.vampire.Vampire;
@@ -33,7 +32,6 @@ public class CmdVampire extends VCommand
 	public CmdVampire()
 	{
 		// Add SubCommands
-		this.addSubCommand(HelpCommand.get());
 		this.addSubCommand(this.cmdVampireShow);
 		this.addSubCommand(this.cmdVampireModeBloodlust);
 		this.addSubCommand(this.cmdVampireModeIntend);
