@@ -32,7 +32,7 @@ public class CmdVampireShow extends VCommand
 	public CmdVampireShow()
 	{
 		// Aliases
-		this.addAliases("s", "show");
+		this.addAliases("show");
 		
 		// Parameters
 		this.addParameter(playerReaderParameter);

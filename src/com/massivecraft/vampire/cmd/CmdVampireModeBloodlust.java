@@ -12,7 +12,7 @@ public class CmdVampireModeBloodlust extends CmdVampireModeAbstract
 	public CmdVampireModeBloodlust()
 	{
 		// Aliases
-		this.addAliases("b", "bloodlust");
+		this.addAliases("bloodlust");
 		
 		// Requirements
 		this.addRequirements(new ReqHasPerm(Perm.MODE_BLOODLUST.node));

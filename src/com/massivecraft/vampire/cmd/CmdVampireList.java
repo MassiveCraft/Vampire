@@ -26,7 +26,7 @@ public class CmdVampireList extends VCommand
 	public CmdVampireList()
 	{
 		// Aliases
-		this.addAliases("l", "list");
+		this.addAliases("list");
 		
 		// Parameters
 		this.addParameter(Parameter.getPage());

@@ -13,7 +13,7 @@ public class CmdVampireAccept extends VCommand
 	public CmdVampireAccept()
 	{
 		// Aliases
-		this.addAliases("a", "accept");
+		this.addAliases("accept");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.TRADE_ACCEPT.node));

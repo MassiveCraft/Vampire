@@ -20,7 +20,7 @@ public class CmdVampireOffer extends VCommand
 	public CmdVampireOffer()
 	{
 		// Aliases
-		this.addAliases("o", "offer");
+		this.addAliases("offer");
 		
 		// Parameters
 		this.addParameter(TypePlayer.get(), "player");

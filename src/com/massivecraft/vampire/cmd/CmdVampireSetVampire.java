@@ -18,7 +18,7 @@ public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
 		super(false, TypeBoolean.get());
 		
 		// Aliases
-		this.addAliases("v");
+		this.addAliases("vampire");
 		
 		// Requirements
 		this.setDesc("set vampire (yes or no)");
