@@ -31,17 +31,17 @@ public class CmdVampire extends VCommand
 	
 	public CmdVampire()
 	{
-		// Add SubCommands
-		this.addSubCommand(this.cmdVampireShow);
-		this.addSubCommand(this.cmdVampireModeBloodlust);
-		this.addSubCommand(this.cmdVampireModeIntend);
-		this.addSubCommand(this.cmdVampireModeNightvision);
-		this.addSubCommand(this.cmdVampireOffer);
-		this.addSubCommand(this.cmdVampireAccept);
-		this.addSubCommand(this.cmdVampireShriek);
-		this.addSubCommand(this.cmdVampireList);
-		this.addSubCommand(this.cmdVampireSet);
-		this.addSubCommand(this.cmdVersion);
+		// Children
+		this.addChild(this.cmdVampireShow);
+		this.addChild(this.cmdVampireModeBloodlust);
+		this.addChild(this.cmdVampireModeIntend);
+		this.addChild(this.cmdVampireModeNightvision);
+		this.addChild(this.cmdVampireOffer);
+		this.addChild(this.cmdVampireAccept);
+		this.addChild(this.cmdVampireShriek);
+		this.addChild(this.cmdVampireList);
+		this.addChild(this.cmdVampireSet);
+		this.addChild(this.cmdVersion);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.BASECOMMAND.node));

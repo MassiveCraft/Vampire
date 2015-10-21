@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ARBoolean;
+import com.massivecraft.massivecore.cmd.type.TypeBoolean;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 
 public abstract class CmdVampireModeAbstract extends VCommand
@@ -12,8 +12,8 @@ public abstract class CmdVampireModeAbstract extends VCommand
 	
 	public CmdVampireModeAbstract()
 	{
-		// Args
-		this.addArg(ARBoolean.get(), "yes/no", "toggle");
+		// Parameters
+		this.addParameter(TypeBoolean.get(), "yes/no", "toggle");
 		
 		// Requirements
 		this.addRequirements(ReqIsVampire.get());

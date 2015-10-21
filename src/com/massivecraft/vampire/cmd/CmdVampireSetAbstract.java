@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.ArgSetting;
-import com.massivecraft.massivecore.cmd.arg.AR;
+import com.massivecraft.massivecore.cmd.Parameter;
+import com.massivecraft.massivecore.cmd.type.Type;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
@@ -18,24 +18,24 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 	// -------------------------------------------- //
 	
 	public boolean targetMustBeOnline;
-	public AR<T> argReader;
+	public Type<T> type;
 	
-	private ArgSetting playerReaderSetting = ArgSetting.of(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getAREntity(), true, "player", "you");
+	private Parameter playerReaderParameter = new Parameter(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getTypeEntity(), true, "player", "you");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdVampireSetAbstract(boolean targetMustBeOnline, AR<T> argReader)
+	public CmdVampireSetAbstract(boolean targetMustBeOnline, Type<T> type)
 	{
 		// Seup fields
 		this.targetMustBeOnline = targetMustBeOnline;
-		this.argReader = argReader;
+		this.type = type;
 		
-		// Args
-		this.addArg(argReader, "val");
-		this.addArg(playerReaderSetting);
-		this.addArg(Vampire.get().playerAspect.getMultiverse().argReaderUniverse(), "univ", "you");
+		// Parameters
+		this.addParameter(type, "val");
+		this.addParameter(playerReaderParameter);
+		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
 	}
 	
 	// -------------------------------------------- //
@@ -48,8 +48,8 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 		String universe = this.readArgAt(2, senderIsConsole ? MassiveCore.DEFAULT : Vampire.get().playerAspect.getMultiverse().getUniverse(me));
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
-		AR<UPlayer> playerReader = playerColl.getAREntity();
-		this.playerReaderSetting.setReader(playerReader);
+		Type<UPlayer> playerType = playerColl.getTypeEntity();
+		this.playerReaderParameter.setType(playerType);
 		
 		UPlayer uplayer = this.readArgAt(1, vme);
 				

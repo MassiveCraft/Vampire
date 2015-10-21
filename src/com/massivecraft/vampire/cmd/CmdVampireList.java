@@ -8,8 +8,8 @@ import org.bukkit.ChatColor;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.ArgSetting;
-import com.massivecraft.massivecore.cmd.VisibilityMode;
+import com.massivecraft.massivecore.cmd.Parameter;
+import com.massivecraft.massivecore.cmd.Visibility;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
@@ -28,11 +28,12 @@ public class CmdVampireList extends VCommand
 		// Aliases
 		this.addAliases("l", "list");
 		
-		// Args
-		this.addArg(ArgSetting.getPage());
-		this.addArg(Vampire.get().playerAspect.getMultiverse().argReaderUniverse(), "universe", "you");
+		// Parameters
+		this.addParameter(Parameter.getPage());
+		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "universe", "you");
 		
-		this.setVisibilityMode(VisibilityMode.SECRET);
+		// Visibility
+		this.setVisibility(Visibility.SECRET);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(Perm.LIST.node));

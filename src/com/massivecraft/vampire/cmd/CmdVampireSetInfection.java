@@ -2,8 +2,8 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.cmd.arg.ARDouble;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeDouble;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
@@ -18,7 +18,7 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 	
 	public CmdVampireSetInfection()
 	{
-		super(false, ARDouble.get());
+		super(false, TypeDouble.get());
 		
 		// Aliases
 		this.addAliases("i");

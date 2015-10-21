@@ -5,9 +5,9 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.ArgSetting;
-import com.massivecraft.massivecore.cmd.arg.AR;
+import com.massivecraft.massivecore.cmd.Parameter;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.Type;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
@@ -23,7 +23,7 @@ public class CmdVampireShow extends VCommand
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private ArgSetting playerReaderSetting = ArgSetting.of(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getAREntity(), true, "player", "you");
+	private Parameter playerReaderParameter = new Parameter(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getTypeEntity(), true, "player", "you");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -34,9 +34,9 @@ public class CmdVampireShow extends VCommand
 		// Aliases
 		this.addAliases("s", "show");
 		
-		// Args
-		this.addArg(playerReaderSetting);
-		this.addArg(Vampire.get().playerAspect.getMultiverse().argReaderUniverse(), "univ", "you");
+		// Parameters
+		this.addParameter(playerReaderParameter);
+		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
 		
 		// Requirements
 		this.addRequirements(new ReqHasPerm(Perm.SHOW.node));
@@ -53,8 +53,8 @@ public class CmdVampireShow extends VCommand
 		String universe = this.readArgAt(1, senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
 		
 		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
-		AR<UPlayer> playerReader = playerColl.getAREntity();
-		this.playerReaderSetting.setReader(playerReader);
+		Type<UPlayer> playerType = playerColl.getTypeEntity();
+		this.playerReaderParameter.setType(playerType);
 		
 		UPlayer uplayer = this.readArgAt(0, vme);
 		

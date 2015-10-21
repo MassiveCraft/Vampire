@@ -2,7 +2,7 @@ package com.massivecraft.vampire.entity;
 
 import java.util.Collection;
 
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.vampire.Vampire;
@@ -43,7 +43,7 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	
 	public Collection<UPlayer> getAllOnlineInfected()
 	{
-		return this.getAll(new Predictate<UPlayer>()
+		return this.getAll(new Predicate<UPlayer>()
 		{
 			public boolean apply(UPlayer entity)
 			{
@@ -54,7 +54,7 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	
 	public Collection<UPlayer> getAllOnlineVampires()
 	{
-		return this.getAll(new Predictate<UPlayer>()
+		return this.getAll(new Predicate<UPlayer>()
 		{
 			public boolean apply(UPlayer entity)
 			{

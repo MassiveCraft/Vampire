@@ -804,7 +804,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		vyou.msg(MLang.get().tradeOfferIn, me.getDisplayName(), amount);
 		List<MassiveCommand> cmdc = new ArrayList<MassiveCommand>();
 		cmdc.add(Vampire.get().cmdBase);
-		vyou.msg(MLang.get().tradeAcceptHelp, Vampire.get().cmdBase.cmdVampireAccept.getUseageTemplate(cmdc, false).toPlain(true));
+		vyou.msg(MLang.get().tradeAcceptHelp, Vampire.get().cmdBase.cmdVampireAccept.getTemplate(cmdc, false).toPlain(true));
 	}
 	
 	public boolean withinDistanceOf(UPlayer vyou, double maxDistance)
