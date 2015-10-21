@@ -39,6 +39,9 @@ public class Vampire extends MassivePlugin
 	{
 		if ( ! preEnable()) return;
 		
+		// Version Synchronized
+		this.setVersionSynchronized(true);
+		
 		// Aspects
 		this.playerAspect = AspectColl.get().get(Const.ASPECT_PLAYER, true);
 		this.playerAspect.register();
