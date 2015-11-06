@@ -18,7 +18,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermUtil;

@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.*;
 
 public class CmdVampireModeNightvision extends CmdVampireModeAbstract
@@ -15,7 +15,7 @@ public class CmdVampireModeNightvision extends CmdVampireModeAbstract
 		this.addAliases("nv", "nightvision");
 		
 		// Requirements
-		this.addRequirements(new ReqHasPerm(Perm.MODE_NIGHTVISION.node));
+		this.addRequirements(new RequirementHasPerm(Perm.MODE_NIGHTVISION.node));
 	}
 	
 	// -------------------------------------------- //

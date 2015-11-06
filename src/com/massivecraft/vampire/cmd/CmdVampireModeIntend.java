@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.*;
 
 public class CmdVampireModeIntend extends CmdVampireModeAbstract
@@ -15,7 +15,7 @@ public class CmdVampireModeIntend extends CmdVampireModeAbstract
 		this.addAliases("intend");
 		
 		// Requirements
-		this.addRequirements(new ReqHasPerm(Perm.MODE_INTENT.node));
+		this.addRequirements(new RequirementHasPerm(Perm.MODE_INTENT.node));
 	}
 	
 	// -------------------------------------------- //

@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.vampire.entity.UPlayer;
 
 public abstract class VCommand extends MassiveCommand

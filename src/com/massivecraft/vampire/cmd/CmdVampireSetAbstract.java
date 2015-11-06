@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.Parameter;
-import com.massivecraft.massivecore.cmd.type.Type;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;

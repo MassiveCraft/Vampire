@@ -2,8 +2,8 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.TypeDouble;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
@@ -24,7 +24,7 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 		this.addAliases("infection");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.SET_INFECTION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SET_INFECTION.node));
 	}
 	
 	// -------------------------------------------- //

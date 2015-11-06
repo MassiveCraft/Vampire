@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.vampire.Perm;
 
 public class CmdVampireAccept extends VCommand
@@ -16,8 +16,8 @@ public class CmdVampireAccept extends VCommand
 		this.addAliases("accept");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.TRADE_ACCEPT.node));
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementHasPerm.get(Perm.TRADE_ACCEPT.node));
+		this.addRequirements(RequirementIsPlayer.get());
 	}
 	
 	// -------------------------------------------- //

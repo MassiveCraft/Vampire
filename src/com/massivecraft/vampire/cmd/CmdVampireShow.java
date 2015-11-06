@@ -5,9 +5,9 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.Parameter;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.type.Type;
+import com.massivecraft.massivecore.command.Parameter;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
@@ -39,7 +39,7 @@ public class CmdVampireShow extends VCommand
 		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
 		
 		// Requirements
-		this.addRequirements(new ReqHasPerm(Perm.SHOW.node));
+		this.addRequirements(new RequirementHasPerm(Perm.SHOW.node));
 	}
 	
 	// -------------------------------------------- //

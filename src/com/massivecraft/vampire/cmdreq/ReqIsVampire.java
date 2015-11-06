@@ -2,13 +2,13 @@ package com.massivecraft.vampire.cmdreq;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.req.ReqAbstract;
+import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 
-public class ReqIsVampire extends ReqAbstract
+public class ReqIsVampire extends RequirementAbstract
 {
 	// -------------------------------------------- //
 	// CONSTANTS

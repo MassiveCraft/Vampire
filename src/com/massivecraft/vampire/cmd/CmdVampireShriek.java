@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 
@@ -17,7 +17,7 @@ public class CmdVampireShriek extends VCommand
 		
 		// Requirements
 		this.addRequirements(ReqIsVampire.get());
-		this.addRequirements(ReqHasPerm.get(Perm.SHRIEK.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SHRIEK.node));
 	}
 	
 	// -------------------------------------------- //

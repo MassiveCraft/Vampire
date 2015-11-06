@@ -1,7 +1,7 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.massivecore.cmd.Visibility;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.Visibility;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.Perm;
 
 public class CmdVampireSet extends VCommand
@@ -31,7 +31,7 @@ public class CmdVampireSet extends VCommand
 		this.addAliases("set");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.SET.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SET.node));
 		
 		// Visibility
 		this.setVisibility(Visibility.SECRET);

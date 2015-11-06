@@ -3,10 +3,10 @@ package com.massivecraft.vampire.cmd;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
-import com.massivecraft.massivecore.cmd.type.TypeDouble;
-import com.massivecraft.massivecore.cmd.type.TypePlayer;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
+import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
+import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.entity.UPlayer;
@@ -27,8 +27,8 @@ public class CmdVampireOffer extends VCommand
 		this.addParameter(TypeDouble.get(), "amount", "4.0");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.TRADE_OFFER.node));
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementHasPerm.get(Perm.TRADE_OFFER.node));
+		this.addRequirements(RequirementIsPlayer.get());
 	}
 	
 	// -------------------------------------------- //

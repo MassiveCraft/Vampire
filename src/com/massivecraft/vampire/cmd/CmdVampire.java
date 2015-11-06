@@ -2,8 +2,8 @@ package com.massivecraft.vampire.cmd;
 
 import java.util.List;
 
-import com.massivecraft.massivecore.cmd.VersionCommand;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.command.VersionCommand;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.MConf;
@@ -44,7 +44,7 @@ public class CmdVampire extends VCommand
 		this.addChild(this.cmdVersion);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(Perm.BASECOMMAND.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.BASECOMMAND.node));
 	}
 	
 	// -------------------------------------------- //

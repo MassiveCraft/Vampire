@@ -2,7 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.cmd.type.TypeBoolean;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.UPlayer;
@@ -15,7 +15,7 @@ public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
 	
 	public CmdVampireSetVampire()
 	{
-		super(false, TypeBoolean.get());
+		super(false, TypeBoolean.getYes());
 		
 		// Aliases
 		this.addAliases("vampire");
