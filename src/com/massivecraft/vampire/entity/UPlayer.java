@@ -239,6 +239,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		}
 		
 		this.bloodlusting = val;
+		this.changed();
 		this.msg(this.bloodlustMsg());
 		this.update();
 	}
