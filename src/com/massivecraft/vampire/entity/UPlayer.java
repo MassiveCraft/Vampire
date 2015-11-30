@@ -151,7 +151,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		{
 			this.infection = val;
 		}
-		
+		this.changed();
 		this.updatePotionEffects();
 	}
 	public void addInfection(double val)
