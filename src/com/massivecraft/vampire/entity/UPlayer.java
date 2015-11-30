@@ -139,6 +139,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 				this.msg(MLang.get().infectionCured);
 			}
 			this.infection = 0D;
+			this.changed();
 			
 			Player player = this.getPlayer();
 			if (player != null)
@@ -150,8 +151,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 		else
 		{
 			this.infection = val;
+			this.changed();
 		}
-		this.changed();
 		this.updatePotionEffects();
 	}
 	public void addInfection(double val)
