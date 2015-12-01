@@ -12,7 +12,8 @@ public class UConfColl extends Coll<UConf>
 	
 	public UConfColl(String name)
 	{
-		super(name, UConf.class, MStore.getDb(), Vampire.get(), true, false, false);
+		super(name, UConf.class, MStore.getDb(), Vampire.get());
+		this.setCreative(true);
 	}
 
 	// -------------------------------------------- //
