@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.massivecore.collections.BackstringEnumSet;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.PotionEffectConf;
@@ -99,7 +100,7 @@ public class UConf extends Entity<UConf>
 	// -------------------------------------------- //
 	
 	public double bloodlustMinFood = 2.5D;
-	public double bloodlustFoodPerMilli = -20D / (30D * 1000D); // You can bloodlust for 30 seconds
+	public double bloodlustFoodPerMilli = -20D / (60D * 1000D); // You can bloodlust for 60 seconds
 	public double bloodlustSmokes = 1.5D;
 	
 	// -------------------------------------------- //
@@ -118,10 +119,9 @@ public class UConf extends Entity<UConf>
 	// POTION EFFECTS
 	// -------------------------------------------- //
 	
-	
 	public PotionEffectConf effectConfBloodlust = new PotionEffectConf(EventPriority.HIGHEST, true, 0x1f1f23, MUtil.map(
-		8, 4,
-		1, 4
+		8, 2,
+		1, 2
 	));
 
 	public PotionEffectConf effectConfNightvision = new PotionEffectConf(EventPriority.HIGH, true, 0, MUtil.map(
@@ -154,18 +154,22 @@ public class UConf extends Entity<UConf>
 	public long truceBreakMillis = 60L * 1000L; 
 	
 	// These are the creature types that won't target vampires
-	public Set<EntityType> truceEntityTypes = MUtil.set(
-		EntityType.BLAZE,
-		EntityType.CAVE_SPIDER,
-		EntityType.CREEPER,
-		EntityType.ENDERMAN,
-		EntityType.GHAST,
-		EntityType.GIANT,
-		EntityType.MAGMA_CUBE,
-		EntityType.PIG_ZOMBIE,
-		EntityType.SKELETON,
-		EntityType.SPIDER,
-		EntityType.ZOMBIE
+	public BackstringEnumSet<EntityType> truceEntityTypes = new BackstringEnumSet<EntityType>(EntityType.class,
+		"BLAZE",
+		"CAVE_SPIDER",
+		"CREEPER",
+		"ENDERMAN",
+		"GHAST",
+		"GIANT",
+		"MAGMA_CUBE",
+		"PIG_ZOMBIE",
+		"SKELETON",
+		"SPIDER",
+		"ZOMBIE",
+		"WITCH",
+		"GUARDIAN",
+		"SILVERFISH",
+		"ENDERMITE"
 	);
 	
 	// -------------------------------------------- //
@@ -173,7 +177,7 @@ public class UConf extends Entity<UConf>
 	// -------------------------------------------- //
 	
 	public double combatDamageFactorWithoutBloodlust = 1.0;
-	public double combatDamageFactorWithBloodlust = 1.2;
+	public double combatDamageFactorWithBloodlust = 1.15;
 	
 	private final static transient int damageDiamondSword = 7;
 	public int combatWoodDamage = 3*damageDiamondSword;
@@ -198,14 +202,17 @@ public class UConf extends Entity<UConf>
 	// INFECTION
 	// -------------------------------------------- //
 	
-	// It will take you 1h to turn
-	public double infectionPerMilli = 1D / (1000D * 60D * 60D);
+	// It will take you 0.25h to turn
+	public double infectionPerMilli = 0.25D / (1000D * 60D * 60D);
 	
 	public int infectionProgressNauseaTicks = 12*20;
 	public int infectionProgressDamage = 1;
 	
-	public Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
-	public Double infectionRiskAtCloseCombatWithIntent = 0.05;
+	// We have disabled this feature per default.
+	// public Double infectionRiskAtCloseCombatWithoutIntent = 0.003;
+	// public Double infectionRiskAtCloseCombatWithIntent = 0.05;
+	public Double infectionRiskAtCloseCombatWithoutIntent = 0D;
+	public Double infectionRiskAtCloseCombatWithIntent = 0D;
 	
 	// -------------------------------------------- //
 	// TRADE
@@ -223,33 +230,33 @@ public class UConf extends Entity<UConf>
 	public boolean foodCakeAllowed = true;
 	
 	public Map<EntityType, Double> entityTypeFullFoodQuotient = MUtil.map(
-		EntityType.CREEPER,        0/20D,
-		EntityType.SKELETON,       0/20D,
-		EntityType.SPIDER,         3/20D,
-		EntityType.GIANT,         50/20D,
-		EntityType.ZOMBIE,         0/20D,
-		EntityType.SLIME,          0/20D,
-		EntityType.GHAST,          0/20D,
-		EntityType.PIG_ZOMBIE,     0/20D,
-		EntityType.ENDERMAN,       0/20D,
-		EntityType.CAVE_SPIDER,    3/20D,
-		EntityType.SILVERFISH,     1/20D,
-		EntityType.BLAZE,          0/20D,
-		EntityType.MAGMA_CUBE,     0/20D,
-		EntityType.ENDER_DRAGON, 140/20D,
-		EntityType.PIG,            5/20D,
-		EntityType.SHEEP,          5/20D,
-		EntityType.COW,            7/20D,
-		EntityType.HORSE,          8/20D,
-		EntityType.CHICKEN,        2/20D,
-		EntityType.SQUID,          4/20D,
-		EntityType.WOLF,           5/20D,
-		EntityType.MUSHROOM_COW,  20/20D,
-		EntityType.SNOWMAN,        0/20D,
-		EntityType.OCELOT,         5/20D,
-		EntityType.IRON_GOLEM,     0/20D,
-		EntityType.VILLAGER,      10/20D,
-		EntityType.PLAYER,        10/20D
+		EntityType.ENDER_DRAGON,  140/20D,
+		EntityType.MUSHROOM_COW,   20/20D,
+		EntityType.GIANT,          50/20D,
+		EntityType.CREEPER,        10/20D,
+		EntityType.SKELETON,       10/20D,
+		EntityType.SPIDER,         10/20D,
+		EntityType.ZOMBIE,         10/20D,
+		EntityType.SLIME,          10/20D,
+		EntityType.GHAST,          10/20D,
+		EntityType.PIG_ZOMBIE,     10/20D,
+		EntityType.ENDERMAN,       10/20D,
+		EntityType.CAVE_SPIDER,    10/20D,
+		EntityType.SILVERFISH,     10/20D,
+		EntityType.BLAZE,          10/20D,
+		EntityType.MAGMA_CUBE,     10/20D,
+		EntityType.PIG,            10/20D,
+		EntityType.SHEEP,          10/20D,
+		EntityType.COW,            10/20D,
+		EntityType.HORSE,          10/20D,
+		EntityType.CHICKEN,        10/20D,
+		EntityType.SQUID,          10/20D,
+		EntityType.OCELOT,         10/20D,
+		EntityType.IRON_GOLEM,     10/20D,
+		EntityType.VILLAGER,       10/20D,
+		EntityType.PLAYER,         10/20D,
+		EntityType.WOLF,            0/20D,
+		EntityType.SNOWMAN,         0/20D
 	);
 
 	// -------------------------------------------- //
