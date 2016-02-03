@@ -2,7 +2,7 @@ package com.massivecraft.vampire.entity;
 
 import java.util.Collection;
 
-import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.vampire.Vampire;
