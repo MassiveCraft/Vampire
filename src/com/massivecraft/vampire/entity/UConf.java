@@ -120,8 +120,8 @@ public class UConf extends Entity<UConf>
 	// -------------------------------------------- //
 	
 	public PotionEffectConf effectConfBloodlust = new PotionEffectConf(EventPriority.HIGHEST, true, 0x1f1f23, MUtil.map(
-		8, 2,
-		1, 2
+		8, 1,
+		1, 1
 	));
 
 	public PotionEffectConf effectConfNightvision = new PotionEffectConf(EventPriority.HIGH, true, 0, MUtil.map(
@@ -129,7 +129,8 @@ public class UConf extends Entity<UConf>
 	));
 
 	public PotionEffectConf effectConfVampire = new PotionEffectConf(EventPriority.NORMAL, true, 0, MUtil.map(
-		8, 1
+		8, 0,
+		1, 1
 	));
 	
 	public PotionEffectConf effectConfInfected = new PotionEffectConf(EventPriority.NORMAL, true, 0x587653, new HashMap<Integer, Integer>());
