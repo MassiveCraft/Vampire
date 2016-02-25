@@ -1,8 +1,8 @@
 package com.massivecraft.vampire;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.entity.MConf;
@@ -23,7 +23,7 @@ public class TheTask extends ModuloRepeatTask
 	// -------------------------------------------- //
 	
 	@Override
-	public Plugin getPlugin()
+	public MassivePlugin getPlugin()
 	{
 		return Vampire.get();
 	}

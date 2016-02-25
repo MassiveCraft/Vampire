@@ -11,6 +11,13 @@ import com.massivecraft.vampire.entity.MConf;
 public class CmdVampire extends VCommand
 {
 	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static CmdVampire i = new CmdVampire();
+	public static CmdVampire get() { return i; }
+	
+	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	

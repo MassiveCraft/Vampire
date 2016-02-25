@@ -17,7 +17,13 @@ public class Vampire extends MassivePlugin
 	
 	private static Vampire i;
 	public static Vampire get() { return i; }
-	public Vampire() { Vampire.i = this; }
+	public Vampire()
+	{
+		Vampire.i = this;
+		
+		// Version Synchronized
+		this.setVersionSynchronized(true);
+	}
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -26,22 +32,14 @@ public class Vampire extends MassivePlugin
 	// Aspects
 	public Aspect playerAspect;
 	public Aspect configAspect;
-	
-	// Commands
-	public CmdVampire cmdBase;
 
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 
 	@Override
-	public void onEnable()
+	public void onEnableInner()
 	{
-		if ( ! preEnable()) return;
-		
-		// Version Synchronized
-		this.setVersionSynchronized(true);
-		
 		// Aspects
 		this.playerAspect = AspectColl.get().get(Const.ASPECT_PLAYER, true);
 		this.playerAspect.register();
@@ -61,23 +59,23 @@ public class Vampire extends MassivePlugin
 			"<i>Check <h>"+Const.ASPECT_PLAYER+" <i>for player state."
 		);
 		
-		// Database
-		MConfColl.get().init();
-		MLangColl.get().init();
-		UConfColls.get().init();
-		UPlayerColls.get().init();
+		// Activate
+		this.activate(
+			// Coll
+			MConfColl.get(),
+			MLangColl.get(),
+			UConfColls.get(),
+			UPlayerColls.get(),
 		
-		// Tasks
-		TheTask.get().activate();
-	
-		// Listeners
-		ListenerMain.get().activate();
-		
-		// Commands
-		this.cmdBase = new CmdVampire();
-		this.cmdBase.register(this);
-		
-		postEnable();
+			// Tasks
+			TheTask.get(),
+			
+			// Listeners
+			ListenerMain.get(),
+			
+			// Command
+			CmdVampire.get()
+		);
 	}
 	
 }

@@ -26,6 +26,7 @@ import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.accumulator.UPlayerFoodAccumulator;
+import com.massivecraft.vampire.cmd.CmdVampire;
 import com.massivecraft.vampire.event.EventVampirePlayerInfectionChange;
 import com.massivecraft.vampire.event.EventVampirePlayerVampireChange;
 import com.massivecraft.vampire.util.FxUtil;
@@ -805,8 +806,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 		this.msg(MLang.get().tradeOfferOut, amount, you.getDisplayName());
 		vyou.msg(MLang.get().tradeOfferIn, me.getDisplayName(), amount);
 		List<MassiveCommand> cmdc = new ArrayList<MassiveCommand>();
-		cmdc.add(Vampire.get().cmdBase);
-		vyou.msg(MLang.get().tradeAcceptHelp, Vampire.get().cmdBase.cmdVampireAccept.getTemplate(cmdc, false).toPlain(true));
+		cmdc.add(CmdVampire.get());
+		vyou.msg(MLang.get().tradeAcceptHelp, CmdVampire.get().cmdVampireAccept.getTemplate(cmdc, false).toPlain(true));
 	}
 	
 	public boolean withinDistanceOf(UPlayer vyou, double maxDistance)

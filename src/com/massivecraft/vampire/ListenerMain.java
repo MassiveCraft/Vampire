@@ -17,8 +17,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -39,6 +37,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -49,7 +48,7 @@ import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.util.FxUtil;
 
-public class ListenerMain implements Listener
+public class ListenerMain extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -57,21 +56,6 @@ public class ListenerMain implements Listener
 	
 	private static ListenerMain i = new ListenerMain();
 	public static ListenerMain get() { return i; }
-	public ListenerMain() {}
-	
-	// -------------------------------------------- //
-	// ACTIVATE & DEACTIVATE
-	// -------------------------------------------- //
-	
-	public void activate()
-	{
-		Bukkit.getServer().getPluginManager().registerEvents(this, Vampire.get());
-	}
-	
-	public void deactivate()
-	{
-		HandlerList.unregisterAll(this);
-	}
 	
 	// -------------------------------------------- //
 	// FX
