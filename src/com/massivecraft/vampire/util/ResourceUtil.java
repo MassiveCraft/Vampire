@@ -44,14 +44,12 @@ public class ResourceUtil
 		playerRemove(player, stacks.toArray(new ItemStack[0]));
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void playerRemove(Player player, ItemStack... stacks)
 	{
 		player.getInventory().removeItem(stacks);
 		player.updateInventory();
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void playerAdd(Player player, Collection<? extends ItemStack> stacks)
 	{
 		Inventory inventory = player.getInventory();
@@ -59,7 +57,6 @@ public class ResourceUtil
 		player.updateInventory();
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void playerAdd(Player player, ItemStack stack)
 	{
 		Inventory inventory = player.getInventory();
