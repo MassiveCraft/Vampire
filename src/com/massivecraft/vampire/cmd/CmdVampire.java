@@ -2,7 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import java.util.List;
 
-import com.massivecraft.massivecore.command.VersionCommand;
+import com.massivecraft.massivecore.command.MassiveCommandVersion;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.Perm;
@@ -30,7 +30,7 @@ public class CmdVampire extends VCommand
 	public CmdVampireShriek cmdVampireShriek = new CmdVampireShriek();
 	public CmdVampireList cmdVampireList = new CmdVampireList();
 	public CmdVampireSet cmdVampireSet = new CmdVampireSet();
-	public VersionCommand cmdVersion = new VersionCommand(Vampire.get(), Perm.VERSION.node, "v", "version");
+	public MassiveCommandVersion cmdVersion = new MassiveCommandVersion(Vampire.get(), Perm.VERSION.node, "v", "version");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
