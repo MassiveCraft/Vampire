@@ -54,7 +54,7 @@ public class AltarLight extends Altar
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
 			{
 				public void run() {
-					ResourceUtil.playerAdd(player, HolyWaterUtil.createItemStack());
+					ResourceUtil.playerAdd(player, HolyWaterUtil.createHolyWater());
 					uplayer.msg(MLang.get().altarLightWaterResult);
 					uplayer.runFxEnderBurst();
 				}

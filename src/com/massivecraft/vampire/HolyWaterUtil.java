@@ -2,9 +2,11 @@ package com.massivecraft.vampire;
 
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -13,37 +15,40 @@ import com.massivecraft.massivecore.util.MUtil;
 
 public class HolyWaterUtil
 {
-	public final static List<Integer> POTION_VALUES = MUtil.list(16415, 16431);
-	public final static String NAME = "Holy Water";
-	public final static List<String> LORE = MUtil.list("Purges darkness and evil");
-	public final static PotionEffect EFFECT = new PotionEffect(PotionEffectType.REGENERATION, 20, 0);
+	public final static String HOLY_WATER_NAME = ChatColor.GREEN.toString() + "Holy Water";
+	public final static List<String> HOLY_WATER_LORE = MUtil.list(
+		"Ordinary water infused with lapis.",
+		"Very dangerous to the unholy."
+	);
 	
-	public static ItemStack createItemStack()
+	public final static PotionEffect HOLY_WATER_CUSTOM_EFFECT = new PotionEffect(PotionEffectType.REGENERATION, 20, 0);
+	
+	public static ItemStack createHolyWater()
 	{
-		ItemStack ret = new ItemStack(Material.POTION, 1, POTION_VALUES.get(0).shortValue());
+		ItemStack ret = new ItemStack(Material.SPLASH_POTION);
 		
 		PotionMeta meta = (PotionMeta)ret.getItemMeta();
-		meta.setDisplayName(NAME);
-		meta.setLore(LORE);
-		meta.addCustomEffect(EFFECT, false);
+		meta.setDisplayName(HOLY_WATER_NAME);
+		meta.setLore(HOLY_WATER_LORE);
+		meta.addCustomEffect(HOLY_WATER_CUSTOM_EFFECT, false);
 		ret.setItemMeta(meta);
 		
 		return ret;
 	}
 	
-	public static boolean isHolyWater(ThrownPotion thrownPotion)
+	public static boolean isHolyWater(ThrownPotion potion)
 	{
-		return isHolyWater(thrownPotion.getItem());
+		return isHolyWater(potion.getItem());
 	}
 	
-	public static boolean isHolyWater(ItemStack itemStack)
+	public static boolean isHolyWater(ItemStack item)
 	{
-		return isHolyWater(itemStack.getDurability());
-	}
-	
-	private static boolean isHolyWater(int durability)
-	{
-		return POTION_VALUES.contains(durability);
+		if (item == null) return false;
+		if ( ! item.hasItemMeta()) return false;
+		ItemMeta meta = item.getItemMeta();
+		if ( ! meta.hasDisplayName()) return false;
+		String name = meta.getDisplayName();
+		return HOLY_WATER_NAME.equals(name);
 	}
 	
 }
