@@ -76,7 +76,7 @@ public class CmdVampireShow extends VCommand
 			are = "is";
 		}
 		
-		msg(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+uplayer.getDisplayName(sender)));
+		message(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+uplayer.getDisplayName(sender)));
 		if (uplayer.isVampire())
 		{
 			msg("<i>"+You+" <i>"+are+" a vampire.");
