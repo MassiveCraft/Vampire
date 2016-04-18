@@ -96,6 +96,7 @@ public class AltarLight extends Altar
 	protected static boolean playerHoldsWaterBottle(Player player)
 	{
 		ItemStack item = InventoryUtil.getWeapon(player);
+		if (item == null) return false;
 		if (item.getType() != Material.POTION) return false;
 		return item.getDurability() == 0;
 	}

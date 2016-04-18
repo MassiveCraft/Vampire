@@ -397,7 +397,9 @@ public class ListenerMain extends Engine
 		if ( ! vampire.isVampire()) return;
 		
 		// ... and a wooden item was used ...
-		Material itemMaterial = InventoryUtil.getWeapon(damager).getType();
+		ItemStack item = InventoryUtil.getWeapon(damager);
+		if (item == null) return;
+		Material itemMaterial = item.getType();
 		if ( ! uconf.combatWoodMaterials.contains(itemMaterial)) return;
 		
 		// ... Then modify damage!
