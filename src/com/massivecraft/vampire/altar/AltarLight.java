@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.HolyWaterUtil;
 import com.massivecraft.vampire.Perm;
@@ -94,8 +95,9 @@ public class AltarLight extends Altar
 	
 	protected static boolean playerHoldsWaterBottle(Player player)
 	{
-		if (player.getItemInHand().getType() != Material.POTION) return false;
-		return player.getItemInHand().getDurability() == 0;
+		ItemStack item = InventoryUtil.getWeapon(player);
+		if (item.getType() != Material.POTION) return false;
+		return item.getDurability() == 0;
 	}
 	
 }

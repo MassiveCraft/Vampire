@@ -40,6 +40,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.vampire.entity.MConf;
@@ -396,7 +397,7 @@ public class ListenerMain extends Engine
 		if ( ! vampire.isVampire()) return;
 		
 		// ... and a wooden item was used ...
-		Material itemMaterial = damager.getItemInHand().getType();
+		Material itemMaterial = InventoryUtil.getWeapon(damager).getType();
 		if ( ! uconf.combatWoodMaterials.contains(itemMaterial)) return;
 		
 		// ... Then modify damage!
