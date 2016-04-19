@@ -62,19 +62,19 @@ public class Vampire extends MassivePlugin
 		// Activate
 		this.activate(
 			// Coll
-			MConfColl.get(),
-			MLangColl.get(),
-			UConfColls.get(),
-			UPlayerColls.get(),
+			MConfColl.class,
+			MLangColl.class,
+			UConfColls.class,
+			UPlayerColls.class,
 		
 			// Tasks
-			TheTask.get(),
+			TheTask.class,
 			
 			// Listeners
-			ListenerMain.get(),
+			ListenerMain.class,
 			
 			// Command
-			CmdVampire.get()
+			CmdVampire.class
 		);
 	}
 	
