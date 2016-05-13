@@ -707,7 +707,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		// Standing close enough?
 		if ( ! this.withinDistanceOf(vyou, uconf.tradeOfferMaxDistance))
 		{
-			this.msg(MLang.get().tradeNotClose, vyou.getDisplayName());
+			this.msg(MLang.get().tradeNotClose, vyou.getDisplayName(vyou));
 			return;
 		}
 		

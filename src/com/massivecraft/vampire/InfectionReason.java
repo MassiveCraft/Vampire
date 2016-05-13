@@ -43,7 +43,7 @@ public enum InfectionReason
 	
 	public String getDesc(UPlayer uplayer, boolean self)
 	{
-		return String.format(self ? this.selfdesc : this.otherdesc, uplayer.getDisplayName(), uplayer.getMakerId());
+		return String.format(self ? this.selfdesc : this.otherdesc, uplayer.getDisplayName(null), uplayer.getMakerId());
 	}
 	
 }
