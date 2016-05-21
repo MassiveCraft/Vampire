@@ -21,7 +21,7 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Vampire;
@@ -448,11 +448,11 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		if (targetChildren == null)
 		{
-			return PermUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE);
+			return PermissionUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE);
 		}
 		else
 		{
-			return PermUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE, targetChildren);
+			return PermissionUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE, targetChildren);
 		}
 	}
 	
@@ -482,7 +482,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		Player player = this.getPlayer();
 		if (player == null) return;
 		
-		PermUtil.ensureHas(player, permission);
+		PermissionUtil.ensureHas(player, permission);
 	}
 	
 	public void updatePotionEffects()
