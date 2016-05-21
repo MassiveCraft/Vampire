@@ -12,9 +12,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.massivecore.MassiveCore;
@@ -429,61 +427,30 @@ public class UPlayer extends SenderEntity<UPlayer>
 		this.updatePotionEffects();
 	}
 	
-	public String getPermissionName()
-	{
-		return "vampire.player."+this.getId();
-	}
-	
-	// This method will always return a permission.
-	// It may however be an empty one (no children) if the player is offline.
-	public Permission getPermission(boolean update)
-	{
-		Map<String, Boolean> targetChildren = null;
-		
-		if (update)
-		{
-			// This one will return null if the player is offline
-			targetChildren = this.getPermissionTargetChildren();
-		}
-		
-		if (targetChildren == null)
-		{
-			return PermissionUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE);
-		}
-		else
-		{
-			return PermissionUtil.get(true, update, this.getPermissionName(), PermissionDefault.FALSE, targetChildren);
-		}
-	}
-	
-	public Map<String, Boolean> getPermissionTargetChildren()
-	{
-		Player player = this.getPlayer();
-		if (player == null) return null;
-		UConf uconf = UConf.get(player);
-		
-		Map<String, Boolean> ret;
-		if (this.isVampire())
-		{
-			ret = uconf.updatePermsVampire;
-		}
-		else
-		{
-			ret = uconf.updatePermsHuman;
-		}
-		
-		return ret;
-	}
+	// -------------------------------------------- //
+	// UPDATE > PERMISSONS
+	// -------------------------------------------- //
 	
 	public void updatePermissions()
 	{
-		Permission permission = this.getPermission(true);
-		
+		// Player
 		Player player = this.getPlayer();
 		if (player == null) return;
 		
-		PermissionUtil.ensureHas(player, permission);
+		// Attachment
+		PermissionAttachment attachment = PermissionUtil.getPermissibleAttachment(player, Vampire.get(), true);
+		
+		// Permissions
+		UConf uconf = UConf.get(player);
+		Map<String, Boolean> permissions = (this.isVampire() ? uconf.updatePermsVampire : uconf.updatePermsHuman);
+		
+		// Update
+		PermissionUtil.setAttachmentPermissions(attachment, permissions);
 	}
+	
+	// -------------------------------------------- //
+	// UPDATE > POTION EFFECTS
+	// -------------------------------------------- //
 	
 	public void updatePotionEffects()
 	{
