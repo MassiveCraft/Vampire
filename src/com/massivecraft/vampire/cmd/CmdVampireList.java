@@ -36,7 +36,7 @@ public class CmdVampireList extends VCommand
 		this.setVisibility(Visibility.SECRET);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.LIST.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.LIST));
 	}
 	
 	// -------------------------------------------- //

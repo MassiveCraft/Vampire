@@ -24,7 +24,7 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 		this.addAliases("infection");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.SET_INFECTION.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SET_INFECTION));
 	}
 	
 	// -------------------------------------------- //

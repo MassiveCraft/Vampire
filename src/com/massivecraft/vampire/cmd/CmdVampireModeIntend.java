@@ -15,7 +15,7 @@ public class CmdVampireModeIntend extends CmdVampireModeAbstract
 		this.addAliases("intend");
 		
 		// Requirements
-		this.addRequirements(new RequirementHasPerm(Perm.MODE_INTENT.node));
+		this.addRequirements(new RequirementHasPerm(Perm.MODE_INTENT));
 	}
 	
 	// -------------------------------------------- //

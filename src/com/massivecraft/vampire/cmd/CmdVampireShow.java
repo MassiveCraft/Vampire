@@ -39,7 +39,7 @@ public class CmdVampireShow extends VCommand
 		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
 		
 		// Requirements
-		this.addRequirements(new RequirementHasPerm(Perm.SHOW.node));
+		this.addRequirements(new RequirementHasPerm(Perm.SHOW));
 	}
 	
 	// -------------------------------------------- //

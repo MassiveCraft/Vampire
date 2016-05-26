@@ -27,7 +27,7 @@ public class CmdVampireOffer extends VCommand
 		this.addParameter(TypeDouble.get(), "amount", "4.0");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.TRADE_OFFER.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.TRADE_OFFER));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 	

@@ -15,7 +15,7 @@ public class CmdVampireModeNightvision extends CmdVampireModeAbstract
 		this.addAliases("nv", "nightvision");
 		
 		// Requirements
-		this.addRequirements(new RequirementHasPerm(Perm.MODE_NIGHTVISION.node));
+		this.addRequirements(new RequirementHasPerm(Perm.MODE_NIGHTVISION));
 	}
 	
 	// -------------------------------------------- //

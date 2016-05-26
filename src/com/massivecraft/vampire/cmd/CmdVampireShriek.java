@@ -17,7 +17,7 @@ public class CmdVampireShriek extends VCommand
 		
 		// Requirements
 		this.addRequirements(ReqIsVampire.get());
-		this.addRequirements(RequirementHasPerm.get(Perm.SHRIEK.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SHRIEK));
 	}
 	
 	// -------------------------------------------- //

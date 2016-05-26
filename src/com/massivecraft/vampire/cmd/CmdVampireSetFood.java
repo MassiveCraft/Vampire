@@ -22,7 +22,7 @@ public class CmdVampireSetFood extends CmdVampireSetAbstract<Integer>
 		this.addAliases("food");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.SET_FOOD.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SET_FOOD));
 	}
 
 	// -------------------------------------------- //

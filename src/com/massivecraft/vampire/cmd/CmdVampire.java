@@ -30,7 +30,7 @@ public class CmdVampire extends VCommand
 	public CmdVampireShriek cmdVampireShriek = new CmdVampireShriek();
 	public CmdVampireList cmdVampireList = new CmdVampireList();
 	public CmdVampireSet cmdVampireSet = new CmdVampireSet();
-	public MassiveCommandVersion cmdVersion = new MassiveCommandVersion(Vampire.get(), Perm.VERSION.node, "v", "version");
+	public MassiveCommandVersion cmdVersion = new MassiveCommandVersion(Vampire.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(Perm.VERSION));
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -51,7 +51,7 @@ public class CmdVampire extends VCommand
 		this.addChild(this.cmdVersion);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.BASECOMMAND.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.BASECOMMAND));
 	}
 	
 	// -------------------------------------------- //

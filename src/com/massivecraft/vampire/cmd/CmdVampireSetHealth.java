@@ -22,7 +22,7 @@ public class CmdVampireSetHealth extends CmdVampireSetAbstract<Integer>
 		this.addAliases("health");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.SET_HEALTH.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SET_HEALTH));
 	}
 
 	// -------------------------------------------- //

@@ -31,7 +31,7 @@ public class CmdVampireSet extends VCommand
 		this.addAliases("set");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(Perm.SET.node));
+		this.addRequirements(RequirementHasPerm.get(Perm.SET));
 		
 		// Visibility
 		this.setVisibility(Visibility.SECRET);
