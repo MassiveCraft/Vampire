@@ -1,7 +1,8 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
+import com.massivecraft.massivecore.command.type.primitive.TypeBooleanAbstract;
+import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 
 public abstract class CmdVampireModeAbstract extends VCommand
@@ -13,7 +14,7 @@ public abstract class CmdVampireModeAbstract extends VCommand
 	public CmdVampireModeAbstract()
 	{
 		// Parameters
-		this.addParameter(TypeBoolean.getYes(), "yes/no", "toggle");
+		this.addParameter(TypeBooleanYes.get(), "yes/no", "toggle");
 		
 		// Requirements
 		this.addRequirements(ReqIsVampire.get());
