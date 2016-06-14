@@ -1,7 +1,5 @@
 package com.massivecraft.vampire.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Effect;
@@ -16,7 +14,6 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
@@ -772,9 +769,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		this.msg(MLang.get().tradeOfferOut, amount, you.getDisplayName());
 		vyou.msg(MLang.get().tradeOfferIn, me.getDisplayName(), amount);
-		List<MassiveCommand> cmdc = new ArrayList<MassiveCommand>();
-		cmdc.add(CmdVampire.get());
-		vyou.msg(MLang.get().tradeAcceptHelp, CmdVampire.get().cmdVampireAccept.getTemplate(cmdc, false).toPlain(true));
+		vyou.msg(MLang.get().tradeAcceptHelp, CmdVampire.get().cmdVampireAccept.getTemplate(false).toPlain(true));
 	}
 	
 	public boolean withinDistanceOf(UPlayer vyou, double maxDistance)
