@@ -1,7 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.primitive.TypeBooleanAbstract;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
 

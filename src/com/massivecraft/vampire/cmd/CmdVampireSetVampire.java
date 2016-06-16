@@ -2,7 +2,6 @@ package com.massivecraft.vampire.cmd;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.command.type.primitive.TypeBooleanAbstract;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
