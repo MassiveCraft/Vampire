@@ -1,8 +1,6 @@
 package com.massivecraft.vampire.entity;
 
 import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.MStore;
-import com.massivecraft.vampire.Vampire;
 
 public class UConfColl extends Coll<UConf>
 {
@@ -10,9 +8,9 @@ public class UConfColl extends Coll<UConf>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public UConfColl(String name)
+	public UConfColl(String id)
 	{
-		super(name, UConf.class, MStore.getDb(), Vampire.get());
+		super(id);
 		this.setCreative(true);
 	}
 

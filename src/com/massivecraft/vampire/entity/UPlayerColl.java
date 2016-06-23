@@ -3,9 +3,7 @@ package com.massivecraft.vampire.entity;
 import java.util.Collection;
 
 import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.store.SenderColl;
-import com.massivecraft.vampire.Vampire;
 
 public class UPlayerColl extends SenderColl<UPlayer>
 {
@@ -13,9 +11,9 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public UPlayerColl(String name)
+	public UPlayerColl(String id)
 	{
-		super(name, UPlayer.class, MStore.getDb(), Vampire.get());
+		super(id);
 	}
 
 	// -------------------------------------------- //

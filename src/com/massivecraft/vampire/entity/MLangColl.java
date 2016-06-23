@@ -2,9 +2,6 @@ package com.massivecraft.vampire.entity;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.MStore;
-import com.massivecraft.vampire.Const;
-import com.massivecraft.vampire.Vampire;
 
 public class MLangColl extends Coll<MLang>
 {
@@ -14,10 +11,6 @@ public class MLangColl extends Coll<MLang>
 	
 	private static MLangColl i = new MLangColl();
 	public static MLangColl get() { return i; }
-	private MLangColl()
-	{
-		super(Const.COLLECTION_MLANG, MLang.class, MStore.getDb(), Vampire.get());
-	}
 
 	// -------------------------------------------- //
 	// STACK TRACEABILITY
