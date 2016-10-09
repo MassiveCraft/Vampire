@@ -55,7 +55,7 @@ public enum Perm implements Identified
 	Perm()
 	{
 		this.id = PermissionUtil.createPermissionId(Vampire.get(), this);
-    }
+	}
 	
 	// -------------------------------------------- //
 	// HAS

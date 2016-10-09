@@ -631,11 +631,11 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if (this.isVampire())
 		{
 			// Buffs
-			if (this.getTemp() > uconf.sunNauseaTemp)    FxUtil.ensure(PotionEffectType.CONFUSION, me, uconf.sunNauseaTicks);
+			if (this.getTemp() > uconf.sunNauseaTemp) FxUtil.ensure(PotionEffectType.CONFUSION, me, uconf.sunNauseaTicks);
 			if (this.getTemp() > uconf.sunWeaknessTemp)  FxUtil.ensure(PotionEffectType.WEAKNESS, me, uconf.sunWeaknessTicks);
-			if (this.getTemp() > uconf.sunSlowTemp)      FxUtil.ensure(PotionEffectType.SLOW, me, uconf.sunSlowTicks);
+			if (this.getTemp() > uconf.sunSlowTemp) FxUtil.ensure(PotionEffectType.SLOW, me, uconf.sunSlowTicks);
 			if (this.getTemp() > uconf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, me, uconf.sunBlindnessTicks);
-			if (this.getTemp() > uconf.sunBurnTemp)      FxUtil.ensureBurn(me, uconf.sunBurnTicks);
+			if (this.getTemp() > uconf.sunBurnTemp) FxUtil.ensureBurn(me, uconf.sunBurnTicks);
 			
 			// Fx
 			double dsmokes = uconf.sunSmokesPerTempAndMilli * this.temp * millis;
