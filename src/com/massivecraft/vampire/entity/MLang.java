@@ -46,6 +46,11 @@ public class MLang extends Entity<MLang>
 	public String tradeTransferOut = "<h>%s<i> drinks <h>%.1f <i>of your blood.";
 	public String tradeTransferIn = "<i>You drink <h>%.1f <i> of <h>%s's<i> blood.";
 	public String tradeSeen = "<h>%s <i>drinks blood from <h>%s <i><strong>:O<reset> <i>!";
+	
+	public String donateNoBottle = "<b>You must be holding a glass bottle to donate blood.";
+	public String donateInsufficient = "<b>You do not have the specified amount of blood.";
+	public String donateBloodlusting = "<b>You cannot drink a blood flask while bloodlusting.";
+	public String donateSuccess = "<i>You create a blood flask.";
 
 	public String truceBroken = "<b>You temporarily broke your truce with the monsters.";
 	public String truceRestored = "<g>Your truce with the monsters has been restored.";

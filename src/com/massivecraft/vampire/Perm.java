@@ -21,6 +21,7 @@ public enum Perm implements Identified
 	MODE_NIGHTVISION,
 	TRADE_OFFER,
 	TRADE_ACCEPT,
+	DONATE,
 	COMBAT_INFECT,
 	COMBAT_CONTRACT,
 	LIST,
