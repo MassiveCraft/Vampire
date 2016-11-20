@@ -30,6 +30,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -600,6 +601,61 @@ public class ListenerMain extends Engine
 		double food = damage / damagee.getMaxHealth() * fullFoodQuotient * player.getMaxHealth();
 		
 		vampire.getFood().add(food);
+	}
+	
+	// -------------------------------------------- //
+	// BLOOD FLASK
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void bloodFlaskConsume(PlayerItemConsumeEvent event)
+	{
+		// If the item is a potion ...
+		ItemStack item = event.getItem();
+		if ( ! item.getType().equals(Material.POTION)) return;
+		
+		// ... and is a blood flask ...
+		if ( ! BloodFlaskUtil.isBloodFlask(item)) return;
+		
+		// ... get the blood amount ...
+		double amount = BloodFlaskUtil.getBloodFlaskAmount(item);
+		
+		// ... and is the blood vampiric?  ...
+		boolean isVampiric = BloodFlaskUtil.getBloodFlaskVampiric(item);
+		
+		// ... get the player ...
+		UPlayer vme = UPlayer.get(event.getPlayer());
+		
+		// ... if the player is a vampire, are they bloodlusting? ...
+		if (vme.isBloodlusting())
+		{
+			vme.msg(MLang.get().donateBloodlusting);
+			event.setCancelled(true);
+			return;
+		}
+		
+		// ... calculate and add the blood amount to the player ...
+		double lacking;
+		if (vme.isVampire())
+		{
+			// Vampires drink blood to replenish food.
+			lacking = (20-vme.getFood().get());
+			if (amount>lacking) { amount = lacking; }
+			vme.getFood().add(amount);
+		}
+		
+		// ... finally, if the player is human did they contract the dark disease from vampiric blood?
+		if ( ! vme.isVampire() && isVampiric)
+		{
+			if (vme.isInfected())
+			{
+				vme.addInfection(0.01D);
+			}
+			else if (MassiveCore.random.nextDouble()*20 < amount)
+			{
+				vme.addInfection(0.05D, InfectionReason.FLASK, vme);
+			}
+		}
 	}
 	
 	// -------------------------------------------- //

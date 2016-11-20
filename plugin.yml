@@ -19,6 +19,7 @@ permissions:
   vampire.mode.nightvision:  {description: use nightvision, default: false}
   vampire.trade.offer:       {description: offer blood to someone, default: false}
   vampire.trade.accept:      {description: accept blood offer, default: false}
+  vampire.donate:            {description: create blood flask, default: false}
   vampire.combat.infect:     {description: be infectious in combat, default: false}
   vampire.combat.contract:   {description: contract infection in combat, default: false}
   vampire.list:              {description: list vampires and infected, default: false}
@@ -48,6 +49,7 @@ permissions:
       vampire.mode.nightvision: true
       vampire.trade.offer: true
       vampire.trade.accept: true
+      vampire.donate: true
       vampire.combat.infect: true
       vampire.combat.contract: true
       vampire.list: true
@@ -98,6 +100,7 @@ permissions:
       vampire.mode.bloodlust: true
       vampire.trade.offer: true
       vampire.trade.accept: true
+      vampire.donate: true
       vampire.combat.infect: true
       vampire.combat.contract: true
       vampire.version: true
