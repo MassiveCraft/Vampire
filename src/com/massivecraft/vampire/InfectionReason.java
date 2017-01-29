@@ -8,6 +8,7 @@ public enum InfectionReason
 	COMBAT_MISTAKE(false, true, "combat mistake", "<h>%2$s <i>infected you during combat by mistake.", "<h>%2$s <i>infected %1$s during combat by mistake."),
 	COMBAT_INTENDED(false, true, "combat intended", "<h>%2$s <i>infected you during combat on purpose.", "<h>%2$s <i>infected %1$s during combat on purpose."),
 	TRADE(false, true, "offer", "<i>You were infected from drinking <h>%2$ss <i>blood.", "<i>%1$s was infected from drinking <h>%2$ss <i>blood."),
+	FLASK(true, false, "blood flask", "<i>You were infected by a <h>blood flask<i>.", "<i>%1$s was infected by a <h>blood flask<i>."),
 	OPERATOR(true, false, "evil powers", "<i>You were infected by <h>evil powers<i>.", "<i>%1$s was infected by <h>evil powers<i>."),
 	UNKNOWN(true, false, "unknown", "<i>You were infected for <h>unknown <i>reasons.", "<i>%1$s was infected for <h>unknown <i>reasons."),
 	;

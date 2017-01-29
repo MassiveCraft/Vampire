@@ -27,6 +27,7 @@ public class CmdVampire extends VCommand
 	public CmdVampireModeNightvision cmdVampireModeNightvision = new CmdVampireModeNightvision();
 	public CmdVampireOffer cmdVampireOffer = new CmdVampireOffer();
 	public CmdVampireAccept cmdVampireAccept = new CmdVampireAccept();
+	public CmdVampireFlask cmdVampireDonate = new CmdVampireFlask();
 	public CmdVampireShriek cmdVampireShriek = new CmdVampireShriek();
 	public CmdVampireList cmdVampireList = new CmdVampireList();
 	public CmdVampireSet cmdVampireSet = new CmdVampireSet();
@@ -45,6 +46,7 @@ public class CmdVampire extends VCommand
 		this.addChild(this.cmdVampireModeNightvision);
 		this.addChild(this.cmdVampireOffer);
 		this.addChild(this.cmdVampireAccept);
+		this.addChild(this.cmdVampireDonate);
 		this.addChild(this.cmdVampireShriek);
 		this.addChild(this.cmdVampireList);
 		this.addChild(this.cmdVampireSet);
