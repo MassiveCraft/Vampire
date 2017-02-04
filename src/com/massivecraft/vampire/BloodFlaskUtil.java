@@ -19,7 +19,7 @@ import com.massivecraft.vampire.entity.UPlayer;
 public class BloodFlaskUtil
 {
 	private final static String COLOR_RED = ChatColor.RED.toString();
-	public final static String BLOOD_FLASK_NAME = COLOR_RED + "Blood Flask";
+	public final static String BLOOD_FLASK_NAME = ChatColor.GREEN.toString() + "Blood Flask";
 	public final static String BLOOD_FLASK_AMOUNT_SUFFIX = COLOR_RED + " units of blood.";
 	public final static String BLOOD_FLASK_VAMPIRIC_TRUE = COLOR_RED + "The blood is vampiric.";
 	public final static String BLOOD_FLASK_VAMPIRIC_FALSE = COLOR_RED + "The blood is not vampiric.";
