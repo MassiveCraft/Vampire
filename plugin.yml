@@ -19,7 +19,7 @@ permissions:
   vampire.mode.nightvision:  {description: use nightvision, default: false}
   vampire.trade.offer:       {description: offer blood to someone, default: false}
   vampire.trade.accept:      {description: accept blood offer, default: false}
-  vampire.flask:            {description: create blood flask, default: false}
+  vampire.flask:             {description: create blood flask, default: false}
   vampire.combat.infect:     {description: be infectious in combat, default: false}
   vampire.combat.contract:   {description: contract infection in combat, default: false}
   vampire.list:              {description: list vampires and infected, default: false}
@@ -30,6 +30,8 @@ permissions:
   vampire.set.food:          {description: set food (0 to 20), default: false}
   vampire.set.health:        {description: set health (0 to 20), default: false}
   vampire.version:           {description: see plugin version, default: false}
+  vampire.config:            {description: edit config, default: false}
+  vampire.lang:              {description: edit language settings, default: false}
 # OTHER
   vampire.altar.dark:        {description: use an altar of darkness, default: false}
   vampire.altar.light:       {description: use an altar of light, default: false}
@@ -62,6 +64,8 @@ permissions:
       vampire.version: true
       vampire.altar.dark: true
       vampire.altar.light: true
+      vampire.config: true
+      vampire.lang: true
 # -------------------------------------------- #
 # KITS
 # -------------------------------------------- #
@@ -73,6 +77,8 @@ permissions:
     default: false
     children:
       vampire.kit.rank2: true
+      vampire.config: true
+      vampire.lang: true
   vampire.kit.rank2:
     default: false
     children:

@@ -32,6 +32,8 @@ public class CmdVampire extends VCommand
 	public CmdVampireList cmdVampireList = new CmdVampireList();
 	public CmdVampireSet cmdVampireSet = new CmdVampireSet();
 	public MassiveCommandVersion cmdVersion = new MassiveCommandVersion(Vampire.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(Perm.VERSION));
+	public CmdVampireEditConfig cmdVampireEditConfig = new CmdVampireEditConfig();
+	public CmdVampireEditLang cmdVampireEditLang = new CmdVampireEditLang();
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -51,6 +53,8 @@ public class CmdVampire extends VCommand
 		this.addChild(this.cmdVampireList);
 		this.addChild(this.cmdVampireSet);
 		this.addChild(this.cmdVersion);
+		this.addChild(this.cmdVampireEditConfig);
+		this.addChild(this.cmdVampireEditLang);
 		
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.BASECOMMAND));

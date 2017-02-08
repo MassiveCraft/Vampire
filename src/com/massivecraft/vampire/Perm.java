@@ -39,6 +39,9 @@ public enum Perm implements Identified
 	IS_VAMPIRE,
 	IS_HUMAN,
 	
+	CONFIG,
+	LANG,
+	
 	// END OF LIST
 	;
 	
