@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveException;
@@ -8,8 +9,10 @@ import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.UPlayer;
+
+import java.util.List;
 
 public class CmdVampireOffer extends VCommand
 {
@@ -19,9 +22,6 @@ public class CmdVampireOffer extends VCommand
 	
 	public CmdVampireOffer()
 	{
-		// Aliases
-		this.addAliases("offer");
-		
 		// Parameters
 		this.addParameter(TypePlayer.get(), "player");
 		this.addParameter(TypeDouble.get(), "amount", "4.0");
@@ -34,6 +34,12 @@ public class CmdVampireOffer extends VCommand
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireOffer;
+	}
 	
 	@Override
 	public void perform() throws MassiveException

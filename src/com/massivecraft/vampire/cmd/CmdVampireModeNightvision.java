@@ -1,7 +1,10 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MConf;
+
+import java.util.List;
 
 public class CmdVampireModeNightvision extends CmdVampireModeAbstract
 {
@@ -11,9 +14,6 @@ public class CmdVampireModeNightvision extends CmdVampireModeAbstract
 	
 	public CmdVampireModeNightvision()
 	{
-		// Aliases
-		this.addAliases("nv", "nightvision");
-		
 		// Requirements
 		this.addRequirements(new RequirementHasPerm(Perm.MODE_NIGHTVISION));
 	}
@@ -21,6 +21,12 @@ public class CmdVampireModeNightvision extends CmdVampireModeAbstract
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireModeNightvision;
+	}
 	
 	@Override
 	protected void set(boolean val)

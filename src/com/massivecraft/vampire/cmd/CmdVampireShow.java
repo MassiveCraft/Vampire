@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
@@ -17,6 +18,8 @@ import com.massivecraft.vampire.entity.UPlayerColl;
 import com.massivecraft.vampire.entity.UPlayerColls;
 import com.massivecraft.vampire.util.SunUtil;
 
+import java.util.List;
+
 public class CmdVampireShow extends VCommand
 {
 	// -------------------------------------------- //
@@ -31,9 +34,6 @@ public class CmdVampireShow extends VCommand
 	
 	public CmdVampireShow()
 	{
-		// Aliases
-		this.addAliases("show");
-		
 		// Parameters
 		this.addParameter(playerReaderParameter);
 		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
@@ -45,6 +45,12 @@ public class CmdVampireShow extends VCommand
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireShow;
+	}
 	
 	@Override
 	public void perform() throws MassiveException

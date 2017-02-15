@@ -3,6 +3,7 @@ package com.massivecraft.vampire.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.ChatColor;
 
 import com.massivecraft.massivecore.MassiveCore;
@@ -25,9 +26,6 @@ public class CmdVampireList extends VCommand
 	
 	public CmdVampireList()
 	{
-		// Aliases
-		this.addAliases("list");
-		
 		// Parameters
 		this.addParameter(Parameter.getPage());
 		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "universe", "you");
@@ -42,6 +40,12 @@ public class CmdVampireList extends VCommand
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireList;
+	}
 	
 	@Override
 	public void perform() throws MassiveException

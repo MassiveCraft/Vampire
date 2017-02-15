@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -12,6 +13,8 @@ import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.type.TypeLimitedDouble;
 
+import java.util.List;
+
 public class CmdVampireFlask extends VCommand
 {
 	// -------------------------------------------- //
@@ -20,9 +23,6 @@ public class CmdVampireFlask extends VCommand
 	
 	public CmdVampireFlask()
 	{
-		// Aliases
-		this.addAliases("flask");
-		
 		// Parameters
 		this.addParameter(TypeLimitedDouble.get(0D, 20D), "amount", "4.0").setDefaultValue(4D);
 		
@@ -35,6 +35,12 @@ public class CmdVampireFlask extends VCommand
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireFlask;
+	}
 	
 	@Override
 	public void perform() throws MassiveException

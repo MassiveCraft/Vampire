@@ -3,6 +3,9 @@ package com.massivecraft.vampire.cmd;
 import com.massivecraft.massivecore.command.Visibility;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MConf;
+
+import java.util.List;
 
 public class CmdVampireSet extends VCommand
 {
@@ -27,14 +30,21 @@ public class CmdVampireSet extends VCommand
 		this.addChild(this.cmdVampireSetFood);
 		this.addChild(this.cmdVampireSetHealth);
 		
-		// Aliases
-		this.addAliases("set");
-		
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.SET));
 		
 		// Visibility
 		this.setVisibility(Visibility.SECRET);
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireSet;
 	}
 	
 }

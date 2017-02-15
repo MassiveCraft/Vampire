@@ -22,11 +22,25 @@ public class MConf extends Entity<MConf>
 	// FIELDS
 	// -------------------------------------------- //
 	
-	public List<String> aliasesV = MUtil.list("v");
-	
-	public List<String> aliasesEditConfigInner = MUtil.list("config");
-	
-	public List<String> aliasesEditLangInner = MUtil.list("lang");
+	// Aliases
+	public List<String> aliasesVampire = MUtil.list("v", "vampire");
+	public List<String> aliasesVampireShow = MUtil.list("show");
+	public List<String> aliasesVampireModeBloodlust = MUtil.list("bloodlust");
+	public List<String> aliasesVampireModeIntend = MUtil.list("intend");
+	public List<String> aliasesVampireModeNightvision = MUtil.list("nv", "nightvision");
+	public List<String> aliasesVampireOffer = MUtil.list("offer");
+	public List<String> aliasesVampireAccept = MUtil.list("accept");
+	public List<String> aliasesVampireFlask = MUtil.list("flask");
+	public List<String> aliasesVampireShriek = MUtil.list("shriek");
+	public List<String> aliasesVampireList = MUtil.list("list");
+	public List<String> aliasesVampireSet = MUtil.list("set");
+	public List<String> aliasesVampireSetVampire = MUtil.list("vampire");
+	public List<String> aliasesVampireSetInfection = MUtil.list("infection");
+	public List<String> aliasesVampireSetFood = MUtil.list("food");
+	public List<String> aliasesVampireSetHealth = MUtil.list("health");
+	public List<String> aliasesVampireEditConfig = MUtil.list("config");
+	public List<String> aliasesVampireEditLang = MUtil.list("lang");
+	public List<String> aliasesVampireVersion = MUtil.list("v", "version");
 
 	@EditorType(TypeMillisDiff.class)
 	public long taskDelayMillis = 500L; // Half a second 

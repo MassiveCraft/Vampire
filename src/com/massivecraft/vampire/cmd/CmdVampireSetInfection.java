@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
@@ -9,6 +10,8 @@ import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
+
+import java.util.List;
 
 public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 {
@@ -20,9 +23,6 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 	{
 		super(false, TypeDouble.get());
 		
-		// Aliases
-		this.addAliases("infection");
-		
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.SET_INFECTION));
 	}
@@ -31,6 +31,12 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 	// OVERRIDE
 	// -------------------------------------------- //
 
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireSetInfection;
+	}
+	
 	@Override
 	public Double set(UPlayer uplayer, Player player, Double val)
 	{

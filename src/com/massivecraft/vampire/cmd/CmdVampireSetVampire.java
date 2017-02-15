@@ -1,11 +1,14 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.UPlayer;
+
+import java.util.List;
 
 public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
 {
@@ -17,9 +20,6 @@ public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
 	{
 		super(false, TypeBooleanYes.get());
 		
-		// Aliases
-		this.addAliases("vampire");
-		
 		// Requirements
 		this.setDesc("set vampire (yes or no)");
 	}
@@ -27,6 +27,12 @@ public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireSetVampire;
+	}
 	
 	@Override
 	public Boolean set(UPlayer uplayer, Player player, Boolean val)

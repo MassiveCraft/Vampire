@@ -2,9 +2,7 @@ package com.massivecraft.vampire.cmd;
 
 import java.util.List;
 
-import com.massivecraft.massivecore.command.MassiveCommandVersion;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.MConf;
 
@@ -31,9 +29,9 @@ public class CmdVampire extends VCommand
 	public CmdVampireShriek cmdVampireShriek = new CmdVampireShriek();
 	public CmdVampireList cmdVampireList = new CmdVampireList();
 	public CmdVampireSet cmdVampireSet = new CmdVampireSet();
-	public MassiveCommandVersion cmdVersion = new MassiveCommandVersion(Vampire.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(Perm.VERSION));
 	public CmdVampireEditConfig cmdVampireEditConfig = new CmdVampireEditConfig();
 	public CmdVampireEditLang cmdVampireEditLang = new CmdVampireEditLang();
+	public CmdVampireVersion cmdVampireVersion = new CmdVampireVersion();
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -52,9 +50,9 @@ public class CmdVampire extends VCommand
 		this.addChild(this.cmdVampireShriek);
 		this.addChild(this.cmdVampireList);
 		this.addChild(this.cmdVampireSet);
-		this.addChild(this.cmdVersion);
 		this.addChild(this.cmdVampireEditConfig);
 		this.addChild(this.cmdVampireEditLang);
+		this.addChild(this.cmdVampireVersion);
 		
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.BASECOMMAND));
@@ -67,7 +65,7 @@ public class CmdVampire extends VCommand
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesV;
+		return MConf.get().aliasesVampire;
 	}
 	
 }

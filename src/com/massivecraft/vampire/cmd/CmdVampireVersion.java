@@ -1,21 +1,25 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.massivecore.command.MassiveCommandVersion;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MConf;
 
 import java.util.List;
 
-public class CmdVampireModeBloodlust extends CmdVampireModeAbstract
+public class CmdVampireVersion extends MassiveCommandVersion
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CmdVampireModeBloodlust()
+	public CmdVampireVersion()
 	{
+		super(Vampire.get());
+		
 		// Requirements
-		this.addRequirements(new RequirementHasPerm(Perm.MODE_BLOODLUST));
+		this.addRequirements(RequirementHasPerm.get(Perm.VERSION));
 	}
 	
 	// -------------------------------------------- //
@@ -25,19 +29,7 @@ public class CmdVampireModeBloodlust extends CmdVampireModeAbstract
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireModeBloodlust;
+		return MConf.get().aliasesVampireVersion;
 	}
-	
-	@Override
-	protected void set(boolean val)
-	{
-		vme.setBloodlusting(val);
-	}
-	
-	@Override
-	protected boolean get()
-	{
-		return vme.isBloodlusting();
-	}
-	
+
 }

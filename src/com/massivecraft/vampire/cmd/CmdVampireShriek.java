@@ -1,8 +1,11 @@
 package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.vampire.*;
+import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.cmdreq.ReqIsVampire;
+import com.massivecraft.vampire.entity.MConf;
+
+import java.util.List;
 
 public class CmdVampireShriek extends VCommand
 {
@@ -12,9 +15,6 @@ public class CmdVampireShriek extends VCommand
 	
 	public CmdVampireShriek()
 	{
-		// Aliases
-		this.addAliases("shriek");
-		
 		// Requirements
 		this.addRequirements(ReqIsVampire.get());
 		this.addRequirements(RequirementHasPerm.get(Perm.SHRIEK));
@@ -23,6 +23,12 @@ public class CmdVampireShriek extends VCommand
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireShriek;
+	}
 	
 	@Override
 	public void perform()

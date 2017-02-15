@@ -1,12 +1,15 @@
 package com.massivecraft.vampire.cmd;
 
+import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.vampire.*;
 import com.massivecraft.vampire.entity.UPlayer;
+
+import java.util.List;
 
 public class CmdVampireSetFood extends CmdVampireSetAbstract<Integer>
 {
@@ -18,9 +21,6 @@ public class CmdVampireSetFood extends CmdVampireSetAbstract<Integer>
 	{
 		super(true, TypeInteger.get());
 		
-		// Aliases
-		this.addAliases("food");
-		
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(Perm.SET_FOOD));
 	}
@@ -28,6 +28,12 @@ public class CmdVampireSetFood extends CmdVampireSetAbstract<Integer>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MConf.get().aliasesVampireSetFood;
+	}
 	
 	@Override
 	public Integer set(UPlayer uplayer, Player player, Integer val)
