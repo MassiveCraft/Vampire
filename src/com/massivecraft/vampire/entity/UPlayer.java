@@ -588,7 +588,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		Player me = this.getPlayer();
 		if (me == null) return;
 		UConf uconf = UConf.get(me);
-		if (me.getGameMode() == GameMode.CREATIVE) return;
+		if (me.getGameMode() == GameMode.CREATIVE || me.getGameMode() == GameMode.SPECTATOR) return;
 		if (me.isDead()) return;
 		this.getFood().add(millis * uconf.bloodlustFoodPerMilli);
 		if (this.getFood().get() < uconf.bloodlustMinFood) this.setBloodlusting(false);
