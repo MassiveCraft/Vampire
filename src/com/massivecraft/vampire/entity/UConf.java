@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.collections.BackstringEnumSet;
+import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.PotionEffectConf;
@@ -155,7 +155,7 @@ public class UConf extends Entity<UConf>
 	public long truceBreakMillis = 60L * 1000L; 
 	
 	// These are the creature types that won't target vampires
-	public BackstringEnumSet<EntityType> truceEntityTypes = new BackstringEnumSet<EntityType>(EntityType.class,
+	public BackstringSet<EntityType> truceEntityTypes = new BackstringSet<EntityType>(EntityType.class,
 		"BLAZE",
 		"CAVE_SPIDER",
 		"CREEPER",
