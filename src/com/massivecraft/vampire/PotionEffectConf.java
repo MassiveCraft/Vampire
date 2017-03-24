@@ -1,16 +1,16 @@
 package com.massivecraft.vampire;
 
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.EventPriority;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.EventPriority;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 @SuppressWarnings("deprecation")
 public class PotionEffectConf

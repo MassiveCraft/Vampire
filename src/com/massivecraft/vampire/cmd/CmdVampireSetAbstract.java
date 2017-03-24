@@ -1,7 +1,5 @@
 package com.massivecraft.vampire.cmd;
 
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
@@ -10,6 +8,7 @@ import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
 import com.massivecraft.vampire.entity.UPlayerColls;
+import org.bukkit.entity.Player;
 
 public abstract class CmdVampireSetAbstract<T> extends VCommand
 {

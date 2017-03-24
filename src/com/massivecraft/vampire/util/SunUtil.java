@@ -1,13 +1,12 @@
 package com.massivecraft.vampire.util;
 
+import com.massivecraft.vampire.entity.UConf;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import com.massivecraft.vampire.entity.UConf;
 
 public class SunUtil
 {

@@ -1,9 +1,9 @@
 package com.massivecraft.vampire.entity;
 
-import java.util.Collection;
-
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.store.SenderColl;
+
+import java.util.Collection;
 
 public class UPlayerColl extends SenderColl<UPlayer>
 {

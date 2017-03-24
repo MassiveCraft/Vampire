@@ -1,9 +1,8 @@
 package com.massivecraft.vampire.event;
 
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.massivecore.event.EventMassiveCore;
 import com.massivecraft.vampire.entity.UPlayer;
+import org.bukkit.event.HandlerList;
 
 public class EventVampirePlayerInfectionChange extends EventMassiveCore
 {

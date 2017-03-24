@@ -1,7 +1,6 @@
 package com.massivecraft.vampire;
 
-import java.util.List;
-
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ThrownPotion;
@@ -11,7 +10,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.List;
 
 public class HolyWaterUtil
 {

@@ -1,12 +1,11 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.vampire.entity.MConf;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 

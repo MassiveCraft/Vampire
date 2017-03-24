@@ -1,11 +1,5 @@
 package com.massivecraft.vampire.cmd;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.massivecraft.vampire.entity.MConf;
-import org.bukkit.ChatColor;
-
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
@@ -15,8 +9,13 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColls;
+import org.bukkit.ChatColor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CmdVampireList extends VCommand
 {

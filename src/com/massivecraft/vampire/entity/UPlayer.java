@@ -1,18 +1,5 @@
 package com.massivecraft.vampire.entity;
 
-import java.util.Map;
-
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.potion.PotionEffectType;
-
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.MUtil;
@@ -26,6 +13,18 @@ import com.massivecraft.vampire.event.EventVampirePlayerInfectionChange;
 import com.massivecraft.vampire.event.EventVampirePlayerVampireChange;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.SunUtil;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.Map;
 
 public class UPlayer extends SenderEntity<UPlayer>
 {

@@ -1,14 +1,13 @@
 package com.massivecraft.vampire.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.util.Txt;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ResourceUtil
 {

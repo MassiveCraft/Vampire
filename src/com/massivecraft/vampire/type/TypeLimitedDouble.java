@@ -1,13 +1,12 @@
 package com.massivecraft.vampire.type;
 
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class TypeLimitedDouble extends TypeDouble
 {

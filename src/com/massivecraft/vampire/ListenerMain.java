@@ -1,5 +1,16 @@
 package com.massivecraft.vampire;
 
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.InventoryUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.PlayerUtil;
+import com.massivecraft.vampire.entity.MConf;
+import com.massivecraft.vampire.entity.MLang;
+import com.massivecraft.vampire.entity.UConf;
+import com.massivecraft.vampire.entity.UPlayer;
+import com.massivecraft.vampire.util.FxUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -21,12 +32,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -37,18 +48,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
-
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.InventoryUtil;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.PlayerUtil;
-import com.massivecraft.vampire.entity.MConf;
-import com.massivecraft.vampire.entity.MLang;
-import com.massivecraft.vampire.entity.UConf;
-import com.massivecraft.vampire.entity.UPlayer;
-import com.massivecraft.vampire.util.FxUtil;
 
 public class ListenerMain extends Engine
 {

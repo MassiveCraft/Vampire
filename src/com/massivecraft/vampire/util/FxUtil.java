@@ -1,12 +1,11 @@
 package com.massivecraft.vampire.util;
 
+import com.massivecraft.massivecore.MassiveCore;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import com.massivecraft.massivecore.MassiveCore;
 
 public class FxUtil
 {

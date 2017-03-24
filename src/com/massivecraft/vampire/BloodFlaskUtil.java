@@ -1,7 +1,8 @@
 package com.massivecraft.vampire;
 
-import java.util.List;
-
+import com.massivecraft.massivecore.util.InventoryUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.vampire.entity.UPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,9 +13,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.massivecore.util.InventoryUtil;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.vampire.entity.UPlayer;
+import java.util.List;
 
 public class BloodFlaskUtil
 {

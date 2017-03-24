@@ -1,15 +1,14 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.vampire.entity.MConf;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 

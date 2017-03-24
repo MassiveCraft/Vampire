@@ -1,10 +1,10 @@
 package com.massivecraft.vampire.cmd;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.entity.MConf;
+
+import java.util.List;
 
 public class CmdVampire extends VCommand
 {

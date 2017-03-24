@@ -1,12 +1,11 @@
 package com.massivecraft.vampire;
 
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
+import org.bukkit.entity.Player;
 
 public class TheTask extends ModuloRepeatTask
 {

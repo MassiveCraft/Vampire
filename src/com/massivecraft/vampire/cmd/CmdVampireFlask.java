@@ -1,17 +1,16 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.vampire.entity.MConf;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasItemInHand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.vampire.BloodFlaskUtil;
 import com.massivecraft.vampire.Perm;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.type.TypeLimitedDouble;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 

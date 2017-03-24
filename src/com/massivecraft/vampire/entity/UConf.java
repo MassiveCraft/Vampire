@@ -1,10 +1,11 @@
 package com.massivecraft.vampire.entity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.BackstringSet;
+import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.vampire.PotionEffectConf;
+import com.massivecraft.vampire.altar.AltarDark;
+import com.massivecraft.vampire.altar.AltarLight;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -13,12 +14,10 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.collections.BackstringSet;
-import com.massivecraft.massivecore.store.Entity;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.vampire.PotionEffectConf;
-import com.massivecraft.vampire.altar.AltarDark;
-import com.massivecraft.vampire.altar.AltarLight;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class UConf extends Entity<UConf>
 {

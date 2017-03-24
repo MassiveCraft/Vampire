@@ -1,8 +1,5 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.vampire.entity.MConf;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
@@ -12,11 +9,13 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
 import com.massivecraft.vampire.entity.UPlayerColls;
 import com.massivecraft.vampire.util.SunUtil;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 

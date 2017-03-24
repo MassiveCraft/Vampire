@@ -1,13 +1,5 @@
 package com.massivecraft.vampire.altar;
 
-import java.util.HashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
-
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.InfectionReason;
 import com.massivecraft.vampire.Perm;
@@ -16,6 +8,13 @@ import com.massivecraft.vampire.entity.MLang;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.ResourceUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.HashMap;
 
 public class AltarDark extends Altar
 {
