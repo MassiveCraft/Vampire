@@ -17,13 +17,7 @@ public class Vampire extends MassivePlugin
 	
 	private static Vampire i;
 	public static Vampire get() { return i; }
-	public Vampire()
-	{
-		Vampire.i = this;
-		
-		// Version Synchronized
-		this.setVersionSynchronized(true);
-	}
+	public Vampire() { Vampire.i = this; }
 	
 	// -------------------------------------------- //
 	// FIELDS
