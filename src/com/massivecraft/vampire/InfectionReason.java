@@ -33,7 +33,7 @@ public enum InfectionReason
 	private final String otherdesc;
 	public String getOtherdesc() { return this.otherdesc; }
 	
-	private InfectionReason(final boolean notice, final boolean player, final String shortname, final String selfdesc, final String otherdesc)
+	InfectionReason(final boolean notice, final boolean player, final String shortname, final String selfdesc, final String otherdesc)
 	{
 		this.noticeable = notice;
 		this.maker = player;

@@ -51,7 +51,7 @@ public class PotionEffectConf
 	
 	public void addPotionEffects(LivingEntity entity, int targetDuration, int okDuration)
 	{
-		Map<Integer, Integer> effectIdToStrength = new HashMap<Integer, Integer>(this.effectIdToStrength);
+		Map<Integer, Integer> effectIdToStrength = new HashMap<>(this.effectIdToStrength);
 		
 		for (PotionEffect pe : entity.getActivePotionEffects())
 		{
@@ -84,10 +84,10 @@ public class PotionEffectConf
 	public void removePotionEffects(LivingEntity entity)
 	{
 		// The ids to deactivate
-		Set<Integer> ids = new HashSet<Integer>(this.effectIdToStrength.keySet());
+		Set<Integer> ids = new HashSet<>(this.effectIdToStrength.keySet());
 	
 		// The currently active ids 
-		Set<Integer> activeIds = new HashSet<Integer>();
+		Set<Integer> activeIds = new HashSet<>();
 		for (PotionEffect pe : entity.getActivePotionEffects())
 		{
 			activeIds.add(pe.getType().getId());

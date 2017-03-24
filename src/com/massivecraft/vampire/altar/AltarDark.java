@@ -25,7 +25,7 @@ public class AltarDark extends Altar
 		
 		this.coreMaterial = Material.GOLD_BLOCK;
 		
-		this.materialCounts = new HashMap<Material, Integer>();
+		this.materialCounts = new HashMap<>();
 		this.materialCounts.put(Material.OBSIDIAN, 30);
 		this.materialCounts.put(Material.WEB, 5);
 		this.materialCounts.put(Material.DEAD_BUSH, 5);

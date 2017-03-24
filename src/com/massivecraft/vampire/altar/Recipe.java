@@ -61,7 +61,7 @@ public class Recipe
 	
 	public String getRecipeLine()
 	{
-		ArrayList<String> lines = new ArrayList<String>();
+		ArrayList<String> lines = new ArrayList<>();
 		for (Entry<Material, Integer> item : MUtil.entriesSortedByValues(this.materialQuantities))
 		{
 			Material material = item.getKey();

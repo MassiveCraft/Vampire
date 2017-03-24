@@ -54,10 +54,10 @@ public class CmdVampireList extends VCommand
 		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
 		String universe = this.readArg(senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
 		
-		List<String> vampiresOnline = new ArrayList<String>();
-		List<String> vampiresOffline = new ArrayList<String>();
-		List<String> infectedOnline = new ArrayList<String>();
-		List<String> infectedOffline = new ArrayList<String>();
+		List<String> vampiresOnline = new ArrayList<>();
+		List<String> vampiresOffline = new ArrayList<>();
+		List<String> infectedOnline = new ArrayList<>();
+		List<String> infectedOffline = new ArrayList<>();
 		
 		for (UPlayer uplayer : UPlayerColls.get().getForUniverse(universe).getAll())
 		{
@@ -86,7 +86,7 @@ public class CmdVampireList extends VCommand
 		}
 
 		// Create Messages
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		
 		if (vampiresOnline.size() > 0)
 		{

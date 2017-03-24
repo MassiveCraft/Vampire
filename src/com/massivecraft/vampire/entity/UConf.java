@@ -154,7 +154,7 @@ public class UConf extends Entity<UConf>
 	public long truceBreakMillis = 60L * 1000L; 
 	
 	// These are the creature types that won't target vampires
-	public BackstringSet<EntityType> truceEntityTypes = new BackstringSet<EntityType>(EntityType.class,
+	public BackstringSet<EntityType> truceEntityTypes = new BackstringSet<>(EntityType.class,
 		"BLAZE",
 		"CAVE_SPIDER",
 		"CREEPER",

@@ -65,7 +65,7 @@ public class ResourceUtil
 	
 	public static String describe(Collection<? extends ItemStack> stacks)
 	{
-		ArrayList<String> lines = new ArrayList<String>();
+		ArrayList<String> lines = new ArrayList<>();
 		for (ItemStack stack : stacks)
 		{
 			String desc = describe(stack.getType(), stack.getDurability());

@@ -44,7 +44,7 @@ public abstract class Altar
 		Map<Material, Integer> nearbyMaterialCounts = countMaterials(blocks, this.materialCounts.keySet());
 		
 		int requiredMaterialCountSum = this.sumCollection(this.materialCounts.values());
-		int nearbyMaterialCountSum   = this.sumCollection(nearbyMaterialCounts.values());
+		int nearbyMaterialCountSum = this.sumCollection(nearbyMaterialCounts.values());
 		
 		// If the blocks are to far from looking anything like an altar we will just skip.
 		if (nearbyMaterialCountSum < requiredMaterialCountSum * uconf.altarMinRatioForInfo) return false;
@@ -90,7 +90,7 @@ public abstract class Altar
 	
 	public Map<Material, Integer> getMissingMaterialCounts(Map<Material, Integer> floodMaterialCounts)
 	{
-		Map<Material, Integer> ret = new HashMap<Material, Integer>();
+		Map<Material, Integer> ret = new HashMap<>();
 		
 		for (Entry<Material, Integer> entry : materialCounts.entrySet())
 		{
@@ -106,7 +106,7 @@ public abstract class Altar
 	
 	public static Map<Material, Integer> countMaterials(Collection<Block> blocks, Set<Material> materialsToCount)
 	{
-		Map<Material, Integer> ret = new HashMap<Material, Integer>();
+		Map<Material, Integer> ret = new HashMap<>();
 		for (Block block : blocks)
 		{
 			Material material = block.getType();
@@ -123,7 +123,7 @@ public abstract class Altar
 	
 	public static ArrayList<Block> getCubeBlocks(Block centerBlock, int radius)
 	{
-		ArrayList<Block> blocks = new ArrayList<Block>();
+		ArrayList<Block> blocks = new ArrayList<>();
 		
 		for (int y = -radius; y <= radius; y++)
 		{
