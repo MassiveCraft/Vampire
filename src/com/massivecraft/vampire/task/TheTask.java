@@ -1,8 +1,9 @@
-package com.massivecraft.vampire;
+package com.massivecraft.vampire.task;
 
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import org.bukkit.entity.Player;

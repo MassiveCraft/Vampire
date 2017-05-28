@@ -3,11 +3,6 @@ package com.massivecraft.vampire;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
-import com.massivecraft.vampire.cmd.CmdVampire;
-import com.massivecraft.vampire.entity.MConfColl;
-import com.massivecraft.vampire.entity.MLangColl;
-import com.massivecraft.vampire.entity.UConfColls;
-import com.massivecraft.vampire.entity.UPlayerColls;
 
 public class Vampire extends MassivePlugin 
 {
@@ -54,22 +49,7 @@ public class Vampire extends MassivePlugin
 		);
 		
 		// Activate
-		this.activate(
-			// Coll
-			MConfColl.class,
-			MLangColl.class,
-			UConfColls.class,
-			UPlayerColls.class,
-		
-			// Tasks
-			TheTask.class,
-			
-			// Listeners
-			ListenerMain.class,
-			
-			// Command
-			CmdVampire.class
-		);
+		this.activateAuto();
 	}
 	
 }
