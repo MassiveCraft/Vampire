@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.util;
 
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -88,15 +89,15 @@ public class ResourceUtil
 	{
 		if ( ! playerHas(player, stacks))
 		{
-			player.sendMessage(Txt.parse(fail));
-			player.sendMessage(describe(stacks));
+			MixinMessage.get().messageOne(player, Txt.parse(fail));
+			MixinMessage.get().messageOne(player, describe(stacks));
 			return false;
 		}
 
 		playerRemove(player, stacks);
 		
-		player.sendMessage(Txt.parse(success));
-		player.sendMessage(describe(stacks));
+		MixinMessage.get().messageOne(player, Txt.parse(success));
+		MixinMessage.get().messageOne(player, describe(stacks));
 		
 		return true;
 	}

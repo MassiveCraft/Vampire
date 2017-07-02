@@ -1,5 +1,6 @@
 package com.massivecraft.vampire.altar;
 
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.entity.MLang;
@@ -28,6 +29,8 @@ public abstract class Altar
 	
 	public boolean evalBlockUse(Block coreBlock, Player player)
 	{
+		String message;
+		
 		if (MUtil.isntPlayer(player)) return false;
 		
 		if (coreBlock.getType() != coreMaterial) return false;
@@ -56,12 +59,14 @@ public abstract class Altar
 		if (this.sumCollection(missingMaterialCounts.values()) > 0)
 		{
 			// Send info on what to do to finish the altar 
-			player.sendMessage(Txt.parse(MLang.get().altarIncomplete, this.name));
+			message = Txt.parse(MLang.get().altarIncomplete, this.name);
+			MixinMessage.get().messageOne(player, message);
 			for (Entry<Material, Integer> entry : missingMaterialCounts.entrySet())
 			{
 				Material material = entry.getKey();
 				int count = entry.getValue();
-				player.sendMessage(Txt.parse("<h>%d <p>%s", count, Txt.getMaterialName(material)));
+				message = Txt.parse("<h>%d <p>%s", count, Txt.getMaterialName(material));
+				MixinMessage.get().messageOne(player, message);
 			}
 			return false;
 		}

@@ -1,6 +1,7 @@
 package com.massivecraft.vampire.entity;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
@@ -732,7 +733,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 			player.playEffect(l2, Effect.POTION_BREAK, 5);
 			if (player.equals(me)) continue;
 			if (player.equals(you)) continue;
-			player.sendMessage(Txt.parse(MLang.get().tradeSeen, me.getDisplayName(), you.getDisplayName()));
+			String message = Txt.parse(MLang.get().tradeSeen, me.getDisplayName(), you.getDisplayName());
+			MixinMessage.get().messageOne(player, message);
 		}
 		
 		// Reset trade memory
