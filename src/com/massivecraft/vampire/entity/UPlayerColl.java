@@ -2,6 +2,7 @@ package com.massivecraft.vampire.entity;
 
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.store.SenderColl;
+import com.massivecraft.massivecore.store.cleanable.CleaningUtil;
 
 import java.util.Collection;
 
@@ -59,6 +60,16 @@ public class UPlayerColl extends SenderColl<UPlayer>
 				return entity.isOnline() && entity.isVampire();
 			}
 		});
+	}
+	
+	// -------------------------------------------- //
+	// CLEAN
+	// -------------------------------------------- //
+	
+	@Override
+	public long getCleanInactivityToleranceMillis()
+	{
+		return CleaningUtil.CLEAN_INACTIVITY_TOLERANCE_MILLIS_STANDARD;
 	}
 	
 }
