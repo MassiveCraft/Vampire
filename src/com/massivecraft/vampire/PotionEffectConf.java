@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-@SuppressWarnings("deprecation")
+//@SuppressWarnings("deprecation")
 public class PotionEffectConf
 {
 	// -------------------------------------------- //

@@ -27,12 +27,11 @@ public class Recipe
 		this.materialQuantities = materialQuantities;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void removeFromPlayer(Player player)
 	{
 		Inventory inventory = player.getInventory();
 		for (Material material: this.materialQuantities.keySet()) {
-			inventory.removeItem(new ItemStack(material.getId(), this.materialQuantities.get(material)));
+			inventory.removeItem(new ItemStack(material, this.materialQuantities.get(material)));
 		}
 		player.updateInventory(); // It is ok to use this method though it is deprecated.
 	}
