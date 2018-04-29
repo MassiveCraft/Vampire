@@ -36,8 +36,8 @@ public class TheTask extends ModuloRepeatTask
 	@Override
 	public void setDelayMillis(long delayMillis)
 	{
+		MConf.get().changed(MConf.get().taskDelayMillis, delayMillis);
 		MConf.get().taskDelayMillis = delayMillis;
-		MConf.get().changed();
 	}
 	
 	@Override
