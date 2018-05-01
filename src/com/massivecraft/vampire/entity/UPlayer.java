@@ -73,8 +73,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 		event.run();
 		if (event.isCancelled()) return;
 		
+		this.changed(this.vampire, val);
 		this.vampire = val;
-		this.changed();
 		if (this.vampire)
 		{
 			this.msg(MLang.get().vampireTrue);
@@ -134,8 +134,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 			{
 				this.msg(MLang.get().infectionCured);
 			}
+			this.changed(this.infection, 0D);
 			this.infection = 0D;
-			this.changed();
 			
 			Player player = this.getPlayer();
 			if (player != null)
@@ -146,8 +146,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 		}
 		else
 		{
+			this.changed(this.infection, val);
 			this.infection = val;
-			this.changed();
 		}
 		this.updatePotionEffects();
 	}
@@ -235,8 +235,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 			}
 		}
 		
+		this.changed(this.bloodlusting, val);
 		this.bloodlusting = val;
-		this.changed();
 		this.msg(this.bloodlustMsg());
 		this.update();
 	}
@@ -250,11 +250,11 @@ public class UPlayer extends SenderEntity<UPlayer>
 		// If an actual change is being made ...
 		if (this.usingNightVision == val) return;
 		
+		// ... mark as changed ...
+		this.changed(this.usingNightVision, val);
+		
 		// ... do change stuff ...
 		this.usingNightVision = val;
-		
-		// ... mstore mark (not required but is good practice) ...
-		this.changed();
 		
 		// ... remove the nightvision potion effects ...
 		Player me = this.getPlayer();
@@ -551,7 +551,6 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		this.msg(MLang.get().infectionFeeling.get(indexNew));
 		this.msg(MLang.get().infectionHint.get(MassiveCore.random.nextInt(MLang.get().infectionHint.size())));
-		this.changed();
 	}
 	public int infectionGetMessageIndex()
 	{
