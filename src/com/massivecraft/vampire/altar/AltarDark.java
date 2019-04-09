@@ -27,14 +27,14 @@ public class AltarDark extends Altar
 		
 		this.materialCounts = new HashMap<>();
 		this.materialCounts.put(Material.OBSIDIAN, 30);
-		this.materialCounts.put(Material.WEB, 5);
+		this.materialCounts.put(Material.COBWEB, 5);
 		this.materialCounts.put(Material.DEAD_BUSH, 5);
 		this.materialCounts.put(Material.DIAMOND_BLOCK, 2);
 		
 		this.resources = MUtil.list(
-			new ItemStack(Material.MUSHROOM_SOUP, 1),
+			new ItemStack(Material.MUSHROOM_STEW, 1),
 			new ItemStack(Material.BONE, 10),
-			new ItemStack(Material.SULPHUR, 10),
+			new ItemStack(Material.GUNPOWDER, 10),
 			new ItemStack(Material.REDSTONE, 10)
 		);
 	}

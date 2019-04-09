@@ -79,8 +79,8 @@ public class ResourceUtil
 	public static String describe(Material type, short damage)
 	{
 		if (type == Material.POTION && damage == 0) return "Water Bottle";
-		if (type == Material.INK_SACK && damage == 4 ) return "Lapis Lazuli Dye";
-		if (type == Material.COAL && damage == 1 ) return "Charcoal";
+		if (type == Material.LAPIS_LAZULI && damage == 0 ) return "Lapis Lazuli Dye";
+		if (type == Material.CHARCOAL && damage == 0 ) return "Charcoal";
 		
 		return Txt.getMaterialName(type);
 	}

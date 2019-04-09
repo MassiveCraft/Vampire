@@ -85,8 +85,8 @@ public class SunUtil
 		
 		for (int y = block.getY(); y <= maxy && ret < 1d; y++)
 		{
-			int typeId = world.getBlockTypeIdAt(x, y, z);
-			Double opacity = UConf.get(block).typeIdOpacity.get(typeId);
+			Material type = world.getBlockAt(x, y, z).getType();
+			Double opacity = UConf.get(block).typeOpacity.get(type);
 			if (opacity == null)
 			{
 				opacity = 1d; // Blocks not in that map have opacity 1;

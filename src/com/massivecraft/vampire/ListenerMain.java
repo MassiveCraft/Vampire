@@ -548,7 +548,7 @@ public class ListenerMain extends Engine
 		
 		// .. and the player right-clicks a cake block ...
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if (event.getClickedBlock().getType() != Material.CAKE_BLOCK) return;
+		if (event.getClickedBlock().getType() != Material.CAKE) return;
 		
 		// ... and the player is a vampire ...
 		UPlayer uplayer = UPlayer.get(player);

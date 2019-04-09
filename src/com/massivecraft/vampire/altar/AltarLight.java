@@ -27,8 +27,8 @@ public class AltarLight extends Altar
 		
 		this.materialCounts = new HashMap<>();
 		this.materialCounts.put(Material.GLOWSTONE, 30);
-		this.materialCounts.put(Material.YELLOW_FLOWER, 5);
-		this.materialCounts.put(Material.RED_ROSE, 5);
+		this.materialCounts.put(Material.DANDELION, 5);
+		this.materialCounts.put(Material.POPPY, 5);
 		this.materialCounts.put(Material.DIAMOND_BLOCK, 2);
 		
 		this.resources = MUtil.list(
