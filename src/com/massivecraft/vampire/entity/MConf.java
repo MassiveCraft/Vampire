@@ -476,12 +476,7 @@ public class MConf extends Entity<MConf>
 			Material.STICK,
 			Material.TORCH,
 			Material.REDSTONE_TORCH,
-			Material.SPRUCE_SIGN,
-			Material.ACACIA_SIGN,
-			Material.BIRCH_SIGN,
-			Material.DARK_OAK_SIGN,
-			Material.JUNGLE_SIGN,
-			Material.OAK_SIGN,
+			Material.SIGN,
 			Material.ACACIA_FENCE,
 			Material.ACACIA_FENCE_GATE,
 			Material.BIRCH_FENCE,
@@ -946,18 +941,8 @@ public class MConf extends Entity<MConf>
 			//60, XD, //SOIL
 			//61, XD, //FURNACE
 			//62, XD, //BURNING_FURNACE
-			Material.SPRUCE_SIGN, STICK, //SIGN_POST
-			Material.SPRUCE_WALL_SIGN, STICK, //SIGN_POST
-			Material.ACACIA_SIGN, STICK, //SIGN_POST
-			Material.ACACIA_WALL_SIGN, STICK, //SIGN_POST
-			Material.BIRCH_SIGN, STICK, //SIGN_POST
-			Material.BIRCH_WALL_SIGN, STICK, //SIGN_POST
-			Material.DARK_OAK_SIGN, STICK, //SIGN_POST
-			Material.DARK_OAK_WALL_SIGN, STICK, //SIGN_POST
-			Material.JUNGLE_SIGN, STICK, //SIGN_POST
-			Material.JUNGLE_WALL_SIGN, STICK, //SIGN_POST
-			Material.OAK_SIGN, STICK, //SIGN_POST
-			Material.OAK_WALL_SIGN, STICK, //SIGN_POST
+			Material.SIGN, STICK, //SIGN_POST
+			Material.WALL_SIGN, STICK, //SIGN_POST
 			//64, DOOR, //WOODEN_DOOR
 			Material.ACACIA_DOOR, DOOR, //WOODEN_DOOR
 			Material.BIRCH_DOOR, DOOR, //WOODEN_DOOR
