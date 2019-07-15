@@ -4,7 +4,7 @@ import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.entity.MLang;
-import com.massivecraft.vampire.entity.UConf;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,7 +35,7 @@ public abstract class Altar
 		
 		if (coreBlock.getType() != coreMaterial) return false;
 		UPlayer uplayer = UPlayer.get(player);
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		
 		// Make sure we include the coreBlock material in the wanted ones
 		if ( ! this.materialCounts.containsKey(this.coreMaterial))
@@ -43,14 +43,14 @@ public abstract class Altar
 			this.materialCounts.put(this.coreMaterial, 1);
 		}
 		
-		ArrayList<Block> blocks = getCubeBlocks(coreBlock, uconf.altarSearchRadius);
+		ArrayList<Block> blocks = getCubeBlocks(coreBlock, mconf.getAltarSearchRadius());
 		Map<Material, Integer> nearbyMaterialCounts = countMaterials(blocks, this.materialCounts.keySet());
 		
 		int requiredMaterialCountSum = this.sumCollection(this.materialCounts.values());
 		int nearbyMaterialCountSum = this.sumCollection(nearbyMaterialCounts.values());
 		
 		// If the blocks are to far from looking anything like an altar we will just skip.
-		if (nearbyMaterialCountSum < requiredMaterialCountSum * uconf.altarMinRatioForInfo) return false;
+		if (nearbyMaterialCountSum < requiredMaterialCountSum * mconf.getAltarMinRatioForInfo()) return false;
 		
 		// What alter blocks are missing?
 		Map<Material, Integer> missingMaterialCounts = this.getMissingMaterialCounts(nearbyMaterialCounts);

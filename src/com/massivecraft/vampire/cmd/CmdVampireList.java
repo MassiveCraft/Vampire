@@ -2,7 +2,6 @@ package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.Visibility;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
@@ -11,7 +10,7 @@ import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
-import com.massivecraft.vampire.entity.UPlayerColls;
+import com.massivecraft.vampire.entity.UPlayerColl;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class CmdVampireList extends VCommand
 	{
 		// Parameters
 		this.addParameter(Parameter.getPage());
-		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "universe", "you");
+		// this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "universe", "you");
 		
 		// Visibility
 		this.setVisibility(Visibility.SECRET);
@@ -51,15 +50,12 @@ public class CmdVampireList extends VCommand
 	{
 		int page = this.readArg();
 		
-		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
-		String universe = this.readArg(senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
-		
 		List<String> vampiresOnline = new ArrayList<>();
 		List<String> vampiresOffline = new ArrayList<>();
 		List<String> infectedOnline = new ArrayList<>();
 		List<String> infectedOffline = new ArrayList<>();
 		
-		for (UPlayer uplayer : UPlayerColls.get().getForUniverse(universe).getAll())
+		for (UPlayer uplayer : UPlayerColl.get().getAll())
 		{
 			if (uplayer.isVampire())
 			{
@@ -114,7 +110,7 @@ public class CmdVampireList extends VCommand
 		
 		// Send them
 		lines = Txt.parseWrap(lines);
-		this.message(Txt.getPage(lines, page, Txt.upperCaseFirst(universe)+" Vampire Players", this));	
+		this.message(Txt.getPage(lines, page, "Vampire Players", this));
 	}
 	
 }

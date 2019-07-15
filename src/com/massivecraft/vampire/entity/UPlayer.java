@@ -18,6 +18,7 @@ import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -35,7 +36,11 @@ public class UPlayer extends SenderEntity<UPlayer>
 	
 	public static UPlayer get(Object oid)
 	{
-		return UPlayerColls.get().get2(oid);
+		if (oid == null) throw new NullPointerException("oid");
+
+		String id = UPlayerColl.get().fixId(oid);
+		if (id == null) return null;
+		return UPlayerColl.get().getFixed(id);
 	}
 	
 	// -------------------------------------------- //
@@ -85,8 +90,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 			Player player = this.getPlayer();
 			if (player != null)
 			{
-				UConf uconf = UConf.get(player);
-				uconf.effectConfHuman.removePotionEffects(player);
+				MConf mconf = MConf.get();
+				mconf.getEffectConfHuman().removePotionEffects(player);
 			}
 		}
 		else
@@ -102,8 +107,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 			Player player = this.getPlayer();
 			if (player != null)
 			{
-				UConf uconf = UConf.get(player);
-				uconf.effectConfVampire.removePotionEffects(player);
+				MConf mconf = MConf.get();
+				mconf.getEffectConfVampire().removePotionEffects(player);
 			}
 		}
 		
@@ -140,8 +145,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 			Player player = this.getPlayer();
 			if (player != null)
 			{
-				UConf uconf = UConf.get(player);
-				uconf.effectConfInfected.removePotionEffects(player);
+				MConf mconf = MConf.get();
+				mconf.getEffectConfInfected().removePotionEffects(player);
 			}
 		}
 		else
@@ -216,7 +221,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 					return;
 				}
 				
-				if (this.getFood().get() < UConf.get(me).bloodlustMinFood)
+				if (this.getFood().get() < MConf.get().getBloodlustMinFood())
 				{
 					msg("<b>Your food is too low for bloodlust.");
 					return;
@@ -230,8 +235,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 			}
 			else
 			{
-				UConf uconf = UConf.get(me);
-				uconf.effectConfBloodlust.removePotionEffects(me);
+				MConf mconf = MConf.get();
+				mconf.getEffectConfBloodlust().removePotionEffects(me);
 			}
 		}
 		
@@ -260,8 +265,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 		Player me = this.getPlayer();
 		if (me != null)
 		{
-			UConf uconf = UConf.get(me);
-			uconf.effectConfNightvision.removePotionEffects(me);
+			MConf mconf = MConf.get();
+			mconf.getEffectConfNightvision().removePotionEffects(me);
 		}
 		
 		// ... trigger a potion effect update ...
@@ -347,7 +352,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 	{
 		Player me = this.getPlayer();
 		if (me == null) return;
-		double dcount = UConf.get(me).fxSmokeBurstCount;
+		double dcount = MConf.get().getFxSmokeBurstCount();
 		long lcount = MUtil.probabilityRound(dcount);
 		for (long i = lcount; i > 0; i--) FxUtil.smoke(me);
 	}
@@ -357,7 +362,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 	{
 		Player me = this.getPlayer();
 		if (me == null) return;
-		double dcount = UConf.get(me).fxEnderBurstCount;
+		double dcount = MConf.get().getFxEnderBurstCount();
 		long lcount = MUtil.probabilityRound(dcount);
 		for (long i = lcount; i > 0; i--) FxUtil.ender(me, 0);
 	}
@@ -367,7 +372,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 	{
 		Player me = this.getPlayer();
 		if (me == null) return;
-		double dcount = UConf.get(me).fxFlameBurstCount;
+		double dcount = MConf.get().getFxFlameBurstCount();
 		long lcount = MUtil.probabilityRound(dcount);
 		for (long i = lcount; i > 0; i--) FxUtil.flame(me);
 	}
@@ -381,7 +386,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		// You must be online to shriek
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
 		// You must be a vampire to shriek
 		if ( ! this.isVampire())
@@ -393,13 +398,13 @@ public class UPlayer extends SenderEntity<UPlayer>
 		long now = System.currentTimeMillis();
 		
 		long millisSinceLastShriekWaitMessage = now - this.lastShriekWaitMessageMillis;
-		if (millisSinceLastShriekWaitMessage < uconf.shriekWaitMessageCooldownMillis)
+		if (millisSinceLastShriekWaitMessage < mconf.getShriekWaitMessageCooldownMillis())
 		{
 			return;
 		}
 		
 		long millisSinceLastShriek = now - this.lastShriekMillis;
-		long millisToWait = uconf.shriekCooldownMillis - millisSinceLastShriek;
+		long millisToWait = mconf.getShriekCooldownMillis() - millisSinceLastShriek;
 		
 		if (millisToWait > 0)
 		{
@@ -438,8 +443,8 @@ public class UPlayer extends SenderEntity<UPlayer>
 		PermissionAttachment attachment = PermissionUtil.getPermissibleAttachment(player, Vampire.get(), true);
 		
 		// Permissions
-		UConf uconf = UConf.get(player);
-		Map<String, Boolean> permissions = (this.isVampire() ? uconf.updatePermsVampire : uconf.updatePermsHuman);
+		MConf mconf = MConf.get();
+		Map<String, Boolean> permissions = (this.isVampire() ? mconf.getUpdatePermsVampire() : mconf.getUpdatePermsHuman());
 		
 		// Update
 		PermissionUtil.setAttachmentPermissions(attachment, permissions);
@@ -462,32 +467,32 @@ public class UPlayer extends SenderEntity<UPlayer>
 		Player player = this.getPlayer();
 		if (player == null) return;
 		if (player.isDead()) return;
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		
 		// Add effects based their		
 		if (this.isHuman())
 		{
-			uconf.effectConfHuman.addPotionEffects(player, targetDuration, okDuration);
+			mconf.getEffectConfHuman().addPotionEffects(player, targetDuration, okDuration);
 		}
 		
 		if (this.isInfected())
 		{
-			uconf.effectConfInfected.addPotionEffects(player, targetDuration, okDuration);
+			mconf.getEffectConfInfected().addPotionEffects(player, targetDuration, okDuration);
 		}
 		
 		if (this.isVampire())
 		{
-			uconf.effectConfVampire.addPotionEffects(player, targetDuration, okDuration);
+			mconf.getEffectConfVampire().addPotionEffects(player, targetDuration, okDuration);
 		}
 		
-		if (this.isVampire() && uconf.nightvisionCanBeUsed && this.isUsingNightVision())
+		if (this.isVampire() && mconf.isNightvisionCanBeUsed() && this.isUsingNightVision())
 		{
-			uconf.effectConfNightvision.addPotionEffects(player, targetDuration, okDuration);
+			mconf.getEffectConfNightvision().addPotionEffects(player, targetDuration, okDuration);
 		}
 		
 		if (this.isVampire() && this.isBloodlusting())
 		{
-			uconf.effectConfBloodlust.addPotionEffects(player, targetDuration, okDuration);
+			mconf.getEffectConfBloodlust().addPotionEffects(player, targetDuration, okDuration);
 		}
 	}
 	
@@ -511,12 +516,12 @@ public class UPlayer extends SenderEntity<UPlayer>
 		// Update rad and temp
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
 		if (me.getGameMode() != GameMode.CREATIVE && this.isVampire() && ! me.isDead())
 		{
-			this.rad = uconf.baseRad + SunUtil.calcPlayerIrradiation(me);
-			double tempDelta = uconf.tempPerRadAndMilli * this.rad * millis;
+			this.rad = mconf.getBaseRad() + SunUtil.calcPlayerIrradiation(me);
+			double tempDelta = mconf.getTempPerRadAndMilli() * this.rad * millis;
 			this.addTemp(tempDelta);
 		}
 		else
@@ -535,19 +540,19 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
 		if (me.getGameMode() == GameMode.CREATIVE) return;
 		
 		int indexOld = this.infectionGetMessageIndex();
-		this.addInfection(millis * uconf.infectionPerMilli);
+		this.addInfection(millis * mconf.getInfectionPerMilli());
 		int indexNew = this.infectionGetMessageIndex();
 		
 		if (this.isVampire()) return;
 		if (indexOld == indexNew) return;
 		
-		if (uconf.infectionProgressDamage != 0) me.damage(uconf.infectionProgressDamage);
-		if (uconf.infectionProgressNauseaTicks > 0) FxUtil.ensure(PotionEffectType.CONFUSION, me, uconf.infectionProgressNauseaTicks);
+		if (mconf.getInfectionProgressDamage() != 0) me.damage(mconf.getInfectionProgressDamage());
+		if (mconf.getInfectionProgressNauseaTicks() > 0) FxUtil.ensure(PotionEffectType.CONFUSION, me, mconf.getInfectionProgressNauseaTicks());
 		
 		this.msg(MLang.get().infectionFeeling.get(indexNew));
 		this.msg(MLang.get().infectionHint.get(MassiveCore.random.nextInt(MLang.get().infectionHint.size())));
@@ -562,19 +567,19 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if ( ! this.isVampire()) return;
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		if (me.getGameMode() == GameMode.CREATIVE) return;
 		if (me.isDead()) return;
-		if (me.getHealth() >= me.getMaxHealth()) return;
-		if (this.getFood().get() < uconf.regenMinFood) return;
+		if (me.getHealth() >= me.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()) return;
+		if (this.getFood().get() < mconf.getRegenMinFood()) return;
 		
 		long millisSinceLastDamage = System.currentTimeMillis() - this.lastDamageMillis;
-		if (millisSinceLastDamage < uconf.regenDelayMillis) return;
+		if (millisSinceLastDamage < mconf.getRegenDelayMillis()) return;
 		
-		double foodDiff = this.getFood().add(-uconf.regenFoodPerMilli * millis);
+		double foodDiff = this.getFood().add(-mconf.getRegenFoodPerMilli() * millis);
 		
-		double healthTarget = me.getHealth() - foodDiff * uconf.regenHealthPerFood;
-		healthTarget = Math.min(healthTarget, me.getMaxHealth());
+		double healthTarget = me.getHealth() - foodDiff * mconf.getRegenHealthPerFood();
+		healthTarget = Math.min(healthTarget, me.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
 		healthTarget = Math.max(healthTarget, 0D);
 		
 		me.setHealth(healthTarget);
@@ -586,11 +591,11 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if ( ! this.isBloodlusting()) return;
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		if (me.getGameMode() == GameMode.CREATIVE) return;
 		if (me.isDead()) return;
-		this.getFood().add(millis * uconf.bloodlustFoodPerMilli);
-		if (this.getFood().get() < uconf.bloodlustMinFood) this.setBloodlusting(false);
+		this.getFood().add(millis * mconf.getBloodlustFoodPerMilli());
+		if (this.getFood().get() < mconf.getBloodlustMinFood()) this.setBloodlusting(false);
 	}
 	
 	public void tickPotionEffects(long millis)
@@ -604,7 +609,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		Player me = this.getPlayer();
 		if (me == null) return;
 		if (me.isDead()) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
 		if (me.getGameMode() == GameMode.CREATIVE) return;
 
@@ -612,7 +617,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if (this.fxSmokeMillis > 0)
 		{
 			this.fxSmokeMillis -= millis;
-			double dcount = uconf.fxSmokePerMilli * millis;
+			double dcount = mconf.getFxSmokePerMilli() * millis;
 			long lcount = MUtil.probabilityRound(dcount);
 			for (long i = lcount; i > 0; i--) FxUtil.smoke(me);
 		}
@@ -621,27 +626,27 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if (this.fxEnderMillis > 0)
 		{
 			this.fxEnderMillis -= millis;
-			double dcount = uconf.fxEnderPerMilli * millis;
+			double dcount = mconf.getFxEnderPerMilli() * millis;
 			long lcount = MUtil.probabilityRound(dcount);
-			for (long i = lcount; i > 0; i--) FxUtil.ender(me, uconf.fxEnderRandomMaxLen);
+			for (long i = lcount; i > 0; i--) FxUtil.ender(me, mconf.getFxEnderRandomMaxLen());
 		}
 		
 		// Vampire sun reactions
 		if (this.isVampire())
 		{
 			// Buffs
-			if (this.getTemp() > uconf.sunNauseaTemp) FxUtil.ensure(PotionEffectType.CONFUSION, me, uconf.sunNauseaTicks);
-			if (this.getTemp() > uconf.sunWeaknessTemp)  FxUtil.ensure(PotionEffectType.WEAKNESS, me, uconf.sunWeaknessTicks);
-			if (this.getTemp() > uconf.sunSlowTemp) FxUtil.ensure(PotionEffectType.SLOW, me, uconf.sunSlowTicks);
-			if (this.getTemp() > uconf.sunBlindnessTemp) FxUtil.ensure(PotionEffectType.BLINDNESS, me, uconf.sunBlindnessTicks);
-			if (this.getTemp() > uconf.sunBurnTemp) FxUtil.ensureBurn(me, uconf.sunBurnTicks);
+			if (this.getTemp() > mconf.getSunNauseaTemp()) FxUtil.ensure(PotionEffectType.CONFUSION, me, mconf.getSunNauseaTicks());
+			if (this.getTemp() > mconf.getSunWeaknessTemp())  FxUtil.ensure(PotionEffectType.WEAKNESS, me, mconf.getSunWeaknessTicks());
+			if (this.getTemp() > mconf.getSunSlowTemp()) FxUtil.ensure(PotionEffectType.SLOW, me, mconf.getSunSlowTicks());
+			if (this.getTemp() > mconf.getSunBlindnessTemp()) FxUtil.ensure(PotionEffectType.BLINDNESS, me, mconf.getSunBlindnessTicks());
+			if (this.getTemp() > mconf.getSunBurnTemp()) FxUtil.ensureBurn(me, mconf.getSunBurnTicks());
 			
 			// Fx
-			double dsmokes = uconf.sunSmokesPerTempAndMilli * this.temp * millis;
+			double dsmokes = mconf.getSunSmokesPerTempAndMilli() * this.temp * millis;
 			long lsmokes = MUtil.probabilityRound(dsmokes);
 			for (long i = lsmokes; i > 0; i--) FxUtil.smoke(me);
 			
-			double dflames = uconf.sunFlamesPerTempAndMilli * this.temp * millis;
+			double dflames = mconf.getSunFlamesPerTempAndMilli() * this.temp * millis;
 			long lflames = MUtil.probabilityRound(dflames);
 			for (long i = lflames; i > 0; i--) FxUtil.flame(me);
 		}
@@ -656,19 +661,19 @@ public class UPlayer extends SenderEntity<UPlayer>
 	{
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
 		UPlayer vyou = this.tradeOfferedFrom;
 		
 		// Any offer available?
-		if (vyou == null || System.currentTimeMillis() - this.tradeOfferedAtMillis > uconf.tradeOfferToleranceMillis)
+		if (vyou == null || System.currentTimeMillis() - this.tradeOfferedAtMillis > mconf.getTradeOfferToleranceMillis())
 		{
 			this.msg(MLang.get().tradeAcceptNone);
 			return;
 		}
 
 		// Standing close enough?
-		if ( ! this.withinDistanceOf(vyou, uconf.tradeOfferMaxDistance))
+		if ( ! this.withinDistanceOf(vyou, mconf.getTradeOfferMaxDistance()))
 		{
 			this.msg(MLang.get().tradeNotClose, vyou.getDisplayName(vyou));
 			return;
@@ -705,7 +710,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		{
 			vyou.getPlayer().damage(amount);
 		}
-		this.getFood().add(amount * uconf.tradePercentage);
+		this.getFood().add(amount * mconf.getTradePercentage());
 		
 		// Risk infection/boost infection
 		if(!this.isVampire()){
@@ -727,7 +732,7 @@ public class UPlayer extends SenderEntity<UPlayer>
 		Location l2 = you.getEyeLocation();
 		for (Player player : tradeWorld.getPlayers())
 		{
-			if (player.getLocation().distance(tradeLocation) > uconf.tradeVisualDistance) continue;
+			if (player.getLocation().distance(tradeLocation) > mconf.getTradeVisualDistance()) continue;
 			player.playEffect(l1, Effect.POTION_BREAK, 5);
 			player.playEffect(l2, Effect.POTION_BREAK, 5);
 			if (player.equals(me)) continue;
@@ -748,9 +753,9 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if (you == null) return;
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
-		if ( ! this.withinDistanceOf(vyou, uconf.tradeOfferMaxDistance))
+		if ( ! this.withinDistanceOf(vyou, mconf.getTradeOfferMaxDistance()))
 		{
 			this.msg(MLang.get().tradeNotClose, vyou.getDisplayName(this.getId()));
 			return;
@@ -813,13 +818,13 @@ public class UPlayer extends SenderEntity<UPlayer>
 	{
 		Player player = this.getPlayer();
 		if (player == null) return;
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		
 		if ( ! this.truceIsBroken())
 		{
 			this.msg(MLang.get().truceBroken);
 		}
-		this.truceBreakMillisLeftSet(uconf.truceBreakMillis);
+		this.truceBreakMillisLeftSet(mconf.getTruceBreakMillis());
 	}
 	
 	public void truceRestore()
@@ -829,12 +834,12 @@ public class UPlayer extends SenderEntity<UPlayer>
 		
 		Player me = this.getPlayer();
 		if (me == null) return;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
 		// Untarget the player.
 		for (LivingEntity entity : me.getWorld().getLivingEntities())
 		{
-			if ( ! uconf.truceEntityTypes.contains(entity.getType())) continue;
+			if ( ! mconf.getTruceEntityTypes().contains(entity.getType())) continue;
 			
 			if ( ! (entity instanceof Creature)) continue;
 			Creature creature = (Creature)entity;
@@ -876,20 +881,20 @@ public class UPlayer extends SenderEntity<UPlayer>
 	{
 		Player me = this.getPlayer();
 		if (me == null) return 0D;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
-		if (this.isBloodlusting()) return uconf.combatDamageFactorWithBloodlust;
-		return uconf.combatDamageFactorWithoutBloodlust;
+		if (this.isBloodlusting()) return mconf.getCombatDamageFactorWithBloodlust();
+		return mconf.getCombatDamageFactorWithoutBloodlust();
 	}
 	
 	public double combatInfectRisk()
 	{
 		Player me = this.getPlayer();
 		if (me == null) return 0D;
-		UConf uconf = UConf.get(me);
+		MConf mconf = MConf.get();
 		
 		if (this.isHuman()) return 0D;
-		if (this.isIntending()) return uconf.infectionRiskAtCloseCombatWithIntent;
-		return uconf.infectionRiskAtCloseCombatWithoutIntent;
+		if (this.isIntending()) return mconf.getInfectionRiskAtCloseCombatWithIntent();
+		return mconf.getInfectionRiskAtCloseCombatWithoutIntent();
 	}
 }

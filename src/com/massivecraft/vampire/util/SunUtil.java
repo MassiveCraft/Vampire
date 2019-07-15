@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.util;
 
-import com.massivecraft.vampire.entity.UConf;
+import com.massivecraft.vampire.entity.MConf;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -86,7 +86,7 @@ public class SunUtil
 		for (int y = block.getY(); y <= maxy && ret < 1d; y++)
 		{
 			Material type = world.getBlockAt(x, y, z).getType();
-			Double opacity = UConf.get(block).typeOpacity.get(type);
+			Double opacity = MConf.get().getTypeOpacity().get(type);
 			if (opacity == null)
 			{
 				opacity = 1d; // Blocks not in that map have opacity 1;
@@ -117,7 +117,7 @@ public class SunUtil
 			if (itemStack == null) continue;
 			if (itemStack.getAmount() == 0) continue;
 			if (itemStack.getType() == Material.AIR) continue;
-			ret += UConf.get(player).opacityPerArmorPiece;
+			ret += MConf.get().getOpacityPerArmorPiece();
 		}
 		return ret;
 	}

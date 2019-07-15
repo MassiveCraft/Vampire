@@ -4,10 +4,11 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.type.Type;
+import com.massivecraft.massivecore.command.type.enumeration.TypeEntityType;
+import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
-import com.massivecraft.vampire.entity.UPlayerColls;
 import org.bukkit.entity.Player;
 
 public abstract class CmdVampireSetAbstract<T> extends VCommand
@@ -19,7 +20,7 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 	public boolean targetMustBeOnline;
 	public Type<T> type;
 	
-	private Parameter playerReaderParameter = new Parameter(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getTypeEntity(), true, "player", "you");
+	private Parameter playerReaderParameter = new Parameter(TypePlayer.get(), true, "player", "you");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -34,7 +35,7 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 		// Parameters
 		this.addParameter(type, "val");
 		this.addParameter(playerReaderParameter);
-		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
+		//this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
 	}
 	
 	// -------------------------------------------- //
@@ -44,9 +45,7 @@ public abstract class CmdVampireSetAbstract<T> extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		String universe = this.readArgAt(2, senderIsConsole ? MassiveCore.DEFAULT : Vampire.get().playerAspect.getMultiverse().getUniverse(me));
-		
-		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
+		UPlayerColl playerColl = UPlayerColl.get();
 		Type<UPlayer> playerType = playerColl.getTypeEntity();
 		this.playerReaderParameter.setType(playerType);
 		

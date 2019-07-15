@@ -1,6 +1,5 @@
 package com.massivecraft.vampire.entity;
 
-import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.cleanable.CleaningUtil;
 
@@ -9,13 +8,11 @@ import java.util.Collection;
 public class UPlayerColl extends SenderColl<UPlayer>
 {
 	// -------------------------------------------- //
-	// CONSTRUCT
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
-	public UPlayerColl(String id)
-	{
-		super(id);
-	}
+
+	private static UPlayerColl i = new UPlayerColl();
+	public static UPlayerColl get() { return i; }
 
 	// -------------------------------------------- //
 	// STACK TRACEABILITY
@@ -42,24 +39,12 @@ public class UPlayerColl extends SenderColl<UPlayer>
 	
 	public Collection<UPlayer> getAllOnlineInfected()
 	{
-		return this.getAll(new Predicate<UPlayer>()
-		{
-			public boolean apply(UPlayer entity)
-			{
-				return entity.isOnline() && entity.isInfected();
-			}
-		});
+		return this.getAll(entity -> entity.isOnline() && entity.isInfected());
 	}
 	
 	public Collection<UPlayer> getAllOnlineVampires()
 	{
-		return this.getAll(new Predicate<UPlayer>()
-		{
-			public boolean apply(UPlayer entity)
-			{
-				return entity.isOnline() && entity.isVampire();
-			}
-		});
+		return this.getAll(entity -> entity.isOnline() && entity.isVampire());
 	}
 	
 	// -------------------------------------------- //

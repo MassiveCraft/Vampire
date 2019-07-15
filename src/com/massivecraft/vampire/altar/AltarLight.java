@@ -6,7 +6,7 @@ import com.massivecraft.vampire.HolyWaterUtil;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MLang;
-import com.massivecraft.vampire.entity.UConf;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.util.ResourceUtil;
 import org.bukkit.Bukkit;
@@ -42,7 +42,7 @@ public class AltarLight extends Altar
 	@Override
 	public boolean use(final UPlayer uplayer, final Player player)
 	{
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		uplayer.msg("");
 		uplayer.msg(this.desc);
 		
@@ -50,7 +50,7 @@ public class AltarLight extends Altar
 		
 		if ( ! uplayer.isVampire() && playerHoldsWaterBottle(player))
 		{
-			if ( ! ResourceUtil.playerRemoveAttempt(player, uconf.holyWaterResources, MLang.get().altarLightWaterResourceSuccess, MLang.get().altarLightWaterResourceFail)) return false;
+			if ( ! ResourceUtil.playerRemoveAttempt(player, mconf.getHolyWaterResources(), MLang.get().altarLightWaterResourceSuccess, MLang.get().altarLightWaterResourceFail)) return false;
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
 			{
 				public void run() {

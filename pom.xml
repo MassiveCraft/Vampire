@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.massivecraft.massivesuper</groupId>
         <artifactId>MassiveSuper</artifactId>
-        <version>2.15.1-SNAPSHOT</version>
+        <version>3.2.2</version>
         <relativePath>../MassiveSuper</relativePath>
     </parent>
 
@@ -30,6 +30,24 @@
         <dependency>
             <groupId>com.massivecraft.massivecore</groupId>
             <artifactId>MassiveCore</artifactId>
+        </dependency>
+        <!-- WorldEdit -->
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+        </dependency>
+        <!-- WorldGuard -->
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
         </dependency>
     </dependencies>
 

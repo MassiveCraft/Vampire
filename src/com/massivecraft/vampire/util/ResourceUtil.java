@@ -6,6 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -101,5 +104,18 @@ public class ResourceUtil
 		
 		return true;
 	}
-	
+
+	public static ItemStack getWaterBottles(int qty) {
+		ItemStack bottles = null;
+
+		if (qty > 0 && qty <= 64) {
+			bottles = new ItemStack(Material.POTION, qty);
+			PotionMeta meta = (PotionMeta) bottles.getItemMeta();
+			PotionData data = new PotionData(PotionType.WATER);
+			meta.setBasePotionData(data);
+			bottles.setItemMeta(meta);
+		}
+
+		return bottles;
+	}
 }

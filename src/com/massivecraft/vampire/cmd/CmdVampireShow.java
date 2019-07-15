@@ -2,7 +2,6 @@ package com.massivecraft.vampire.cmd;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
@@ -10,10 +9,8 @@ import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
 import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MConf;
-import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
-import com.massivecraft.vampire.entity.UPlayerColls;
 import com.massivecraft.vampire.util.SunUtil;
 import org.bukkit.entity.Player;
 
@@ -25,7 +22,7 @@ public class CmdVampireShow extends VCommand
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private Parameter playerReaderParameter = new Parameter(UPlayerColls.get().getForUniverse(MassiveCore.DEFAULT).getTypeEntity(), true, "player", "you");
+	private Parameter playerReaderParameter = new Parameter(UPlayerColl.get().getTypeEntity(), true, "player", "you");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -35,7 +32,7 @@ public class CmdVampireShow extends VCommand
 	{
 		// Parameters
 		this.addParameter(playerReaderParameter);
-		this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
+		// this.addParameter(Vampire.get().playerAspect.getMultiverse().typeUniverse(), "univ", "you");
 		
 		// Requirements
 		this.addRequirements(new RequirementHasPerm(Perm.SHOW));
@@ -54,17 +51,14 @@ public class CmdVampireShow extends VCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Multiverse mv = Vampire.get().playerAspect.getMultiverse();
-		String universe = this.readArgAt(1, senderIsConsole ? MassiveCore.DEFAULT : mv.getUniverse(me));
-		
-		UPlayerColl playerColl = UPlayerColls.get().getForUniverse(universe);
+		UPlayerColl playerColl = UPlayerColl.get();
 		Type<UPlayer> playerType = playerColl.getTypeEntity();
 		this.playerReaderParameter.setType(playerType);
 		
 		UPlayer uplayer = this.readArgAt(0, vme);
 		
 		Player player = uplayer.getPlayer();
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		
 		boolean self = uplayer == vme;
 		
@@ -81,7 +75,7 @@ public class CmdVampireShow extends VCommand
 			are = "is";
 		}
 		
-		message(Txt.titleize(Txt.upperCaseFirst(universe)+" Vampire "+uplayer.getDisplayName(sender)));
+		message(Txt.titleize("Vampire "+uplayer.getDisplayName(sender)));
 		if (uplayer.isVampire())
 		{
 			msg("<i>"+You+" <i>"+are+" a vampire.");
@@ -117,7 +111,7 @@ public class CmdVampireShow extends VCommand
 			int sun = percent(SunUtil.calcSolarRad(player.getWorld()));
 			double terrain = 1d-SunUtil.calcTerrainOpacity(player.getLocation().getBlock());
 			double armor = 1d-SunUtil.calcArmorOpacity(player);
-			int base = percent(uconf.baseRad);
+			int base = percent(mconf.getBaseRad());
 			msg("<k>Irradiation <v>X% <k>= <yellow>sun <lime>*terrain <blue>*armor <silver>-base");
 			msg("<k>Irradiation <v>%+d%% <k>= <yellow>%d <lime>*%.2f <blue>*%.2f <silver>%+d", rad, sun, terrain, armor, base);
 			

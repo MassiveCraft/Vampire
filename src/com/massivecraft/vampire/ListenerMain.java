@@ -8,7 +8,6 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.MLang;
-import com.massivecraft.vampire.entity.UConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.util.FxUtil;
 import org.bukkit.Bukkit;
@@ -88,8 +87,8 @@ public class ListenerMain extends Engine
 	public void blockEvents(EntityDamageEvent event)
 	{
 		Entity entity = event.getEntity();
-		UConf uconf = UConf.get(entity);
-		if ( ! uconf.blockDamageFrom.contains(event.getCause())) return;
+		MConf mconf = MConf.get();
+		if ( ! mconf.getBlockDamageFrom().contains(event.getCause())) return;
 		
 		if (MUtil.isntPlayer(entity)) return;
 		Player player = (Player)entity;
@@ -102,8 +101,8 @@ public class ListenerMain extends Engine
 	public void blockEvents(EntityRegainHealthEvent event)
 	{
 		Entity entity = event.getEntity();
-		UConf uconf = UConf.get(entity);
-		if ( ! uconf.blockHealthFrom.contains(event.getRegainReason())) return;
+		MConf mconf = MConf.get();
+		if ( ! mconf.getBlockHealthFrom().contains(event.getRegainReason())) return;
 		
 		if (MUtil.isntPlayer(entity)) return;
 		Player player = (Player) entity;		
@@ -192,9 +191,9 @@ public class ListenerMain extends Engine
 			@Override
 			public void run()
 			{
-				UConf uconf = UConf.get(player);
-				player.setFoodLevel(uconf.updateRespawnFood);
-				player.setHealth((double)uconf.updateRespawnHealth);
+				MConf mconf = MConf.get();
+				player.setFoodLevel(mconf.getUpdateRespawnFood());
+				player.setHealth((double)mconf.getUpdateRespawnHealth());
 				PlayerUtil.sendHealthFoodUpdatePacket(player);
 				uplayer.update();
 			}
@@ -204,11 +203,11 @@ public class ListenerMain extends Engine
 	public void updateNameColor(Player player)
 	{
 		if (MUtil.isntPlayer(player)) return;
-		UConf uconf = UConf.get(player); 
-		if (uconf.updateNameColor == false) return;
+		MConf mconf = MConf.get();
+		if (mconf.isUpdateNameColor() == false) return;
 		UPlayer uplayer = UPlayer.get(player);
 		if ( ! uplayer.isVampire()) return;
-		player.setDisplayName(uconf.updateNameColorTo.toString()+ChatColor.stripColor(player.getDisplayName()));
+		player.setDisplayName(mconf.getUpdateNameColorTo().toString()+ChatColor.stripColor(player.getDisplayName()));
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -239,12 +238,12 @@ public class ListenerMain extends Engine
 	{
 		// If a non-creative player ...
 		Player player = event.getPlayer();
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		if (player != null && player.getGameMode() == GameMode.CREATIVE) return;
 		
 		// ... broke a self-dropping block ...  
 		Material material = event.getBlock().getType();
-		if ( ! uconf.dropSelfMaterials.contains(material)) return;
+		if ( ! mconf.getDropSelfMaterials().contains(material)) return;
 		
 		// ... then we make it drop itself.	
 		event.setCancelled(true);
@@ -277,11 +276,11 @@ public class ListenerMain extends Engine
 		if ( ! uplayer.isBloodlusting()) return;
 		
 		// ... then spawn smoke trail.
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		Location one = event.getFrom().clone();
 		Location two = one.clone().add(0, 1, 0);
-		long count1 = MUtil.probabilityRound(uconf.bloodlustSmokes);
-		long count2 = MUtil.probabilityRound(uconf.bloodlustSmokes);
+		long count1 = MUtil.probabilityRound(mconf.getBloodlustSmokes());
+		long count2 = MUtil.probabilityRound(mconf.getBloodlustSmokes());
 		for (long i = count1; i > 0; i--) FxUtil.smoke(one);
 		for (long i = count2; i > 0; i--) FxUtil.smoke(two);
 	}
@@ -309,10 +308,10 @@ public class ListenerMain extends Engine
 		// If a player is targeted...
 		if (MUtil.isntPlayer(event.getTarget())) return;
 		Player player = (Player)event.getTarget();
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		
 		// ... by creature that cares about the truce with vampires ...
-		if ( ! (uconf.truceEntityTypes.contains(event.getEntityType()))) return;
+		if ( ! (mconf.getTruceEntityTypes().contains(event.getEntityType()))) return;
 		
 		UPlayer uplayer = UPlayer.get(player);
 		
@@ -341,8 +340,8 @@ public class ListenerMain extends Engine
 		
 		// ... to a creature that cares about the truce with vampires...
 		Entity entity = event.getEntity();
-		UConf uconf = UConf.get(entity);
-		if ( ! (uconf.truceEntityTypes.contains(entity.getType()))) return;
+		MConf mconf = MConf.get();
+		if ( ! (mconf.getTruceEntityTypes().contains(entity.getType()))) return;
 		
 		// ... and the liable damager is a vampire ...
 		Entity damager = MUtil.getLiableDamager(event);
@@ -387,7 +386,7 @@ public class ListenerMain extends Engine
 		Entity damagerEntity = MUtil.getLiableDamager(event);
 		if ( ! (damagerEntity instanceof HumanEntity)) return;
 		HumanEntity damager = (HumanEntity) damagerEntity;
-		UConf uconf = UConf.get(damager);
+		MConf mconf = MConf.get();
 		
 		// ... and the damagee is a vampire ...
 		Entity entity = event.getEntity();
@@ -400,10 +399,10 @@ public class ListenerMain extends Engine
 		ItemStack item = InventoryUtil.getWeapon(damager);
 		if (item == null) return;
 		Material itemMaterial = item.getType();
-		if ( ! uconf.combatWoodMaterials.contains(itemMaterial)) return;
+		if ( ! mconf.getCombatWoodMaterials().contains(itemMaterial)) return;
 		
 		// ... Then modify damage!
-		MUtil.setDamage(event, uconf.combatWoodDamage);
+		MUtil.setDamage(event, mconf.getCombatWoodDamage());
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -420,7 +419,7 @@ public class ListenerMain extends Engine
 		if ( ! vampire.isVampire()) return;
 		
 		// ... and this event isn't a forbidden mcmmo one ...
-		if ( ! MConf.get().combatDamageFactorWithMcmmoAbilities && event.getClass().getName().equals("com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent")) return;
+		if ( ! MConf.get().isCombatDamageFactorWithMcmmoAbilities() && event.getClass().getName().equals("com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent")) return;
 		
 		// ... Then modify damage!
 		MUtil.scaleDamage(event, vampire.combatDamageFactor());
@@ -513,8 +512,8 @@ public class ListenerMain extends Engine
 		if ( vampire == null || horse == null) return;
 
 		// ... and the vampire can infect horses
-		UConf uconf = UConf.get(vampire.getPlayer());
-		if(!uconf.canInfectHorses) return;
+		MConf mconf = MConf.get();
+		if(!mconf.isCanInfectHorses()) return;
 		
 		// ... and the vampire is allowed to infect through combat ...
 		if ( ! Perm.COMBAT_INFECT.has(vampire.getPlayer())) return;
@@ -541,10 +540,10 @@ public class ListenerMain extends Engine
 	{
 		Player player = event.getPlayer();
 		if (MUtil.isntPlayer(player)) return;
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		
 		// If cake eating is not allowed for vampires ...
-		if (uconf.foodCakeAllowed) return;
+		if (mconf.isFoodCakeAllowed()) return;
 		
 		// .. and the player right-clicks a cake block ...
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
@@ -568,10 +567,10 @@ public class ListenerMain extends Engine
 		// ... to a living entity ...
 		if ( ! (event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity damagee = (LivingEntity)event.getEntity();
-		UConf uconf = UConf.get(damagee);
+		MConf mconf = MConf.get();
 		
 		// ... of a tasty type ...
-		Double fullFoodQuotient = uconf.entityTypeFullFoodQuotient.get(damagee.getType());
+		Double fullFoodQuotient = mconf.getEntityTypeFullFoodQuotient().get(damagee.getType());
 		if (fullFoodQuotient == null || fullFoodQuotient == 0) return;
 		
 		// ... that has blood left ...
@@ -669,7 +668,7 @@ public class ListenerMain extends Engine
 	{
 		// If this projectile is a thrown potion ...
 		Projectile projectile = event.getEntity();
-		UConf uconf = UConf.get(projectile);
+		MConf mconf = MConf.get();
 		if ( ! (projectile instanceof ThrownPotion)) return;
 		ThrownPotion thrownPotion = (ThrownPotion)projectile;
 		
@@ -687,7 +686,7 @@ public class ListenerMain extends Engine
 		for (Player player : splashLocation.getWorld().getPlayers())
 		{
 			if (MUtil.isntPlayer(player)) continue;
-			if (player.getLocation().distance(splashLocation) > uconf.holyWaterSplashRadius) continue;
+			if (player.getLocation().distance(splashLocation) > mconf.getHolyWaterSplashRadius()) continue;
 			UPlayer uplayer = UPlayer.get(player);
 			uplayer.msg(MLang.get().holyWaterCommon, shooter.getDisplayName());
 			uplayer.runFxEnderBurst();
@@ -710,7 +709,7 @@ public class ListenerMain extends Engine
 			else if (uplayer.isVampire())
 			{
 				uplayer.msg(MLang.get().holyWaterVampire);
-				uplayer.addTemp(uconf.holyWaterTemp);
+				uplayer.addTemp(mconf.getHolyWaterTemp());
 				uplayer.runFxFlameBurst();
 			}
 		}
@@ -730,9 +729,9 @@ public class ListenerMain extends Engine
 		// ... run altar logic.
 		Player player = event.getPlayer();
 		if (MUtil.isntPlayer(player)) return;
-		UConf uconf = UConf.get(player);
+		MConf mconf = MConf.get();
 		
-		if(uconf.altarDark.evalBlockUse(event.getClickedBlock(), player) || uconf.altarLight.evalBlockUse(event.getClickedBlock(), player))
+		if(mconf.getAltarDark().evalBlockUse(event.getClickedBlock(), player) || mconf.getAltarLight().evalBlockUse(event.getClickedBlock(), player))
 		{
 			event.setCancelled(true);
 		}
