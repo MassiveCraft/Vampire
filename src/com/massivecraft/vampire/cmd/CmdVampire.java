@@ -29,7 +29,7 @@ public class CmdVampire extends VCommand
 	public CmdVampireShriek cmdVampireShriek = new CmdVampireShriek();
 	public CmdVampireList cmdVampireList = new CmdVampireList();
 	public CmdVampireSet cmdVampireSet = new CmdVampireSet();
-	public CmdVampireEditConfig cmdVampireEditConfig = new CmdVampireEditConfig();
+	//public CmdVampireEditConfig cmdVampireEditConfig = new CmdVampireEditConfig();
 	public CmdVampireEditLang cmdVampireEditLang = new CmdVampireEditLang();
 	public CmdVampireVersion cmdVampireVersion = new CmdVampireVersion();
 	
@@ -50,7 +50,7 @@ public class CmdVampire extends VCommand
 		this.addChild(this.cmdVampireShriek);
 		this.addChild(this.cmdVampireList);
 		this.addChild(this.cmdVampireSet);
-		this.addChild(this.cmdVampireEditConfig);
+		//this.addChild(this.cmdVampireEditConfig);
 		this.addChild(this.cmdVampireEditLang);
 		this.addChild(this.cmdVampireVersion);
 		

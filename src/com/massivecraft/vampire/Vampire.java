@@ -1,10 +1,14 @@
 package com.massivecraft.vampire;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.vampire.cmd.CmdVampire;
 import com.massivecraft.vampire.entity.MConfColl;
 import com.massivecraft.vampire.entity.MLangColl;
 import com.massivecraft.vampire.entity.UPlayerColl;
+import com.massivecraft.vampire.util.ItemMetaInstanceCreator;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class Vampire extends MassivePlugin 
 {
@@ -30,8 +34,8 @@ public class Vampire extends MassivePlugin
 		// Activate
 		this.activate(
 			// Coll
-			MConfColl.class,
 			MLangColl.class,
+			MConfColl.class,
 			UPlayerColl.class,
 		
 			// Tasks
@@ -44,5 +48,18 @@ public class Vampire extends MassivePlugin
 			CmdVampire.class
 		);
 	}
-	
+
+	// Needed for PotionMeta. I hate it.
+	@Override
+	public boolean onEnablePre()
+	{
+		boolean result = super.onEnablePre();
+
+		if (result) {
+			Gson gson = new GsonBuilder().registerTypeAdapter(ItemMeta.class, new ItemMetaInstanceCreator()).create();
+			this.setGson(gson);
+		}
+
+		return true;
+	}
 }

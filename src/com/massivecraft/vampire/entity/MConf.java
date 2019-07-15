@@ -1,6 +1,6 @@
 package com.massivecraft.vampire.entity;
 
-import com.massivecraft.massivecore.collections.BackstringSet;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.TypeMillisDiff;
@@ -17,10 +17,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -414,25 +410,25 @@ public class MConf extends Entity<MConf>
 	}
 
 	// These are the creature types that won't target vampires
-	private BackstringSet<EntityType> truceEntityTypes = new BackstringSet<>(EntityType.class,
-			"BLAZE",
-			"CAVE_SPIDER",
-			"CREEPER",
-			"ENDERMAN",
-			"GHAST",
-			"GIANT",
-			"MAGMA_CUBE",
-			"PIG_ZOMBIE",
-			"SKELETON",
-			"SPIDER",
-			"ZOMBIE",
-			"WITCH",
-			"GUARDIAN",
-			"SILVERFISH",
-			"ENDERMITE"
+	private MassiveList<EntityType> truceEntityTypes = new MassiveList<>(
+			EntityType.BLAZE,
+			EntityType.CAVE_SPIDER,
+			EntityType.CREEPER,
+			EntityType.ENDERMAN,
+			EntityType.GHAST,
+			EntityType.GIANT,
+			EntityType.MAGMA_CUBE,
+			EntityType.PIG_ZOMBIE,
+			EntityType.SKELETON,
+			EntityType.SPIDER,
+			EntityType.ZOMBIE,
+			EntityType.WITCH,
+			EntityType.GUARDIAN,
+			EntityType.SILVERFISH,
+			EntityType.ENDERMITE
 	);
-	public BackstringSet<EntityType> getTruceEntityTypes() { return this.truceEntityTypes; }
-	public void setTruceEntityTypes(BackstringSet<EntityType> truceEntityTypes)
+	public MassiveList<EntityType> getTruceEntityTypes() { return this.truceEntityTypes; }
+	public void setTruceEntityTypes(MassiveList<EntityType> truceEntityTypes)
 	{
 		this.changed(this.truceEntityTypes, truceEntityTypes);
 		this.truceEntityTypes = truceEntityTypes;
