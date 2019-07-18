@@ -31,7 +31,7 @@ public class CmdVampireSetHealth extends CmdVampireSetAbstract<Integer>
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireSetHealth;
+		return MConf.get().getAliasesVampireSetHealth();
 	}
 	
 	@Override

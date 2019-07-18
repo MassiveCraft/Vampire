@@ -24,25 +24,25 @@ public class PotionEffectConf
 	public boolean colorSet;
 	public int colorValue;
 	
-	public Map<Integer, Integer> effectIdToStrength;
+	public Map<PotionEffectType, Integer> effectToStrength;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public PotionEffectConf(EventPriority priority, boolean colorSet, int colorValue, Map<Integer, Integer> effectToStrength)
+	public PotionEffectConf(EventPriority priority, boolean colorSet, int colorValue, Map<PotionEffectType, Integer> effectToStrength)
 	{
 		this.priority = priority;
 		
 		this.colorSet = colorSet;
 		this.colorValue = colorValue;
 		
-		this.effectIdToStrength = effectToStrength;
+		this.effectToStrength = effectToStrength;
 	}
 	
 	public PotionEffectConf()
 	{
-		this(EventPriority.NORMAL, false, 0, new HashMap<Integer, Integer>());
+		this(EventPriority.NORMAL, false, 0, new HashMap<PotionEffectType, Integer>());
 	}
 	
 	// -------------------------------------------- //
@@ -51,7 +51,7 @@ public class PotionEffectConf
 	
 	public void addPotionEffects(LivingEntity entity, int targetDuration, int okDuration)
 	{
-		Map<Integer, Integer> effectIdToStrength = new HashMap<>(this.effectIdToStrength);
+		Map<PotionEffectType, Integer> effectToStrength = new HashMap<>(this.effectToStrength);
 		
 		for (PotionEffect pe : entity.getActivePotionEffects())
 		{
@@ -59,8 +59,8 @@ public class PotionEffectConf
 			if (pe.getDuration() < okDuration) continue;
 			
 			// Is there even an entry to remove?
-			int id = pe.getType().getId();
-			Integer peStrength = effectIdToStrength.get(id);
+			PotionEffectType effect = pe.getType();
+			Integer peStrength = effectToStrength.get(effect);
 			if (peStrength == null) continue;
 			if (peStrength < 1) continue;
 			
@@ -69,43 +69,40 @@ public class PotionEffectConf
 			if (peStrength != apeStrength) continue;
 			
 			// Otherwise we may not
-			effectIdToStrength.remove(id);
+			effectToStrength.remove(effect);
 		}
 		
-		for (Entry<Integer, Integer> entry : effectIdToStrength.entrySet())
+		for (Entry<PotionEffectType, Integer> entry : effectToStrength.entrySet())
 		{
-			PotionEffectType pet = PotionEffectType.getById(entry.getKey());
-			Integer strength = entry.getValue();
-			
-			entity.addPotionEffect(new PotionEffect(pet, targetDuration, strength, true), true);
+			entity.addPotionEffect(new PotionEffect(entry.getKey(), targetDuration, entry.getValue(), true), true);
 		}
 	}
 	
 	public void removePotionEffects(LivingEntity entity)
 	{
 		// The ids to deactivate
-		Set<Integer> ids = new HashSet<>(this.effectIdToStrength.keySet());
+		Set<PotionEffectType> effects = new HashSet<>(this.effectToStrength.keySet());
 	
 		// The currently active ids 
-		Set<Integer> activeIds = new HashSet<>();
+		Set<PotionEffectType> activeEffects = new HashSet<>();
 		for (PotionEffect pe : entity.getActivePotionEffects())
 		{
-			activeIds.add(pe.getType().getId());
+			activeEffects.add(pe.getType());
 		}
 		
 		// It only makes sense to deactivate active ids.
-		Iterator<Integer> iter = ids.iterator();
+		Iterator<PotionEffectType> iter = effects.iterator();
 		while(iter.hasNext())
 		{
-			Integer id = iter.next();
-			if (activeIds.contains(id)) continue;
+			PotionEffectType effect = iter.next();
+			if (activeEffects.contains(effect)) continue;
 			iter.remove();
 		}
 		
 		// Perform the remove
-		for (Integer id : ids)
+		for (PotionEffectType effect : effects)
 		{
-			entity.removePotionEffect(PotionEffectType.getById(id));
+			entity.removePotionEffect(effect);
 		}
 	}
 	

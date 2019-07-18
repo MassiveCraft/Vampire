@@ -30,7 +30,7 @@ public class CmdVampireSetVampire extends CmdVampireSetAbstract<Boolean>
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireSetVampire;
+		return MConf.get().getAliasesVampireSetVampire();
 	}
 	
 	@Override

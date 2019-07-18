@@ -5,7 +5,10 @@ import com.massivecraft.massivecore.ModuloRepeatTask;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.logging.Level;
 
 public class TheTask extends ModuloRepeatTask
 {
@@ -44,12 +47,18 @@ public class TheTask extends ModuloRepeatTask
 	public void invoke(long now)
 	{
 		// Tick each online player
-		for (Player player : MUtil.getOnlinePlayers())
+		for (Player player : Bukkit.getServer().getOnlinePlayers())
 		{
 			if (MUtil.isntPlayer(player)) continue;
 			
 			UPlayer uplayer = UPlayer.get(player);
-			uplayer.tick(now - this.getPreviousMillis());
+			try {
+				uplayer.tick(now - this.getPreviousMillis());
+			}
+			catch (NullPointerException ex) {
+				Bukkit.getServer().getLogger().log(Level.SEVERE, "While executing Vampire.TheTask, NullPointerException: " + ex.getMessage());
+				ex.printStackTrace();
+			}
 		}
 	}
 	

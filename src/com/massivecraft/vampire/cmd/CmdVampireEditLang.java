@@ -29,7 +29,7 @@ public class CmdVampireEditLang extends CommandEditSingleton<MLang>
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireEditLang;
+		return MConf.get().getAliasesVampireEditLang();
 	}
 	
 }

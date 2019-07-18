@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.vampire.cmd.CmdVampire;
+import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.MConfColl;
 import com.massivecraft.vampire.entity.MLangColl;
 import com.massivecraft.vampire.entity.UPlayerColl;
-import com.massivecraft.vampire.util.ItemMetaInstanceCreator;
-import org.bukkit.inventory.meta.ItemMeta;
+import com.massivecraft.vampire.json.MConfDeserializer;
+import com.massivecraft.vampire.json.MConfSerializer;
+import org.bukkit.Bukkit;
 
 public class Vampire extends MassivePlugin 
 {
@@ -55,10 +57,19 @@ public class Vampire extends MassivePlugin
 	{
 		boolean result = super.onEnablePre();
 
+		// Version Synchronization
+		this.checkVersionSynchronization();
+
+		// Create Gson
 		if (result) {
-			Gson gson = new GsonBuilder().registerTypeAdapter(ItemMeta.class, new ItemMetaInstanceCreator()).create();
-			this.setGson(gson);
+			GsonBuilder gsonb = new GsonBuilder();
+			gsonb.registerTypeAdapter(MConf.class, new MConfSerializer());
+			gsonb.registerTypeAdapter(MConf.class, new MConfDeserializer());
+			this.setGson(gsonb.create());
 		}
+
+		// Listener
+		Bukkit.getPluginManager().registerEvents(this, this);
 
 		return true;
 	}

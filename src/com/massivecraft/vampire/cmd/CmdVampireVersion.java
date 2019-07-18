@@ -29,7 +29,7 @@ public class CmdVampireVersion extends MassiveCommandVersion
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireVersion;
+		return MConf.get().getAliasesVampireVersion();
 	}
 
 }

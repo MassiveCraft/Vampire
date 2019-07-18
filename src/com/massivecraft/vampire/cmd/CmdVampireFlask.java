@@ -38,7 +38,7 @@ public class CmdVampireFlask extends VCommand
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireFlask;
+		return MConf.get().getAliasesVampireFlask();
 	}
 	
 	@Override

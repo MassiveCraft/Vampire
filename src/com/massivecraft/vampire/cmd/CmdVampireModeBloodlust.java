@@ -25,7 +25,7 @@ public class CmdVampireModeBloodlust extends CmdVampireModeAbstract
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireModeBloodlust;
+		return MConf.get().getAliasesVampireModeBloodlust();
 	}
 	
 	@Override

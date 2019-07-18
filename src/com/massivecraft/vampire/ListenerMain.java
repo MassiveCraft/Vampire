@@ -66,7 +66,7 @@ public class ListenerMain extends Engine
 	{
 		// If a vampire dies ...
 		Player player = IdUtil.getAsPlayer(event.getEntity());
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		
 		UPlayer uplayer = UPlayer.get(player);
 		if (uplayer == null) return;
@@ -90,7 +90,7 @@ public class ListenerMain extends Engine
 		MConf mconf = MConf.get();
 		if ( ! mconf.getBlockDamageFrom().contains(event.getCause())) return;
 		
-		if (MUtil.isntPlayer(entity)) return;
+		if (entity == null || MUtil.isntPlayer(entity)) return;
 		Player player = (Player)entity;
 		UPlayer uplayer = UPlayer.get(player);
 		
@@ -104,7 +104,7 @@ public class ListenerMain extends Engine
 		MConf mconf = MConf.get();
 		if ( ! mconf.getBlockHealthFrom().contains(event.getRegainReason())) return;
 		
-		if (MUtil.isntPlayer(entity)) return;
+		if (entity == null || MUtil.isntPlayer(entity)) return;
 		Player player = (Player) entity;		
 		UPlayer uplayer = UPlayer.get(player);
 		
@@ -115,7 +115,7 @@ public class ListenerMain extends Engine
 	public void blockEvents(FoodLevelChangeEvent event)
 	{
 		Entity entity = event.getEntity();
-		if (MUtil.isntPlayer(entity)) return;
+		if (entity == null || MUtil.isntPlayer(entity)) return;
 		
 		Player player = (Player) entity;		
 		UPlayer uplayer = UPlayer.get(player);
@@ -135,7 +135,7 @@ public class ListenerMain extends Engine
 	public void updateOnJoin(PlayerJoinEvent event)
 	{
 		final Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		
 		UPlayer uplayer = UPlayer.get(player);
 		uplayer.update();
@@ -145,7 +145,7 @@ public class ListenerMain extends Engine
 	public void updateOnTeleport(PlayerTeleportEvent event)
 	{
 		final Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Vampire.get(), new Runnable()
 		{
@@ -163,7 +163,7 @@ public class ListenerMain extends Engine
 	{
 		// If a vampire dies ...
 		LivingEntity entity = event.getEntity();
-		if (MUtil.isntPlayer(entity)) return;
+		if (entity == null || MUtil.isntPlayer(entity)) return;
 		UPlayer uplayer = UPlayer.get(entity);
 		if (uplayer == null) return;
 		if (uplayer.isVampire() == false) return;
@@ -179,7 +179,7 @@ public class ListenerMain extends Engine
 	{
 		// If the player is a vampire ...
 		final Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		
 		final UPlayer uplayer = UPlayer.get(player);
 		if (uplayer == null) return;
@@ -202,7 +202,7 @@ public class ListenerMain extends Engine
 	
 	public void updateNameColor(Player player)
 	{
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		MConf mconf = MConf.get();
 		if (mconf.isUpdateNameColor() == false) return;
 		UPlayer uplayer = UPlayer.get(player);
@@ -260,7 +260,7 @@ public class ListenerMain extends Engine
 	{
 		// If a noncreative player ...
 		Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		if (player.getGameMode() == GameMode.CREATIVE) return;
 		
 		// ... moved between two blocks ...
@@ -293,7 +293,7 @@ public class ListenerMain extends Engine
 		
 		// ... turn of bloodlust ...
 		Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		UPlayer uplayer = UPlayer.get(player);
 		uplayer.setBloodlusting(false);
 	}
@@ -306,7 +306,7 @@ public class ListenerMain extends Engine
 	public void truceTarget(EntityTargetEvent event)
 	{
 		// If a player is targeted...
-		if (MUtil.isntPlayer(event.getTarget())) return;
+		if (event.getTarget() == null || MUtil.isntPlayer(event.getTarget())) return;
 		Player player = (Player)event.getTarget();
 		MConf mconf = MConf.get();
 		
@@ -345,7 +345,7 @@ public class ListenerMain extends Engine
 		
 		// ... and the liable damager is a vampire ...
 		Entity damager = MUtil.getLiableDamager(event);
-		if (MUtil.isntPlayer(damager)) return;
+		if (damager == null || MUtil.isntPlayer(damager)) return;
 		UPlayer vpdamager = UPlayer.get(damager);
 		if (vpdamager == null) return;
 		if ( ! vpdamager.isVampire()) return;
@@ -363,7 +363,7 @@ public class ListenerMain extends Engine
 	{
 		// If the damagee is a vampire ...
 		Entity entity = event.getEntity();
-		if (MUtil.isntPlayer(entity)) return;
+		if (entity == null || MUtil.isntPlayer(entity)) return;
 		UPlayer vampire = UPlayer.get(entity);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
@@ -390,7 +390,7 @@ public class ListenerMain extends Engine
 		
 		// ... and the damagee is a vampire ...
 		Entity entity = event.getEntity();
-		if (MUtil.isntPlayer(entity)) return;
+		if (entity == null || MUtil.isntPlayer(entity)) return;
 		UPlayer vampire = UPlayer.get(entity);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
@@ -413,7 +413,7 @@ public class ListenerMain extends Engine
 		
 		// ... and the liable damager is a vampire ...
 		Entity damager = MUtil.getLiableDamager(event);
-		if (MUtil.isntPlayer(damager)) return;
+		if (damager == null || MUtil.isntPlayer(damager)) return;
 		UPlayer vampire = UPlayer.get(damager);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
@@ -437,11 +437,11 @@ public class ListenerMain extends Engine
 		
 		// ... where there is one vampire and one non-vampire ...
 		Entity damagee = event.getEntity();
-		if (MUtil.isntPlayer(damagee)) return;
+		if (damagee == null || MUtil.isntPlayer(damagee)) return;
 		UPlayer vpdamagee = UPlayer.get(damagee);
 		if (vpdamagee == null) return;
 		Entity damager = MUtil.getLiableDamager(event);
-		if (MUtil.isntPlayer(damager)) return;
+		if (damager == null || MUtil.isntPlayer(damager)) return;
 		UPlayer vpdamager = UPlayer.get(damager);
 		if (vpdamager == null) return;
 		
@@ -493,7 +493,7 @@ public class ListenerMain extends Engine
 		
 		// ... where there is one vampire ... 
 		Entity damager = MUtil.getLiableDamager(event);
-		if (MUtil.isntPlayer(damager)) return;
+		if (damager == null || MUtil.isntPlayer(damager)) return;
 		UPlayer vpdamager = UPlayer.get(damager);
 		if (vpdamager == null) return;
 		if (!vpdamager.isVampire()) return;
@@ -539,7 +539,7 @@ public class ListenerMain extends Engine
 	public void foodCake(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		MConf mconf = MConf.get();
 		
 		// If cake eating is not allowed for vampires ...
@@ -584,7 +584,7 @@ public class ListenerMain extends Engine
 		
 		// ... and the liable damager is a vampire ...
 		Entity damager = MUtil.getLiableDamager(event);
-		if (MUtil.isntPlayer(damager)) return;
+		if (damager == null || MUtil.isntPlayer(damager)) return;
 		UPlayer vampire = UPlayer.get(damager);
 		if (vampire == null) return;
 		if ( ! vampire.isVampire()) return;
@@ -679,13 +679,13 @@ public class ListenerMain extends Engine
 		Location splashLocation = thrownPotion.getLocation();
 		
 		ProjectileSource projectileShooter = projectile.getShooter();
-		if (MUtil.isntPlayer(projectileShooter)) return;
+		if (projectileShooter == null || MUtil.isntPlayer(projectileShooter)) return;
 		Player shooter = (Player)projectileShooter;
 		
 		// ... then to all nearby players ...
 		for (Player player : splashLocation.getWorld().getPlayers())
 		{
-			if (MUtil.isntPlayer(player)) continue;
+			if (player == null || MUtil.isntPlayer(player)) continue;
 			if (player.getLocation().distance(splashLocation) > mconf.getHolyWaterSplashRadius()) continue;
 			UPlayer uplayer = UPlayer.get(player);
 			uplayer.msg(MLang.get().holyWaterCommon, shooter.getDisplayName());
@@ -728,7 +728,7 @@ public class ListenerMain extends Engine
 		
 		// ... run altar logic.
 		Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
+		if (player == null || MUtil.isntPlayer(player)) return;
 		MConf mconf = MConf.get();
 		
 		if(mconf.getAltarDark().evalBlockUse(event.getClickedBlock(), player) || mconf.getAltarLight().evalBlockUse(event.getClickedBlock(), player))

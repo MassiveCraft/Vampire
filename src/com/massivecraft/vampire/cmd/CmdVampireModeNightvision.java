@@ -25,7 +25,7 @@ public class CmdVampireModeNightvision extends CmdVampireModeAbstract
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireModeNightvision;
+		return MConf.get().getAliasesVampireModeNightvision();
 	}
 	
 	@Override

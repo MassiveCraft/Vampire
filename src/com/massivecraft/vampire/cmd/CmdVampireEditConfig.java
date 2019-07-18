@@ -28,7 +28,7 @@ public class CmdVampireEditConfig extends CommandEditSingleton<MConf>
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireEditConfig;
+		return MConf.get().getAliasesVampireEditConfig();
 	}
 	
 }

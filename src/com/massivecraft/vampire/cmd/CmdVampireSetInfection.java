@@ -33,7 +33,7 @@ public class CmdVampireSetInfection extends CmdVampireSetAbstract<Double>
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireSetInfection;
+		return MConf.get().getAliasesVampireSetInfection();
 	}
 	
 	@Override

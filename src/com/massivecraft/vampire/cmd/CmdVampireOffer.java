@@ -37,7 +37,7 @@ public class CmdVampireOffer extends VCommand
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireOffer;
+		return MConf.get().getAliasesVampireOffer();
 	}
 	
 	@Override

@@ -1,13 +1,11 @@
 package com.massivecraft.vampire.cmd;
 
-import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.vampire.Perm;
-import com.massivecraft.vampire.Vampire;
 import com.massivecraft.vampire.entity.MConf;
 import com.massivecraft.vampire.entity.UPlayer;
 import com.massivecraft.vampire.entity.UPlayerColl;
@@ -45,7 +43,7 @@ public class CmdVampireShow extends VCommand
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireShow;
+		return MConf.get().getAliasesVampireShow();
 	}
 	
 	@Override
@@ -108,7 +106,7 @@ public class CmdVampireShow extends VCommand
 		else
 		{
 			int rad = percent(uplayer.getRad());
-			int sun = percent(SunUtil.calcSolarRad(player.getWorld()));
+			int sun = percent(SunUtil.calcSolarRad(player.getWorld(), player));
 			double terrain = 1d-SunUtil.calcTerrainOpacity(player.getLocation().getBlock());
 			double armor = 1d-SunUtil.calcArmorOpacity(player);
 			int base = percent(mconf.getBaseRad());

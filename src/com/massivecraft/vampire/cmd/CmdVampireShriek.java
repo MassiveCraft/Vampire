@@ -27,7 +27,7 @@ public class CmdVampireShriek extends VCommand
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireShriek;
+		return MConf.get().getAliasesVampireShriek();
 	}
 	
 	@Override

@@ -31,7 +31,7 @@ public class CmdVampireSetFood extends CmdVampireSetAbstract<Integer>
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireSetFood;
+		return MConf.get().getAliasesVampireSetFood();
 	}
 	
 	@Override

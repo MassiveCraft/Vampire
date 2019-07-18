@@ -14,14 +14,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @EditorName("config")
 public class MConf extends Entity<MConf>
@@ -46,24 +48,132 @@ public class MConf extends Entity<MConf>
 	}
 
 	// Aliases
-	public List<String> aliasesVampire = MUtil.list("v", "vampire");
-	public List<String> aliasesVampireShow = MUtil.list("show");
-	public List<String> aliasesVampireModeBloodlust = MUtil.list("bloodlust");
-	public List<String> aliasesVampireModeIntend = MUtil.list("intend");
-	public List<String> aliasesVampireModeNightvision = MUtil.list("nv", "nightvision");
-	public List<String> aliasesVampireOffer = MUtil.list("offer");
-	public List<String> aliasesVampireAccept = MUtil.list("accept");
-	public List<String> aliasesVampireFlask = MUtil.list("flask");
-	public List<String> aliasesVampireShriek = MUtil.list("shriek");
-	public List<String> aliasesVampireList = MUtil.list("list");
-	public List<String> aliasesVampireSet = MUtil.list("set");
-	public List<String> aliasesVampireSetVampire = MUtil.list("vampire");
-	public List<String> aliasesVampireSetInfection = MUtil.list("infection");
-	public List<String> aliasesVampireSetFood = MUtil.list("food");
-	public List<String> aliasesVampireSetHealth = MUtil.list("health");
-	public List<String> aliasesVampireEditConfig = MUtil.list("config");
-	public List<String> aliasesVampireEditLang = MUtil.list("lang");
-	public List<String> aliasesVampireVersion = MUtil.list("v", "version");
+	private List<String> aliasesVampire = MUtil.list("v", "vampire");
+	public List<String> getAliasesVampire() {
+		return this.aliasesVampire.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampire(List<String> aliasesVampire) {
+		this.aliasesVampire = aliasesVampire.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireShow = MUtil.list("show");
+	public List<String> getAliasesVampireShow() {
+		return this.aliasesVampireShow.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireShow(List<String> aliasesVampireShow) {
+		this.aliasesVampireShow = aliasesVampireShow.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireModeBloodlust = MUtil.list("bloodlust");
+	public List<String> getAliasesVampireModeBloodlust() {
+		return this.aliasesVampireModeBloodlust.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireModeBloodlust(List<String> aliasesVampireModeBloodlust) {
+		this.aliasesVampireModeBloodlust = aliasesVampireModeBloodlust.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireModeIntend = MUtil.list("intend");
+	public List<String> getAliasesVampireModeIntend() {
+		return this.aliasesVampireModeIntend.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireModeIntend(List<String> aliasesVampireModeIntend) {
+		this.aliasesVampireModeIntend = aliasesVampireModeIntend.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireModeNightvision = MUtil.list("nv", "nightvision");
+	public List<String> getAliasesVampireModeNightvision() {
+		return this.aliasesVampireModeNightvision.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireModeNightvision(List<String> aliasesVampireModeNightvision) {
+		this.aliasesVampireModeNightvision = aliasesVampireModeNightvision.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireOffer = MUtil.list("offer");
+	public List<String> getAliasesVampireOffer() {
+		return this.aliasesVampireOffer.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireOffer(List<String> aliasesVampireOffer) {
+		this.aliasesVampireOffer = aliasesVampireOffer.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireAccept = MUtil.list("accept");
+	public List<String> getAliasesVampireAccept() {
+		return this.aliasesVampireAccept.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireAccept(List<String> aliasesVampireAccept) {
+		this.aliasesVampireAccept = aliasesVampireAccept.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireFlask = MUtil.list("flask");
+	public List<String> getAliasesVampireFlask() {
+		return this.aliasesVampireFlask.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireFlask(List<String> aliasesVampireFlask) {
+		this.aliasesVampireFlask = aliasesVampireFlask.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireShriek = MUtil.list("shriek");
+	public List<String> getAliasesVampireShriek() {
+		return this.aliasesVampireShriek.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireShriek(List<String> aliasesVampireShriek) {
+		this.aliasesVampireShriek = aliasesVampireShriek.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireList = MUtil.list("list");
+	public List<String> getAliasesVampireList() {
+		return this.aliasesVampireList.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireList(List<String> aliasesVampireList) {
+		this.aliasesVampireList = aliasesVampireList.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireSet = MUtil.list("set");
+	public List<String> getAliasesVampireSet() {
+		return this.aliasesVampireSet.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireSet(List<String> aliasesVampireSet) {
+		this.aliasesVampireSet = aliasesVampireSet.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireSetVampire = MUtil.list("vampire");
+	public List<String> getAliasesVampireSetVampire() {
+		return this.aliasesVampireSetVampire.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireSetVampire(List<String> aliasesVampireSetVampire) {
+		this.aliasesVampireSetVampire = aliasesVampireSetVampire.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireSetInfection = MUtil.list("infection");
+	public List<String> getAliasesVampireSetInfection() {
+		return this.aliasesVampireSetInfection.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireSetInfection(List<String> aliasesVampireSetInfection) {
+		this.aliasesVampireSetInfection = aliasesVampireSetInfection.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireSetFood = MUtil.list("food");
+	public List<String> getAliasesVampireSetFood() {
+		return this.aliasesVampireSetFood.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireSetFood(List<String> aliasesVampireSetFood) {
+		this.aliasesVampireSetFood = aliasesVampireSetFood.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireSetHealth = MUtil.list("health");
+	public List<String> getAliasesVampireSetHealth() {
+		return this.aliasesVampireSetHealth.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireSetHealth(List<String> aliasesVampireSetHealth) {
+		this.aliasesVampireSetHealth = aliasesVampireSetHealth.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireEditConfig = MUtil.list("config");
+	public List<String> getAliasesVampireEditConfig() {
+		return this.aliasesVampireEditConfig.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireEditConfig(List<String> aliasesVampireEditConfig) {
+		this.aliasesVampireEditConfig = aliasesVampireEditConfig.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireEditLang = MUtil.list("lang");
+	public List<String> getAliasesVampireEditLang() {
+		return this.aliasesVampireEditLang.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireEditLang(List<String> aliasesVampireEditLang) {
+		this.aliasesVampireEditLang = aliasesVampireEditLang.stream().distinct().collect(Collectors.toList());
+	}
+	private List<String> aliasesVampireVersion = MUtil.list("v", "version");
+	public List<String> getAliasesVampireVersion() {
+		return this.aliasesVampireVersion.stream().distinct().collect(Collectors.toList());
+	}
+	public void setAliasesVampireVersion(List<String> aliasesVampireVersion) {
+		this.aliasesVampireVersion = aliasesVampireVersion.stream().distinct().collect(Collectors.toList());
+	}
 
 	@EditorType(TypeMillisDiff.class)
 	public long taskDelayMillis = 500L; // Half a second
@@ -157,24 +267,24 @@ public class MConf extends Entity<MConf>
 	// MISC
 	// -------------------------------------------- //
 
-	private Set<EntityDamageEvent.DamageCause> blockDamageFrom = MUtil.set(
-			EntityDamageEvent.DamageCause.DROWNING,
-			EntityDamageEvent.DamageCause.FALL,
-			EntityDamageEvent.DamageCause.STARVATION
+	private Set<DamageCause> blockDamageFrom = MUtil.set(
+			DamageCause.DROWNING,
+			DamageCause.FALL,
+			DamageCause.STARVATION
 	);
-	public Set<EntityDamageEvent.DamageCause> getBlockDamageFrom() { return this.blockDamageFrom; }
-	public void setBlockDamageFrom(Set<EntityDamageEvent.DamageCause> blockDamageFrom)
+	public Set<DamageCause> getBlockDamageFrom() { return this.blockDamageFrom; }
+	public void setBlockDamageFrom(Set<DamageCause> blockDamageFrom)
 	{
 		this.changed(this.blockDamageFrom, blockDamageFrom);
 		this.blockDamageFrom = blockDamageFrom;
 	}
 
-	private Set<EntityRegainHealthEvent.RegainReason> blockHealthFrom = MUtil.set(
-			EntityRegainHealthEvent.RegainReason.SATIATED,
-			EntityRegainHealthEvent.RegainReason.REGEN
+	private Set<RegainReason> blockHealthFrom = MUtil.set(
+			RegainReason.SATIATED,
+			RegainReason.REGEN
 	);
-	public Set<EntityRegainHealthEvent.RegainReason> getBlockHealthFrom() { return this.blockHealthFrom; }
-	public void setBlockHealthFrom(Set<EntityRegainHealthEvent.RegainReason> blockHealthFrom)
+	public Set<RegainReason> getBlockHealthFrom() { return this.blockHealthFrom; }
+	public void setBlockHealthFrom(Set<RegainReason> blockHealthFrom)
 	{
 		this.changed(this.blockHealthFrom, blockHealthFrom);
 		this.blockHealthFrom = blockHealthFrom;
@@ -242,12 +352,14 @@ public class MConf extends Entity<MConf>
 	// DROP SELF
 	// -------------------------------------------- //
 
-	private Set<Material> dropSelfMaterials = MUtil.set(
-			Material.COBWEB,
-			Material.GLOWSTONE,
-			Material.BOOKSHELF,
-			Material.DEAD_BUSH
-	);
+	// Disabled by default
+	//private Set<Material> dropSelfMaterials = MUtil.set(
+	//		Material.COBWEB,
+	//		Material.GLOWSTONE,
+	//		Material.BOOKSHELF,
+	//		Material.DEAD_BUSH
+	//);
+	private Set<Material> dropSelfMaterials = MUtil.set();
 	public Set<Material> getDropSelfMaterials() { return this.dropSelfMaterials; }
 	public void setDropSelfMaterials(Set<Material> dropSelfMaterials)
 	{
@@ -312,8 +424,8 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 
 	private PotionEffectConf effectConfBloodlust = new PotionEffectConf(EventPriority.HIGHEST, true, 0x1f1f23, MUtil.map(
-			8, 1,
-			1, 1
+			PotionEffectType.JUMP, 3,
+			PotionEffectType.SPEED, 3
 	));
 	public PotionEffectConf getEffectConfBloodlust() { return this.effectConfBloodlust; }
 	public void setEffectConfBloodlust(PotionEffectConf effectConfBloodlust)
@@ -323,7 +435,7 @@ public class MConf extends Entity<MConf>
 	}
 
 	private PotionEffectConf effectConfNightvision = new PotionEffectConf(EventPriority.HIGH, true, 0, MUtil.map(
-			16, 1
+			PotionEffectType.NIGHT_VISION, 1
 	));
 	public PotionEffectConf getEffectConfNightvision() { return this.effectConfNightvision; }
 	public void setEffectConfNightvision(PotionEffectConf effectConfNightvision)
@@ -333,8 +445,8 @@ public class MConf extends Entity<MConf>
 	}
 
 	private PotionEffectConf effectConfVampire = new PotionEffectConf(EventPriority.NORMAL, true, 0, MUtil.map(
-			8, 0,
-			1, 1
+			PotionEffectType.JUMP, 1,
+			PotionEffectType.SPEED, 1
 	));
 	public PotionEffectConf getEffectConfVampire() { return this.effectConfVampire; }
 	public void setEffectConfVampire(PotionEffectConf effectConfVampire)
@@ -343,7 +455,7 @@ public class MConf extends Entity<MConf>
 		this.effectConfVampire = effectConfVampire;
 	}
 
-	private PotionEffectConf effectConfInfected = new PotionEffectConf(EventPriority.NORMAL, true, 0x587653, new HashMap<Integer, Integer>());
+	private PotionEffectConf effectConfInfected = new PotionEffectConf(EventPriority.NORMAL, true, 0x587653, new HashMap<PotionEffectType, Integer>());
 	public PotionEffectConf getEffectConfInfected() { return this.effectConfInfected; }
 	public void setEffectConfInfected(PotionEffectConf effectConfInfected)
 	{
@@ -351,7 +463,7 @@ public class MConf extends Entity<MConf>
 		this.effectConfInfected = effectConfInfected;
 	}
 
-	private PotionEffectConf effectConfHuman = new PotionEffectConf(EventPriority.NORMAL, false, 0, new HashMap<Integer, Integer>());
+	private PotionEffectConf effectConfHuman = new PotionEffectConf(EventPriority.NORMAL, false, 0, new HashMap<PotionEffectType, Integer>());
 	public PotionEffectConf getEffectConfHuman() { return this.effectConfHuman; }
 	public void setEffectConfHuman(PotionEffectConf effectConfHuman)
 	{
@@ -1100,4 +1212,11 @@ public class MConf extends Entity<MConf>
 		this.altarLight = altarLight;
 	}
 
+	private boolean useWorldGuardRegions = false;
+	public boolean isUseWorldGuardRegions() { return this.useWorldGuardRegions; }
+	public void setUseWorldGuardRegions(boolean useWorldGuardRegions)
+	{
+		this.changed(this.useWorldGuardRegions, useWorldGuardRegions);
+		this.useWorldGuardRegions = useWorldGuardRegions;
+	}
 }

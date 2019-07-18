@@ -1,12 +1,25 @@
 package com.massivecraft.vampire.util;
 
 import com.massivecraft.vampire.entity.MConf;
+
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
+import java.util.Set;
 
 public class SunUtil
 {
@@ -30,13 +43,37 @@ public class SunUtil
 	 * This time of day relative to mid day.
 	 * 0 means midday. -7000 mean start of sunrise. +7000 means end of sundown.
 	 */
-	public static int calcMidDeltaTicks(World world)
+	public static int calcMidDeltaTicks(World world, Player player)
 	{
-		int ret = (int) ((world.getFullTime() - MID_DAY_TICKS) % DAY_TICKS);
+		long rtime = world.getFullTime();
+		if (MConf.get().isUseWorldGuardRegions() && Bukkit.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
+			RegionManager rm = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+			if (rm != null) {
+				int bestPriority = 0;
+				Set<ProtectedRegion> prset = rm.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ())).getRegions();
+				for (ProtectedRegion pr : prset) {
+					Map<Flag<?>, Object> flags = pr.getFlags();
+					if (flags.containsKey(Flags.TIME_LOCK)) {
+						try {
+							long auxrtime = Long.parseLong((String) flags.get(Flags.TIME_LOCK));
+							if (pr.getPriority() >= bestPriority) {
+								rtime = auxrtime;
+								bestPriority = pr.getPriority();
+							}
+						}
+						catch(NumberFormatException e){	}
+					}
+				}
+			}
+		}
+
+		int ret = (int) ((rtime - MID_DAY_TICKS) % DAY_TICKS);
+
 		if (ret >= HALF_DAY_TICKS)
 		{
 			ret -= DAY_TICKS;
 		}
+
 		return ret;
 	}
 	
@@ -44,9 +81,9 @@ public class SunUtil
 	 * The insolation angle in radians.
 	 * 0 means directly from above. -Pi/2 means start of sunrise etc.
 	 */
-	public static double calcSunAngle(World world)
+	public static double calcSunAngle(World world, Player player)
 	{
-		int mdticks = calcMidDeltaTicks(world);
+		int mdticks = calcMidDeltaTicks(world, player);
 		return MDTICKS_TO_ANGLE_FACTIOR * mdticks;
 	}
 	
@@ -54,11 +91,33 @@ public class SunUtil
 	 * A value between 0 and 1. 0 means no sun at all. 1 means sun directly from above.
 	 * http://en.wikipedia.org/wiki/Effect_of_sun_angle_on_climate
 	 */
-	public static double calcSolarRad(World world)
+	public static double calcSolarRad(World world, Player player)
 	{
 		if (world.getEnvironment() != Environment.NORMAL) return 0d;
-		if (world.hasStorm()) return 0d;
-		double angle = calcSunAngle(world);
+		boolean storming = world.hasStorm();
+		if (MConf.get().isUseWorldGuardRegions() && Bukkit.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
+			RegionManager rm = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+			if (rm != null) {
+				int bestPriority = 0;
+				Set<ProtectedRegion> prset = rm.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ())).getRegions();
+				for (ProtectedRegion pr : prset) {
+					Map<Flag<?>, Object> flags = pr.getFlags();
+					if (flags.containsKey(Flags.WEATHER_LOCK)) {
+						try {
+							boolean auxstorm = ((com.sk89q.worldedit.world.weather.WeatherType) flags.get(Flags.WEATHER_LOCK)).getName() == WeatherType.DOWNFALL.name();
+							if (pr.getPriority() >= bestPriority) {
+								storming = auxstorm;
+								bestPriority = pr.getPriority();
+							}
+						}
+						catch(NumberFormatException e){	}
+					}
+				}
+			}
+		}
+
+		if (storming) return 0d;
+		double angle = calcSunAngle(world, player);
 		double absangle = Math.abs(angle);
 		if (absangle >= HALF_PI) return 0;
 		double a = HALF_PI - absangle;
@@ -139,7 +198,7 @@ public class SunUtil
 		
 		// Insolation
 		World world = player.getWorld();
-		double ret = calcSolarRad(world);
+		double ret = calcSolarRad(world, player);
 		if (ret == 0) return 0;
 		
 		// Terrain

@@ -14,10 +14,7 @@ import com.massivecraft.vampire.event.EventVampirePlayerInfectionChange;
 import com.massivecraft.vampire.event.EventVampirePlayerVampireChange;
 import com.massivecraft.vampire.util.FxUtil;
 import com.massivecraft.vampire.util.SunUtil;
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -635,11 +632,13 @@ public class UPlayer extends SenderEntity<UPlayer>
 		if (this.isVampire())
 		{
 			// Buffs
-			if (this.getTemp() > mconf.getSunNauseaTemp()) FxUtil.ensure(PotionEffectType.CONFUSION, me, mconf.getSunNauseaTicks());
+			if (this.getTemp() > mconf.getSunNauseaTemp() && !me.hasPermission("vampire.nosferatu")) FxUtil.ensure(PotionEffectType.CONFUSION, me, mconf.getSunNauseaTicks());
 			if (this.getTemp() > mconf.getSunWeaknessTemp())  FxUtil.ensure(PotionEffectType.WEAKNESS, me, mconf.getSunWeaknessTicks());
-			if (this.getTemp() > mconf.getSunSlowTemp()) FxUtil.ensure(PotionEffectType.SLOW, me, mconf.getSunSlowTicks());
-			if (this.getTemp() > mconf.getSunBlindnessTemp()) FxUtil.ensure(PotionEffectType.BLINDNESS, me, mconf.getSunBlindnessTicks());
-			if (this.getTemp() > mconf.getSunBurnTemp()) FxUtil.ensureBurn(me, mconf.getSunBurnTicks());
+            if (this.getTemp() > mconf.getSunSlowTemp() && !this.isBloodlusting()) me.removePotionEffect(PotionEffectType.JUMP);
+			if (this.getTemp() > mconf.getSunSlowTemp() && !this.isBloodlusting() && me.hasPermission("vampire.nosferatu")) me.removePotionEffect(PotionEffectType.SPEED);
+			if (this.getTemp() > mconf.getSunSlowTemp() && !this.isBloodlusting() && !me.hasPermission("vampire.nosferatu")) FxUtil.ensure(PotionEffectType.SLOW, me, mconf.getSunSlowTicks());
+			if (this.getTemp() > mconf.getSunBlindnessTemp() && !me.hasPermission("vampire.nosferatu")) FxUtil.ensure(PotionEffectType.BLINDNESS, me, mconf.getSunBlindnessTicks());
+			if (this.getTemp() > mconf.getSunBurnTemp() && !me.hasPermission("vampire.nosferatu")) FxUtil.ensureBurn(me, mconf.getSunBurnTicks());
 			
 			// Fx
 			double dsmokes = mconf.getSunSmokesPerTempAndMilli() * this.temp * millis;

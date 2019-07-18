@@ -25,7 +25,7 @@ public class CmdVampireModeIntend extends CmdVampireModeAbstract
 	@Override
 	public List<String> getAliases()
 	{
-		return MConf.get().aliasesVampireModeIntend;
+		return MConf.get().getAliasesVampireModeIntend();
 	}
 	
 	@Override
